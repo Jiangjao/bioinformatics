@@ -54,6 +54,27 @@ print(dataCount)
 
 # 学习潘大师如何？？
 
+# 思考题1:对车祸数据成对关系的探索，程序代码如下.
+# import matplotlib.pyplot as plt
+# import seaborn as sns
 
+# 数据准备
+# Loading Pandas DataFrame:
+# iris = pd.read_csv('./iris.csv', encoding='windows-1252')
+# # iris = sns.load_dataset('iris')  在外网所以不好连接上去
+# # 用Seaborn画成对关系
+# sns.pairplot(iris)
+# plt.show()
 
+# 解决seaborn数据集导入报错的问题
+# import ssl
+# ssl._create_default_https_context = ssl._create_unverified_context
 
+# # 数据准备
+# crashes = sns.load_dataset('car_crashes')
+# # crashes_data = pd.DataFrame(crashes)
+# print(crashes.head(10))
+
+# # 用Seaborn画成对关系
+# sns.pairplot(crashes)
+# plt.show()
