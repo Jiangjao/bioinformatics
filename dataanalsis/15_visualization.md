@@ -25,6 +25,7 @@
 </details>
 
 <div style="position:fixed;right:0px;" ><a name="122">[1.2.2. 折线图](#122-折线图)</a></div>
+
 # 1. 15 | 学会Python数据可视化的技能
 [名称](#1)
     数据可视化技术。
