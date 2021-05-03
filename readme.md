@@ -61,3 +61,13 @@ conda create -n aligners bwa bowtie hisat star
         需要在同一个终端操作。nice 值控制进程获取资源的的级别。
 ### 守护进程
         nohup 与 & 配合使用。
+
+### service
+        其实所谓的服务管理工具就是封装了原本程序自己的启动，关闭，重启命令是么？
+        作者回复: 好处是不用去记每个启动命令、参数及配置文件。
+#### 基本使用
+        cd /usr/lib/systemd/system
+        vim sshd.service --查看服务文件
+        cd /lib/systemd/system --服务文件目录
+        ls -l runlevel*.target --查看服务文件映射
+
