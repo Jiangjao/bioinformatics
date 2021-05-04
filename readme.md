@@ -66,8 +66,52 @@ conda create -n aligners bwa bowtie hisat star
         其实所谓的服务管理工具就是封装了原本程序自己的启动，关闭，重启命令是么？
         作者回复: 好处是不用去记每个启动命令、参数及配置文件。
 #### 基本使用
-        cd /usr/lib/systemd/system
-        vim sshd.service --查看服务文件
-        cd /lib/systemd/system --服务文件目录
-        ls -l runlevel*.target --查看服务文件映射
+	cd /usr/lib/systemd/system
+	vim sshd.service --查看服务文件
+	cd /lib/systemd/system --服务文件目录
+	ls -l runlevel*.target --查看服务文件映射
+
+
+## 57 | Shell 脚本的格式
+    UNIX的哲学：一条命令只做一件事
+	为了组合命令和多次执行，使用脚本文件来保存需要执行的命令
+	赋予该文件执行权限(chmod u+rx filename)
+
+## 58 | Shell脚本不同执行方式的影响
+
+### 执行命令
+     bash ./filename.sh
+     ./filename.sh
+     source ./filename.sh
+     .filename.sh
+
+### 内建命令和外部命令
+<ul>
+<li>内建命令不需要创建子进程</li>
+<li>内部命令对当前Shell生效</li>
+</ul>
+source ./filename.sh 与.filename.sh 是一样滴。都会在当前进程下。
+而bash ./filename ./filename.sh 会产生子进程。
+## 63 | 环境变量、预定义变量与位置变量
+	env      查看环境变量
+	$PATH 
+### 预定义变量
+	$?       上一条命令是否执行成功(suceessful 0)
+	$$       可以显示当前进程PID    一般用来检测脚本检测or运行状态
+	$0		 当前进程名称
+
+#### 位置变量
+	执行shell脚本的时候，可以为shell脚本带上更多的参数
+
+
+## C语言学习笔记
+    // In general, the two expressions drinks[i] and *(drinks + i)
+    // are equivalent
+
+```c
+int drinks[] = {4, 2, 3};
+printf("1st order: %i drinks\n", drinks[0]);
+printf("1st order: %i drinks\n", *drinks)
+```
+
 
