@@ -36,7 +36,7 @@ conda create -n aligners bwa bowtie hisat star
       相比于rpm解决了依赖的毛病；
       yum源在国外，嫌弃它慢，可以使用国内镜像。alibaba.com那边的。
 
-####yum 配置文件
+#### yum 配置文件
       -  /etc/yum.repos.d/CentOS-Base.repo
       - wget -O /etc/yum.repos.d/CentOS-Base.repo    http://mirrors.aliyun.com/repo/Centos-7.repo
 
@@ -86,6 +86,7 @@ conda create -n aligners bwa bowtie hisat star
      .filename.sh
 
 ### 内建命令和外部命令
+    可以用type 来查看
 <ul>
 <li>内建命令不需要创建子进程</li>
 <li>内部命令对当前Shell生效</li>
@@ -103,7 +104,26 @@ source ./filename.sh 与.filename.sh 是一样滴。都会在当前进程下。
 #### 位置变量
 	执行shell脚本的时候，可以为shell脚本带上更多的参数
 
+## 60 | 重定向符号
+-	一个进程默认会打开标准输入、标准输出、错误输出三个文件描述符
+-	输入重定向符号 " <"
+	-	read var </path/to/file
+-	输出重定向符号 ">"   ">>"   "2>"   "&>"
+	-	echo 123 > /path/to/a/file
+-	输入和输出重定向组合使用
+	-	cat > /path/to/a/file << EOF
+	-   I am $USER
+	-   EOF
 
+>一般使用输入输出重定向到系统文件，需要备个份哈。
+- wc -l < /etc/passwd
+
+- read var < a.txt
+- echo $var
+- \> 原有内容会清空
+- \>> 追加
+- 2> 错误重定向
+- &> 全部重定向
 ## C语言学习笔记
     // In general, the two expressions drinks[i] and *(drinks + i)
     // are equivalent
@@ -113,5 +133,9 @@ int drinks[] = {4, 2, 3};
 printf("1st order: %i drinks\n", drinks[0]);
 printf("1st order: %i drinks\n", *drinks)
 ```
+### Pointer
+Array variables can be used as 
+pointers…
+
 
 
