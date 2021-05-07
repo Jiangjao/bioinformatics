@@ -38,7 +38,7 @@ tips:暂无
 
 #Create BLAST database  using an existing BLAST database or FASTA sequence file as input
 ```c
-makeblastdb -in GCF_001433935.1_IRGSP-1.0_genomic.fan -dbtype prot
+makeblastdb -in GCF_001433935.1_IRGSP-1.0_genomic.fan -dbtype nucl
 ```
 #### Result
 ```c
@@ -68,7 +68,7 @@ blastn -query  GCF_000850725.1_ViralMultiSegProj14797_genomic.fna  -db GCF_00143
 #blastn: 调用核酸序列比对 -query 比对序列文件(fasta格式) -db 数据库名 -out 比对结果文件名 -evalue 期望值(默认为10，一般设置le-5) -outfmt 比对结果的输出参数：0-18，常用0,5,6,7
 
 #### 比对结果的输出参数：0-18，常用0,5,6,7
-
+![avatar](./../images/blast.jpg)
 - 0：成对输出，与在线比对结果相同
 - 5：输出XML格式
 - 6：输出table格式
@@ -104,6 +104,8 @@ blastn -query  GCF_000850725.1_ViralMultiSegProj14797_genomic.fna  -db GCF_00143
 来源：简书
 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 
+#### tips
+    如果不好操作。建议用online blast进行操作。
 ### References
 >[BLAST实操|Linux 本地序列比对](https://zhuanlan.zhihu.com/p/269565747)
 
