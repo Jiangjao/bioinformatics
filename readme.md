@@ -124,6 +124,26 @@ source ./filename.sh 与.filename.sh 是一样滴。都会在当前进程下。
 - \>> 追加
 - 2> 错误重定向
 - &> 全部重定向
+
+### 拆分大文件genome到小文件
+序列操作
+
+1. 反义互补
+
+$ echo 'ATTGCTATGCTNNNT' | rev | tr 'ACTG' 'TGAC'
+ANNNAGCATAGCAAT
+
+2. 将fasta文件分割成多个文件，一个文件一个fasta序列
+
+	csplit -z -q -n 4 -f sequence_ test.fa /\>/ {*}
+
+3.	同时你也可以用awk来使用
+	awk '/^>/{s="NC_029256"++d".1.fa"} {print > s}' test.fa
+	awk '/^>/{s=++d".fa"} {print > s}' test.fa
+
+> [只用一行来颠覆你处理文件的方式](https://cloud.tencent.com/developer/article/1613814)
+
+1. 脚本编程
 ## C语言学习笔记
     // In general, the two expressions drinks[i] and *(drinks + i)
     // are equivalent
