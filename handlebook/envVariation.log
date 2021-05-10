@@ -73,8 +73,8 @@ Common options (for a complete list please see the User Guide):
 Without refinement (very fast, avg accuracy similar to T-Coffee): -maxiters 2
 Fastest possible (amino acids): -maxiters 1 -diags -sv -distance1 kbit20_3
 Fastest possible (nucleotides): -maxiters 1 -diags
-(base)  jiangxiaojiao@Biocomp ~/biosoft $  # zhe [K [K [Kz [K这样就可以使用muscle了
-(base)  jiangxiaojiao@Biocomp ~/biosoft $  # dui [K [K [K队医 [K [K对于conda 也差不多
+(base)  jiangxiaojiao@Biocomp ~/biosoft $  # 这样就可以使用muscle了
+(base)  jiangxiaojiao@Biocomp ~/biosoft $  # 对于conda也差不多
 (base)  jiangxiaojiao@Biocomp ~/biosoft $  exit
 exit
 
