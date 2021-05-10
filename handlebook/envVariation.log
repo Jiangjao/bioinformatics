@@ -24,17 +24,17 @@ drwxrwxr-x  2 jiangxiaojiao jiangxiaojiao 4.0K May 10 13:35   test
   gatk-4.1.4.1.tar.gz      muscle3.8.425_binaries.tar.gz          sratoolkit  
 (base)  jiangxiaojiao@Biocomp ~/biosoft $  ls -lh
 total 495M
-drwxrwxr-x 3 jiangxiaojiao jiangxiaojiao 4.0K Apr 16 14:37     bowtie  
+drwxrwxr-x 3 jiangxiaojiao jiangxiaojiao 4.0K Apr 16 14:37   bowtie  
 drwxrwxr-x 4 jiangxiaojiao jiangxiaojiao 4.0K May  2 16:28   gatk  
 -rw-rw-r-- 1 jiangxiaojiao jiangxiaojiao  19M May  2 15:38   gatk-4.1.3.0.zip  
 -rw-rw-r-- 1 jiangxiaojiao jiangxiaojiao  62M May  2 14:42   gatk-4.1.4.1.tar.gz  
 drwxrwxr-x 3 jiangxiaojiao jiangxiaojiao 4.0K Apr 16 14:58   hisat  
--rw-rw-r-- 1 jiangxiaojiao jiangxiaojiao  90M Apr 30 15:29 Miniconda3-latest-Linux-x86_64.sh
+-rw-rw-r-- 1 jiangxiaojiao jiangxiaojiao  90M Apr 30 15:29   Miniconda3-latest-Linux-x86_64.sh
 drwxrwxr-x 3 jiangxiaojiao jiangxiaojiao 4.0K Apr 19 17:11   muscle  
 -rw-rw-r-- 1 jiangxiaojiao jiangxiaojiao 1.2M Nov 18  2016   muscle3.8.425_binaries.tar.gz  
 drwxrwxr-x 2 jiangxiaojiao jiangxiaojiao 4.0K Apr 15 14:44   myBin  
 -rw-rw-r-- 1 jiangxiaojiao jiangxiaojiao 229M Nov  3  2020   ncbi-blast-2.11.0+-x64-linux.tar.gz  
--rw------- 1 jiangxiaojiao jiangxiaojiao  33K May  2 15:38 nohup.out
+-rw------- 1 jiangxiaojiao jiangxiaojiao  33K May  2 15:38   nohup.out
 drwxrwxr-x 5 jiangxiaojiao jiangxiaojiao 4.0K Mar 12 23:43   sratoolkit  
 -rw-rw-r-- 1 jiangxiaojiao jiangxiaojiao  95M Mar 16 00:17   sratoolkit.2.11.0-ubuntu64.tar.gz  
 (base)  jiangxiaojiao@Biocomp ~/biosoft $  #导出环境变量方便使用
