@@ -149,6 +149,13 @@ source ./filename.sh 与.filename.sh 是一样滴。都会在当前进程下。
 ### 拆分大文件genome到小文件
 序列操作
 
+## linux系统自带函数库介绍
+/etc/init.d/functions
+/etc/profile 系统文件变量
+~/.bashrc bashrc 执行顺序
+.bash_profile
+
+平时使用时，source命令导入就行。
 1. 反义互补
 
 $ echo 'ATTGCTATGCTNNNT' | rev | tr 'ACTG' 'TGAC'
