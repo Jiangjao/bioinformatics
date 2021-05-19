@@ -153,6 +153,28 @@ source ./filename.sh 与.filename.sh 是一样滴。都会在当前进程下。
   - 使用sed的每个脚本对改行进行操作
   - 处理完成后输出该行
 
+## 90 | sed的替换指令加强版
+
+### 标志位
+-   数字，第几次出现才进行替换
+-   g, 每次出现都进行替换
+-   p 打印模式空间的内容
+    -   sed -n 'script' filename 阻止默认输出
+-   w file 将模式空间的内容写入到文件
+
+### 寻址
+默认对每行进行操作,增加寻址后对匹配的行进行操作
+-   /正则表达式/s/old/new/g
+-   行号s/old/new/g
+    -   行号可以是具体的行，也可以是最后一行$
+-   可以使用两个寻址符号，也可以混合使用行号和正则表达式
+### 分组
+-   寻址可以匹配多条命令
+-   /regular/ { s/old/new/;s/old/new/ }
+
+### 脚本文件
+-   可以将选项保存为文件，使用-f加载脚本文件
+-   sed -f sedscript filename
 ## 94 | AWK和sed的区别
 -    AWK更像脚本语言
 -    AWK用于"比较规范"的文本处理，用于统计数量并输出指定字段
@@ -238,5 +260,9 @@ printf("1st order: %i drinks\n", *drinks)
 Array variables can be used as 
 pointers…
 
-
+### 不同整型的输出
+使用不同的格式控制符可以输出不同类型的整数，它们分别是：
+`%hd`用来输出 short int 类型，hd 是 short decimal 的简写；
+`%d`用来输出 int 类型，d 是 decimal 的简写；
+`%ld`用来输出 long int 类型，ld 是 long decimal 的简写。
 
