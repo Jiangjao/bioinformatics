@@ -175,6 +175,8 @@ source ./filename.sh 与.filename.sh 是一样滴。都会在当前进程下。
 ### 脚本文件
 -   可以将选项保存为文件，使用-f加载脚本文件
 -   sed -f sedscript filename
+
+>https://www.gnu.org/software/sed/manual/sed.html 英文文档
 ## 94 | AWK和sed的区别
 -    AWK更像脚本语言
 -    AWK用于"比较规范"的文本处理，用于统计数量并输出指定字段
@@ -247,6 +249,16 @@ cut OPTION... [FILE]...
 ----
 有点儿意思
 1. 脚本编程
+
+## 非root 用户安装软件注意哈，指定prefix 
+```bash
+tar -zvxf cmake-3.14.5.tar.gz
+$ cd cmake-3.14.5
+$ ./bootstrap
+$ ./configure --prefix=/home/xxx/cmake            !!!注意，要在自己用户名下的目录配置，如果不加--prefix会默认在root目录下配置，这样后面make install时没有sudo权限会失败
+$ make
+$ make install
+```
 ## C语言学习笔记
     // In general, the two expressions drinks[i] and *(drinks + i)
     // are equivalent

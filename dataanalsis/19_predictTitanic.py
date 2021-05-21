@@ -12,6 +12,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.datasets import load_iris
 import pandas as pd
 from sklearn.feature_extraction import DictVectorizer
+from sklearn.tree import DecisionTreeClassifier
 # prepare the dataset
 iris=load_iris()
 
@@ -60,8 +61,29 @@ test_data['Embarked'].fillna('S', inplace=True)
 
 
 # select characters
-features = ["Pclass", "Sex", "Age", "Sibsp", "Parch", "Fare", "Embarked"]
+features = ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked"]
 train_features = train_data[features]
 train_labels = train_data["Survived"]
 test_features = test_data[features]
+
+# transform the character into numeric
+dvec = DictVectorizer(sparse=False)
+train_features = dvec.fit_transform(train_features.to_dict(orient='record'))
+# fit_transform 函数可以将特征向量转化为特征值函数
+print(dvec.feature_names_)          # ???
+
+# Decision tree model
+
+# build the ID3 decision tree
+clf = DecisionTreeClassifier(criterion='entropy')
+# train the decision tree
+clf.fit(train_features, train_labels)
+
+# model predict && evaluate
+test_features = dvec.transform(test_features.to_dict(orient='record'))
+# predict the decision tree
+pred_labels = clf.predict(test_features)
+
+
+
 
