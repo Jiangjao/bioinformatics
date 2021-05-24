@@ -11,6 +11,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.datasets import load_iris
 import pandas as pd
+from sklearn.model_selection import cross_val_score
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.tree import DecisionTreeClassifier
 # prepare the dataset
@@ -84,6 +85,13 @@ test_features = dvec.transform(test_features.to_dict(orient='record'))
 # predict the decision tree
 pred_labels = clf.predict(test_features)
 
+# get accuracy of the decision tree
+acc_decision_tree = round(clf.score(train_features, train_labels), 6)
+print(u'score准确率为:%.4lf' % acc_decision_tree)
 
-
+# use the K test, statistic the decision tree accuracy
+print(u'cross_val_score准确率为%.4lf' % np.mean(cross_val_score(clf, train_features, train_labels, cv=10)))
+dot_data = tree.export_graphviz(clf, out_file=None)
+graph = graphviz.Source(dot_data)
+graph.view()
 
