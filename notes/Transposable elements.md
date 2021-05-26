@@ -35,4 +35,12 @@ II型转座子
 
 ### 聚类分析
 > OrthoMCL及orthofinder 两种软件进行聚类分析
+### 共线性分析
 
+对于亲缘关系较近的物种一般使用核苷酸序列来进行分析，如果在核苷酸水平不能呈现出很好的共线性的话，还可以换用编码基因水平的共线性（更适用于真核种）
+除了全基因组共线性外，常见的还有功能基因簇的局部共线性分析
+>https://www.jianshu.com/p/da5922df19d1
+>http://www.cxyzjd.com/article/sinat_38163598/73180998
+
+### 基因组Repeat Sequence
+>Identifying repeats and transposable elements in sequenced genomes: how to find your way through the dense forest of programs
