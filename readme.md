@@ -71,6 +71,22 @@ conda create -n aligners bwa bowtie hisat star
 	cd /lib/systemd/system --服务文件目录
 	ls -l runlevel*.target --查看服务文件映射
 
+## 48 | i节点和数据块操作
+-   Hard link (ln sourceFile destFile)
+
+通常要求文件和链接位于同一文件系统中
+Hard link与源文件几乎没有区别, 只能通过ls -li看出link关系
+删除源文件后, Hard link文件仍然存在,保留了源文件的内容
+
+-   Symbol link (ln -s sourceFile linkFile)
+
+可以指向文件夹和不在同一磁盘的文件
+删除源文件后, Symbol link仍然存在, 但是内容不存在
+
+-   链接数目 (hard link)
+
+对于文件而言, 代表链接的数量;
+对于目录而言, 指的是命名的目录项, 目录项中的 . 以及子目录中的 ..
 
 ## 57 | Shell 脚本的格式
     UNIX的哲学：一条命令只做一件事
