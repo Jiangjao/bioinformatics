@@ -44,3 +44,31 @@ II型转座子
 
 ### 基因组Repeat Sequence
 >Identifying repeats and transposable elements in sequenced genomes: how to find your way through the dense forest of programs
+
+### 转座子分类的依据介绍
+>https://zhuanlan.zhihu.com/p/183952007
+
+
+病毒 自身的转座子有哪些。。
+
+### 直系同源（orthology）和旁系同源（paralogy）
+
+**`Orthologs`** 和 **`Paralogs`** 是同源序列的两种类型。**`Orthologs`** 描述在不同物种中来自于共同祖先的基因。**`Orthologs`** 基因可能有相同的功能，也可能没有。**`Paralogs`**描述在同一物种内由于基因复制而分离的同源基因。
+
+***`Orthologs`*** 通常译作直系同源、直向同源、垂直同源。**`Paralogs`** 通常译作旁系同源、并系同源、横向同源。
+
+
+[Xenology is the scientific study of extraterrestrial life. Derived from the Greek xenos, which as a substantive has the meaning "stranger, wanderer, refugee" and as an adjective "foreign, alien, strange, unusual."][1]
+
+![avatar](./../images/Homology.png)
+
+>Orthologs and Paralogs are two types of homologous sequences. Orthology describes genes in different species that derive from a common ancestor. Orthologous genes may or may not have the same function.Paralogy describes homologous genes within a single species that diverged by gene duplication.
+
+>NCBI的Glossary中对paralog的定义是： A paralog is one of a set of homologous genes that have diverged from each other as a consequence of gene duplication. For example, the mouse a-globin andb-globin genes are paralogs. The relationship between mouse a-globin and chick b-globin is also considered paralogous (see the figure).
+
+>NCBI的Glossary中对ortholog的定义是： Orthology describes genes in different species that derive from a single ancestral gene in the last common ancestor of the respective species.
+
+>http://www.sciencedirect.com/science/article/pii/S0168952502027932
+
+[1]: Henry George Liddell, Robert Scott, A Greek-English Lexicon, new (ninth) edition, with a supplement, Clarendon Press, Oxford, 1968.
+
