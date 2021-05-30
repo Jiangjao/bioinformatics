@@ -51,8 +51,11 @@ Class-II型转座子
     <br>
     <div style="color:orange; border-bottom: 1px solid #d9d9d9;
     display: inline-block;
+    align="center";
     color: #999;
-    padding: 2px;">LTR 的分类        P: 植物  M: 后生动物  F :真菌  O：其他</div>
+    padding: 2px;">
+    <p align="center">LTR 的分类        P: 植物  M: 后生动物  F :真菌  O：其他</p>
+    </div>
 </center>
 
 <!-- ![avatar](./../images/transpon08.jpg) -->
