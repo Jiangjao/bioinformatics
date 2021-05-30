@@ -88,6 +88,23 @@ Hard link与源文件几乎没有区别, 只能通过ls -li看出link关系
 对于文件而言, 代表链接的数量;
 对于目录而言, 指的是命名的目录项, 目录项中的 . 以及子目录中的 ..
 
+## 54 | 系统综合状态查看命令sar以及第三方命令
+Linux Performance
+>http://www.brendangregg.com/linuxperf.html
+
+Install and Configure SAR
+
+For Debian/Ubuntu
+```bash
+# sudo apt-get install sysstat
+```
+
+For RedHat/CentOS
+```bash
+sudo yum install sysstat
+```
+#sudo vi /etc/default/sysstat 
+ENABLED="true"
 ## 57 | Shell 脚本的格式
     UNIX的哲学：一条命令只做一件事
 	为了组合命令和多次执行，使用脚本文件来保存需要执行的命令
