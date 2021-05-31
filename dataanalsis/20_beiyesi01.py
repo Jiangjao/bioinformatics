@@ -14,3 +14,6 @@ documents = [
 tfidf_matrix = tfidf_vec.fit_transform(documents)
 print("不重复的词:",tfidf_vec.get_feature_names())
 print("每个单词的ID:",tfidf_vec.vocabulary_)
+
+print("每个单词的tfidf值:", tfidf_matrix.toarray())
+
