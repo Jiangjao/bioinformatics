@@ -71,6 +71,8 @@ TF-IDF = TF * IDF
 ### 计算 TF-IDF 
 sklearn 中我们直接使用TfidfVectorizer 类
 
+### 停用词的处理
+`停用词`就是在分类中没有用的词，这些词一般`词频 TF`高，但是 `IDF 很低`，起不到分类的作用。为了节省空间和计算时间，我们把这些词作为停用词 stop words，告诉机器这些词不需要帮我计算。
 ### 对文档进行分类
 ![avatar](./../images/beiyesi08.jpg)
 

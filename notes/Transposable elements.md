@@ -125,6 +125,10 @@ Class-II型转座子
 >https://www.jianshu.com/p/a93cdbc36339
 
 病毒 自身的转座子有哪些。。
+1.自己构建原核生物数据库
+2.转座酶
+3.。。
+4.寻找最长字符串儿,寻找重复出现的字符串儿。
 
 ### 转座子相关的数据库
 
@@ -133,6 +137,18 @@ Class-II型转座子
 >Dfam `https://dfam.org/`
 
 >repbase `http://www.girinst.org/repbase/`
+
+> P-MITE
+一个植物特有的数据库，其中MITErepdb主要包含共有序列信息而MITEdb主要用于注释41种植物基因组中的各个微型倒置重复转座元件（miniature inverted repeat TE, MITE）。
+
+>RiTE
+是特别用于水稻及其相关物种基因组中重复元件研究的数据库，这个数据库中包含水稻基因组中全部转座元件的序列，共有序列以及单个转座子在参考基因组中的插入信息。
+
+>MASiVEdb
+数据库包含和RiTE差不多的信息，只是MASiVEdb包含更多的植物物种的转座子注释信息。
+
+还有一些数据库是对那些插入到基因组上各基因的编码区的转座元件做汇总，包括TranspoGene, HESAS, 以及LINE FUSION GENES。
+
 
 ### 直系同源（orthology）和旁系同源（paralogy）
 
@@ -156,7 +172,8 @@ Class-II型转座子
 
 
 待会儿再看吧。
-参考文献：
+
+-   References: 
 
 [1]: Henry George Liddell, Robert Scott, A Greek-English Lexicon, new (ninth) edition, with a supplement, Clarendon Press, Oxford, 1968.
 
@@ -169,3 +186,15 @@ Class-II型转座子
 [5] 武泽峰, 于慧云, & 范三红. (2015). 大麦基因组中 Helitron 转座元件的计算预测. 麦类作物学报, 35(9), 1183-1189.
 
 高等植物helitron转座子的研究进展
+>https://www.jianshu.com/p/
+
+
+
+转入了病毒外壳蛋白基因和病毒的复制酶基因的植物 就具有了抗病毒的能力
+>植物抗病毒基因工程
+
+基因组序列对比...
+>Pango谱系??
+>https://zhuanlan.zhihu.com/p/121740252
+
+
