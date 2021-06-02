@@ -14,3 +14,7 @@ notes/RMRBSeqs.embl
 
 # ref-squences
 notes/virus_segement1_NC_02925613.1.fa
+
+# connect mysql
+BIOPYTHON/config.ini
+BIOPYTHON/dbconfig.py
