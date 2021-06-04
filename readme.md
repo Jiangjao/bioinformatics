@@ -292,6 +292,25 @@ $ ./configure --prefix=/home/xxx/cmake            !!!注意，要在自己用户
 $ make
 $ make install
 ```
+
+### LINUX 暂停、继续进程
+kill -STOP 1234 将该进程暂停。
+
+如果要让它恢复到后台，用kill -CONT 1234 （很多在前台运行的程序这样是不行的）
+
+如果要恢复到前台，请在当时运行该进程的那个终端用jobs命令查询暂停的进程。
+
+然后用 fg 〔job号〕把进程恢复到前台
+
+1. command& 让进程在后台运行
+
+2. jobs 查看后台运行的进程
+
+3. fg %n 让后台运行的进程n到前台来
+
+4. bg %n 让进程n到后台去；  
+
+   PS:"n"为jobs查看到的进程编号
 ## C语言学习笔记
     // In general, the two expressions drinks[i] and *(drinks + i)
     // are equivalent
