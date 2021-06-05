@@ -18,4 +18,4 @@ notes/virus_segement1_NC_02925613.1.fa
 # connect mysql
 BIOPYTHON/config.ini
 BIOPYTHON/dbconfig.py
-BIOPYTHON/_pycache_
+BIOPYTHON/__pycache__
