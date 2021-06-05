@@ -311,6 +311,41 @@ kill -STOP 1234 将该进程暂停。
 4. bg %n 让进程n到后台去；  
 
    PS:"n"为jobs查看到的进程编号
+5. 以下命令在后台执行 root 目录下的 runoob.sh 脚本：
+   nohup /root/runoob.sh &
+### 指定进程在cpu上
+
+查看进程
+```bash
+-> % ps
+  PID TTY          TIME CMD
+ 2683 pts/1    00:00:00 zsh
+ 2726 pts/1    00:00:00 dgram_servr
+ 2930 pts/1    00:00:00 ps
+```
+查看cpu的位置
+```bash
+-> % taskset -p 2726
+pid 2726's current affinity mask: 3
+```
+
+选定cpu
+```bash
+-> % taskset -pc 1 2726
+pid 2726's current affinity list: 0,1
+pid 2726's new affinity list: 1
+```
+
+
+### git 更新ignore 文件
+```bash
+git rm -r --cached . // 删除本地缓存
+git add . // 添加要提交的文件
+git commit -m 'update .gitignore' // 更新本地的缓存
+```
+
+
+
 ## C语言学习笔记
     // In general, the two expressions drinks[i] and *(drinks + i)
     // are equivalent
