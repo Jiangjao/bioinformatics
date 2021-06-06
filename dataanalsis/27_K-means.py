@@ -4,6 +4,7 @@ import PIL.image as image
 def load_data(filePath):
     # 读文件
     f = open(filePath,'rbb')
+    data = []
     # 得到图像的像素值
     img = image.open(f)
     # 得到图像尺寸
@@ -12,7 +13,7 @@ def load_data(filePath):
         for y in range(height):
             # 得到点(x, y)的三个通道值
             c1, c2, c3 = img.getpixel(x, y)
-
+            data.append([c1, c2, c3])
 
 
 
