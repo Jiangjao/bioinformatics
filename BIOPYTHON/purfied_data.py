@@ -6,8 +6,18 @@ from time import sleep
 from insert_mysql import innerSql
 
 def openfilelist(path):
-    files = [filenames for filepath,dirnames,filenames in os.walk(path) if filenames]
-       
+    files = []
+    if os.path.exists(path):
+        files = [filenames for filepath,dirnames,filenames in os.walk(path,topdown=True) if filenames]
+        if len(files): files=os.listdir(path)
+        print(files)         
+    else:
+        print('this path not exist')
+    
+    # print(os.walk(path))
+    
+    # if len(files) < 1:
+
     return files
 
 def handlefile(fileinput):
@@ -59,15 +69,16 @@ def clearFile(Rice_virus_segment_alignment,count):
     
 if __name__ == '__main__':
     mode = 'r'
-    filename = "../notes/virus_segement1_NC_02925613.1.fa"
+    # filename = "../notes/virus_segement1_NC_02925613.1.fa"
     # 从命令行获取参数，filename 实际上可以获取为
     # fullpath = sys.argv[1]
-    fullpath = 'C:/Users/Cherry/Desktop/virus_segement/virus_segement_1/'
-    groupfiles = openfilelist(fullpath)[0]
+    # prefullpath
+    fullpath = '‪C:/Users/Cherry/Desktop/result/'
+    groupfiles = openfilelist(fullpath)
     # os.path.abspath()
     print(groupfiles)
     for filename in groupfiles:
-        fileinput = open(fullpath + filename, mode=mode, encoding='utf-8')
+        fileinput = open(fullpath + filename , mode=mode, encoding='utf-8')
         bracket = handlefile(fileinput)
         key = bracket[0]
         values = bracket[1]
