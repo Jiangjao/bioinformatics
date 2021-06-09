@@ -7,9 +7,10 @@ from insert_mysql import innerSql
 
 def openfilelist(path):
     files = []
+    print(os.path.abspath(path))
     if os.path.exists(path):
         files = [filenames for filepath,dirnames,filenames in os.walk(path,topdown=True) if filenames]
-        if len(files): files=os.listdir(path)
+        # if len(files): files=os.listdir(path)
         print(files)         
     else:
         print('this path not exist')
@@ -18,7 +19,7 @@ def openfilelist(path):
     
     # if len(files) < 1:
 
-    return files
+    return files, os.path.abspath(path)
 
 def handlefile(fileinput):
     """
@@ -64,8 +65,12 @@ def clearFile(Rice_virus_segment_alignment,count):
     :param :filename:str; count:list
     :stdout: local files
     """
-    if len(count[0]) < 5:
-        print(Rice_virus_segment_alignment, file="unhandlefiles.txt")
+    # print(count)
+    try:
+        if len(count[0]) < 2:
+            print(Rice_virus_segment_alignment, open("unhandlefiles.txt","a+"))
+    except IndexError:
+        print(Rice_virus_segment_alignment, file=open("unhandlefiles.txt",'a+'))
     
 if __name__ == '__main__':
     mode = 'r'
@@ -73,11 +78,14 @@ if __name__ == '__main__':
     # 从命令行获取参数，filename 实际上可以获取为
     # fullpath = sys.argv[1]
     # prefullpath
-    fullpath = '‪C:/Users/Cherry/Desktop/result/'
-    groupfiles = openfilelist(fullpath)
+
+    # I don't understand why we can't use absolute path here.
+    fullpath = r'‪../../../../result'
+    groupfiles, fullpath = openfilelist(fullpath)
+    fullpath = 'C:/Users/Cherry/Desktop/geekbang/result/'
     # os.path.abspath()
     print(groupfiles)
-    for filename in groupfiles:
+    for filename in groupfiles[0]:
         fileinput = open(fullpath + filename , mode=mode, encoding='utf-8')
         bracket = handlefile(fileinput)
         key = bracket[0]

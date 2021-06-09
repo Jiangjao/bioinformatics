@@ -98,3 +98,6 @@ sql = "select * from df1 where name ='ZhangFei'"
 print pysqldf(sql)
 ```
 ---
+
+## 字符串排序小技巧
+![avatar](./../images/pandas_string01.jpg)
