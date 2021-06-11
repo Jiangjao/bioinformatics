@@ -26,7 +26,7 @@ def handlefile(fileinput):
     separate '-' in file and transform it into segement.
 
     :param fileinput: file stream
-    :return :filename:str; count: nest list
+    :return :filename:str; count: nest(segement) list;firstline, temp：random (rice , virus)
     """
     # 1.判断正确的fasta文件格式
     fileline = fileinput.readline()
@@ -56,7 +56,7 @@ def handlefile(fileinput):
     Rice_virus_segment_alignment =  str(firstline + temp).replace("\n","")
     clearFile(Rice_virus_segment_alignment, count)
     # print(Rice_virus_segment_alignment)
-    return Rice_virus_segment_alignment, count
+    return Rice_virus_segment_alignment, count,firstline, temp
 
 def clearFile(Rice_virus_segment_alignment,count):
     """
@@ -89,11 +89,13 @@ if __name__ == '__main__':
         fileinput = open(fullpath + filename , mode=mode, encoding='utf-8')
         bracket = handlefile(fileinput)
         key = bracket[0]
-        values = bracket[1]
-        print(key,values)
-        for element in values:  
+        count = bracket[1]
+        firstline = bracket[2]
+        temp = bracket[3]
+        print(key,count)
+        for element in count:  
             # 3.输出文件到数据库
-            innerSql(key,  element)
+            innerSql(key,  element, firstline, len(element), temp)
         sleep(1)
         # print(bracket)
         fileinput.close()

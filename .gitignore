@@ -19,3 +19,6 @@ notes/virus_segement1_NC_02925613.1.fa
 BIOPYTHON/config.ini
 BIOPYTHON/dbconfig.py
 BIOPYTHON/__pycache__
+
+# data personal
+data/Rice_chrome_virus.csv
