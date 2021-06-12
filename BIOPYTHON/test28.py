@@ -64,7 +64,7 @@ print(df)
 # 指定索引
 print(df.loc["day2"])
 
-df = pd.read_csv('../data/testRice.csv',names=['1','2','3'])
+df = pd.read_csv('../data/testRice01.csv',names=['1','2','3'])
 # df = pd.DataFrame(df,index=['1','2','3'])
 # print(df.to_string())
 # print(df)
@@ -81,10 +81,10 @@ print(df['3'].tail().values)
 # 打印行
 print(df['1'].iloc[:10])
 # 依据序列的长度，进行排序
-pre_y = [ int(i) for i in df['2'].iloc[:10]]
+pre_y = [ i  for i in df['3'].iloc[:10]]
 # print(pre_y)
-x = np.array(df['1'].iloc[:10]) 
-y = np.array(pre_y)
+x = np.array(df['1']) 
+y = np.array(df['3'])
 # print(df.index[12239])
 # print(df.describe())
 # print(df.index[12239])
@@ -126,10 +126,13 @@ y = np.array(pre_y)
 # plt.show()
 
 
-print(df['1'])
-print(df['2'])
-print(df['3'])
-# plt.figure(figsize=(10, 10), dpi=100)
-# plt.scatter(x, y)
+# print(df['1'])
+# print(df['2'])
+# print(df['3'])
+print(df.head())
+plt.figure(figsize=(100, 100), dpi=100)
+plt.scatter(x, y)
+plt.savefig('test01.svg')
 # plt.show()
+
 
