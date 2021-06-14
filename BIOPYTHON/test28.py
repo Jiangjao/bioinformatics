@@ -81,10 +81,10 @@ print(df['3'].tail().values)
 # 打印行
 print(df['1'].iloc[:10])
 # 依据序列的长度，进行排序
-pre_y = [ i  for i in df['3'].iloc[:10]]
+pre_x = [ i[:13]  for i in df['3']]
 # print(pre_y)
-x = np.array(df['1']) 
-y = np.array(df['3'])
+x = np.array(pre_x) 
+y = np.array(df['2'])
 # print(df.index[12239])
 # print(df.describe())
 # print(df.index[12239])
@@ -108,14 +108,15 @@ y = np.array(df['3'])
 
 # x = np.arange(0.0, 50.0, 2.0)
 # y = x ** 1.3 + np.random.rand(*x.shape) * 30.0
-# s = np.random.rand(*x.shape) * 800 + 500
+s = np.random.rand(*x.shape) * 10 + 50
 
-# plt.scatter(x, y, s, c="g", alpha=0.5, marker=r'$\clubsuit$',
-#             label="Luck")
-# plt.xlabel("Leprechauns")
-# plt.ylabel("Gold")
-# plt.legend(loc='upper left')
-# plt.show()
+plt.scatter(x, y, s, c="g", alpha=0.5, marker=r'$\clubsuit$',
+            label="Luck")
+plt.xlabel("Leprechauns")
+plt.ylabel("Gold")
+plt.legend(loc='upper left')
+plt.show()
+
 
 # sns.load()
 # Load Dataset
@@ -126,13 +127,19 @@ y = np.array(df['3'])
 # plt.show()
 
 
+
+
+
+
 # print(df['1'])
 # print(df['2'])
 # print(df['3'])
-print(df.head())
-plt.figure(figsize=(100, 100), dpi=100)
-plt.scatter(x, y)
-plt.savefig('test01.svg')
+# print(df.index)
+# print(df.head())
+# print(df.index[:5])
+# plt.figure(figsize=(100, 100), dpi=100)
+# plt.scatter(x, y)
+# plt.savefig('test01.svg')
 # plt.show()
 
 
