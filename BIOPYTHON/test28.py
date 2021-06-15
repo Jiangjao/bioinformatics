@@ -110,11 +110,55 @@ y = np.array(df['2'])
 # y = x ** 1.3 + np.random.rand(*x.shape) * 30.0
 s = np.random.rand(*x.shape) * 10 + 50
 
-plt.scatter(x, y, s, c="g", alpha=0.5, marker=r'$\clubsuit$',
-            label="Luck")
-plt.xlabel("Leprechauns")
-plt.ylabel("Gold")
-plt.legend(loc='upper left')
+# volin plot is also ready.....
+print(df['2'].quantile(0.75))
+z = np.array(df['2'].mean())
+# plt.scatter(x, y, s, c="g", alpha=0.5, marker=r'$\clubsuit$',
+#             label="Luck")
+
+# plt.violinplot(x, y)
+# fig,axes = plt.subplots(nrows=1,ncols=1,figsize=(12,5))
+# tang_data = [np.random.normal(0,std,100) for std in range(6,10)]
+ax = sns.violinplot(x=x,y=y,showmeans=False,showmedians=True,palette="Pastel1",
+		scale='count',inner='box',color='green')
+
+# ax.show()
+# fig, axes = plt.subplots(nrows=1,ncols=2, figsize=(12,5))
+ 
+# # all_data = [np.random.normal(0, std, 100) for std in range(6, 10)]
+# all_data = y 
+# #fig = plt.figure(figsize=(8,6))
+ 
+# axes[0].violinplot(all_data,
+#                showmeans=False,
+#                showmedians=True
+#                )
+# axes[0].set_title('violin plot')
+ 
+# axes[1].boxplot(all_data,)
+# axes[1].set_title('box plot')
+ 
+# # adding horizontal grid lines
+# for ax in axes:
+#     ax.yaxis.grid(True)
+#     ax.set_xticks([y+1 for y in range(len(all_data))], )
+#     ax.set_xlabel('xlabel')
+#     ax.set_ylabel('ylabel')
+ 
+# plt.setp(axes, xticks=[y+1 for y in range(len(all_data))],
+#         xticklabels=x,
+#         )
+
+# 平均值是多少来着？
+# print(df['2'].mean())
+# 画出 y=1 这条水平线
+# plt.axhline(z,color='red',linewidth=1,linestyle='--')
+# plt.plot(x,z,color='red',linewidth=1,linestyle='--')
+
+# plt.xlabel("chromesomes")
+# plt.ylabel("length of segements")
+# plt.legend(loc='upper left')
+plt.grid(axis="y")
 plt.show()
 
 
@@ -142,4 +186,6 @@ plt.show()
 # plt.savefig('test01.svg')
 # plt.show()
 
-
+# if we use seaborn to draw the violin image of dataset
+# it wil be easier to look at 
+# but we cannot kook up globally
