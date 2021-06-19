@@ -64,7 +64,7 @@ print(df)
 # 指定索引
 print(df.loc["day2"])
 
-df = pd.read_csv('../data/testRice01.csv',names=['1','2','3'])
+df = pd.read_csv('../data/Rice_chrome_viruspart01.csv',names=['1','2','3'])
 # df = pd.DataFrame(df,index=['1','2','3'])
 # print(df.to_string())
 # print(df)
@@ -158,6 +158,7 @@ ax = sns.violinplot(x=x,y=y,showmeans=False,showmedians=True,palette="Pastel1",
 # plt.xlabel("chromesomes")
 # plt.ylabel("length of segements")
 # plt.legend(loc='upper left')
+plt.xticks(rotation=30) # 倾斜70度
 plt.grid(axis="y")
 plt.show()
 
