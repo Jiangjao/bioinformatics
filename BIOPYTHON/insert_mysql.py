@@ -69,4 +69,4 @@ def innerSql(key, segement, Janpanesechrome, lenth, R_dwarf_virus):
 
 
 
-
+   
