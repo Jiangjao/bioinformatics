@@ -64,7 +64,7 @@ print(df)
 # 指定索引
 print(df.loc["day2"])
 
-df = pd.read_csv('../data/Rice_chrome_viruspart01.csv',names=['1','2','3'])
+df = pd.read_csv('C:/Users/Cherry/Desktop/Rice_dawrf_virusRice_chrome_virus.csv',names=['1','2','3','4','5'])
 # df = pd.DataFrame(df,index=['1','2','3'])
 # print(df.to_string())
 # print(df)
@@ -81,10 +81,13 @@ print(df['3'].tail().values)
 # 打印行
 print(df['1'].iloc[:10])
 # 依据序列的长度，进行排序
-pre_x = [ i[:13]  for i in df['3']]
+pre_x = [ i[:13]  for i in df['1']]
+
+# print(pre_x)
 # print(pre_y)
+print(df.head(10))
 x = np.array(pre_x) 
-y = np.array(df['2'])
+y = np.array(df['4'])
 # print(df.index[12239])
 # print(df.describe())
 # print(df.index[12239])
@@ -108,11 +111,11 @@ y = np.array(df['2'])
 
 # x = np.arange(0.0, 50.0, 2.0)
 # y = x ** 1.3 + np.random.rand(*x.shape) * 30.0
-s = np.random.rand(*x.shape) * 10 + 50
+# s = np.random.rand(*x.shape) * 10 + 50
 
 # volin plot is also ready.....
-print(df['2'].quantile(0.75))
-z = np.array(df['2'].mean())
+# print(df['2'].quantile(0.75))
+z = np.array(df['4'].mean())
 # plt.scatter(x, y, s, c="g", alpha=0.5, marker=r'$\clubsuit$',
 #             label="Luck")
 
