@@ -173,12 +173,6 @@ plt.show()
 # # 用Seaborn画成对关系
 # sns.pairplot(rice)
 # plt.show()
-
-
-
-
-
-
 # print(df['1'])
 # print(df['2'])
 # print(df['3'])
