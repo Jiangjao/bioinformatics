@@ -64,7 +64,7 @@ print(df)
 # 指定索引
 print(df.loc["day2"])
 
-df = pd.read_csv('C:/Users/Cherry/Desktop/Rice_dawrf_virusRice_chrome_virus.csv',names=['1','2','3','4','5'])
+df = pd.read_csv('C:/Users/Cherry/Desktop/Rice_chrome_gall_virus.csv',names=['1','2','3','4','5'])
 # df = pd.DataFrame(df,index=['1','2','3'])
 # print(df.to_string())
 # print(df)
