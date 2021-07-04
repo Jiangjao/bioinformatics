@@ -26,7 +26,7 @@ file = pd.read_csv("../data/input/Aliases.csv")
 aliases = {}
 for index, row in file.iterrows():
     aliases[row["Alias"]] = row['PersonId']    # 
-print(aliases)
+# print(aliases)
 # 读取人名文件
 file = pd.read_csv("../data/input/Persons.csv")
 persons = {}
@@ -62,10 +62,13 @@ def show_graph(graph, layout='spring_layout'):
     # 输出希拉里邮件中的所有人物关系图
     plt.show()
 # 将寄件人和收件人的姓名进行规范化
+# emails.MetadataFrom apply 函数如何使用？
 emails.MetadataFrom = emails.MetadataFrom.apply(unify_name)
+# print(emails.MetadataFrom)
 emails.MetadataTo = emails.MetadataTo.apply(unify_name)
 # 设置边的权重等于发邮件的次数
 edges_weights_temp = defaultdict(list)
+# print(edges_weights_temp)
 for row in zip(emails.MetadataFrom, emails.MetadataTo, emails.RawText):
     temp = (row[0], row[1])
     if temp not in edges_weights_temp:
