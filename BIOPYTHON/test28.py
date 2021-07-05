@@ -64,7 +64,7 @@ print(df)
 # 指定索引
 print(df.loc["day2"])
 
-df = pd.read_csv('C:/Users/Cherry/Desktop/Rice_chrome_gall_virus.csv',names=['1','2','3','4','5'])
+df = pd.read_csv('../data/Rice_chrome_viruspart01.csv',names=['1','2','3','4','5'])
 # df = pd.DataFrame(df,index=['1','2','3'])
 # print(df.to_string())
 # print(df)
@@ -75,7 +75,7 @@ print(df.info())
 # print(df['3'].index[12239])
 
 # 打印最长的几行
-print(df['3'].sort_values(key=lambda x: x.str.len()).tail(20))
+# print(df['3'].sort_values(key=lambda x: x.str.len()).tail(20).keys, file=open("transforfile.txt", "a+"))
 print(df['3'].tail().values)
 
 # 打印行
@@ -122,8 +122,8 @@ z = np.array(df['4'].mean())
 # plt.violinplot(x, y)
 # fig,axes = plt.subplots(nrows=1,ncols=1,figsize=(12,5))
 # tang_data = [np.random.normal(0,std,100) for std in range(6,10)]
-ax = sns.violinplot(x=x,y=y,showmeans=False,showmedians=True,palette="Pastel1",
-		scale='count',inner='box',color='green')
+# ax = sns.violinplot(x=x,y=y,showmeans=False,showmedians=True,palette="Pastel1",
+# 		scale='count',inner='box',color='green')
 
 # ax.show()
 # fig, axes = plt.subplots(nrows=1,ncols=2, figsize=(12,5))
@@ -161,9 +161,9 @@ ax = sns.violinplot(x=x,y=y,showmeans=False,showmedians=True,palette="Pastel1",
 # plt.xlabel("chromesomes")
 # plt.ylabel("length of segements")
 # plt.legend(loc='upper left')
-plt.xticks(rotation=30) # 倾斜70度
-plt.grid(axis="y")
-plt.show()
+# plt.xticks(rotation=30) # 倾斜70度
+# plt.grid(axis="y")
+# plt.show()
 
 
 # sns.load()
