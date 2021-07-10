@@ -4,7 +4,7 @@
 
 由此可见，我们研究的更多的是RNA。
 
-2013年，RNA-seq兴起，它 作为测量生物体转录组的首选方法，尽管仍然使用较旧的DNA微阵列技术。RNA-seq通过将长RNA转化为cDNA片段库来测量特定基因的转录。然后使用高通量测序技术对cDNA片段进行测序，并与参考基因组或转录组对齐，然后使用参考基因组或转录组创建基因的表达谱。[1]
+2013年，RNA-seq兴起，它 作为测量生物体转录组的首选方法，尽管仍然使用较旧的DNA微阵列技术。RNA-seq通过将长RNA转化为cDNA片段库来测量特定基因的转录。然后使用高通量测序技术对cDNA片段进行测序，并与参考基因组或转录组对齐，然后使用参考基因组或转录组创建基因的表达谱。
 
 ![avatar](./../images/Transicrip05.png)
 当测序拼接好的高通量数据，可以上传到网上的各大数据中心NCBI（National Center for Biotechnology Information）、EBI（The European Bioinformatics Institute ）等等。
@@ -22,16 +22,16 @@
 
 在NCBI中，原始数据被储存为`sra`（Sequence Read Archive）格式，把页面拉到最下方。
 ![avatar](./../images/tutorTransp03.png)
+![avatar](./../images/tutorTranscrip08.png)
 如果我点击Aceesion List 会下载一个文件，包含了序列号。
 ![avatar](./../images/tutorTransmp04.png)
 
 ## 正式下载
-第一眼看到这么多的数据时，想到emm，下载会很麻烦。如果有个工具就好了。
-NCBI自然是有的，sra toolkit
+第一眼看到这么大的数据时，如果有个工具就好了。
+NCBI自然是有的，sratoolkit
 且看:
 >https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=software
 
-从NCBI上下载SRA原始数据，使用SRA TOOLKIT 进行下载和转化。
 ### sra toolkit
 
 ```bash
@@ -65,7 +65,7 @@ SRR11652584
 
 ![avatar](./../images/transcript04.png)
 ## 将SRA格式的数据转换为fastq格式
-SRA（Sequence ReadArchive）数据库是用于存储二代测序的原始数据，这种数据格式不能直接进行处理，需要转换成fastq或fasta文件格式才能进行质控以及去adapt等处理。
+SRA数据库是用于存储二代测序的原始数据，这种数据格式不能直接进行处理，需要转换成fastq或fasta文件格式才能进行质控以及去adapt等处理。
 
 SRA转fastq：
 进行转换之前我们需要知道我们拿到的数据是单端还是双端数据，可以用fastq-dump -X 1 --split-spot SRRxxxxxxx.sra来判断测序类型.
@@ -97,11 +97,13 @@ nohup bash sra2fq.sh &
 ![avatar](./../images/Transicrip06.png)
 ## 常见问题
 1. preftech 下载很慢，有别的推荐吗？
+
 Aspera试试呗；这篇文章有介绍
 >[RNA-seq数据分析完全指北-01：数据下载](https://mp.weixin.qq.com/s?__biz=MzUzMTEwODk0Ng==&mid=2247496322&idx=2&sn=f9c78a63e8fd4d9f28b86d028d9c2f1c&chksm=fa4537bfcd32bea9417ef4766344019431743f90171f675c425b6ba0e81c91860e0d60ba88bc&scene=178&cur_album_id=1749887454125293572#rd)
 
 2. 你的命令太复杂，我看不懂，比如read是什么意思。
-(⊙﹏⊙)，使用 man read瞅一瞅；
+
+的确，(⊙﹏⊙)，使用 man read瞅一瞅；
 的确，比较复杂，写多了，就好些啦。
 
 ## 总结：

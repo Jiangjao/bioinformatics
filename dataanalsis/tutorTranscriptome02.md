@@ -9,9 +9,11 @@
 远看其形，近观其声，探个大概。无论其颜值是否在线，这次得看一看。
 
 ```bash
+# 注意，此时在 $HOME/project/23.GSE149638/raw目录下
+
 # 如果处理好了，瞅一瞅(oﾟvﾟ)ノ的序列
-# 取2500条reads，文件太大了－O－
-ls *gz|while read id ;do ( zcat $id  |head -10000 | gzip -c - >   $HOME/rna/test/small_raw/$id  );done 
+# 可以取一定长度的reads，试一试，毕竟文件太大了－O－
+ls *gz|while read id ;do ( zcat $id   | gzip -c - >   $HOME/rna/test/small_raw/$id  );done 
 cd $HOME/rna/test/small_raw/
 ```
 
