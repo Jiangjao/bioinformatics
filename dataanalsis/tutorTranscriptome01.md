@@ -107,6 +107,7 @@ Aspera试试呗；这篇文章有介绍
 的确，比较复杂，写多了，就好些啦。
 
 ## 总结：
+![avatar](./../images/tutorTranscrip1.png)
 <!-- 这里该画张图，就可以啦，但是不清楚怎么画图 -->
 ## references
 > Wang, Zhong; Gerstein, Mark; Snyder, Michael (January 2009). "RNA-Seq: a revolutionary tool for transcriptomics". Nature Reviews Genetics. 10 (1): 57–63. doi:10.1038/nrg2484. PMC 2949280. PMID 19015660.

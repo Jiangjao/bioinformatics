@@ -22,7 +22,12 @@ cd $HOME/rna/test/small_raw/
 同时，有测到的，就有没有测到的，这些也得注意。
 如果是双端测序，trim_galore命令需要加上--paired 的参数哦！
 
-trim_galore是一个脚本，用于自动化质量控制和adpator修剪，并具有一些附加功能，用于移除RRBS序列文件的偏移甲基化位置（用于定向、非定向（或成对末端）测序。
+Trim Galore是对FastQC和Cutadapt的包装。它适用于所有高通量测序，包括RRBS(Reduced Representation Bisulfite-Seq ), Illumina、Nextera 和smallRNA测序平台的双端和单端数据的软件。主要功能包括两步：
+第一步首先去除低质量碱基，然后去除3' 末端的adapter, 如果没有指定具体的adapter，程序会自动检测前1million的序列，然后对比前12-13bp的序列是否符合以下类型的adapter
+- Illumina: AGATCGGAAGAGC
+- Small RNA: TGGAATTCTCGG
+- Nextera: CTGTCTCTTATA
+
 
 ```bash
 cd  $HOME/rna/test/small_raw 
@@ -45,3 +50,6 @@ done   > trim_galore.sh
 
 
 
+>http://www.bioinformatics.babraham.ac.uk/projects/trim_galore/
+
+>[Trim Galore User Guide](13_datatransform.mdhttps://github.com/FelixKrueger/TrimGalore/blob/master/Docs/Trim_Galore_User_Guide.md)
