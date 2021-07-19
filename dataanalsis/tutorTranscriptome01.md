@@ -4,13 +4,13 @@
 
 由此可见，我们研究的更多的是RNA。
 
-2013年，RNA-seq兴起，它 作为测量生物体转录组的首选方法，尽管仍然使用较旧的DNA微阵列技术。RNA-seq通过将长RNA转化为cDNA片段库来测量特定基因的转录。然后使用高通量测序技术对cDNA片段进行测序，并与参考基因组或转录组对齐，然后使用参考基因组或转录组创建基因的表达谱。
+2013年，RNA-seq兴起，它作为测量生物体转录组的首选方法，尽管仍然使用较旧的DNA微阵列技术。RNA-seq通过将长RNA转化为cDNA片段库来测量特定基因的转录。然后使用高通量测序技术对cDNA片段进行测序，并与参考基因组或转录组对齐，然后使用参考基因组或转录组创建基因的表达谱。
 
 ![avatar](./../images/Transicrip05.png)
 当测序拼接好的高通量数据，可以上传到网上的各大数据中心NCBI（National Center for Biotechnology Information）、EBI（The European Bioinformatics Institute ）等等。
 
 
-## 数据来源？
+## 数据来源
 既然把数据传到了网上，那么就可以从数据库下载呗。
 为了方便操作，我们以GSE149638这个为例子:
 -  口口相传的NCBI,当年上课时就听说过这个，不妨试试
@@ -43,6 +43,7 @@ NCBI自然是有的，sratoolkit
 echo $HOME
 
 mkdir -p  $HOME/rna/test/small_raw/
+mkdir -p  $HOME/project/23.GSE149638/raw
 # 在 23.GSE149638 这个公共数据集里面是96个双端测序的转录组数据
 # 注意，我把 SRR_Acc_list.txt放在这里，ヾ(￣▽￣)
 cd  $HOME/project/23.GSE149638/raw

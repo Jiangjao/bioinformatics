@@ -22,7 +22,7 @@ cd $HOME/rna/test/small_raw/
 同时，有测到的，就有没有测到的，这些也得注意。
 如果是双端测序，trim_galore命令需要加上--paired 的参数哦！
 
-Trim Galore是对FastQC和Cutadapt的包装。它适用于所有高通量测序，包括RRBS(Reduced Representation Bisulfite-Seq ), Illumina、Nextera 和smallRNA测序平台的双端和单端数据的软件。主要功能包括两步：
+Trim Galore是对FastQC和Cutadapt的包装。它适用于所有高通量测序，包括RRBS(Reduced Representation Bisulfite-Seq ), Illumina、Nextera 和smallRNA测序平台的双端和单端数据的。主要功能包括两步：
 第一步首先去除低质量碱基，然后去除3' 末端的adapter, 如果没有指定具体的adapter，程序会自动检测前1million的序列，然后对比前12-13bp的序列是否符合以下类型的adapter
 - Illumina: AGATCGGAAGAGC
 - Small RNA: TGGAATTCTCGG
