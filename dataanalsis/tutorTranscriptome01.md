@@ -73,6 +73,7 @@ SRA转fastq：
 
 ```
 fastq-dump -X 1 --split-spot -Z SRR11652581.sra | wc -l
+>https://zhuanlan.zhihu.com/p/40040208
 ```
 如果返回值是4，就是单端SE；如果返回值是8，那么就是双端PE。
 
