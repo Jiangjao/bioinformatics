@@ -20,10 +20,11 @@ BIOPYTHON/config.ini
 BIOPYTHON/dbconfig.py
 BIOPYTHON/__pycache__
 
-# data personal
+# data personal or for our biocamp
 data/Rice_chrome_virus.csv
 data/Rice_chrome_viruspart01.csv
 data/Rice_chrome_gall_virus.csv
 notes/steps.md
 notes/tutor.md
 notes/tutor01.md
+notes/tutor02.md
