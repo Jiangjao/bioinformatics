@@ -39,6 +39,10 @@ Class-II型转座子
 
 入门必看 | 深度解析长末端重复反转录转座子（LTR-RTs）
 >https://www.jianshu.com/p/a93cdbc36339 
+
+#### common **structure**
+当然转座子的转座也并非全无规律可循。研究发现转座子转座机制如下：插入序列两端有20-40个核苷酸的反向重复顺序（下图红色区域GGGGTCTG)。转座发生必须具有编码转座酶的基因。受体DNA上的靶序列转座后在转座子两侧形成正向重复序列（下图绿色区域AATTC）。
+![avatar](./../images/commonstructure.jpg)
 ## 分析
 >自然界中，转座子是含有转座酶基因的离散 DNA 片段，侧翼是含有转座酶结合位点的末端反向重复序列（TIR）。转座酶与 TIR 结合并从一个位置"切割"转座子并将其"粘贴"到新的位点（称为转座）。
 
@@ -188,6 +192,10 @@ Class-II型转座子
 高等植物helitron转座子的研究进展
 >https://www.jianshu.com/p/
 
+>https://www.nature.com/articles/nrg2165
+>https://doi.org/10.1016/j.cell.2005.07.013
+>https://en.vectorbuilder.com/resources/vector-system/pPB_Ex.html
+>https://en.vectorbuilder.com/resources/vector-system/pTol2_Ex.html
 
 
 转入了病毒外壳蛋白基因和病毒的复制酶基因的植物 就具有了抗病毒的能力
