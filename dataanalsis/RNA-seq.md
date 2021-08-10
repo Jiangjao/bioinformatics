@@ -100,4 +100,4 @@ tip:
 
 > 关于RNA-seq; https://blog.csdn.net/qazplm12_3/article/details/102787318
 
-> RNA-seq这十年; https://cloud.tencent.com/developer/article/1483493
+> RNA-seq这十年; https://mp.weixin.qq.com/s/a3y46NNNO-wardO3XWwh0w
