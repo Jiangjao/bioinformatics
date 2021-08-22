@@ -1,6 +1,13 @@
 # 处暑闲谈
 -   谦谦君子，利涉大川。
 
+<style>
+img{
+    width: 60%;
+    padding-left: 20%;
+}
+</style>
+
 >川：
 流水（`大江大河`)的样子,山等也行。
 
@@ -18,11 +25,13 @@
 
 卑：
 >人拿着工具，或者甲,向上的。
->![avatar](../images/circlue02.png)
+
 >![avatar](../images/circulate08.jpg)
 
 感觉很有力量，对呗。
-相反，向下的:
+
+>向下的,则相反:
+
 >![avatar](../images/circulate09.jpg)
 
 >牧，牧马人？ 放牛的，大致的意思是管理。用现代的话说，叫自律。
