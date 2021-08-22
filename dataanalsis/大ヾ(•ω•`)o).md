@@ -3,7 +3,7 @@
 
 >川：
 流水（`大江大河`)的样子,山等也行。
-![avatar](../images/circulate06.jpg)
+>![avatar](../images/circulate06.jpg)
 
 那么过大河咋办，一般想的是船，古人没那么多选择的。条件好点儿的，用舟。
 
@@ -17,12 +17,12 @@
 
 卑：
 >人拿着工具，或者甲,向上的。
-![avatar](../images/circlue02.png)
-![avatar](../images/circulate08.jpg)
+>![avatar](../images/circlue02.png)
+>![avatar](../images/circulate08.jpg)
 
 感觉很有力量，对呗。
 相反，向下的:
-![avatar](../images/circulate09.jpg)
+>![avatar](../images/circulate09.jpg)
 
 >牧，牧马人？ 放牛的，大致的意思是管理。用现代的话说，叫自律。
 
