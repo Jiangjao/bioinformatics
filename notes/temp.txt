@@ -1,0 +1,110 @@
+
+============================================================
+Now = 2021-08-25 17:10:54
+
+There are 43988599 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/10_umi_noadapt.fa
+There are 7548382,43988599 unique,sequence in output
+
+============================================================
+Running from [2021-08-25 17:10:54] to [2021-08-25 17:13:56]
+Total execute time : 182.00 s
+............................................................
+============================================================
+Now = 2021-08-25 17:10:54
+
+There are 38043554 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/1_umi_noadapt.fa
+There are 7419077,38043554 unique,equence in output
+
+============================================================
+Running from [2021-08-25 17:10:54] to [2021-08-25 17:13:37]
+Total execute time : 163.00 s
+............................................................
+============================================================
+Now = 2021-08-25 17:10:54
+
+There are 50567156 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/26_umi_noadapt.fa
+There are 6419217,50567156 unique,sequence in output
+
+============================================================
+Running from [2021-08-25 17:10:54] to [2021-08-25 17:13:50]
+Total execute time : 176.00 s
+............................................................
+============================================================
+Now = 2021-08-25 17:10:54
+
+There are 48024262 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/28_umi_noadapt.fa
+There are 3976237,48024262 unique,sequence in output
+
+============================================================
+Running from [2021-08-25 17:10:54] to [2021-08-25 17:13:05]
+Total execute time : 131.00 s
+............................................................
+============================================================
+Now = 2021-08-25 17:10:54
+
+There are 46693934 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/2_umi_noadapt.fa
+There are 8350021,46693934 unique,sequence in output
+
+============================================================
+Running from [2021-08-25 17:10:54] to [2021-08-25 17:14:03]
+Total execute time : 189.00 s
+............................................................
+============================================================
+Now = 2021-08-25 17:10:54
+
+There are 41414042 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/32_umi_noadapt.fa
+There are 7174108,41414042 unique,sequence in output
+
+============================================================
+Running from [2021-08-25 17:10:54] to [2021-08-25 17:13:31]
+Total execute time : 157.00 s
+............................................................
+============================================================
+Now = 2021-08-25 17:10:54
+
+There are 54204500 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/33_umi_noadapt.fa
+There are 10008981,54204500 unique,sequence in output
+
+============================================================
+Running from [2021-08-25 17:10:54] to [2021-08-25 17:14:24]
+Total execute time : 210.00 s
+............................................................
+============================================================
+Now = 2021-08-25 17:10:54
+
+There are 59810256 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/5_umi_noadapt.fa
+There are 10319709,59810256 unique,sequence in output
+
+============================================================
+Running from [2021-08-25 17:10:54] to [2021-08-25 17:15:32]
+Total execute time : 278.00 s
+............................................................
+============================================================
+Now = 2021-08-25 17:10:54
+
+There are 35369469 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/8_umi_noadapt.fa
+There are 5853878,35369469 unique,sequence in output
+
+============================================================
+Running from [2021-08-25 17:10:54] to [2021-08-25 17:12:58]
+Total execute time : 124.00 s
+............................................................
+============================================================
+Now = 2021-08-25 17:10:54
+
+There are 31592390 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/Raw.5-1_noadapt.fa
+There are 4325051,31592390 unique,sequence in output
+
+============================================================
+Running from [2021-08-25 17:10:54] to [2021-08-25 17:12:35]
+Total execute time : 101.00 s
+............................................................
+============================================================
+Now = 2021-08-25 17:10:54
+
+There are 31068443 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/Raw.8-1_noadapt.fa
+There are 4228953,31068443 unique,sequence in output
+
+============================================================
+Running from [2021-08-25 17:10:54] to [2021-08-25 17:12:34]
+Total execute time : 100.00 s
