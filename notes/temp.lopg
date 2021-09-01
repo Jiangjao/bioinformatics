@@ -1,0 +1,308 @@
+需要以*cleantest 为主哈
+============================================================
+Now = 2021-08-30 14:51:39
+
+There are 46430029 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/cleanData/10_umi_noadapt.fa
+There are 7969931,45389790 unique,sequence in output
+
+============================================================
+Running from [2021-08-30 14:51:39] to [2021-08-30 14:54:25]
+Total execute time : 166.00 s
+............................................................
+
+============================================================
+Now = 2021-08-30 14:56:39
+
+There are 46430029 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/cleanData/10_umi_noadapt.fa
+There are 7969931,45389790 unique,sequence in output
+
+============================================================
+Running from [2021-08-30 14:56:39] to [2021-08-30 15:00:24]
+Total execute time : 225.00 s
+............................................................
+
+============================================================
+Now = 2021-08-30 17:36:29
+
+There are 87762241 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/cleanData/10_umi_cleantest.fa
+There are 6666898,41332212 unique,sequence in output
+
+============================================================
+Running from [2021-08-30 17:36:29] to [2021-08-30 17:43:23]
+Total execute time : 414.00 s
+............................................................
+
+============================================================
+Now = 2021-08-30 14:51:19
+
+Died at /share/home/stu_jiangjiao/sRNAs/clusterFasta1.3.pl line 93.
+
+============================================================
+Now = 2021-08-30 14:54:29
+
+There are  sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/cleanData/1_umi_noadapt.fa
+
+============================================================
+Now = 2021-08-30 15:00:31
+
+There are 39221902 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/cleanData/1_umi_noadapt.fa
+There are 7690943,38757381 unique,sequence in output
+
+============================================================
+Running from [2021-08-30 15:00:31] to [2021-08-30 15:04:10]
+Total execute time : 219.00 s
+............................................................
+
+============================================================
+Now = 2021-08-30 17:43:30
+
+There are 76173558 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/cleanData/1_umi_cleantest.fa
+There are 6662895,36951656 unique,sequence in output
+
+============================================================
+Running from [2021-08-30 17:43:30] to [2021-08-30 17:50:49]
+Total execute time : 439.00 s
+............................................................
+
+============================================================
+Now = 2021-08-30 14:51:19
+
+Died at /share/home/stu_jiangjiao/sRNAs/clusterFasta1.3.pl line 93.
+
+============================================================
+Now = 2021-08-30 15:04:19
+
+There are 52199223 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/cleanData/26_umi_noadapt.fa
+There are 6756169,52004317 unique,sequence in output
+
+============================================================
+Running from [2021-08-30 15:04:19] to [2021-08-30 15:09:30]
+Total execute time : 311.00 s
+............................................................
+
+============================================================
+Now = 2021-08-30 17:50:57
+
+There are 99138223 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/cleanData/26_umi_cleantest.fa
+There are 5602146,46939000 unique,sequence in output
+
+============================================================
+Running from [2021-08-30 17:50:57] to [2021-08-30 17:58:45]
+Total execute time : 468.00 s
+............................................................
+
+============================================================
+Now = 2021-08-30 14:51:19
+
+Died at /share/home/stu_jiangjiao/sRNAs/clusterFasta1.3.pl line 93.
+
+============================================================
+Now = 2021-08-30 15:09:41
+
+There are 50340653 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/cleanData/28_umi_noadapt.fa
+There are 4306428,50122455 unique,sequence in output
+
+============================================================
+Running from [2021-08-30 15:09:41] to [2021-08-30 15:13:48]
+Total execute time : 247.00 s
+............................................................
+
+============================================================
+Now = 2021-08-30 17:58:49
+
+There are 90818272 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/cleanData/28_umi_cleantest.fa
+There are 3327031,40477619 unique,sequence in output
+
+============================================================
+Running from [2021-08-30 17:58:49] to [2021-08-30 18:05:45]
+Total execute time : 416.00 s
+............................................................
+
+============================================================
+Now = 2021-08-30 14:51:19
+
+Died at /share/home/stu_jiangjiao/sRNAs/clusterFasta1.3.pl line 93.
+
+============================================================
+Now = 2021-08-30 15:13:53
+
+There are 50470282 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/cleanData/2_umi_noadapt.fa
+There are 8817573,48624650 unique,sequence in output
+
+============================================================
+Running from [2021-08-30 15:13:53] to [2021-08-30 15:18:28]
+Total execute time : 275.00 s
+............................................................
+
+============================================================
+Now = 2021-08-30 18:05:47
+
+There are 95249382 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/cleanData/2_umi_cleantest.fa
+There are 7211275,44779100 unique,sequence in output
+
+============================================================
+Running from [2021-08-30 18:05:47] to [2021-08-30 18:13:41]
+Total execute time : 474.00 s
+............................................................
+
+============================================================
+Now = 2021-08-30 14:51:19
+
+Died at /share/home/stu_jiangjiao/sRNAs/clusterFasta1.3.pl line 93.
+
+============================================================
+Now = 2021-08-30 15:18:39
+
+There are 42481288 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/cleanData/32_umi_noadapt.fa
+There are 7422690,42019206 unique,sequence in output
+
+============================================================
+Running from [2021-08-30 15:18:39] to [2021-08-30 15:23:32]
+Total execute time : 293.00 s
+............................................................
+
+============================================================
+Now = 2021-08-30 18:13:48
+
+There are 82600471 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/cleanData/32_umi_cleantest.fa
+There are 6331278,40119183 unique,sequence in output
+
+============================================================
+Running from [2021-08-30 18:13:48] to [2021-08-30 18:22:27]
+Total execute time : 519.00 s
+............................................................
+
+============================================================
+Now = 2021-08-30 14:51:19
+
+Died at /share/home/stu_jiangjiao/sRNAs/clusterFasta1.3.pl line 93.
+
+============================================================
+Now = 2021-08-30 15:23:39
+
+There are 55434810 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/cleanData/33_umi_noadapt.fa
+There are 10361756,55017888 unique,sequence in output
+
+============================================================
+Running from [2021-08-30 15:23:39] to [2021-08-30 15:30:50]
+Total execute time : 431.00 s
+............................................................
+
+============================================================
+Now = 2021-08-30 18:22:35
+
+There are 108079649 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/cleanData/33_umi_cleantest.fa
+There are 8844029,52644839 unique,sequence in output
+
+============================================================
+Running from [2021-08-30 18:22:35] to [2021-08-30 18:33:40]
+Total execute time : 665.00 s
+............................................................
+
+============================================================
+Now = 2021-08-30 14:51:19
+
+Died at /share/home/stu_jiangjiao/sRNAs/clusterFasta1.3.pl line 93.
+
+============================================================
+Now = 2021-08-30 15:31:08
+
+There are 61237476 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/cleanData/5_umi_noadapt.fa
+There are 10647540,60766974 unique,sequence in output
+
+============================================================
+Running from [2021-08-30 15:31:08] to [2021-08-30 15:36:03]
+Total execute time : 295.00 s
+............................................................
+
+============================================================
+Now = 2021-08-30 18:34:14
+
+There are 116741299 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/cleanData/5_umi_cleantest.fa
+There are 8642949,55503823 unique,sequence in output
+
+============================================================
+Running from [2021-08-30 18:34:14] to [2021-08-30 18:45:59]
+Total execute time : 705.00 s
+............................................................
+
+============================================================
+Now = 2021-08-30 14:51:19
+
+Died at /share/home/stu_jiangjiao/sRNAs/clusterFasta1.3.pl line 93.
+
+============================================================
+Now = 2021-08-30 15:36:14
+
+There are 36240148 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/cleanData/8_umi_noadapt.fa
+There are 6080615,35955537 unique,sequence in output
+
+============================================================
+Running from [2021-08-30 15:36:14] to [2021-08-30 15:40:13]
+Total execute time : 239.00 s
+............................................................
+
+============================================================
+Now = 2021-08-30 18:46:11
+
+There are 70550174 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/cleanData/8_umi_cleantest.fa
+There are 5191476,34310026 unique,sequence in output
+
+============================================================
+Running from [2021-08-30 18:46:11] to [2021-08-30 18:53:29]
+Total execute time : 438.00 s
+............................................................
+
+============================================================
+Now = 2021-08-30 14:51:19
+
+Died at /share/home/stu_jiangjiao/sRNAs/clusterFasta1.3.pl line 93.
+
+============================================================
+Now = 2021-08-30 15:40:18
+
+There are 33562941 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/cleanData/Raw.5-1_noadapt.fa
+There are 4641364,33465131 unique,sequence in output
+
+============================================================
+Running from [2021-08-30 15:40:18] to [2021-08-30 15:42:44]
+Total execute time : 146.00 s
+............................................................
+
+============================================================
+Now = 2021-08-30 18:53:43
+
+There are 63044459 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/cleanData/Raw.5-1_cleantest.fa
+There are 3885620,29481518 unique,sequence in output
+
+============================================================
+Running from [2021-08-30 18:53:43] to [2021-08-30 18:59:58]
+Total execute time : 375.00 s
+............................................................
+
+============================================================
+Now = 2021-08-30 14:51:19
+
+Died at /share/home/stu_jiangjiao/sRNAs/clusterFasta1.3.pl line 93.
+
+============================================================
+Now = 2021-08-30 15:42:48
+
+There are 32915917 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/cleanData/Raw.8-1_noadapt.fa
+There are 4598318,32848443 unique,sequence in output
+
+============================================================
+Running from [2021-08-30 15:42:48] to [2021-08-30 15:46:04]
+Total execute time : 196.00 s
+............................................................
+
+============================================================
+Now = 2021-08-30 19:00:02
+
+There are 61328158 sequence in file /share/home/stu_jiangjiao/rna/test/cleanData/cleanData/Raw.8-1_cleantest.fa
+There are 3648101,28412241 unique,sequence in output
+
+============================================================
+Running from [2021-08-30 19:00:02] to [2021-08-30 19:07:40]
+Total execute time : 458.00 s
+............................................................
