@@ -51,3 +51,5 @@ ViralAligned_2.fastq
 
 <!-- 序列特征有哪些呢？？？？ -->
 $HOME/rna/test/cleanData/test02/viral
+
+
