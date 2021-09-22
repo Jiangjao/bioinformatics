@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-04-21 09:13:50
+ * @LastEditTime: 2021-09-22 09:37:08
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \geekbang\bioinformatics\dataanalsis\Summary.md
+-->
 # rules
 我们的工作流程通常很长，所以更应该专注`工作的核心`，
     
@@ -9,5 +17,5 @@
     我们应该从基础步骤开始，遇到特定需求的时候再学习了解高级步骤。这篇文章只介绍了基本的流程，但你可以上手操作了。在实际操作中，你可能会遇到各种问题，这个时候再对高级步骤进行学习，如果要进阶的话，还需要你掌握 XPath 的使用。
 
 ![avatar](./../images/proceedures.jpg)
-
+![avatar](./../images/dataanlazi.png)
 
