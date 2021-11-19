@@ -86,10 +86,128 @@ void PrintMap(){
         printf("\n");
     }
 }
+
+void StartMsg(){
+    printf(
+        "'2(top)', '8(top)', '4(left)', '6(right)'\n"
+    );
+    printf("或'w(top)', 'a(left)', 's(down)', 'd(right)'\n");
+    printf("控制方向(control the direction)\n");
+}
+
+void SetRandNum(){
+    srand(time(0));
+    while((mapArr[randX + 1][randY + 1] != 0) && (foodFlag == 0)){
+        randX = rand() % (inputX - 2), randY = rand() % (inputY - 2);
+    }
+    mapArr[randX + 1][randY + 1] = 3;           /* set food number 3 */
+    foodFlag = 1;
+}
+
+void SetSnakeNum(){
+    /* if there is an input , get it;if not, go on */
+    if(_kbhit()){
+        int a = _getch();
+        switch(input){
+            case '2':
+            case 'w':
+                if(a == '4' || a == '6' || a == 'a' || a == 'd' || a == '2' || a == 'w'){
+                    input = a;
+                }
+                break;
+
+            case '8':
+            case 's':
+                if(a == '4' || a == '6' || a == 'a' || a == 'd' || a == '8' || a == 's'){
+                    input = a;
+                }
+                break;
+
+            case '4':
+            case 'a':
+                if(a == '2' || a == '8' || a == 'w' || a == 's' || a == '4' || a == 'a'){
+                    input = a;
+                }
+                break;
+
+            case '6':
+            case 'd':
+                if(a == '2' || a == '8' || a == 'w' || a == 's' || a == '6' || a == 'd'){
+                    input = a;
+                }
+                break;
+        }
+    }
+    /* judge the direction by value of input */
+    switch(input){
+        case '2':
+        case 'w':
+            sy--;
+            break;
+        case '8':
+        case 's':
+            sy++;
+            break;
+        case '4':
+        case 'a':
+            sx--;
+            break;
+        case '6':
+        case 'd':
+            sx++;
+            break;
+    }
+    int i;
+    /* every point's address of body move back one point */
+    for(i = 1; i != 0; i--){
+        body[i] = body[i - 1];
+        *body[i] = 2;
+    }
+    body[0] = &mapArr[sx][sy];
+    /* judge when the snake hit the wall or eat itself */
+    if((*body[0] == 1) || (*body[0] == 2)){
+        overFlag = 0;
+    }
+    /* assign the head of snake by pointer */
+    *body[0] = 2;
+}
+
+void EatFood(){
+    if(*body[0] == 3){
+        l++;
+        foodFlag = 0;
+    }
+}
+
+void StartGame(){
+    sx = 1;
+    sy = 1;
+    l = 0;
+    input = '6';
+    int j;
+    /* assign the snake body initial address value */
+    for(j = 0; j < l; j++){
+        body[j] = &mapArr[sx - j][sy];
+    }
+    /* loop until the game over */
+    while(overFlag){
+        InitMap();
+        SetSnakeNum();
+        SetRandNum();
+        EatFood();
+        PrintMap();
+        StartMsg();
+        Sleep(1000/speed);
+        system("cls");
+    }
+}
 int main(){
     GetSet();
     InitMap();
     PrintMap();
+    StartMsg();
+    SetRandNum();
+    SetSnakeNum();
     return 0;
 }
 

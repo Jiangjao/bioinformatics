@@ -419,5 +419,9 @@ scanf()
 CPU只能通过地址来取得内存中的代码和数据，如果任意访问，就会出错。
 无论指针还是取地址符(&)，解引用(*)啥的，理清楚源头，探明其精微，大概就清楚怎么用了。
 >https://blog.csdn.net/synapse7/article/details/10260339
+
 行指针和列指针
 >https://zhuanlan.zhihu.com/p/337273222
+
+贪吃蛇
+>https://knightyun.github.io/2018/04/24/c-gluttonous-snake#home
