@@ -201,13 +201,88 @@ void StartGame(){
         system("cls");
     }
 }
-int main(){
-    GetSet();
+
+void SetMoveNum(){
+    /* x move 1-- (X - 2); y mpve 1 -- (Y -2) */
+    /* move y from top to buttom */
+    if((moveY == 1 + moveFlag) && (moveX < inputX - 2 - moveFlag)){
+        mapArr[moveX][moveY] = 2;
+        moveX ++;
+    /* move y from top to buttom */
+    }else if ((moveX == inputX -2 - moveFlag) && (moveY < inputY - 2)){
+        mapArr[moveX][moveY] = 2;
+        moveY ++;
+    /* move x from right to left */
+    } else if((moveY == inputY - 2 - moveFlag) && (moveX > 1 + moveFlag)){
+        mapArr[moveX][moveY] = 2;
+        moveX --;
+    /* move y from buttom to top */
+    } else if((moveX == 1 + moveFlag) && (moveY > 1 + moveFlag)){
+        mapArr[moveX][moveY] = 2;
+        moveY --;
+        if(moveY == 2 + moveFlag){  // judge when jump to the deeper layer
+            moveFlag ++;
+        }
+    }
+}
+
+void JudgeEnd(){
+    int i, j;
+    int tmp = 1;
+    for(j = 0; j <inputY; j++){
+        for(i = 0;i < inputX; i++){
+            if(mapArr[i][j] == 0){
+                goto out;
+            }
+        }
+    }
+    moveX = 1, moveY = 1;
     InitMap();
-    PrintMap();
-    StartMsg();
-    SetRandNum();
-    SetSnakeNum();
+    moveFlag = 0;
+out:;
+}
+
+void StartView()
+{
+	moveX = 1, moveY = 1, moveFlag = 0;
+	int startFlag = 1;
+	InitMap();
+	while (startFlag)
+	{
+		SetMoveNum();
+		PrintMap();
+		printf("按任意键开始游戏：\n(Press any key to start game: )\n");
+		Sleep(10);
+		system("cls");
+		JudgeEnd();
+		if (_kbhit())
+		{
+			int c = _getch();
+			if ((c != '2') && (c != 'w') && (c != '8') && (c != 's') && (c != '4') && (c != 'a') && (c != '6') && (c != 'd'))
+				startFlag = 0;
+		}
+	}
+}
+
+int main(){
+    // GetSet();
+    // InitMap();
+    // PrintMap();
+    // StartMsg();
+    // SetRandNum();
+    // SetSnakeNum();
+    while(1){
+        printf("是否修改设置（修改设置输入'y',否则按任意键):\nEdit the game setting or not? (Press 'y' to edit , or press another key to go on:)\n");
+        if(_getch() == 'y'){
+            GetSet();
+        }
+        StartView();
+        StartGame();
+        printf("Game over !!!\n游戏结束, 按任意键继续:\n(Press any key to quit!!!\n)");
+        _getch();
+        overFlag = 1;   /* restart the game by the flag */
+        system("cls");
+    }
     return 0;
 }
 
