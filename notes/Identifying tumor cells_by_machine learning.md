@@ -1,11 +1,3 @@
-<!--
- * @Author: jayjiao 918718278@qq.com
- * @Date: 2022-06-10 19:19:04
- * @LastEditors: jayjiao 918718278@qq.com
- * @LastEditTime: 2022-06-15 10:26:14
- * @FilePath: \geekbang\bioinformatics\notes\Identifying tumor cells_by_machine learning.md
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 # test
 we propose ikarus, a machine learning pipeline aimed at distinguishing tumor cells 
 from normal cells at the single-cell level
@@ -16,6 +8,10 @@ consists of two steps:
 (2) training of a robust logistic regression classifer for stringent discrimination of tumor 
 and normal cells followed by a network-based propagation of cell labels using a custom 
 built cell–cell network
+
+## prepare cell dataset
+Leveraging multiple annotated single cell datasets:
+    A  reliable method addressing that challenge is a prerequisite for automatic annotation of histopathological data, profiled using multichannel immunofluorescence or spatial sequencing. 
 
 ## noise
 1. background noise
@@ -52,8 +48,12 @@ KeyError: 'tirosh'adatas
 2. model.fit 这一步很占用资源，可以按照tutorial 跳过
 
 ## references
-[code](https://github.com/BIMSBbioinfo/ikarus)
+> [code](https://github.com/BIMSBbioinfo/ikarus)
 
-[colab](https://colab.research.google.com/)
+> [colab](https://colab.research.google.com/)
 
-[scvi-tools](https://docs.scvi-tools.org/en/0.7.1/installation.html)
+> [scvi-tools](https://docs.scvi-tools.org/en/0.7.1/installation.html)
+
+> [anndata document](https://anndata.readthedocs.io/en/latest/)
+
+> [中文tutor](https://zhuanlan.zhihu.com/p/369705199)
