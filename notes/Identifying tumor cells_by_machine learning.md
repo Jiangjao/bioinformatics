@@ -29,6 +29,7 @@ ikarus
 fit model 的时候
 
 GTX 1070 Ti 显存8G E5-2678 v3 24核 内存64G 220GB SSD + 6TB硬盘
+我使用的时候，实际上是内存要管够
 
 ### 预装环境
 多框架组合环境 tensorflow1.15-pytorch1.7.0-opencv4.5-keras2.4.2.有图形界面
