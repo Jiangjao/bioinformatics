@@ -1,7 +1,11 @@
 # !/usr/bin/python3
 
 from base64 import encode
+from logging import raiseExceptions
 import os, re, sys
+
+from cv2 import add, line
+from sqlalchemy import true
 
 class SymbolTable:
 	symbols = {
@@ -55,6 +59,22 @@ class CodeWriter:
 
 	def _write(self, line):
 		self.file.write(line + '\n')
+
+	def cmd_from_num(self, num):
+		binnum = bin(num)[2:]
+		# checking bounds!
+		if (0 > num) or (num >= 2 ** 15):
+			raise Exception("Assembler: out-of-range assignment to A!: ")
+		numdigits = min(15, len(binnum))
+		numzeros = 16 - numdigits
+		bincmd = '0' * numzeros + binnum[-numdigits:]
+		return bincmd
+
+	def is_legal_var_name(self, str):
+		for sym in ['-', '*', '+', '/', '&', '|', '!']:
+			if sym in str:
+				return False
+		return true
 
 	def _encode_destination(self, destination):
 		""" encode destination
@@ -156,12 +176,24 @@ class CodeWriter:
 		if jump == 'JMP': return "111"
 		return "000"
 
+	# instruction[0] will be '@'
 	def _encode_a(self, instruction):
 		address = instruction[1:]
-		if not address.isdigit():
-			address = self.symbol_table.resolve(address)
-		return "{0:016b}".format(int(address))
+		self.is_legal_var_name(address)
+		if address.isdigit():
+			decnum = int(address)
+			bincmd = self.cmd_from_num(decnum)
+		# TODO: check here for '(' which is the start of labels
+		#(which don't increment the line #)
+		elif self.is_legal_var_name(address):
+			if not address.isdigit():
+				address = self.symbol_table.resolve(address)
+				bincmd = self.cmd_from_num(address)
+				print(address, bincmd)
+		else:
+			raise Exception("Assembler: illegal variable name:  " + instruction)
 
+		return bincmd
 
 	def _encode_c(self, instruction):
 		if ";" in instruction:
@@ -217,7 +249,7 @@ def main(argv):
 		sys.exit(0)
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+	main(sys.argv[1:])
 
 
 
