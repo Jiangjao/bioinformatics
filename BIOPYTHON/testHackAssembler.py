@@ -2,7 +2,7 @@
 
 import unittest
 import HackAssembler as Assembler
-from HackAssembler import CodeWriter
+from HackAssembler import CodeWriter, SymbolTable
 
 class TestCExpressions(unittest.TestCase):
 	def setUp(self) -> None:
@@ -146,34 +146,62 @@ class TestCExpressions(unittest.TestCase):
 
 # this tests A-epxressions without any vars
 class TestAExpression(unittest.TestCase):
-    def setUp(self):
-        self.asm = CodeWriter("", Assembler.SymbolTable())
+	def setUp(self):
+		self.asm = CodeWriter("", Assembler.SymbolTable())
 
-    def testNominal(self):
-        in1 = '@2'
-        out1 = self.asm._encode_a(in1)
-        self.assertEqual(out1, '0000000000000010')
+	def testNominal(self):
+		in1 = '@2'
+		out1 = self.asm._encode_a(in1)
+		self.assertEqual(out1, '0000000000000010')
 
-        in2 = '@3'
-        out2 = self.asm._encode_a(in2)
-        self.assertEqual(out2, '0000000000000011')
+		in2 = '@3'
+		out2 = self.asm._encode_a(in2)
+		self.assertEqual(out2, '0000000000000011')
 
-        in2 = '@20000'
-        out2 = self.asm._encode_a(in2)
-        self.assertEqual(out2, '0100111000100000')
+		in2 = '@20000'
+		out2 = self.asm._encode_a(in2)
+		self.assertEqual(out2, '0100111000100000')
 
-    # The provided assembler doesn't warn about this...
-    def testOverflow(self):
-        in1 = '@32768'
-        self.assertRaises(Exception, self.asm._encode_a, in1)
+	# The provided assembler doesn't warn about this...
+	def testOverflow(self):
+		in1 = '@32768'
+		self.assertRaises(Exception, self.asm._encode_a, in1)
 
-    def testVarNames(self):
-        # in1 = '@0f1'
-        # fixme(xiaojiao): variable allowed...
-        # self.assertRaises(Exception, self.asm._encode_a, in1)
-        in2 = '@-1'
-        self.assertRaises(Exception, self.asm._encode_a, in2)
+	def testVarNames(self):
+		# in1 = '@0f1'
+		# fixme(xiaojiao): variable allowed...
+		# self.assertRaises(Exception, self.asm._encode_a, in1)
+		in2 = '@-1'
+		self.assertRaises(Exception, self.asm._encode_a, in2)
 
+class TestVars(unittest.TestCase):
+	def setUp(self):
+		self.asm = CodeWriter("", Assembler.SymbolTable())
+
+	# checks that next_addr increments as expected, and
+	# repeated variables get the same address
+	def testSimple1(self):
+		symbol = self.asm.symbol_table
+		self.assertEqual(16, symbol.nextVariableAddress)
+		cmd1 = "@foo"
+		out1 = self.asm._encode_a(cmd1)
+		self.assertEqual(17, symbol.nextVariableAddress)
+		self.assertEqual('0000000000010000', out1)
+		cmd2 = "@bar"
+		out2 = self.asm._encode_a(cmd2)
+		self.assertEqual(18, symbol.nextVariableAddress)
+		self.assertEqual('0000000000010001', out2)
+		out3 = self.asm._encode_a(cmd1)
+		self.assertEqual(18, symbol.nextVariableAddress)
+		self.assertEqual('0000000000010000', out3)
+
+# add A expressions with vars? 
+# test this by defining variables in sequence, then checking their addresses
+# will require turning the self.asm into a class s.t. it can keep track of  
+# that state. 
+# in1 = '@f00' # this one is ok
+# in2 = '@foo'
+# in3 = '@bar'
 
 if __name__=="__main__":
 	unittest.main()

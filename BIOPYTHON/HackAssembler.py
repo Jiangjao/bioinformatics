@@ -189,7 +189,7 @@ class CodeWriter:
 			if not address.isdigit():
 				address = self.symbol_table.resolve(address)
 				bincmd = self.cmd_from_num(address)
-				print(address, bincmd)
+				# print(address, bincmd)
 		else:
 			raise Exception("Assembler: illegal variable name:  " + instruction)
 
