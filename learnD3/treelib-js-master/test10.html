@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Range Slider</title>
+
+    <script src="https://cdn.plot.ly/plotly-2.12.1.min.js"></script>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src='https://cdn.plot.ly/plotly-2.12.1.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+    <!-- bootstrap5 -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <style type="text/css" title="text/css">
+        /* @import url("http://bl.ocks.org/style.css?20120730"); */
+        body {
+            font-family: sans-serif;
+        }
+    </style>
+    <script src="./demos/jquery.js"></script>
+    <script type="text/javascript" src="./demos/jquery-svgpan.js"></script>
+
+    <script src="nexus.js"></script>
+    <script src="treelib.js"></script>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0;
+        padding: 0 0 50px;
+        color: #333;
+        font-size: 14px;
+    }
+
+    p {
+        margin: 0;
+    }
+
+    pre {
+        padding: 20px 20px 0 0;
+        background: #f9f9f9;
+        border: 1px solid #f2f2f2;
+        margin-bottom: 30px;
+        line-height: 2em;
+    }
+
+    .top {
+        background-color: rgb(95, 76, 76);
+        border-bottom: 3px solid #00b3bc;
+        color: #fff;
+        padding: 20px;
+    }
+
+    .top h1 {
+        font-size: 20px;
+        text-align: center;
+    }
+
+    .container {
+        /* width: 80%; */
+        margin-left: 20px;
+        margin-top: 70px;
+    }
+
+    .slider-container {
+        width: 90%;
+        max-width: 600px;
+        /* margin: 0 auto 50px; */
+        margin-left: 10px;
+        margin-top: 0px;
+        margin-bottom: 20px;
+    }
+
+    .right-container {
+        width: 90%;
+        max-width: 500px;
+        /* margin: 0 auto 50px; */
+        margin-right: 10px;
+        margin-top: 0px;
+    }
+
+    .config {
+        border: 1px solid #f2f2f2;
+        margin-bottom: 30px;
+        line-height: 1.7em;
+    }
+
+    .config table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    .config table td {
+        padding: 10px;
+        border-bottom: 1px solid #f2f2f2;
+    }
+
+    .config table tr:nth-child(even) td {
+        background-color: #f9f9f9;
+    }
+
+    .mb {
+        margin-bottom: 15px;
+    }
+
+    .label {
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
+    .download {
+        margin-bottom: 20px;
+    }
+
+    .download a {
+        text-decoration: none;
+        color: #00969b;
+        font-size: 16px;
+    }
+
+</style>
+<link rel="stylesheet" href="css/rSlider.min.css">
+</head>
+
+<body>
+
+    <div class="top">
+        <h1>single/evolutionary page - pure JS</h1>
+    </div>
+
+    <!-- <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div> -->
+
+    <div class="row">
+        <div class="container col-5 ">
+            <h4>Dataset</h4>
+            <select class="js-example-basic-single form-select slider-container" name="state"
+                aria-label="Default select example">
+                <option value="AL">Alabama</option>
+                <option value="WY">Wyoming</option>
+                <option selected>Open this select menu</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+            <h4>Data range</h4>
+            <div class="slider-container">
+                <input type="text" id="slider" class="slider" />
+            </div>
+
+            <!-- <div class="slider-container">
+            <input type="text" id="slider2" class="slider" />
+        </div>
+        <div class="slider-container">
+            <input type="text" id="slider3" class="slider" />
+        </div> -->
+            <div id="myDivScatter" class="slider-container">
+
+            </div>
+        </div>
+        <div class="col-6">
+            <!-- .col-6 -->
+            
+            <br>
+            <!-- Subsequent columns continue along the new line. -->
+            <!-- <h1>Simple Tree</h1> -->
+
+            <div class="col-8">
+
+                <p><span id="message"></span></p>
+
+                <iframe id="inlineFrameExample" height="800px" width="700rem" title="Inline Frame Example"
+                    src="./test11.html" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" border="0">
+
+                </iframe>
+
+
+
+                <!-- <div style="width:500px;height:500px;background-color:white;border:1px solid rgb(228,228,228);background:url(g1001cc2.gif);"">
+	<div style="width:500px;height:500px;background-color:white;">
+	<svg id="svg" xmlns="http://www.w3.org/2000/svg" version="1.1" height="500" width="500">
+		<g id="viewport">
+		</g>
+	</svg> 
+	</div>-->
+
+            </div>
+        </div>
+
+
+        <div class="row-10">
+            <!-- <div class="col-9">.col-9</div>
+            <div class="col-4">.col-4<br>Since 9 + 4 = 13 &gt; 12, this 4-column-wide div gets wrapped onto a new line
+                as
+                one contiguous unit.</div> -->
+            <!-- <div class="col-6">.col-6<br>Subsequent columns continue along the new line.</div> -->
+            <div id="myDiv" class=" col-7">
+
+            </div>
+        </div>
+        <div class="container col-6">
+            <!-- <p>123</p> -->
+        </div>
+
+        <script src="js/rSlider.min.js"></script>
+        <script>
+            (function () {
+                'use strict';
+
+                var init = function () {
+
+                    // var slider2 = new rSlider({
+                    //     target: '#slider2',
+                    //     values: [0, 1, 2, 3, 4, 5, 6, '7', 8],
+                    //     range: false,
+                    //     set: [5],
+                    //     tooltip: false,
+                    //     onChange: function (vals) {
+                    //         console.log(vals);
+                    //     }
+                    // });
+
+                    // var slider3 = new rSlider({
+                    //     target: '#slider3',
+                    //     values: {min: 0, max: 100},
+                    //     step: 10,
+                    //     range: true,
+                    //     set: [10, 40],
+                    //     scale: true,
+                    //     labels: false,
+                    //     onChange: function (vals) {
+                    //         console.log(vals);
+                    //     }
+                    // });
+
+                    var slider = new rSlider({
+                        target: '#slider',
+                        values: [1985, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2020],
+                        range: true,
+                        set: [2010, 2013],
+                        onChange: function (vals) {
+                            console.log(vals);
+                        }
+                    });
+                };
+                window.onload = init;
+            })();
+        </script>
+        <script>
+            d3.csv('https://raw.githubusercontent.com/plotly/datasets/master/2010_alcohol_consumption_by_country.csv', function (err, rows) {
+                function unpack(rows, key) {
+                    return rows.map(function (row) { return row[key]; });
+                }
+
+                var data = [{
+                    type: 'choropleth',
+                    locationmode: 'country names',
+                    locations: unpack(rows, 'location'),
+                    z: unpack(rows, 'alcohol'),
+                    text: unpack(rows, 'location'),
+                    autocolorscale: true
+                }];
+
+                var layout = {
+                    title: 'Pure Test dataset',
+                    geo: {
+                        projection: {
+                            type: 'robinson'
+                        }
+                    }
+                };
+
+                Plotly.newPlot("myDiv", data, layout, { showLink: false });
+
+            });
+
+        </script>
+        <script>
+        // select2
+        // In your Javascript (external .js resource or <script> tag)
+        // $(document).ready(function () {
+        //     $('.js-example-basic-single').select2();
+        // });
+        </script>
+        <script>
+            var trace1 = {
+                x: [1, 2, 3, 4],
+                y: [10, 15, 13, 17],
+                type: 'scatter'
+            };
+
+            var trace2 = {
+                x: [1, 2, 3, 4],
+                y: [16, 5, 11, 9],
+                type: 'scatter'
+            };
+
+            var data = [trace1, trace2];
+
+            var layout = {
+                    title: 'Pure Test dataset',
+                    geo: {
+                        projection: {
+                            type: 'robinson'
+                        }
+                    },
+                    showlegend: true,
+                    legend: {"orientation": "h"}
+                };
+
+    //             var layout = {showlegend: true,
+	// legend: {"orientation": "h"}};
+            Plotly.newPlot('myDivScatter', data, layout, { showLink: false });
+
+        </script>
+
+
+</body>
+
+</html>

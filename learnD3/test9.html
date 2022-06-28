@@ -1,0 +1,63 @@
+<!--
+ * @Author: jayjiao 918718278@qq.com
+ * @Date: 2022-06-27 10:43:14
+ * @LastEditors: jayjiao 918718278@qq.com
+ * @LastEditTime: 2022-06-27 12:49:12
+ * @FilePath: \geekbang\bioinformatics\learnD3\test9.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+
+<head>
+    <title>Time</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+<script src="https://unpkg.com/d3-simple-slider"></script>
+
+<link
+  rel="stylesheet"
+  href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+  integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+  crossorigin="anonymous"
+/>
+</head>
+
+
+<body>
+    <h2>Time</h2>
+    <div class="row align-items-center">
+      <div class="col-sm-2"><p id="value-time"></p></div>
+      <div class="col-sm"><div id="slider-time"></div></div>
+    </div>
+    <script>
+        var dataTime = d3.range(0, 40).map(function(d) {
+        return new Date(1985 + d, 10, 3);
+      });
+    
+      var sliderTime = d3
+        .sliderBottom()
+        .min(d3.min(dataTime))
+        .max(d3.max(dataTime))
+        .step(1000 * 60 * 60 * 24 * 365)
+        .width(1000)
+        .tickFormat(d3.timeFormat('%Y'))
+        .tickValues(dataTime)
+        .default(new Date(1998, 10, 3))
+        .on('onchange', val => {
+          d3.select('p#value-time').text(d3.timeFormat('%Y')(val));
+        });
+    
+      var gTime = d3
+        .select('div#slider-time')
+        .append('svg')
+        .attr('width', 1200)
+        .attr('height', 100)
+        .append('g')
+        .attr('transform', 'translate(30,30)');
+    
+      gTime.call(sliderTime);
+    
+      d3.select('p#value-time').text(d3.timeFormat('%Y')(sliderTime.value()));
+    </script>
+    
+</body>
+</html>
