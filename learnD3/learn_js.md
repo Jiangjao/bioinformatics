@@ -73,6 +73,8 @@ The set of types in the JavaScript language consists of primitive values and obj
     -   Symbol type
 Objects (collections of properties)
     -   Object 
-    -    Array 
-    -     Function 等
-    -    class?
+    -     Array 
+    -     Function 
+    -     class?
+
+>[JavaScript types](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#symbol_type)
