@@ -20,7 +20,7 @@ snp 需要与对应的sample联系起来
     -   jbrowse-plugin-gwas
     -   替代方案:
         -   visualization
-        -   web 端渲染，需要精通javascript,eg:D3.js
+        -   web 端渲染，需要精通javascript, eg:D3.js
 
 ## reference:
 
