@@ -4,7 +4,7 @@
     -   ECMASscipt2015 作用域不同
     -   let     block field
     -   const   block field 不过声明变量时得赋值
-    -   var     globla-like field
+    -   var     globla-like field 变量提升
 -   描述闭包
     -   闭包可以保存一种状态，存储函数，变量等等，可以放在当前的上下文中, 可以使用
     -   函数嵌套函数
