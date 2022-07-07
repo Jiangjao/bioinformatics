@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<head>
+
+    <title>123</title>
+    <style type="text/css">
+        div {
+        border : 1px solid black;
+        }
+        div > ul {
+        visibility: hidden;
+        opacity: 0;
+        transition : visibility 2s, opacity 0.6s linear;
+        }
+        div:hover > ul {
+        visibility : visible;
+        opacity : 1;
+        }
+    </style>
+</head>
+<body>
+    <div>
+            <div id="divTest">
+        <ul>
+        <li> Apple </li>
+        <li> Banana </li>
+        <li> Mango </li>
+        </ul>
+    </div>
+    </div>
+
+</body>
+<script>
+
+    function insertAfter(newElement, targetElement){
+        var parent = targetElement.parentNode;
+        console.log(parent)
+        // what the meaning of equals?
+        if(parent.lastChild == targetElement){
+            parent.appendChild(newElement);
+        }else{
+            parent.insertBefore(newElement,targetElement.nextsibling);
+        }
+    }
+
+    var divTest = document.getElementById("divTest") 
+    // var parent = divTest.parentElement;
+
+    let newElement = document.createElement("ul");
+    newElement.setAttribute("class","test1")
+    // element.setAttribute("innerHtml", "123")
+    // let elementClass = document.createAttribute("class");
+    // newElement.innerHTML ="1212"
+
+    // var node = document.createTextNode('hello world!');
+    // divTest.appendChild(element);
+    insertAfter(newElement, divTest)
+
+    // create new list[50], and add to ul
+    for (let i = 1; i <= 50; i++) { 
+        let newList = document.createElement("li");
+        newList.setAttribute("class","test1")
+        newList.innerHTML = i
+        newElement.append(newList)
+        newList.onclick = function(){
+            this.innerHTML = "YOU CLICKED ME!";
+            // this.style.backgroundColor = "blue";
+            if(this.style.backgroundColor == ''){
+                this.style.backgroundColor = 'blue';
+            }else{
+                this.style.backgroundColor = '';
+                // this.innerHTML = "YOU CLICKED ME!";
+            }   
+        }
+        // newList.addEventListener("onclick", function(){
+        //     this.innerHTML = "YOU CLICKED ME!";
+        //     this.style.backgroundColor = "blue";
+        //     if(this.style.backgroundColor == ''){
+        //         this.style.backgroundColor = 'blue';
+        //     }else{
+        //         this.style.backgroundColor = '';
+        //         // this.innerHTML = "YOU CLICKED ME!";
+        //     }   
+        // });
+    }
+
+
+    // function myFunction() {
+    //   document.getElementById("demo").innerHTML = "YOU CLICKED ME!";
+    // }
+    // let test = document.getElementsByTagName("li");
+    // console.log(test)
+</script>
+
+</html>

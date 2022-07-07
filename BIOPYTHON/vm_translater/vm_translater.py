@@ -3,7 +3,7 @@
 
 from yaml import parse
 from constants import *
-from parser import Parser
+from vmparser import Parser
 from code_writer import CodeWriter
 import glob
 import argparse
@@ -11,7 +11,7 @@ import os.path
 
 def main():
     parser = argparse.ArgumentParser(description="Process some integers")
-    parse.add_argument('path', type=str, help="vm file or folder")
+    parser.add_argument('path', type=str, help="vm file or folder")
 
     args = parser.parse_args()
     path = args.path
