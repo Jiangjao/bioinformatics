@@ -79,17 +79,37 @@
         //     }
         // });
     }
-    newElement.addEventListener("click", function(){
-        console.log("hello")
-        // this.innerHTML = "YOU CLICKED ME!";
-        if(this.style.backgroundColor == ''){
-            this.style.backgroundColor = 'blue';
-        }else{
-            this.style.backgroundColor = '';
-            // this.innerHTML = "YOU CLICKED ME!";
-        }
-    }, false)
+    // newElement.addEventListener("click", function(){
+    //     console.log("hello")
+    //     // this.innerHTML = "YOU CLICKED ME!";
+    //     if(this.style.backgroundColor == ''){
+    //         this.style.backgroundColor = 'blue';
+    //     }else{
+    //         this.style.backgroundColor = '';
+    //         // this.innerHTML = "YOU CLICKED ME!";
+    //     }
+    // }, false)
 
+    // Event Agent
+    newElement.onclick = function (e) {
+        e = e || window.event; //这一行及下一行是为兼容IE8及以下版本
+        var target = e.target || e.srcElement;
+        if (target.tagName.toLowerCase() === "li") {
+            var li = this.querySelectorAll("li");
+            index = Array.prototype.indexOf.call(li, target);
+            // log(index)
+            // log(li[index])
+            // alert(target.innerHTML + index);
+            if(li[index].style.backgroundColor == ''){
+                li[index].style.backgroundColor = 'blue';
+                li[index].innerHTML = "YOU CLICKED ME!";
+            } else {
+                li[index].style.backgroundColor = '';
+                li[index].innerHTML = index + 1;
+            // this.innerHTML = "YOU CLICKED ME!";
+            }
+        }
+    }
 </script>
 
 </html>
