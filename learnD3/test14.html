@@ -1,0 +1,175 @@
+<html>
+
+<head>
+    <title>MyVCF - all Samples groups &amp; form search</title>
+
+
+
+    <script type="text/javascript" src="/static/vcfdb/js/jquery-1.11.3.js"></script>
+
+
+
+    <script type="text/javascript" src="/static/vcfdb/js/bootbox.min.js"></script>
+
+
+
+
+    <script crossorigin="anonymous" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+        src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" rel="stylesheet">
+
+
+
+    <link rel="stylesheet" type="text/css" href="/static/vcfdb/css/jumbotron-narrow.css">
+
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="/static/teatree/css/main.css">
+
+    <script type="text/javascript" src="/static/teatree/js/extention/choices.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/teatree/css/heatmap.css">
+
+    <!-- This templates was made by Colorlib (https://colorlib.com) -->
+    <style type="text/css">
+        form.form-example {
+            padding-bottom: 10px;
+        }
+
+        div.form-example {
+            padding-right: 2px;
+            padding-bottom: 10px;
+            margin-bottom: 5px;
+        }
+
+        label,
+        input {
+            margin-bottom: 10px;
+            padding-right: 10px;
+            padding-left: 20px;
+        }
+
+        label {
+            padding-right: 10px;
+
+        }
+    </style>
+
+
+    <style>
+        hcfy-result.__hcfy__result__loaded__.__hcfy__result__both__ {
+            border: 1px dotted
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+
+
+        <form action="/teatree/search/snp/" method="get" class="form-example">
+            <div class="form-example form-group">
+                <label for="pet-select">reference:</label>
+                <select name="reference" id="pet-select">
+                    <option value="">--Please choose an option--</option>
+                    <option value="dog">Dog</option>
+                    <option value="cat">Cat</option>
+                    <option value="hamster">Hamster</option>
+                    <option value="parrot">Parrot</option>
+                    <option value="spider">Spider</option>
+                    <option value="goldfish">Goldfish</option>
+                </select>
+            </div>
+            <div class="form-example">
+                <label for="name">chromosome: </label>
+                <input type="text" name="chrom" id="name" required="" placeholder="20">
+                <label for="start">start: </label>
+                <input type="number" name="start" id="name" required="">
+                <label style="font-size: 11px;">eg:120335</label>
+                <label for="end">end: </label>
+                <input type="number" name="end" id="end" required="">
+            </div>
+
+            <div class="form-example">
+                <label for="text">Match genotype: </label>
+                <input type="text" name="genotype" id="genotype" placeholder="text" disabled="">
+            </div>
+            <div class="form-example">
+                <input type="submit" value="Search">
+            </div>
+        </form>
+
+        <table class="table table-striped">
+            <thead>
+                <tr class="table-info">
+                    <th>position:</th>
+
+                    <th scope="col">120354</th>
+
+                    <th scope="col">120355</th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>ref Base</td>
+                    <th scope="col">'T'</th>
+                    <th scope="col">'T'</th>
+                </tr>
+                <tr>
+                    <td>ref Base</td>
+                    <th scope="col">'T'</th>
+
+                </tr>
+                <tr>
+                    <td>alt Base</td>
+                    <th scope="col">'G'</th>
+
+                    <th scope="col">'G'</th>
+
+                </tr>
+                <tr>
+                    <td>alt Base</td>
+                    <th scope="col">'G'</th>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <p>Table with colgroup and col</p>
+    <table class="table table-striped">
+        <colgroup>
+            <col class="column1">
+            <col class="columns2plus3" span="2">
+        </colgroup>
+        <tr>
+            <th>Lime</th>
+            <th>Lemon</th>
+            <th>Orange</th>
+        </tr>
+        <tr>
+            <td>Green</td>
+            <td>Yellow</td>
+            <td>Orange</td>
+        </tr>
+    </table>
+</body>
+
+</html>
+
+
+
+
+
+<script>
+    const choices = new Choices('[data-trigger]',
+        {
+            searchEnabled: false,
+            itemSelectText: '',
+        });
+</script>

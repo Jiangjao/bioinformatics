@@ -59,15 +59,15 @@
         newList.innerHTML = i
         // add li to ul tag
         newElement.append(newList)
-        newList.onclick = function(){
-            this.innerHTML = "YOU CLICKED ME!";
-            if(this.style.backgroundColor == ''){
-                this.style.backgroundColor = 'blue';
-            }else{
-                this.style.backgroundColor = '';
-                // this.innerHTML = "YOU CLICKED ME!";
-            }
-        }
+        // newList.onclick = function(){
+        //     this.innerHTML = "YOU CLICKED ME!";
+        //     if(this.style.backgroundColor == ''){
+        //         this.style.backgroundColor = 'blue';
+        //     }else{
+        //         this.style.backgroundColor = '';
+        //         // this.innerHTML = "YOU CLICKED ME!";
+        //     }
+        // }
         // newList.addEventListener("onclick", function(){
         //     this.innerHTML = "YOU CLICKED ME!";
         //     this.style.backgroundColor = "blue";
@@ -76,9 +76,19 @@
         //     }else{
         //         this.style.backgroundColor = '';
         //         // this.innerHTML = "YOU CLICKED ME!";
-        //     }   
+        //     }
         // });
     }
+    newElement.addEventListener("click", function(){
+        console.log("hello")
+        // this.innerHTML = "YOU CLICKED ME!";
+        if(this.style.backgroundColor == ''){
+            this.style.backgroundColor = 'blue';
+        }else{
+            this.style.backgroundColor = '';
+            // this.innerHTML = "YOU CLICKED ME!";
+        }
+    }, false)
 
 </script>
 
