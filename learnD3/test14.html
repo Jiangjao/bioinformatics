@@ -1,35 +1,32 @@
 <html>
 
 <head>
-    <title>MyVCF - all Samples groups &amp; form search</title>
+    <title>MyVCFtestsample - all Samples groups &amp; form search</title>
 
+    <!-- <script type="text/javascript" src="/static/vcfdb/js/jquery-1.11.3.js"></script>
+    <script type="text/javascript" src="/static/vcfdb/js/bootbox.min.js"></script> -->
 
-
-    <script type="text/javascript" src="/static/vcfdb/js/jquery-1.11.3.js"></script>
-
-
-
-    <script type="text/javascript" src="/static/vcfdb/js/bootbox.min.js"></script>
-
-
-
-
-    <script crossorigin="anonymous" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+    <!-- <script crossorigin="anonymous" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
         src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" rel="stylesheet">
+        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" rel="stylesheet"> -->
 
 
 
-    <link rel="stylesheet" type="text/css" href="/static/vcfdb/css/jumbotron-narrow.css">
+    <!-- <link rel="stylesheet" type="text/css" href="/static/vcfdb/css/jumbotron-narrow.css"> -->
 
 
-    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Poppins:300,400" rel="stylesheet"> -->
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" type="text/css" href="/static/teatree/css/main.css">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+    <!-- <link rel="stylesheet" type="text/css" href="/static/teatree/css/main.css">
 
     <script type="text/javascript" src="/static/teatree/js/extention/choices.js"></script>
-    <link rel="stylesheet" type="text/css" href="/static/teatree/css/heatmap.css">
+    <link rel="stylesheet" type="text/css" href="/static/teatree/css/heatmap.css"> -->
 
     <!-- This templates was made by Colorlib (https://colorlib.com) -->
     <style type="text/css">
@@ -67,9 +64,6 @@
 <body>
 
     <div class="container">
-
-
-
         <form action="/teatree/search/snp/" method="get" class="form-example">
             <div class="form-example form-group">
                 <label for="pet-select">reference:</label>
@@ -106,70 +100,84 @@
             <thead>
                 <tr class="table-info">
                     <th>position:</th>
-
                     <th scope="col">120354</th>
-
                     <th scope="col">120355</th>
-
-
                 </tr>
             </thead>
             <tbody>
-
                 <tr>
                     <td>ref Base</td>
-                    <th scope="col">'T'</th>
-                    <th scope="col">'T'</th>
-                </tr>
-                <tr>
-                    <td>ref Base</td>
-                    <th scope="col">'T'</th>
-
+                    <th scope="col">T</th>
+                    <th scope="col">T</th>
                 </tr>
                 <tr>
                     <td>alt Base</td>
-                    <th scope="col">'G'</th>
-
-                    <th scope="col">'G'</th>
-
+                    <th scope="col">T</th>
+                    <th scope="col">G</th>
                 </tr>
                 <tr>
                     <td>alt Base</td>
-                    <th scope="col">'G'</th>
+                    <th scope="col">G</th>
+                    <th scope="col">-</th>
                 </tr>
             </tbody>
         </table>
 
     </div>
     <p>Table with colgroup and col</p>
-    <table class="table table-striped">
-        <colgroup>
-            <col class="column1">
-            <col class="columns2plus3" span="2">
-        </colgroup>
-        <tr>
-            <th>Lime</th>
-            <th>Lemon</th>
-            <th>Orange</th>
-        </tr>
-        <tr>
-            <td>Green</td>
-            <td>Yellow</td>
-            <td>Orange</td>
-        </tr>
-    </table>
+
+
+    <script>
+        var log = console.log.bind(console);
+        const className = document.getElementsByClassName("table table-striped")
+        // log(className)
+        let tbodyCollections = className[0].childNodes[3]
+        let ttbodyCollections = className[0].childNodes[3].childNodes
+        let length = ttbodyCollections.length
+        // 1:ref
+        // 3:alt_x
+        // 5:alt_y
+                // 0: td
+                // 1: th
+                    // innerText:"G"
+                // 2: th
+                    // innerText:"G"
+                // length: 3
+                    
+        // index  = Array.prototype.indexOf.call(ttbodyCollections, tbodyCollections)
+        // log(index)
+        // for (const key in object) {
+        //     if (Object.hasOwnProperty.call(object, key)) {
+        //         const element = object[key];
+                
+        //     }
+        // }
+        // log(ttbodyCollections[1])
+        theader = ttbodyCollections[1]
+        // log(theader.cells)
+        // ttbodyCollections[3].cells[1].style.color="red"
+        // 
+        for (let i = 1; i < theader.cells.length; i++) { 
+            // log(theader.cells[i].innerText)
+            // compare alt lines content with reference line content
+            // https://stackoverflow.com/questions/3586775/what-is-the-correct-way-to-check-for-string-equality-in-javascript
+            // enchance version: using string.trim()
+            if (ttbodyCollections[3].cells[i].innerText !== theader.cells[i].innerText) {
+                // console.log(i)
+                ttbodyCollections[3].cells[i].style.color="red"
+            }
+            if ((ttbodyCollections[5].cells[i].innerText !== theader.cells[i].innerText) &&
+            (ttbodyCollections[5].cells[i].innerText != "-")) {
+                // console.log(i)
+                ttbodyCollections[5].cells[i].style.color="red"
+            }
+        }
+        //so how to release these variable to free memory?
+
+    </script>
 </body>
 
 </html>
 
 
 
-
-
-<script>
-    const choices = new Choices('[data-trigger]',
-        {
-            searchEnabled: false,
-            itemSelectText: '',
-        });
-</script>
