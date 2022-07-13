@@ -22,6 +22,7 @@ function getColor () {
     // get random colorbase(16-base)
     for(let i = 0; i < 6; i ++) {
         // 获取0-15并通过toString转16进制
+        // then concat all to color
         color += Math.floor(Math.random()*16).toString(16);
     }
     // let colorBase01 = Math.floor(Math.random()*255).toString(16)
