@@ -37,14 +37,37 @@ dbSNP contains human single nucleotide variations, microsatellites, and small-sc
     -   snp 位点和代谢物含量的关系
     -   snp 和gene之间的关系
     -   从而推导不同group之间的snp
+
+生物系统进行动态分析
+
 >[metabolomics in breeding](https://onlinelibrary.wiley.com/doi/full/10.1111/tpj.14649)
 >[推导并建立新的代谢途径+算法1](https://bmcsystbiol.biomedcentral.com/articles/10.1186/1752-0509-2-111)
->[推导并建立新的代谢途径+算法1](https://bmcsystbiol.biomedcentral.com/articles/10.1186/1752-0509-2-111)
->[PyMiner: A method for metabolic pathway design based on the uniform similarity of substrate-product pairs and conditional search](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9000129/)
+>[推导并建立新的代谢途径+算法2](https://bmcsystbiol.biomedcentral.com/articles/10.1186/1752-0509-2-111)
+
+>[PyMiner: A method for metabolic pathway design based on the uniform similarity of substrate-product    pairs and conditional search](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9000129/)
+
 >[Low-Cost Algorithms for Metabolic Pathway Pairwise Comparison](https://www.mdpi.com/2313-7673/7/1/27/pdf?version=1645532294)
 >[Metabolite Diversity and Metabolic Genome-Wide Marker Association Studies (Mgwas) for Health Benefiting Nutritional Traits in Pearl Millet Grains](https://doi.org/10.3390/cells10113076)
 
 >[Linking genomics and metabolomics to chart specialized metabolic diversity](https://pubs.rsc.org/en/content/articlelanding/2020/cs/d0cs00162g)
+
+>[Constructing kinetic models of metabolism at genome-scales: A review](https://onlinelibrary.wiley.com/doi/10.1002/biot.201400522)
+
+## plant metabolic networks
+COBRApy is a package for constraint-based modeling of metabolic networks.
+
+Due to the successes with metabolism, there is an increasing effort to apply COBRA methods to reconstruct and analyze integrated models of cellular processes
+
+这些研究使用模拟来确定在给定条件下哪些基因或合成致死基因对对于生物质生产至关重要。然后，在构建设计菌株时，可以针对必需基因和合成致死基因对列表抑制微生物生长或将其排除在操作之外。COBRApy 在 cobra.flux_analysis 模块中提供了自动化单基因和双基因缺失研究的功能。
+
+由于在基于约束的新陈代谢模拟中存在等效的替代最优值，许多反应理论上可能能够为给定的模拟目标携带大范围的通量。通量变异性分析 (FVA) 通常用于计算反应可以携带的通量，同时仍模拟通过受指定容差影响的目标函数的最大通量。
+
+>[COBRApy](https://bmcsystbiol.biomedcentral.com/articles/10.1186/1752-0509-7-74)
+>[Meneco, a Topology-Based Gap-Filling Tool Applicable to Degraded Genome-Wide Metabolic Networks](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005276)
+
+>[metabolic database](https://www.researchgate.net/profile/Mohd-Mohamad-14/publication/278011522/figure/tbl2/AS:613934797176859@1523384870366/Comparison-of-metabolic-network-databases.png)
+
+>[Metabolic network database](https://www.biostars.org/p/189855/)
 ## 代谢图谱
 >[代谢组学常见数据库列表和简介](https://blog.csdn.net/qq_40932679/article/details/117911666)
 
