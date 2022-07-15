@@ -41,12 +41,14 @@ dbSNP contains human single nucleotide variations, microsatellites, and small-sc
 生物系统进行动态分析
 
 >[metabolomics in breeding](https://onlinelibrary.wiley.com/doi/full/10.1111/tpj.14649)
+
 >[推导并建立新的代谢途径+算法1](https://bmcsystbiol.biomedcentral.com/articles/10.1186/1752-0509-2-111)
->[推导并建立新的代谢途径+算法2](https://bmcsystbiol.biomedcentral.com/articles/10.1186/1752-0509-2-111)
+
 
 >[PyMiner: A method for metabolic pathway design based on the uniform similarity of substrate-product    pairs and conditional search](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9000129/)
 
 >[Low-Cost Algorithms for Metabolic Pathway Pairwise Comparison](https://www.mdpi.com/2313-7673/7/1/27/pdf?version=1645532294)
+
 >[Metabolite Diversity and Metabolic Genome-Wide Marker Association Studies (Mgwas) for Health Benefiting Nutritional Traits in Pearl Millet Grains](https://doi.org/10.3390/cells10113076)
 
 >[Linking genomics and metabolomics to chart specialized metabolic diversity](https://pubs.rsc.org/en/content/articlelanding/2020/cs/d0cs00162g)
@@ -62,6 +64,19 @@ Due to the successes with metabolism, there is an increasing effort to apply COB
 
 由于在基于约束的新陈代谢模拟中存在等效的替代最优值，许多反应理论上可能能够为给定的模拟目标携带大范围的通量。通量变异性分析 (FVA) 通常用于计算反应可以携带的通量，同时仍模拟通过受指定容差影响的目标函数的最大通量。
 
+QTXNetwork如何与代谢组关联分析？
+metabolic + snp ?
+>https://github.com/gc5k/GEAR/wiki/EigenGWAS
+
+然环境影响新陈代谢，通过在严格的统计遗传学框架中开发代谢型数量性状基因座 (mQTL) 作图和代谢组学全基因组关联研究 (mGWAS)，确定代谢表型（代谢型）的遗传决定因素成为可能，推导代谢物浓度和代谢物浓度之间的关联遗传多态性。然而，鉴于参与代谢模式调节的生物分子事件的复杂性，最近还引入了替代网络生物学方法，例如综合代谢组和相互作用组图 (iMIM)。这种前所未有的代谢生物化学、数量遗传学和网络生物学的融合已经对代谢组在生物医学科学中的作用产生了强烈的影响，
+>Metabolome 2.0: quantitative genetics and network biology of metabolic phenotypes†
+>Untargeted metabolome quantitative trait locus
+>mQTL
+这个得看看。。。
+>[Untargeted Metabolic Quantitative Trait Loci Analyses Reveal a Relationship between Primary Metabolism and Potato Tuber Quality ](https://academic.oup.com/plphys/article/158/3/1306/6109165?login=false)
+对于“风味”这种无法量化的表型，文章巧妙利用代谢物作为桥梁，通过对番茄风味调查结果与代谢物浓度的相关性分析，得到可指示“风味”的具体化学物质，然后将这些化学物质作为表型，与基因型数据进行关联分析，定位风味相关基因位点
+
+>[mQTL.NMR：基于 (1) H NMR 的代谢谱定量变异遗传作图的集成套件](https://pubmed.ncbi.nlm.nih.gov/25803548/)
 >[COBRApy](https://bmcsystbiol.biomedcentral.com/articles/10.1186/1752-0509-7-74)
 >[Meneco, a Topology-Based Gap-Filling Tool Applicable to Degraded Genome-Wide Metabolic Networks](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005276)
 
@@ -69,6 +84,7 @@ Due to the successes with metabolism, there is an increasing effort to apply COB
 
 >[Metabolic network database](https://www.biostars.org/p/189855/)
 
+>[Simple d3.js based flux visualizations](https://github.com/pstjohn/d3flux))
 ## 代谢图谱
 >[代谢组学常见数据库列表和简介](https://blog.csdn.net/qq_40932679/article/details/117911666)
 
