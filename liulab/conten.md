@@ -22,6 +22,7 @@ dbSNP contains human single nucleotide variations, microsatellites, and small-sc
 
 
 >[dbSNP](https://www.ncbi.nlm.nih.gov/snp/)
+>[gene_snps](http://asia.ensembl.org/info/website/tutorials/gene_snps.html)
 
 >[王青锋.糖尿病肠道数据库的建立及其应用.2020.重庆医科大学，博士论文。](https://oversea.cnki.net/KCMS/detail/detail.aspx?dbcode=CDFD&dbname=CDFDLAST2021&filename=1020764581.nh&uniplatform=OVERSEA&v=TzP8mXavciJzmB1chN-DIx_m0CO6VetC7RIY3m3XT2R2AsSZChlESpGXa9MV0Pke))
 
@@ -55,6 +56,16 @@ dbSNP contains human single nucleotide variations, microsatellites, and small-sc
 
 >[Constructing kinetic models of metabolism at genome-scales: A review](https://onlinelibrary.wiley.com/doi/10.1002/biot.201400522)
 
+## Metabolome Transcriptome || transcriptome-metabolome analysis
+
+>[transcriptome-metabolome analysis](https://www.frontiersin.org/articles/10.3389/fgene.2021.716163/full)
+
+>[ComparisonOfMetabolomeAndTranscriptomeData](https://github.com/AnnsophieWeber/ComparisonOfMetabolomeAndTranscriptomeData)
+
+In contrast to artificial intelligence and machine learning approaches, KEGG (https://www.kegg.jp) has relied on human intelligence to develop “models” of biological systems, especially in the form of KEGG pathway maps that are manually created by capturing knowledge from published literature. The KEGG models can then be used in biological big data analysis, for example, for uncovering systemic functions of an organism hidden in its genome sequence through the simple procedure of KEGG mapping. Here we present an updated version of KEGG Mapper, a suite of KEGG mapping tools reported previously (Kanehisa and Sato, Protein Sci 2020; 29:28–35), together with the new versions of the KEGG pathway map viewer and the BRITE hierarchy viewer. Significant enhancements have been made for BRITE mapping, where the mapping result can be examined by manipulation of hierarchical trees, such as pruning and zooming. The tree manipulation feature has also been implemented in the taxonomy mapping tool for linking KO (KEGG Orthology) groups and modules to phenotypes.
+
+>[KEGG mapper?](https://www.genome.jp/kegg/mapper/reconstruct.html)
+
 ## plant metabolic networks
 COBRApy is a package for constraint-based modeling of metabolic networks.
 
@@ -73,6 +84,7 @@ metabolic + snp ?
 >Untargeted metabolome quantitative trait locus
 >mQTL
 这个得看看。。。
+eg:gene CsJAZ12
 >[Untargeted Metabolic Quantitative Trait Loci Analyses Reveal a Relationship between Primary Metabolism and Potato Tuber Quality ](https://academic.oup.com/plphys/article/158/3/1306/6109165?login=false)
 对于“风味”这种无法量化的表型，文章巧妙利用代谢物作为桥梁，通过对番茄风味调查结果与代谢物浓度的相关性分析，得到可指示“风味”的具体化学物质，然后将这些化学物质作为表型，与基因型数据进行关联分析，定位风味相关基因位点
 
@@ -109,6 +121,6 @@ Metabolizer 是一个网络工具，用于使用转录组数据分析代谢途�
 ## 文件服务器可以用这么嘛？
 >[epiviz genome 文件服务器](https://epiviz.github.io/)
 
-
+>[biosql 管理数据](https://github.com/biosql/biosql)
 
 
