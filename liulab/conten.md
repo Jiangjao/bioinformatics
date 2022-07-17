@@ -119,6 +119,21 @@ Metabolizer 是一个网络工具，用于使用转录组数据分析代谢途�
 
 
 ## 文件服务器可以用这么嘛？
+HDF 存储snp
+
+```python
+bioIkarus
+conda activate base
+conda install  python=3.6 h5py tornado requests pytz
+
+# run server
+cd /home
+cd h5serv; 
+python h5serv --port=9000
+
+```
+>[HDF server](https://github.com/HDFGroup/h5serv)
+>[HDF 存储snp](https://www.hdfgroup.org/portfolio-item/medical-and-biotech/)
 >[epiviz genome 文件服务器](https://epiviz.github.io/)
 
 >[biosql 管理数据](https://github.com/biosql/biosql)
