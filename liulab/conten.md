@@ -128,12 +128,18 @@ conda install  python=3.6 h5py tornado requests pytz
 
 # run server
 cd /home
-cd h5serv; 
+cd h5serv
 python h5serv --port=9000
 
 ```
 >[HDF server](https://github.com/HDFGroup/h5serv)
 >[HDF 存储snp](https://www.hdfgroup.org/portfolio-item/medical-and-biotech/)
+>[vcf2hdf5](https://ipyrad.readthedocs.io/en/latest/API-analysis/cookbook-vcf2hdf5.html)
+
+>[vcfnp 2 hdf5](https://pypi.org/project/vcfnp/)
+
+>[Sgkit is a general purpose toolkit for quantitative and population genetics](https://scikit-allel.readthedocs.io/en/stable/model.html)
+
 >[epiviz genome 文件服务器](https://epiviz.github.io/)
 
 >[biosql 管理数据](https://github.com/biosql/biosql)
