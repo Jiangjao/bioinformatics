@@ -131,12 +131,39 @@ cd /home
 cd h5serv
 python h5serv --port=9000
 
+# vcf 3 hdf5
+pip3 install cython
+pip3 install numpy
+pip3 install vcfnp
+
+# firstly, generated npy files
+# Secondly, generated hdf5 files...
+vcfnpy2hdf5 \
+    --vcf /path/to/my.vcf \
+    --input-dir /path/to/npy/output \
+    --output /path/to/my.h5
+
+pip uninstall vcfnp
+# ----------------- use another tools -------------------
+
+pip install scikit-allel
+
+
+# toc_name
+# Name of the auto-generated HDF5 that provides a “Table Of Contents” list of all HDF5 files in the datapath directory and sub-directories.
+
+# Default: .toc.h5
+
+# 可视化
+pip install vitables
+vitables *.h5
 ```
 >[HDF server](https://github.com/HDFGroup/h5serv)
 >[HDF 存储snp](https://www.hdfgroup.org/portfolio-item/medical-and-biotech/)
 >[vcf2hdf5](https://ipyrad.readthedocs.io/en/latest/API-analysis/cookbook-vcf2hdf5.html)
 
->[vcfnp 2 hdf5](https://pypi.org/project/vcfnp/)
+<!-- >[vcfnp 2 hdf5](https://pypi.org/project/vcfnp/) -->
+>[scikit-allel](http://alimanfoo.github.io/2017/06/14/read-vcf.html)
 
 >[Sgkit is a general purpose toolkit for quantitative and population genetics](https://scikit-allel.readthedocs.io/en/stable/model.html)
 
