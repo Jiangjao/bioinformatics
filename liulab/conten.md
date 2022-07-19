@@ -131,6 +131,10 @@ cd /home
 cd h5serv
 python h5serv --port=9000
 
+# unit test
+cd test
+python testall.py
+
 # vcf 3 hdf5
 pip3 install cython
 pip3 install numpy
@@ -157,7 +161,10 @@ pip install scikit-allel
 # 可视化
 pip install vitables
 vitables *.h5
+
 ```
+>[HDF sql](https://www.hdfql.com/)
+>[HDF user guide](https://portal.hdfgroup.org/display/HDF5/HDF5+User+Guides?preview=/53610087/53610088/Users_Guide.pdf)
 >[HDF server](https://github.com/HDFGroup/h5serv)
 >[HDF 存储snp](https://www.hdfgroup.org/portfolio-item/medical-and-biotech/)
 >[vcf2hdf5](https://ipyrad.readthedocs.io/en/latest/API-analysis/cookbook-vcf2hdf5.html)
@@ -171,4 +178,4 @@ vitables *.h5
 
 >[biosql 管理数据](https://github.com/biosql/biosql)
 
-
+>[How to improve performance with Parallel HDF5](https://confluence.hdfgroup.org/display/knowledge/How+to+improve+performance+with+Parallel+HDF5)
