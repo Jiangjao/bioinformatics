@@ -162,7 +162,35 @@ pip install scikit-allel
 pip install vitables
 vitables *.h5
 
+# extension on vscode works well
+# which faster read from hdf5 or read from MySql
+# 外键的作用？
+# key-value
+
+# store hdf5 index in database?
+HDF5-FastQuery: Accelerating Complex Queries on HDF Datasets using Fast Bitmap Indices
+
+hdf sql
+
+?Genotype Matrix
+
+# 在hdf5文件如何query?
+
+# index file created which seems really ..
+sort 、 uniq -c
+
+
 ```
+```python
+
+# transform vcf/snp into hdf5
+import allel
+allel.vcf_to_hdf5(filename, "./data/sstest.h5", fields='*', overwrite=True)
+
+# then index file of hdf5 file should be created..
+```
+>[index on hdf5](https://www.slideshare.net/HDFEOS/jxp-50716706?from_action=save)
+>[SnpHub: an easy-to-set-up web server framework for exploring large-scale genomic variation data in the post-genomic era with applications in wheat](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7274028/)
 >[HDF sql](https://www.hdfql.com/)
 >[HDF user guide](https://portal.hdfgroup.org/display/HDF5/HDF5+User+Guides?preview=/53610087/53610088/Users_Guide.pdf)
 >[HDF server](https://github.com/HDFGroup/h5serv)
