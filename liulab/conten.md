@@ -188,6 +188,13 @@ import allel
 allel.vcf_to_hdf5(filename, "./data/sstest.h5", fields='*', overwrite=True)
 
 # then index file of hdf5 file should be created..
+
+import cchardet
+
+encode_type = chardet.detect(m)
+# print(encode_type)
+m = m.decode(encode_type['encoding']) #进行相应解码，赋给原标识符（变量）
+m = re.sub('managed = False\n', "", m)
 ```
 >[index on hdf5](https://www.slideshare.net/HDFEOS/jxp-50716706?from_action=save)
 >[SnpHub: an easy-to-set-up web server framework for exploring large-scale genomic variation data in the post-genomic era with applications in wheat](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7274028/)
