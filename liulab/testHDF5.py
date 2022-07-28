@@ -10,7 +10,7 @@ import base64
 # import bytearray
 # import vcfnp
 filename = './data/ss.vcf.gz'
-# from collections import ChainMap 
+# from collections import ChainMap
 # baseline = {'music': 'bach', 'art': 'rembrandt'}
 # adjustments = {'art': 'van gogh', 'opera': 'carmen'}
 # test = ChainMap(adjustments, baseline)
