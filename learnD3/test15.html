@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <script type = "text/javascript" src = "https://d3js.org/d3.v4.min.js"></script>
+   </head>
+   <body>
+      <div>
+         Hello World!    
+      </div>
+      <div class="myclass">
+        Hello World!2    
+     </div>
+     <ul id = "list">
+        <li><li>
+     </ul>
+     <svg width="50" height="50">
+        <circle cx="25" cy="25" r="22" fill="blue"
+            stroke="gray" stroke-width="2"/>
+     </svg>
+     <p></p>
+      <p></p>
+      <p></p>
+      <script>
+        //  alert(d3.select("div").text());
+        //  d3.select("div.myclass").append("span").text("from D3.js").attr("style", "color: red");;
+        //  d3.select("#list").selectAll("li").data([10, 20, 30, 25, 15]);
+        d3.select("#list").selectAll("li")
+   .data([10, 20, 30, 25, 15])
+   .text(function(d) { return d; });
+        d3.select("#list").selectAll("li")
+            .data([10, 20, 30, 25, 15])
+            .text(function(d) {return "This is pre-existing element and the value is " + d;})
+            .enter()
+            .append("li")
+            .text(function(d)
+                {return "This is dynamically created element and the value is " + d;});
+                var data = [1, 2, 3];
+         var paragraph = d3.select("body")
+         .selectAll("p")
+         .data(data)
+         .text(function (d, i) {
+            console.log("d: " + d);
+            console.log("i: " + i);
+            console.log("this: " + this);
+            return "The index is " + i + " and the data is " + d;
+         });
+      </script>
+   </body>
+</html>
