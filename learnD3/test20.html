@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>canvas事件</title>
+	<style>
+		html, body {
+			height: 100%;
+			background: #eee;
+		}
+		canvas {
+			background: #fff;
+			display: block;
+			margin: 0 auto;
+		}
+	</style>
+</head>
+<body>
+	<canvas width="500" height="500" id="canvas"></canvas>
+    <canvas id="myCanvas" width="600" height="250" style="border:1px solid black;">
+    </canvas>
+    <script type="text/javascript">
+    function draw() {
+        var canvas = document.getElementById('canvas');
+        const unitdx = (Math.sqrt(2) - 1)
+        console.log(unitdx)
+        if (canvas.getContext) {
+            console.log('你的浏览器支持Canvas!');
+        } else {
+            console.log('你的浏览器不支持Canvas!');
+        }
+        if (canvas.getContext) {
+            var ctx = canvas.getContext('2d');
+            // 28 id greater than 25.
+            ctx.translate(unitdx * 100 + 28 , 0)
+            ctx.fillStyle = "rgb(255,100,0)";
+            // rotate angle of 45 degree...
+            ctx.rotate(45 * Math.PI / 180);
+            
+            ctx.fillRect(25, 25, 100, 100);
+            ctx.clearRect(45, 45, 60, 60);
+            ctx.strokeRect(50, 50, 50, 50);
+            
+        }
+    }
+    draw();
+    
+    function drawDiamond(context, x, y, width, height){
+        context.save();/*  w w  w .j a va 2 s  .c o m*/
+                context.beginPath();
+                context.moveTo(x, y);
+                
+                // top left edge
+                context.lineTo(x - width / 2, y + height / 2);
+                
+                // bottom left edge
+                context.lineTo(x, y + height);
+                
+                // bottom right edge
+                context.lineTo(x + width / 2, y + height / 2);
+                
+                // closing the path automatically creates
+                // the top right edge
+                context.closePath();
+                
+                context.fillStyle = "red";
+                context.fill();
+                context.restore();
+            }
+        window.onload = function(){
+            var canvas = document.getElementById("myCanvas");
+            var context = canvas.getContext("2d");
+            // const unitOperator = Math.sqrt(2) * 2
+            const unitOperator = 1.0 * 2
+            rectWidth = 40
+            rectHeight = 75
+            drawDiamond(context, 100, 70, rectWidth, rectWidth);
+            drawDiamond(context, 100 + rectWidth, 70, rectWidth, rectWidth);
+            drawDiamond(context, 100 + rectWidth * 2, 70, rectWidth, rectWidth);
+            drawDiamond(context, 100 + rectWidth * 3, 70, rectWidth, rectWidth);
+
+            // add y axis
+            // drawDiamond(context, 325, 145, rectWidth, rectWidth);
+            drawDiamond(context, 325, 145, rectWidth, rectWidth);
+            drawDiamond(context, 100, 145, rectWidth, rectWidth);
+            // drawDiamond(context, 100, 125, 75, 75);
+            drawDiamond(context, 100 - (rectWidth / unitOperator ), 70 + (rectWidth / unitOperator ), rectWidth, rectWidth);
+            drawDiamond(context, 100 + rectWidth - (rectWidth / unitOperator ), 70 + (rectWidth / unitOperator ), rectWidth, rectWidth);
+            drawDiamond(context, 100 + rectWidth * 2 - (rectWidth / unitOperator ), 70 + (rectWidth / unitOperator ), rectWidth, rectWidth);
+            drawDiamond(context, 100 + rectWidth * 3 - (rectWidth / unitOperator ), 70 + (rectWidth / unitOperator ), rectWidth, rectWidth);
+            drawDiamond(context, 100 + rectWidth * 4 - (rectWidth / unitOperator ), 70 + (rectWidth / unitOperator ), rectWidth, rectWidth);
+
+        };
+    </script>
+</body>
