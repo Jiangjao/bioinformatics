@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>canvas事件</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" />
+	<style>
+        .intron {
+            stroke: rgb(85, 95, 102);
+            stroke-width: 1px;
+            /*stroke-dasharray: 10,5;*/
+        }
+
+        .exon {
+        stroke: rgb(75, 134, 153);
+        fill: none;
+        stroke-width: 1px;
+        stroke-dasharray: 0.9;
+        }
+
+        .exon-curated {
+        cursor: pointer;
+        stroke-width: 2px;
+        stroke: rgb(85, 95, 102);
+    }
+    </style>
+    <script type = "text/javascript" src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+    <script type = "text/javascript" src = "https://rawgit.com/broadinstitute/gtex-viz/master/build/js/gtex-viz.bundle.min.js"></script>
+    <script type = "text/javascript" src = "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script type = "text/javascript" src = "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+    
+
+</head>
+<body>
+	<!-- <canvas width="500" height="500" id="canvas"></canvas>
+    <canvas id="myCanvas" width="600" height="250" style="border:1px solid black;">
+    </canvas> -->
+    <!-- <div style="margin: 20px">
+        <h3>GTExViz Bubble Map local test</h3>
+        <div id="randomBubblemap"></div>
+      </div> -->
+    <!-- <div style="margin: 20px">
+        <h3>GTExViz Half Map</h3>
+        <div id="randomHalfMap"></div>
+    </div> -->
+    <div style="margin:20px;">
+        <h3>GTExViz Transcript Structure</h3>
+        <div id="userTranscripts"></div>
+      </div>
+    <script type="text/javascript">
+        let config = {
+            id: 'userTranscripts',
+            data: getData(),
+            width: 600,
+            height: 80,
+            marginLeft: 100,
+            marginRight: 20,
+            marginTop: 0,
+            marginBottom: 20,
+            labelPos: 'left'
+        };
+        GTExViz.transcriptTracks(config);
+
+        function getData() {
+        return {
+            "exons": {
+            "ENST00000311595.9": [{
+                "chrom": "17",
+                "chromEnd": 77071172,
+                "exonId": "ENSE00002713933.1",
+                "exonNumber": "1",
+                "chromStart": 77071151,
+                "strand": "+"
+                },
+                {
+                "chrom": "17",
+                "chromEnd": 77073579,
+                "exonId": "ENSE00003672628.1",
+                "exonNumber": "2",
+                "chromStart": 77073512,
+                "strand": "+"
+                },
+                {
+                "chrom": "17",
+                "chromEnd": 77073946,
+                "exonId": "ENSE00003475281.1",
+                "exonNumber": "3",
+                "chromStart": 77073745,
+                "strand": "+"
+                },
+                {
+                "chrom": "17",
+                "chromEnd": 77075719,
+                "exonId": "ENSE00001111713.1",
+                "exonNumber": "4",
+                "chromStart": 77075571,
+                "strand": "+"
+                },
+                {
+                "chrom": "17",
+                "chromEnd": 77076446,
+                "exonId": "ENSE00003651250.1",
+                "exonNumber": "5",
+                "chromStart": 77076289,
+                "strand": "-"
+                },
+                {
+                "chrom": "17",
+                "chromEnd": 77077155,
+                "exonId": "ENSE00003607773.1",
+                "exonNumber": "6",
+                "chromStart": 77077007,
+                "strand": "+"
+                },
+                {
+                "chrom": "17",
+                "chromEnd": 77078612,
+                "exonId": "ENSE00002720924.1",
+                "exonNumber": "7",
+                "chromStart": 77077980,
+                "strand": "-"
+                }
+            ]
+            },
+            "transcripts": [{
+                "chromosome": "17",
+                "end": 77078612,
+                "gencodeId": "ENSG00000167280.12",
+                "geneSymbol": "ENGASE",
+                "start": 77071151,
+                "strand": "+",
+                "transcriptId": "ENST00000311595.9"
+            }]
+        };
+        }
+
+    </script>
+
+</body>
