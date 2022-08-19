@@ -1,0 +1,94 @@
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>range slider with different area</title>
+	<style>
+		html, body {
+			height: 100%;
+			background: #eee;
+		}
+		canvas {
+			background: #fff;
+			display: block;
+			margin: 0 auto;
+		}
+	</style>
+        <script src="https://cdn.plot.ly/plotly-2.14.0.min.js"></script>
+        <script type = "text/javascript" src = "https://d3js.org/d3.v4.min.js"></script>
+
+</head>
+<body>
+    <div id="myDiv"></div>
+    <div id="myDiv1"></div>
+    <script type="text/javascript">
+    var trace1 = {
+        x: [
+            ['SF Zoo','SF Zoo','SF Zoo'],
+            [25, 26, 28]
+        ],
+        y: [20, 14, 23],
+        text: ['Text A', 'Text B', 'Text C', 'Text D', 'Text E'],
+        name: 'SF Zoo',
+        type: 'bar',
+        bargap:0,
+        boxgap:0,
+        width:1
+    };
+
+    var trace2 = {
+        x: [
+                ['LA Zoo','LA Zoo','LA Zoo'],
+                [40, 41, 42]
+            ],
+        y: [12, 18, 29],
+        hovertemplate: 'location: %{y:$.2f}-+500000%{y:$.2f+100}<extra></extra>',
+        name: 'LA Zoo',
+        type: 'bar',
+        bargroupgap:0,
+        width:1
+    };
+
+    var trace3 = {
+        x: [
+                ['LA Zoo','LA Zoo','LA Zoo'],
+                [50, 51, 52]
+            ],
+        y: [12, 18, 29],
+        hovertemplate: 'location: %{y:$.2f}-+500000%{y:$.2f+100}<extra></extra>',
+        name: 'LA Zoo',
+        type: 'bar',
+        bargroupgap:0,
+        width:1
+    };
+
+    var data = [trace1, trace2, trace3];
+    var layout = {
+        showlegend: false,
+        // xaxis: {
+        //     tickson: "boundaries",
+        //     ticklen: 15,
+        //     showdividers: true,
+        //     dividercolor: 'grey',
+        //     dividerwidth: 0,
+        //     rangeselector: selectorOptions,
+        //     rangeslider: {}
+        // }
+        xaxis: {
+                // rangeselector: selectorOptions,
+                rangeslider: {}
+            },
+        yaxis: {
+            fixedrange: true
+        }
+
+    };
+
+    Plotly.newPlot('myDiv', data, layout);
+
+    </script>
+
+</body>
+
+</html>
