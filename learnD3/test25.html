@@ -63,9 +63,22 @@
         width:1
     };
 
-    var data = [trace1, trace2, trace3];
+    var trace4 = {
+        x: [
+                ['LA Zoo','LA Zoo','LA Zoo'],
+                [60, 61, 62]
+            ],
+        y: [12, 18, 29],
+        hovertemplate: 'location: %{y:$.2f}-+500000%{y:$.2f+100}<extra></extra>',
+        name: 'SF Zoo',
+        type: 'bar',
+        bargroupgap:0,
+        width:1
+    };
+
+    var data = [trace1, trace2, trace3, trace4];
     var layout = {
-        showlegend: false,
+        showlegend: true,
         // xaxis: {
         //     tickson: "boundaries",
         //     ticklen: 15,
@@ -77,7 +90,8 @@
         // }
         xaxis: {
                 // rangeselector: selectorOptions,
-                rangeslider: {}
+                rangeslider: {},
+                // fixedrange: true,
             },
         yaxis: {
             fixedrange: true
