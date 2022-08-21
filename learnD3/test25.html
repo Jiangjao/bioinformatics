@@ -23,6 +23,7 @@
     <div id="myDiv"></div>
     <div id="myDiv1"></div>
     <script type="text/javascript">
+    var myPlot = document.getElementById('myDiv')
     var trace1 = {
         x: [
             ['SF Zoo','SF Zoo','SF Zoo'],
@@ -95,12 +96,43 @@
             },
         yaxis: {
             fixedrange: true
-        }
-
+        },
+        // marker: {
+        //     color: "blue",
+        //     "color:hover": "orange",
+        //     "color:click": "green",
+        //     "color:selected": "purple",
+        //     "color:unselected": "grey"
+        // },
+        // interaction: {
+        //     type: 'hover', // or 'click' or 'select'
+        //     method: 'restyle',
+        //     args: ['marker.color', 'blue']
+        // },
+        hovermode:"x unified",
+        // modebar:{
+        //     activecolor:"red"
+        // }
+        hoverlabel:{
+            bordercolor:"red",
+        },
+        // activeshape:{
+        //     fillcolor:"red",
+        //     opacity:0.1
+        // }
     };
 
     Plotly.newPlot('myDiv', data, layout);
 
+    // click event
+    myPlot.on('plotly_click', function(data){
+        var pts = '';
+        for(var i=0; i < data.points.length; i++){
+            pts = 'x = '+ data.points[i].x +'\ny = '+
+                data.points[i].y.toPrecision(4) + '\n\n';
+        }
+        alert('Closest point clicked:\n\n'+pts);
+    });
     </script>
 
 </body>
