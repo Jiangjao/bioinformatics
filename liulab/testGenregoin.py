@@ -2,7 +2,7 @@
 Author: jayjiao 918718278@qq.com
 Date: 2022-08-18 17:24:01
 LastEditors: jayjiao 918718278@qq.com
-LastEditTime: 2022-08-19 14:29:09
+LastEditTime: 2022-08-21 17:02:27
 FilePath: \geekbang\bioinformatics\liulab\testGenregoin.py
 Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 '''
@@ -26,19 +26,25 @@ def genregion(chromeinfo:list):
         chrome, length   = chromes
         step = 500000
         flag = 0
+        # chrome = chrome.replace("Chr","")
         if chrome.strip() == "Chr1":
+            chrome = chrome.replace("Chr","")
             # yield (0, chrome)
             for regoin in range(step, length, step):
                 # print(regoin, chrome)
                 # yield (flag, regoin, chrome)
-                yield "SELECT * from testGWAS WHERE " + " regoin >= " + str(flag) \
-                    + " AND regoin <= " + str(regoin) + " AND chrome=" + chrome
+                yield "SELECT * from testmgwas WHERE " + " ps >= " + str(flag) \
+                    + " AND ps <= " + str(regoin) + " AND chr=" +  chrome
                 if (regoin + step) >= length:
                     flag = 0
                 else:
                     flag += step
-
+        # SELECT * from testmgwas WHERE  ps >= 220000000 AND ps <= 220500000 AND chr="Chr"
+        yield "SELECT * from testmgwas WHERE " + " ps >= " + str(regoin) \
+                    + " AND ps <= " + str(length) + " AND chr ="+ chrome
 ss = genregion(chromeinfo)
 
-print(next(ss))
-print(next(ss))
+for i in ss:
+    print(i)
+# print(next(ss))
+# print(next(ss))
