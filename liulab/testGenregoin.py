@@ -1,14 +1,9 @@
-'''
-Author: jayjiao 918718278@qq.com
-Date: 2022-08-18 17:24:01
-LastEditors: jayjiao 918718278@qq.com
-LastEditTime: 2022-08-21 17:02:27
-FilePath: \geekbang\bioinformatics\liulab\testGenregoin.py
-Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
-'''
 # !/usr/bin/python3
 # author:xiaojiao 2022/08/18
 # split chrome length into range between region(500000)
+
+from xml.etree.ElementPath import prepare_self
+
 
 chromeinfo = [ ("Chr1 ",   222834174), ("Chr2 ",   213184539), \
 ("Chr11",   123678568), ("Chr12",   162709580), \
@@ -22,29 +17,53 @@ chromeinfo = [ ("Chr1 ",   222834174), ("Chr2 ",   213184539), \
 
 
 def genregion(chromeinfo:list):
+    # sort chromes in order
+    chromeinfo = sorted(chromeinfo, key = lambda x: int(x[0][3:]))
+    detailLength = 0
+    preLength = 0
     for chromes in chromeinfo:
-        chrome, length   = chromes
+        chrome, length = chromes
         step = 500000
         flag = 0
         # chrome = chrome.replace("Chr","")
-        if chrome.strip() == "Chr1":
+
+        # get detail length which mapped to x axis
+        if length == 222834174 and chrome.strip() == "Chr1":
+            # print("emmmmmm")
+            preLength = length
+        else:
+            detailLength = preLength
+            preLength += length
+
+        # detailLength += length
+        if chrome.strip() != None:
             chrome = chrome.replace("Chr","")
             # yield (0, chrome)
             for regoin in range(step, length, step):
                 # print(regoin, chrome)
                 # yield (flag, regoin, chrome)
-                yield "SELECT * from testmgwas WHERE " + " ps >= " + str(flag) \
-                    + " AND ps <= " + str(regoin) + " AND chr=" +  chrome
+
+                yield   f'SELECT  `index`, chr,ps, min(p_wald), \' {flag} - {regoin} \' as \'location\' ' \
+                        + f', \'{detailLength}\' as \'detailX\' ' \
+                        + f'from testmgwas WHERE  ps >=  {flag} ' \
+                        + f'AND ps <=  {regoin} AND chr={chrome};'
                 if (regoin + step) >= length:
                     flag = 0
                 else:
                     flag += step
-        # SELECT * from testmgwas WHERE  ps >= 220000000 AND ps <= 220500000 AND chr="Chr"
-        yield "SELECT * from testmgwas WHERE " + " ps >= " + str(regoin) \
-                    + " AND ps <= " + str(length) + " AND chr ="+ chrome
-ss = genregion(chromeinfo)
+        # SELECT `index`, chr,ps, min(p_wald) from testmgwas WHERE  ps >= 220000000 AND ps <= 220500000 AND chr="Chr"
+        # SELECT `index`, chr,ps, min(p_wald),  '148500000-149000000' as "location" \
+        #       from testmgwas WHERE  ps >= 148500000 AND ps <= 149000000 AND chr=2;
+        yield   f'SELECT  `index`, chr,ps, min(p_wald), \' {regoin} - {length} \' as \'location\' ' \
+                    + f', \'{detailLength}\' as \'detailX\' ' \
+                    + f'from testmgwas WHERE  ps >=  {regoin} ' \
+                    + f'AND ps <=  {length} AND chr={chrome};'
+        # break
 
-for i in ss:
-    print(i)
+ss = genregion(chromeinfo)
+if __name__ =="__main__":
+    ss = genregion(chromeinfo)
+    for i in ss:
+        print(i)
 # print(next(ss))
 # print(next(ss))

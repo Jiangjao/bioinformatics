@@ -122,7 +122,23 @@
         // }
     };
 
+    // fixme (xiaojiao): change the mouse cursor ,eg. drag
     Plotly.newPlot('myDiv', data, layout);
+
+    // change cursor pointer
+    dragLayer = document.getElementsByClassName('nsewdrag')[0]
+
+    myPlot.on('plotly_hover', function(data){
+        dragLayer.style.cursor = 'pointer'
+    });
+
+    myPlot.on('plotly_unhover', function(data){
+        dragLayer.style.cursor = ''
+    });
+
+    myPlot.on('plotly_relayout', function(data){
+        console.log("relayout DATA " , data);
+    });
 
     // click event
     myPlot.on('plotly_click', function(data){
