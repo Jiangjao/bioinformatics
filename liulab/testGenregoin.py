@@ -44,7 +44,7 @@ def genregion(chromeinfo:list):
                 # yield (flag, regoin, chrome)
 
                 yield   f'SELECT  `index`, chr,ps, min(p_wald), \' {flag} - {regoin} \' as \'location\' ' \
-                        + f', \'{detailLength}\' as \'detailX\' ' \
+                        + f', {detailLength} as \'detailX\' ' \
                         + f'from testmgwas WHERE  ps >=  {flag} ' \
                         + f'AND ps <=  {regoin} AND chr={chrome};'
                 if (regoin + step) >= length:
@@ -55,7 +55,7 @@ def genregion(chromeinfo:list):
         # SELECT `index`, chr,ps, min(p_wald),  '148500000-149000000' as "location" \
         #       from testmgwas WHERE  ps >= 148500000 AND ps <= 149000000 AND chr=2;
         yield   f'SELECT  `index`, chr,ps, min(p_wald), \' {regoin} - {length} \' as \'location\' ' \
-                    + f', \'{detailLength}\' as \'detailX\' ' \
+                    + f', {detailLength} as \'detailX\' ' \
                     + f'from testmgwas WHERE  ps >=  {regoin} ' \
                     + f'AND ps <=  {length} AND chr={chrome};'
         # break

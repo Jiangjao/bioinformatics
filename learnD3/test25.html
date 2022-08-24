@@ -17,7 +17,7 @@
 	</style>
         <script src="https://cdn.plot.ly/plotly-2.14.0.min.js"></script>
         <script type = "text/javascript" src = "https://d3js.org/d3.v4.min.js"></script>
-
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML'></script>
 </head>
 <body>
     <div id="myDiv"></div>
@@ -29,21 +29,30 @@
             ['SF Zoo','SF Zoo','SF Zoo'],
             [25, 26, 28]
         ],
-        y: [20, 14, 23],
+        y: [0.00020, 14, 23],
         text: ['Text A', 'Text B', 'Text C', 'Text D', 'Text E'],
-        name: 'SF Zoo',
+        name: 'SF Zoo11',
         type: 'bar',
         bargap:0,
         boxgap:0,
-        width:1
+        width:1,
+        textfont: {
+            family: 'sans serif',
+            size: 18,
+            color: '#1f77b4'
+        },
+        hovertemplate: '<i>Price</i>: $%{y:.2f}' +
+                '<br><b>X</b>: %{x}<br>' +
+                '<b>%{text}</b>',
+        textposition:"none",
     };
 
     var trace2 = {
         x: [
-                ['LA Zoo','LA Zoo','LA Zoo'],
-                [40, 41, 42]
+                ['LA Zoo','LA Zoo','LA Zoo','LA Zoo'],
+                [40, 41, 42, 43]
             ],
-        y: [12, 18, 29],
+        y: [12, 18, 29, 30],
         hovertemplate: 'location: %{y:$.2f}-+500000%{y:$.2f+100}<extra></extra>',
         name: 'LA Zoo',
         type: 'bar',
@@ -78,6 +87,7 @@
     };
 
     var data = [trace1, trace2, trace3, trace4];
+    var selectorOptions = {};
     var layout = {
         showlegend: true,
         // xaxis: {
@@ -89,26 +99,45 @@
         //     rangeselector: selectorOptions,
         //     rangeslider: {}
         // }
+        margin: {
+            autoexpand:false,
+            b:100,
+        },
         xaxis: {
                 // rangeselector: selectorOptions,
-                rangeslider: {},
+                tickangle: '45',
                 // fixedrange: true,
+                // autotick: true,
+                // tickfont: {
+                //     family: 'Old Standard TT, serif',
+                //     size: 4,
+                //     color: 'black'
+                //     },
+                // showticklabels: false,
+                rangeselector: selectorOptions,
+
+                rangeslider: {},
+
             },
         yaxis: {
-            fixedrange: true
+            // meybe draw an annotation,, that meet the command...
+            fixedrange: true,
+            // title: '$\log_{10} a$1, $d, r \text{ (solar radius)}$',
+            // y: 1,
+            // type: 'log',
+            // rangeslider: {},
+            // autorange: true
         },
-        // marker: {
-        //     color: "blue",
-        //     "color:hover": "orange",
-        //     "color:click": "green",
-        //     "color:selected": "purple",
-        //     "color:unselected": "grey"
-        // },
-        // interaction: {
-        //     type: 'hover', // or 'click' or 'select'
-        //     method: 'restyle',
-        //     args: ['marker.color', 'blue']
-        // },
+        annotations: [{
+            xref: 'paper',
+            yref: 'paper',
+            x: 0,
+            xanchor: 'center',
+            y: 1,
+            yanchor: 'bottom',
+            text: '$-\Log_{10}  (pValue)$ ',
+            showarrow: false
+        },],
         hovermode:"x unified",
         // modebar:{
         //     activecolor:"red"
