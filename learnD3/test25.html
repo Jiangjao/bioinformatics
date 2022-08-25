@@ -184,13 +184,30 @@
     }
     testhref = ""
     testbracket = []
+    var a = { zhihu:0 };
+
+    Object.defineProperty(a, 'zhihu', {
+        get: function() {
+            console.log('get:' + zhihu);
+            return zhihu;
+        },
+        set: function(value) {
+            zhihu = value;
+            console.log('set:' + zhihu);
+        }
+    });
     myPlot.on('plotly_click', function(data){
         var pts = '';
         for(var i=0; i < data.points.length; i++){
             pts = 'x = '+ data.points[i].x +'\ny = '+
-                data.points[i].y.toPrecision(4) + '\n\n';
+                data.points[i].y.toPrecision(4) +'\n'
+                + data.points[i].text +'\n\n';
         }
+        console.log(data)
         window.testhref = "https://www.baidu.com"
+        window.testhref = "https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik";
+        a.zhihu = window.testhref
+        genFrame()
         // testbracket.push('1')
         alert('Closest point clicked:\n\n'+pts + '<a href="www.baidu.com">11</a>');
 
@@ -202,7 +219,13 @@
 
     let locusframes = document.getElementById("locusframe");
 
-
+    // inline frame
+    var oldDivValue = document.getElementById("inlineFrameExample");
+    // if(document.getElementById("inlineFrameExample").innerHTML != oldDivValue){
+    //     console.log("变量值改变了");
+    // }else{
+    //     console.log("变量值没有改变");
+    // }
     function genFrame() {
         console.log(testhref)
         locusframes.innerHTML = "";
@@ -219,21 +242,27 @@
     // 状态机？
     // onchange 事件似乎可以...
     // 动态加载？
-    function myFunction() {
-        myVar = setInterval(genFrame, 3000);
+    // knock out 
+
+    // only work on ES5?
+    a.zhihu = 2; // set:2
+    console.log(a.zhihu); // get：2
+
+    // function myFunction() {
+    //     myVar = setInterval(genFrame, 3000);
         
-    }
-    myFunction();
+    // }
+    // myFunction();
     </script>
 
     <script type="text/javascript">
 
     </script>
-    <!-- <iframe id="inlineFrameExample"
+    <iframe id="inlineFrameExample"
     title="Inline Frame Example"
     width="300"
     height="200"
-    src="https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik"> -->
+    src="https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik">
 </iframe>
 </body>
 
