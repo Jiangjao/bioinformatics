@@ -17,11 +17,12 @@
 	</style>
         <script src="https://cdn.plot.ly/plotly-2.14.0.min.js"></script>
         <script type = "text/javascript" src = "https://d3js.org/d3.v4.min.js"></script>
-        <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML'></script>
+        <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
 </head>
 <body>
     <div id="myDiv"></div>
     <div id="myDiv1"></div>
+    <div id="locusframe" onload="genFrame()"></div>
     <script type="text/javascript">
     var myPlot = document.getElementById('myDiv')
     var trace1 = {
@@ -113,9 +114,11 @@
                 //     size: 4,
                 //     color: 'black'
                 //     },
-                // showticklabels: false,
+                showticklabels: true,
                 rangeselector: selectorOptions,
-
+                showdividers: false,
+                dividercolor: 'grey',
+                dividerwidth: 0,
                 rangeslider: {},
 
             },
@@ -135,7 +138,7 @@
             xanchor: 'center',
             y: 1,
             yanchor: 'bottom',
-            text: '$-\Log_{10}  (pValue)$ ',
+            text: '-Log<sub>10</sub> (p Value) ',
             showarrow: false
         },],
         hovermode:"x unified",
@@ -170,16 +173,68 @@
     });
 
     // click event
+    var clickGenhref = function(data) {
+        var pts = '';
+        for(var i=0; i < data.points.length; i++){
+            pts = 'x = '+ data.points[i].x +'\ny = '+
+                data.points[i].y.toPrecision(4) + '\n\n';
+        }
+        window.testhref = "www.baidu.com"
+        alert('Closest point clicked:\n\n'+pts + '<a href="www.baidu.com">11</a>');
+    }
+    testhref = ""
+    testbracket = []
     myPlot.on('plotly_click', function(data){
         var pts = '';
         for(var i=0; i < data.points.length; i++){
             pts = 'x = '+ data.points[i].x +'\ny = '+
                 data.points[i].y.toPrecision(4) + '\n\n';
         }
-        alert('Closest point clicked:\n\n'+pts);
+        window.testhref = "https://www.baidu.com"
+        // testbracket.push('1')
+        alert('Closest point clicked:\n\n'+pts + '<a href="www.baidu.com">11</a>');
+
     });
+
+    // contact link eachother
+    // testhref = "https://www.baidu.com/1"
+    var testsrc ="https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik"
+
+    let locusframes = document.getElementById("locusframe");
+
+
+    function genFrame() {
+        console.log(testhref)
+        locusframes.innerHTML = "";
+        var frames = '<iframe id="inlineFrameExample" ' +
+        'title="Inline Frame Example"' + 
+        'width="300"' +
+        'height="200"' +
+        'src=' + window.testhref + '>'
+        + '</iframe>'
+        locusframes.innerHTML += frames;
+    }
+
+    // 事件监听
+    // 状态机？
+    // onchange 事件似乎可以...
+    // 动态加载？
+    function myFunction() {
+        myVar = setInterval(genFrame, 3000);
+        
+    }
+    myFunction();
     </script>
 
+    <script type="text/javascript">
+
+    </script>
+    <!-- <iframe id="inlineFrameExample"
+    title="Inline Frame Example"
+    width="300"
+    height="200"
+    src="https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik"> -->
+</iframe>
 </body>
 
 </html>
