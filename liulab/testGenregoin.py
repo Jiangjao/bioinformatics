@@ -60,6 +60,7 @@ def genregion(chromeinfo:list):
                     + f'AND ps <=  {length} AND chr={chrome};'
         # break
 
+# so need to fix location
 ss = genregion(chromeinfo)
 if __name__ =="__main__":
     ss = genregion(chromeinfo)

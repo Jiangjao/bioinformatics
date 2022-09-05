@@ -184,7 +184,7 @@
     }
     testhref = ""
     testbracket = []
-    var a = { zhihu:0 };
+    var a = { zhihu:0, test:1 };
 
     Object.defineProperty(a, 'zhihu', {
         get: function() {
@@ -206,7 +206,8 @@
         console.log(data)
         window.testhref = "https://www.baidu.com"
         window.testhref = "https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik";
-        a.zhihu = window.testhref
+        a.zhihu = window.testhref;
+        a.test = pts;
         genFrame()
         // testbracket.push('1')
         alert('Closest point clicked:\n\n'+pts + '<a href="www.baidu.com">11</a>');
