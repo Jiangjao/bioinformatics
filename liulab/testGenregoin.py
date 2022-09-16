@@ -1,10 +1,7 @@
 # !/usr/bin/python3
 # author:xiaojiao 2022/08/18
 # split chrome length into range between region(500000)
-
-from xml.etree.ElementPath import prepare_self
-
-
+from functools import partial
 chromeinfo = [ ("Chr1 ",   222834174), ("Chr2 ",   213184539), \
 ("Chr11",   123678568), ("Chr12",   162709580), \
 ("Chr13",   136142203), ("Chr14",   133855197), \
@@ -16,7 +13,10 @@ chromeinfo = [ ("Chr1 ",   222834174), ("Chr2 ",   213184539), \
 
 
 
-def genregion(chromeinfo:list):
+def genregion(chromeinfo:list, table="testmgwas"):
+    '''
+    select GWAS overview from table
+    '''
     # sort chromes in order
     chromeinfo = sorted(chromeinfo, key = lambda x: int(x[0][3:]))
     detailLength = 0
@@ -45,7 +45,7 @@ def genregion(chromeinfo:list):
 
                 yield   f'SELECT  `index`, chr,ps, min(p_wald), \' {flag} - {regoin} \' as \'location\' ' \
                         + f', {detailLength} as \'detailX\' ' \
-                        + f'from testmgwas WHERE  ps >=  {flag} ' \
+                        + f'from {table} WHERE  ps >=  {flag} ' \
                         + f'AND ps <=  {regoin} AND chr={chrome};'
                 if (regoin + step) >= length:
                     flag = 0
@@ -56,12 +56,13 @@ def genregion(chromeinfo:list):
         #       from testmgwas WHERE  ps >= 148500000 AND ps <= 149000000 AND chr=2;
         yield   f'SELECT  `index`, chr,ps, min(p_wald), \' {regoin} - {length} \' as \'location\' ' \
                     + f', {detailLength} as \'detailX\' ' \
-                    + f'from testmgwas WHERE  ps >=  {regoin} ' \
+                    + f'from {table} WHERE  ps >=  {regoin} ' \
                     + f'AND ps <=  {length} AND chr={chrome};'
         # break
 
 # so need to fix location
-ss = genregion(chromeinfo)
+ss = partial(genregion, chromeinfo=chromeinfo)
+# ss = genregion(chromeinfo)
 if __name__ =="__main__":
     ss = genregion(chromeinfo)
     for i in ss:
