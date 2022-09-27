@@ -56,9 +56,57 @@ user_table = Table(
 metadata_obj.create_all(engine)
 ```
 
+## 添加数据 & fire
+<!-- I’m inserting 400,000 rows with the ORM and it’s really slow! -->
+```python
+import contextlib
+import sqlite3
+import sys
+import tempfile
+import time
+
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import __version__, Column, Integer, String, create_engine, insert
+from sqlalchemy.orm import Session
+mport contextlib
+import sqlite3
+import sys
+import tempfile
+import time
+
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import __version__, Column, Integer, String, create_engine, insert
+from sqlalchemy.orm import Session
+@contextlib.contextmanager
+def sqlalchemy_session(future):
+    with tempfile.NamedTemporaryFile(suffix=".db") as handle:
+        dbpath = handle.name
+        engine = create_engine(f"sqlite:///{dbpath}", future=future, echo=False)
+        session = Session(
+            bind=engine, future=future, autoflush=False, expire_on_commit=False
+        )
+        Base.metadata.create_all(engine)
+        yield session
+        session.close()
+
+def test_sqlalchemy_core(n=100000, future=True):
+    with sqlalchemy_session(future) as session:
+        with session.bind.begin() as conn:
+            t0 = time.time()
+            conn.execute(
+                insert(Customer.__table__),
+                [{"name": "NAME " + str(i)} for i in range(n)],
+            )
+            conn.commit()
+            print("SQLA Core", n, time.time() - t0)
+```
 ## 引用
 >[ORM](https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping)
 
 >[sqlalchemy](https://www.osgeo.cn/sqlalchemy/index.html)
 
 >[Python通过ORM方式操作MySQL数据库](https://blog.csdn.net/HG0724/article/details/112332393)
+
+>[Python连接数据库 ORM——插入，查询， 修改，删除](https://blog.csdn.net/weixin_46549605/article/details/123170145)
+
+>[Speed up the performance of sqlalchemy](https://docs.sqlalchemy.org/en/14/faq/performance.html)
