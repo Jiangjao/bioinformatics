@@ -23,3 +23,5 @@
 >[日志](https://zh.wikipedia.org/wiki/%E6%97%A5%E5%BF%97)
 >[Server_log](https://en.wikipedia.org/wiki/Logging_(software)#Server_log)
 >[log 4 image](https://javafindings.wordpress.com/2013/06/12/integrating-log4j-with-spring-3-0-mvc/)
+>[日志保存记录有效期](https://zhuanlan.zhihu.com/p/133864368)
+>[Django 日志](https://www.liujiangblog.com/course/django/176)
