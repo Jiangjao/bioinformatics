@@ -1,5 +1,5 @@
 # emm
-version 0.1.0, by xiaojiao
+version 0.1.1, by xiaojiao
 <!-- 然后NAR文章的部分初稿我已经写好了，还是要细化所有的数据处理和功能的内容
 
 -   对，有博士水准
@@ -10,11 +10,16 @@ version 0.1.0, by xiaojiao
 1. Browse GWAS locus for single trait within given region. If not specified, the region with the **most significant P-value** was displayed. The scatter plot region can be easily changed by clicking a bar in the overview navigational Manhattan Plot panel. You could also search the GWAS data through our Jbrowser2.
 
 2. Web services:download data used by RESTful web-service
-   1. 这个只是方便了下载
-   2. 下载功能还没有实现
+>比如这个[`api collection of KEGG、NCBI etc `](http://togows.org/)
+
+-   We defined a set of `RESTful web-service` calls for internal use and shared to collaborators through our development site.Some data calls may require login or limitation of times of downloads.Also, you can contact us.
+-   这个只是方便了下载
+-   下载功能还没有实现
+
+
 >>[RESTful web-service](https://en.wikipedia.org/wiki/Representational_state_transfer)
 
-3. data source collected from NC & EBI
+1. data source collected from NC & EBI
 >[`Metabolite signatures of diverse Camellia sinensis tea populations`](https://www.nature.com/articles/s41467-020-19441-1)
 
 ## 参考
@@ -25,3 +30,5 @@ version 0.1.0, by xiaojiao
 >[data on EBI](https://www.ebi.ac.uk/metabolights/MTBLS1405)
 
 >[data source ](https://www.nature.com/articles/s41467-020-19441-1)
+
+>[api collection of KEGG、NCBI etc ](http://togows.org/)
