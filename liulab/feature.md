@@ -32,3 +32,5 @@ version 0.1.1, by xiaojiao
 >[data source ](https://www.nature.com/articles/s41467-020-19441-1)
 
 >[api collection of KEGG、NCBI etc ](http://togows.org/)
+
+>[RESTful API 设计指南](http://ruanyifeng.com/blog/2014/05/restful_api.html)
