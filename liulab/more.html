@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<head>
+    <title>more</title>
+    <style type="text/css">
+        .dropdown-submenu {
+            position: relative;
+        }
+        .dropdown-submenu > .dropdown-menu {
+            top: 0;
+            left: 100%;
+            margin-top: -6px;
+            margin-left: -1px;
+            -webkit-border-radius: 0 6px 6px 6px;
+            -moz-border-radius: 0 6px 6px;
+            border-radius: 0 6px 6px 6px;
+            background-color: lightseagreen;
+        }
+        .dropdown-submenu > .dropdown-menu li a {
+            color:black;
+        }
+        .dropdown-submenu > .dropdown-menu li a:hover {
+            color:darkgreen;
+            background-color: floralwhite;
+        }
+        .dropdown-submenu:hover > .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-submenu > a:after {
+            display: block;
+            content: " ";
+            float: right;
+            width: 0;
+            height: 0;
+            border-color: transparent;
+            border-style: solid;
+            border-width: 5px 0 5px 5px;
+            margin-top: 5px;
+            margin-right: -10px;
+        }
+        .dropdown-submenu.pull-left {
+            float: none;
+        }
+        .dropdown-submenu.pull-left > .dropdown-menu {
+            left: -100%;
+            margin-left: 10px;
+            -webkit-border-radius: 6px 0 6px 6px;
+            -moz-border-radius: 6px 0 6px 6px;
+            border-radius: 6px 0 6px 6px;
+        }
+        #carousel-example-generic{
+            color: #000;
+        }
+        .carousel {
+            /* {#max-height:500px;#} */
+            background-color: #fff;
+            /* {#width: 60%;#} */
+            width: 765px;
+            max-height: 430px;
+            /* {#margin: 0 auto;#} */
+            /* {#margin-bottom: 20px;#} */
+            /* {#margin-top: 10px;#} */
+
+        }
+        .carousel .item {
+            max-height:430px;
+            background-color: #fff;
+
+        }
+        .carousel img {
+            width: 100%;
+            /* {#margin: 0 auto;#} */
+
+        }
+        .navbar-right{
+            margin-right: -5px !important;
+        }
+        .navbar-right .dropdown-menu{
+          left: 0 !important;
+          right: right;
+        }
+        .nav>li>a{
+          position: relative;
+          display: block;
+          padding-left: 10px !important;
+          padding-right: 10px !important;
+        }
+        #content>.mainDiv>.row-fluid>.span12>p{
+        	text-indent: 2em;
+        	font-size: 15px;
+        }
+        #content>.mainDiv>.row-fluid>.span12>h5{
+        	font-size: 16px;
+        }
+    </style>
+    <!--[if IE 9]>
+      <style>
+        #page-head{
+        font-size: 20px;
+       }
+      </style>S
+    <![endif]-->
+</head>
+<body>
+    <div id="content" style="padding-top: 0;">
+		<div class="body_div mainDiv" style="width: 1100px;">
+			<div class="row-fluid">
+				<div class="span12" style="min-height: 600px;">
+					<h5><b>Tea Plant Related Database</b></h5>
+          <p><a href="http://eplant.njau.edu.cn/tea/index.html">TeaPGDB</a> - Tea Plant Genome Database</p>
+					<p><a href="http://tpia.teaplant.org/">TPIA</a> - Tea Plant Information Archive</p>
+					<p><a href="http://pcsb.ahau.edu.cn:8080/TCDB/f">TMDB</a> - Tea Metabolome Database</p>
+					<p><a href="http://camellia.ahau.edu.cn/TBC2health/pcsb">TBC2health</a> - a database of experimentally validated health-beneficial effects of tea bioactive compounds</p>
+					<p><a href="http://camellia.ahau.edu.cn/TBC2target/f">TBC2target</a> - a resource of predicted target genes of tea bioactive compounds</p>
+					<p><a href="http://www.plantkingdomgdb.com/tea_tree/">Assam Tea Genome Database</a> - a genomic database for Assam tea (Camellia sinensis var. assamica)</p>
+					<p><a href="http://www.teaas.cn/index.php">TeaAS</a> - database for alternative splicing in tea plant.</p>
+          <p><a href="http://indianteagenome.in:8080/teamid/">TeaMiD</a> - a comprehensive database of simple sequence repeat markers of tea.</p>
+          <p><a href="http://teacon.wchoda.com/">TeaCoN</a> - a database of gene co-expression network for tea plant.</p>
+					<h5><b>Plant Genome Databases</b></h5>
+					<p>TAIR&nbsp; (<a target="_blank" href="http://www.arabidopsis.org/index.jsp">http://www.arabidopsis.org/index.jsp</a>)</p>
+					<p>MaizeGDB (<a target="_blank" href="http://www.maizegdb.org/">http://www.maizegdb.org/</a>)</p>
+					<p><font class="largeblue"><i> Medicago&nbsp;truncatula</i> -</font><font class="smallblue"> A&nbsp;model&nbsp;for&nbsp;legume&nbsp;research (<a target="_blank" href="http://www.medicago.org/">http://www.medicago.org/</a>)</font></p>
+					<p>SoyBase and the Soybean Breeder's Toolbox (<a target="_blank" href="http://soybase.org/">http://soybase.org/</a>)</p>
+					<p>Rice genome database (<a target="_blank" href="http://rgp.dna.affrc.go.jp/">http://rgp.dna.affrc.go.jp/</a>)</p>
+					<p>Citrus genome database (<a target="_blank" href="https://www.citrusgenomedb.org/">https://www.citrusgenomedb.org/</a>)</p>
+					<p>Pineapple genome database (<a target="_blank" href="http://pineapple.angiosperms.org/pineapple/html/index.html">http://pineapple.angiosperms.org/pineapple/html/index.html</a>)</p>
+					<p><a target="_blank" href="http://kiwifruitgenome.org/">KGG</a> - Kiwifruit Genome Database</p>
+					<p><a target="_blank" href="https://www.rosaceae.org/">GDR</a> - Genome Database For Rosaceae</p>
+					<p>Cucumber genome database (<a target="_blank" href="http://cucumber.genomics.org.cn/page/cucumber/index.jsp">http://cucumber.genomics.org.cn/page/cucumber/index.jsp</a>)</p>
+					<p>AppleGFDB (<a target="_blank" href="http://gfdb.sdau.edu.cn/">http://gfdb.sdau.edu.cn/</a>)</p>
+					<p>Welcome to the Cacao Genome Project | Cacao Genome Database (<a target="_blank" href="http://www.cacaogenomedb.org/">http://www.cacaogenomedb.org/</a>)</p>
+					<p>BRAD-Brassica Database (<a target="_blank" href="http://brassicadb.org/brad/">http://brassicadb.org/brad/</a>)</p>
+					<p>B. oleracea Genome Database (<a target="_blank" href="http://ocri-genomics.org/bolbase">http://ocri-genomics.org/bolbase</a>)</p>
+					<p>Brassica.info (<a target="_blank" href="http://www.brassica.info/resource/databases.php">http://www.brassica.info/resource/databases.php</a>)</p>
+					<p>AAFC Comparative Genome Viewer (<a target="_blank" href="http://brassica.agr.gc.ca/navigation/viewer_e.shtml">http://brassica.agr.gc.ca/navigation/viewer_e.shtml</a>)</p>
+					<p>Korea B. rapa genomics (<a target="_blank" href="http://www.brassica-rapa.org/BGP/NC_brgp.jsp">http://www.brassica-rapa.org/BGP/NC_brgp.jsp</a>)</p>
+          <p>PGDD <a target="_blank" href="http://chibba.agtec.uga.edu/duplication/">PGDD</a> - Plant Genome Duplication Database</p>
+          <p>An online database for genome information of agricultural plants.(<a target="_blank" href="http://nabic.naas.go.kr/">http://nabic.naas.go.kr/</a>)</p>
+          <p><a target="_blank" href="http://ogda.ytu.edu.cn/">OGDA</a> - A comprehensive organelle genome database for algae.</p>
+          <p>The PEDANT genome database (<a target="_blank" href="http://pedant.gsf.de/">http://pedant.gsf.de</a>)</p>
+          <p>An online database for genome information of agricultural plants. (<a target="_blank" href="http://nabic.naas.go.kr/">http://nabic.naas.go.kr/</a>)</p>
+          <p><a target="_blank" href="http://mips.gsf.de/proj/thal/db">MAtDB</a> - An integrated biological knowledge resource based on the first complete plant genome</p>
+          <p><a target="_blank" href="http://hornbill.cspp.latrobe.edu.au/">Brassica ASTRA</a> - An integrated database for Brassica genomic research</p>
+
+					<h5><b>Resource Databases</b></h5>
+					<p>PlantGDB&nbsp; (<a target="_blank" href="http://www.plantgdb.org/">http://www.plantgdb.org/</a>)
+					</p><p>JGI (<a target="_blank" href="http://www.jgi.doe.gov/">http://www.jgi.doe.gov/</a>)</p>
+					<p>Phytozome (<a target="_blank" href="http://www.phytozome.net/">http://www.phytozome.net/</a>)</p>
+					<p>Entrez Genome Database (<a target="_blank" href="http://www.ncbi.nlm.nih.gov/sites/genome">http://www.ncbi.nlm.nih.gov/sites/genome</a>)</p>
+					<p>DOGS-Database Of Genome Sizes (<a target="_blank" href="http://www.cbs.dtu.dk/databases/DOGS/">http://www.cbs.dtu.dk/databases/DOGS/</a>)</p>
+					<p>PGDD - Plant Genome Duplication Database (<a target="_blank" href="http://chibba.agtec.uga.edu/duplication/">http://chibba.agtec.uga.edu/duplication/</a>)</p>
+					<p>MIPS (<a target="_blank" href="http://www.helmholtz-muenchen.de/en/ibis">http://www.helmholtz-muenchen.de/en/ibis</a>)</p>
+					<p>GRAMENE-Plant Genomic Resources (<a target="_blank" href="http://www.gramene.org/">http://www.gramene.org/</a>)</p>
+					<p>SGN - Sol Genomics Network (<a target="_blank" href="http://www.sgn.cornell.edu/">http://www.sgn.cornell.edu/</a>)</p>
+					<p>Welcome to the Genome Database for Rosaceae | GDR (<a target="_blank" href="http://www.rosaceae.org/">http://www.rosaceae.org/</a>)</p>
+
+					<h5><b>Genome</b></h5>
+					<p><a href="http://rise2.genomics.org.cn/page/rice/index.jsp">BGI-RISe</a> - Beijing Genomics Institute Rice Information System.</p>
+					<p><a href="http://rapdb.dna.affrc.go.jp/">RAP-DB</a> - Rice Annotation Project Database.</p>
+					<p><a href="http://rice.plantbiology.msu.edu/">MSU-RAP</a> - The MSU Rice Genome Annotation Project Database and Resource.</p>
+					<p><a href="http://mips.gsf.de/proj/plant/jsf/rice/index.jsp">MOsDB</a> - A resource for publicly available sequences of the rice (Oryza sativa L.) genome.</p>
+					<p><a href="http://www.mips.biochem.mpg.de/">MIPS</a> - a database for genomes and protein sequences</p>
+          <p><a href="http://yh.genomics.org.cn/">The YH databasePS</a> - the first Asian diploid genome database</p>
+          <p><a href="http://www.gndu.ac.in/CpGDB">CpGDB</a> - A Comprehensive Database of Chloroplast Genomes.</p>
+          <p><a href="http://gib.genes.nig.ac.jp/">GIB</a> - data retrieval and comparative analysis system for completed microbial genomes and more</p>
+          <p><a href="http://pgdbj.jp/?ln=en">PGDBj</a> - A Portal Website for the Integration of Plant Genome-Related Databases</p>
+          <p><a href="http://www.cottongen.org/">CottonGen</a> - A genomics, genetics and breeding database for cotton research</p>
+          <p><a href="http://nelumbo.biocloud.net/">NGD</a> - An integrative resource for gene expression and variants of Nelumbo nucifera</p>
+
+					<h5><b>Variation</b></h5>
+					<p><a href="http://variation.ic4r.org/">IC4R Rice Variation Database</a> - Collected almost all the public available re-sequenced rice accessions (5152), and identified about 18M SNPs.</p>
+					<p><a href="http://rmd.ncpgr.cn/">RMD</a> - Rice Mutant Database.</p>
+					<p><a href="http://ricevarmap.ncpgr.cn/">RiceVarMap</a> - Rice Variation Map, SNPs and indels.</p>
+					<p><a href="http://snp-seek.irri.org/">SNP-Seek</a> - This site provides Genotype, Phenotype, and Variety Information for rice (Oryza sativa L.).</p>
+					
+
+					<h5><b>Expression</b></h5>
+					<p><a href="http://ricefrend.dna.affrc.go.jp/">RiceFREND</a> - Rice Functionally Related gene Expression Network Database.</p>
+					<p><a href="http://expression.ic4r.org/">RED</a> - An integrated RNA-Seq-derived gene expression database for rice.</p>
+					<p><a href="http://www.genomeindia.org/biocuration">MCDRP</a> - An unique manually curated database based on published experimental data.</p>
+					<p><a href="http://orygenesdb.cirad.fr/">OryGenesDB</a> - An integrated tool for Rice reverse genetics.</p>
+					<p><a href="http://genoportal.org/SPD/index.do">OrysPSSP</a> - Small secreted proteins from rice. (temporarily unavailable)</p>
+					<p><a href="http://ricexpro.dna.affrc.go.jp/">RiceXPro</a> - Rice transcriptome under natural conditions.</p>
+					<p><a href="http://www.plexdb.org/plex.php?database=Rice">RicePLEX</a> - MIAME/Plant-compliant and Plant Ontology enhanced expression resources for rice.</p>
+					<p><a href="http://crep.ncpgr.cn/crep-cgi/home.pl">CREP</a> - Collection of Rice Expression Profiles.</p>
+					
+					<h5><b>Other</b></h5>
+          <p><a href="https://alphafold.ebi.ac.uk/">AlphaFold
+            </a> - Protein Structure Database.</p>
+          <p><a href="http://viewer.shigen.info/oryzagenome21detail/index.xhtml">OryzaGenome2.1</a> - Database of Diverse Genotypes in Wild Oryza Species.</p>
+          <p><a href="http://podb.nibb.ac.jp/Organellome">PODB</a> - A collection of visualized plant organelles and protocols for plant organelle research.</p>
+					<p><a href="http://www.retroryza.org/">RetrOryza</a> - The research community with the most complete resource on LTR-retrotransposon for rice.</p>
+					<p><a href="http://rice.kps.ku.ac.th/">RiceGeneThresher</a> - A public online resource for mining genes underlying genome regionsof interest or quantitatie trait loci (QTLs) in the rice genome.</p>
+					<p><a href="http://urgi.versailles.inra.fr/OryzaTagLine/">Oryza Tag Line</a> - To organize data resulting from the phenotypic characterization of a library of T-DNA insertion lines of rice (Oryza sativa L cv. Nipponbare).</p>
+					<p><a href="http://drtf.cbi.pku.edu.cn/">DRTF</a> - DRTF contains 2025 putative transcription factors (TFs) in Oryza sativa L. ssp. indica and 2384 in ssp. japonica.</p>
+					<p><a href="http://ic4r.org/">IC4R</a> - Information Commons for Rice.</p>
+					<p><a href="http://ricewiki.big.ac.cn/">RiceWiki</a> - A wiki-based database for community curation of rice genes.</p>
+					<p><a href="http://rice.generationcp.org/germplasm/">IRIS</a> - International Rice Information System.</p>
+					<p><a href="http://www.shigen.nig.ac.jp/rice/oryzabase/">Oryzabase</a>- A comprehensive rice science database.</p>
+					<p><a href="http://cdna01.dna.affrc.go.jp/PIPE/">Rice Pipeline</a> - Unification tool for rice databases. (temporarily unavailable)</p>
+					<p><a href="http://gene64.dna.affrc.go.jp/RPD/main_en.html">RPD</a> - Rice proteome database.</p>
+					<p><a href="http://ricegaas.dna.affrc.go.jp/">RiceGAAS</a> - Rice genome automated annotation system.</p>
+					<p><a href="http://agri-trait.dna.affrc.go.jp/">Rice TOGO Browser</a> - A platform to retrieve integrated information on rice functional and applied genomics.</p>
+					<p><a href="https://github.com/MoHelmy/oryza-PG/">OryzaPG-DB</a> - Rice Proteome Database based on Shotgun Proteogenomics.</p>
+          <p><a href="http://www.ncbi.nlm.nih.gov/COG">The COG database</a> - A tool for genome-scale analysis of protein functions and evolution</p>
+          <p><a href="http://probes.pw.usda.gov/plantrgdbor">Plant Retrocopied Gene DataBase</a> - A Database of Plant Retrocopied Genes</p>
+          <p><a href="http://atidb.cshl.org/">ATIDB</a> -  Arabidopsis thaliana insertion database</p>
+          <p><a href="http://systemsbiology.cau.edu.cn/chromstates">PCSD</a> -  a plant chromatin state database</p>
+          <p><a href="http://www.lncrnadb.org/">PLncDB</a> -  plant long non-coding RNA database</p>
+          <p><a href="http://ocri-genomics.org/PTGBase">PTGBase</a> -  An integrated database to study tandem duplicated genes in plants</p>
+          <p><a href="http://me.lzu.edu.cn/woodformation/">WFRGdb</a> -  An integrated database of wood-formation related genes in plants </p>
+          <p><a href="http://me.lzu.edu.cn/stpd/">STPD</a> -  A comprehensive database for studying tree salt-tolerant adaption and poplar genomics </p>
+          <p><a href="http://www.retroryza.org/">RetrOryza</a> -  A database of the rice LTR-retrotransposons </p>
+          <p><a href="http://rad.dna.affrc.go.jp/">RAD</a> -  A contig-oriented database for map-based rice genomics </p>
+          <p><a href="http://www.catma.org/">CATMA</a> -  A complete Arabidopsis GST database </p>
+          <p><a href="http://ogda.ytu.edu.cn/">OGDA</a> -  A comprehensive organelle genome database for algae </p>
+
+				</div>
+			</div>
+		</div>
+	</div>
+    <footer>
+        please contact mega data
+    </footer>
+</body>
+</html>
