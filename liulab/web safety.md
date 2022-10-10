@@ -23,6 +23,24 @@
     Person.objects.raw('SELECT * FROM employee',
     translations=name_map)
  ```
+
+## 数据安全
+通常使用SSL协议和HTTPS来传输数据
+数据的存储和日志的记录，敏感的数据可以加密
+
+Let's Encrypt SSL证书的使用
+-   云厂商购买
+-   Let's Encrypt是一家非盈利机构，免费提供SSL证书
+-   Let's Encrypt的目标是为了构建一个安全的互联网
+-   Let's Encrypt的证书被各大主流的浏览器和网络服务商支持
+-   提供的证书90天过期，需要重新申请。有相应的工具可以使用。
+
+
+-    Cerbot的两种方式
+    -   Webroot方式
+    -   Standalone方式
+        -   会自动运行web server 来进行验证。
+
 ## 引用
 >[Cross-site scripting](https://en.wikipedia.org/wiki/Cross-site_scripting)
 
