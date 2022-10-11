@@ -67,6 +67,43 @@ Let's Encrypt SSL证书的使用
 Django密码中间件，密码验证策略AUTH_PASSWORD_VALIDATORS
 
 密码过期策略：可以使用django-user-accounts插件
+
+## 应用安全
+    - 大量非正常的并发请求
+    - 密码攻击，大量的密码去破解，尝试登陆
+      - 在用户连续登陆n次后，要求输入验证码，短信登陆
+      - 比如：使用 simple captcha插件
+        - 一般步骤:
+        - 添加登陆验证Form和Views视图
+        - 添加登陆模板页
+        - 添加登陆失败的频次控制
+        - 设置管理员的登陆页，默认使用带连续失败需要验证码的页面
+    - 访问限流
+      - Rest Framework API限流
+      - 应用限流：对页面的访问频次进行限流
+      - 对特定的ip或者用户
+        - 可以对匿名用户，一般的用户限流
+        - 可以设置峰值流量（如每分钟60次请求）
+        - 也可以设置连续一段事件的流量限制（比如每天3000次）
+```python
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_CLASSES': [
+        'example.throttles.BurstRateThrottle',
+        'example.throttles.SustainedRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'burst': '60/min',
+        'sustained': '3000/day'
+    }
+}
+```
+
+-   应用限流：对页面的访问频次进行限流
+    -   示例策略:
+    -   一分钟最多请求5次登录页，防止
+    -   可选:django-ratelimit插件
+
+
 ## 引用
 >[Cross-site scripting](https://en.wikipedia.org/wiki/Cross-site_scripting)
 
