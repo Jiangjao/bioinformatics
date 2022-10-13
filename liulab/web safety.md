@@ -103,6 +103,17 @@ REST_FRAMEWORK = {
     -   一分钟最多请求5次登录页，防止
     -   可选:django-ratelimit插件
 
+## 架构安全
+-   应用的部署架构
+    -   典型中小型应用部署架构
+    -   服务器内部组成私有网络
+![avatar](./framework.jpg)
+-   密钥的存储原则
+    -   基础的用法：使用环境变量/独立的配置文件，不放在代码库
+    -   使用Key Server: 使用开源的Key Server,或阿里云/AWS的KMS服务
+        -   容器环境，启动容器作为环境变量传入 - 密钥不落地到容器存储中
+
+
 
 ## 引用
 >[Cross-site scripting](https://en.wikipedia.org/wiki/Cross-site_scripting)
