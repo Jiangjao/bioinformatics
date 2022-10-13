@@ -106,6 +106,28 @@ python -m pip install gunicorn
 export DJANGO_SETTINGS_MODULE=settings.local
 gunicorn -w 3 -b 127.0.0.1:8000 recruitment.wsgi:application
 ```
+以上启动3个worker进程，绑定到本机的8000端口
+
+-   异步应用服务器，以uvcorn为例
+```python
+python -m pip install uvcorn
+export DJANGO_SETTINGS_MODULE=settings.local
+uvicorn recruiment.asgi:application --workers 3
+```
+
+静态资源提供服务的功能是放在前端的Web服务器上去的
+比如说Nginx、Tengine
+同时在Nginx或者Appache2
+做一个URL的路由分发，做一个proxy_pass
+将请求转发到后面的容器服务
+
+<!-- django_prometheus的作用是啥 -->
+使用异步容器的代码时，所有的调用都应该是异步的
+
+
+## 应用水平扩展：使用负载均衡
+
+
 ## 上传大量文件到数据库
 数据量不大，但是数量多，实际上不适合hdfs来存储的。
 -   第三方模块处理，pymysql模块
