@@ -126,8 +126,40 @@ uvicorn recruiment.asgi:application --workers 3
 
 
 ## 应用水平扩展：使用负载均衡
+WAF做防火墙挺好的
+Apache和Nginx的区别:
+-   Apache是多线程模型，单独处理
+-   Nginx 异步处理
+-   Tengine是淘宝开发的分支
+    -   https://tengine.taobao.org/
+    -   Tengine完全兼容Nginx, 同时提供了额外的强大功能
+    -   增强了相关运维、监控能力，比如异步打印日志及回滚，本地DNS缓存，内存监控
+    -   动态脚本语言Lua支持。扩展功能简单高效
+    -   更加强大的负载均衡能力，包括一致性hash模块、绘画保持模块
+    -   主动健康检查，根据服务器状态自动上线下线，以及动态解析upstream中出现的域名
+    -   输入过滤器机制支持，更强大的防攻击（访问速度限制）模块；方便实现应用防火墙
+    -   ...
 
+最简单配置：路由转发请求到Gunicorn/uwsgi请求
+```bash
+server {
+    listen 80;
+    server_name recruit.ww.com
 
+    location / {
+        # 转发请求 到gunicorn进程处理
+        proxy_pass http://127.0.0.1:8000
+
+        proxy_set_header Host               $http_host;
+        proxy_set_header X-Real-IP          $remote_addr;
+
+        # 包含了 客户端地址，以及各级 代理 IP的完整 IP 链
+        proxy_set_header X-Forwarded-For    $proxy_add_x_forwarded_for;
+    }
+}
+
+```
+tmux attach 
 ## 上传大量文件到数据库
 数据量不大，但是数量多，实际上不适合hdfs来存储的。
 -   第三方模块处理，pymysql模块
