@@ -23,6 +23,52 @@ version 0.1.1, by xiaojiao
 >[`Metabolite signatures of diverse Camellia sinensis tea populations`](https://www.nature.com/articles/s41467-020-19441-1)
 
 
+## future feature
+-   mQTL
+    -   颜色
+
+-   代谢物部分
+    -   借鉴、模拟转录组热图 HT-map Histogram cluster
+    -   相似代谢物在一个谱中集中在仪器，参考转录组的基因表达谱和heatmap
+    -   不同group之间的比较
+-   JBrowser
+    -   每个样本的snp, 单独的snp
+-   基因组表达量
+
+-   每个样本
+    -   注释
+    -   大的分类（黄酮类）
+    -   代谢物、特征代谢物
+        -   代谢物可以搜索到
+        -   搜索引擎的配置，比如 Django-Haystack
+        -  根据snp来搜索，
+    -   品种
+    -   采样地
+    -   group
+    -   不同组织（目前是第二叶的数据）
+-   snp correlation with sample
+    -   实际上是每个品种单独的特有的snp, 可以用这类snp来区分不同的茶
+    -   可以查看snp和代谢物的关系
+    -   附近基因、表型值？
+    -   group specific SNP,eg.等位基因和环境适应性等等。
+
+- 网站流量记录
+  - source
+  - region
+  - IP
+
+## Phylogenetic Tree
+-   动态的
+-   
+visuliztion by what?
+>[Phylogenetic Tree](http://arecaceae-gdb.com/#/tools/tree)
+
+>[phylotree.js](https://github.com/veg/phylotree.js)
+
+>[Phylogenetic tree](https://en.wikipedia.org/wiki/Phylogenetic_tree)
+
+>[phyloxml](http://www.phyloxml.org/)
+
 ## 使用CDN加速
 CDN访问的两个阶段
 -   域名解析
@@ -58,3 +104,11 @@ CDN访问的两个阶段
 >[api collection of KEGG、NCBI etc ](http://togows.org/)
 
 >[RESTful API 设计指南](http://ruanyifeng.com/blog/2014/05/restful_api.html)
+
+>[ArecaceaeMDB](http://arecaceae-gdb.com)
+
+>[Django下的搜索引擎(haystack + whoosh + jieba)](https://www.cnblogs.com/ftl1012/p/10397553.html)
+
+>[How to implement full text search in Django?](https://stackoverflow.com/questions/2461322/how-to-implement-full-text-search-in-django)
+
+>[How to make a search engine in django with suggestions?](https://stackoverflow.com/questions/65454054/how-to-make-a-search-engine-in-django-with-suggestions)

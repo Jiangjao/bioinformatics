@@ -166,5 +166,15 @@ tmux attach
 -   以文件导入的方式加载
 
 
+## 报错
+```bash
+mysql.connector.errors.DatabaseError: 2068 (HY000): LOAD DATA LOCAL INFILE file request rejected due to restrictions on access
+```
+
 ## 参考
 >[python 大数据实践之一:导入大批量数据文件到mysql](https://zhuanlan.zhihu.com/p/133680339)
+
+>[ERROR 2068 (HY000): LOAD DATA LOCAL INFILE file request rejected due to restrictions on access](https://stackoverflow.com/questions/63361962/error-2068-hy000-load-data-local-infile-file-request-rejected-due-to-restrict)
+
+>[Python并发编程入门：(一)概览](https://zhuanlan.zhihu.com/p/438107406)
+
