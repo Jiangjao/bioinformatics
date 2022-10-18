@@ -9,9 +9,28 @@
 
 
 # [python tutor]: process 、map progress bar : https://zhuanlan.zhihu.com/p/359369130
+from ast import Assert
 import time
 from multiprocessing import Pool, Process
 import random, os
+
+# TODO(xiaojiao): traverse folder
+
+def travelDir(path, all_file = None):
+    if all_file == None:
+        all_file = []
+    if os.path.exists(path):
+        files = os.listdir(path)
+    else:
+        print("this path not exist")
+        # AssertionError "this"
+        assert 'this path not exist'
+    for file in files:
+        if os.path.isdir(os.path.join(path, file)):
+            travelDir(os.path.join(path, file), all_file)
+        else:
+            all_file.append(os.path.join(path, file))
+    return all_file
 
 def numsCheng(i):
     return i * 2
@@ -59,7 +78,9 @@ def test2():
 
 if __name__ == "__main__":
     # test1()
-    test2()
+    # test2()
+    # subprocess.run(['dir'])
+    pass
 
 
 

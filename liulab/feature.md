@@ -92,6 +92,10 @@ CDN访问的两个阶段
     -   步骤:
         -   
 
+## Django run on jupter
+-   启动jupter,开放jupter端口
+-   需要安装dhango-extensions
+
 ## 参考
 >[ZEAMAP](http://www.zeamap.com/resource/genetics)
 
@@ -116,3 +120,9 @@ CDN访问的两个阶段
 >[create requirements files](https://stackoverflow.com/questions/31684375/automatically-create-requirements-txt)
 
 >[online clipboard](https://pastebin.com/)
+
+>[网站搭建8：Django项目中嵌入Jupyter notebook](https://zhuanlan.zhihu.com/p/110214228)
+
+>[how-do-i-set-up-jupyter-ipython-notebook-for-django](https://stackoverflow.com/questions/35483328/how-do-i-set-up-jupyter-ipython-notebook-for-django)
+
+>[Django on jupter](https://www.youtube.com/watch?v=t3mk_u0rprM)
