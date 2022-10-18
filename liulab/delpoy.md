@@ -59,7 +59,9 @@ print(get_random_secret_key())'
 
 ### 部署到生产环境
 部署前的安全检查
+```shell
 python manage.py check --deploy
+```
 
 静态资源文件的托管环境
 -   静态内容Web服务器: Apache/Nginx

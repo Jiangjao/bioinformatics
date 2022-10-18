@@ -1,5 +1,5 @@
 # emm
-version 0.1.1, by xiaojiao
+version 0.2.0, by xiaojiao
 <!-- 然后NAR文章的部分初稿我已经写好了，还是要细化所有的数据处理和功能的内容
 
 -   对，有博士水准
@@ -55,11 +55,11 @@ version 0.1.1, by xiaojiao
 - 网站流量记录
   - source
   - region
-  - IP
+  - 国内外IP分开，每天，每周，每月
 
 ## Phylogenetic Tree
 -   动态的
--   
+-   subsets
 visuliztion by what?
 >[Phylogenetic Tree](http://arecaceae-gdb.com/#/tools/tree)
 
@@ -112,3 +112,7 @@ CDN访问的两个阶段
 >[How to implement full text search in Django?](https://stackoverflow.com/questions/2461322/how-to-implement-full-text-search-in-django)
 
 >[How to make a search engine in django with suggestions?](https://stackoverflow.com/questions/65454054/how-to-make-a-search-engine-in-django-with-suggestions)
+
+>[create requirements files](https://stackoverflow.com/questions/31684375/automatically-create-requirements-txt)
+
+>[online clipboard](https://pastebin.com/)

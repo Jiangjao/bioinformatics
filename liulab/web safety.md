@@ -88,12 +88,12 @@ Django密码中间件，密码验证策略AUTH_PASSWORD_VALIDATORS
 ```python
 REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_CLASSES': [
-        'example.throttles.BurstRateThrottle',
-        'example.throttles.SustainedRateThrottle'
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle',
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'burst': '60/min',
-        'sustained': '3000/day'
+        'anon': '2/min',
+        'user': '10/min'
     }
 }
 ```
