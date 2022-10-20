@@ -90,25 +90,27 @@ CDN访问的两个阶段
         -   设置STATIC_URL，直接指向CDN地址，同时标释OssStaticStorage避免冲突
 -   通过Tengine把本机的静态资源开放到Web上，CDN自动回流到Tengine
     -   步骤:
-        -   
+        -   passby
 
-## Django run on jupter
--   启动jupter,开放jupter端口，配置权限
+## Django run on jupter elegantly
+-   启动jupter,开放jupter端口,配置权限
 -   需要安装dhango-extensions
     -   pip install django-extensions
 -   INSTALLED_APPS 在settings.py文件中
 -   配置jupter
 -   命令行启动
-    -   python manage.py shell_plus --notebook
+    -   ```python python manage.py shell_plus --notebook```
 
-[`如何在jupyter使用django`](https://blog.csdn.net/dudu3332/article/details/102890738)
+>&emsp;&emsp;[`如何在jupyter使用django`](https://blog.csdn.net/dudu3332/article/details/102890738)
 
-实际上[`django-extensions 3.2.1`]讲的步骤，还有官方文档
+实际上`django-extensions 3.2.1`讲的步骤，还有官方文档
 
 >[django-extensions 3.2.1](https://pypi.org/project/django-extensions/)
+
 >[jupter 安装步骤](https://zhuanlan.zhihu.com/p/33105153)
-设置jupter可以远程访问
+
 >[设置 jupyter notebook 可远程访问](https://www.jianshu.com/p/444c3ae23035)
+
 >[解决jupyter “Running as root is not recommended.xxx”错误 && jupyter配置方法](https://blog.csdn.net/donaldsy/article/details/96194346)
 
 ## 参考
