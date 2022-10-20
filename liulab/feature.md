@@ -93,7 +93,7 @@ CDN访问的两个阶段
         -   passby
 
 ## Django run on jupter elegantly
--   启动jupter,开放jupter端口,配置权限
+-   启动jupter,开放jupter端口
 -   需要安装dhango-extensions
     -   pip install django-extensions
 -   INSTALLED_APPS 在settings.py文件中
@@ -103,7 +103,7 @@ CDN访问的两个阶段
 
 >&emsp;&emsp;[`如何在jupyter使用django`](https://blog.csdn.net/dudu3332/article/details/102890738)
 
-实际上`django-extensions 3.2.1`讲的步骤，还有官方文档
+实际上主要的依据是`django-extensions 3.2.1`讲的步骤，官方文档:
 
 >[django-extensions 3.2.1](https://pypi.org/project/django-extensions/)
 
