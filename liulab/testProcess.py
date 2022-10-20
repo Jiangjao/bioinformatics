@@ -22,9 +22,9 @@ def travelDir(path, all_file = None):
     if os.path.exists(path):
         files = os.listdir(path)
     else:
-        print("this path not exist")
+        print("This path not exist")
         # AssertionError "this"
-        assert 'this path not exist'
+        assert 'This path not exist'
     for file in files:
         if os.path.isdir(os.path.join(path, file)):
             travelDir(os.path.join(path, file), all_file)
@@ -62,25 +62,34 @@ def fun2(name):
     end = time.time()
     print("Task %s runs %0.2f seconds." % (name, (end - start)))
 
-def test2():
+def func3(folder_list:list):
+    for file in folder_list:
+        yield file
+
+def test2(folder_list:list):
     """
         Process pool
     """
     pool = Pool(processes=5)
 
-    for i in range(15):
+    for i in folder_list:
         pool.apply_async(func=fun2, args=(i, ))
 
     pool.close()
     pool.join()
-    
+
     print("end of test")
 
 if __name__ == "__main__":
     # test1()
-    # test2()
+    folder_list = [".", 2, 3]
+    test2(folder_list)
     # subprocess.run(['dir'])
-    pass
+    # pass
+    # currentFloder = travelDir(".")
+    # print(currentFloder)
+
+    # temp = func3(folder_list)
 
 
 

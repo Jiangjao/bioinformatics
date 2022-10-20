@@ -93,8 +93,23 @@ CDN访问的两个阶段
         -   
 
 ## Django run on jupter
--   启动jupter,开放jupter端口
+-   启动jupter,开放jupter端口，配置权限
 -   需要安装dhango-extensions
+    -   pip install django-extensions
+-   INSTALLED_APPS 在settings.py文件中
+-   配置jupter
+-   命令行启动
+    -   python manage.py shell_plus --notebook
+
+[`如何在jupyter使用django`](https://blog.csdn.net/dudu3332/article/details/102890738)
+
+实际上[`django-extensions 3.2.1`]讲的步骤，还有官方文档
+
+>[django-extensions 3.2.1](https://pypi.org/project/django-extensions/)
+>[jupter 安装步骤](https://zhuanlan.zhihu.com/p/33105153)
+设置jupter可以远程访问
+>[设置 jupyter notebook 可远程访问](https://www.jianshu.com/p/444c3ae23035)
+>[解决jupyter “Running as root is not recommended.xxx”错误 && jupyter配置方法](https://blog.csdn.net/donaldsy/article/details/96194346)
 
 ## 参考
 >[ZEAMAP](http://www.zeamap.com/resource/genetics)
@@ -126,3 +141,5 @@ CDN访问的两个阶段
 >[how-do-i-set-up-jupyter-ipython-notebook-for-django](https://stackoverflow.com/questions/35483328/how-do-i-set-up-jupyter-ipython-notebook-for-django)
 
 >[Django on jupter](https://www.youtube.com/watch?v=t3mk_u0rprM)
+
+>[如何在jupyter使用django](https://blog.csdn.net/dudu3332/article/details/102890738)
