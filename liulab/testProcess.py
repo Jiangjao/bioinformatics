@@ -56,11 +56,19 @@ def test1():
     print("计算用时:", time2 - time1)
 
 def fun2(name):
+    """
+        name: file name
+    """
+    # 多进程读写文件...
     print("Run task %s (%s)..." % (name, os.getpid()))
     start = time.time()
-    time.sleep(random.random() * 3)
+    # upload file to database
+    # try to use signal to judge file has been uploaded. xiaojiao 10/20
+    signal = uploadFile2db(name)
+    print(signal)
+    # time.sleep(random.random() * 3)
     end = time.time()
-    print("Task %s runs %0.2f seconds." % (name, (end - start)))
+    print("Task _-- upload %s to database --_ runs %0.2f seconds." % (name, (end - start)))
 
 def func3(folder_list:list):
     for file in folder_list:
@@ -70,7 +78,7 @@ def test2(folder_list:list):
     """
         Process pool
     """
-    pool = Pool(processes=5)
+    pool = Pool(processes = 3)
 
     for i in folder_list:
         pool.apply_async(func=fun2, args=(i, ))
@@ -80,15 +88,37 @@ def test2(folder_list:list):
 
     print("end of test")
 
+def uploadFile2db(fileName):
+    """
+        load local file to mysql database...\n
+
+
+        source code from local uploadFileTest
+
+        sql = "load data local infile '" + filetest + "' into table  " + generalTable + " \
+                    fields terminated by ',' \
+                    lines terminated by '\n' "
+
+    """
+
+    filetest = fileName
+    generalTable = "test"
+    sql = "load data local infile '" + filetest + "' into table  " + generalTable + " \
+                    fields terminated by ',' \
+                    lines terminated by '\n' "
+    return sql
+
 if __name__ == "__main__":
     # test1()
-    folder_list = [".", 2, 3]
+    # file name need to be validated?eg: 2233
+    folder_list = ["file1.txt", "file2.txt", "file3.txt", "file4.txt", "file5.txt", 2233, 44]
+    # test on Use work directory local ... work..
+    # folder_list = travelDir(".")
     test2(folder_list)
     # subprocess.run(['dir'])
     # pass
     # currentFloder = travelDir(".")
     # print(currentFloder)
-
     # temp = func3(folder_list)
 
 
