@@ -42,6 +42,8 @@ version 0.2.0, by xiaojiao
         -   代谢物可以搜索到
         -   搜索引擎的配置，比如 Django-Haystack
         -  根据snp来搜索，
+        -  相互之间的比较，
+           -  比如热图，箱线图
     -   品种
     -   采样地
     -   group
@@ -60,7 +62,13 @@ version 0.2.0, by xiaojiao
 ## Phylogenetic Tree
 -   动态的
 -   subsets
+
+Evolview 如何？ Embed tree in othre website...
+
+radial-tree-layout?
 visuliztion by what?
+
+D3树状图的构建...
 >[Phylogenetic Tree](http://arecaceae-gdb.com/#/tools/tree)
 
 >[phylotree.js](https://github.com/veg/phylotree.js)
@@ -68,6 +76,8 @@ visuliztion by what?
 >[Phylogenetic tree](https://en.wikipedia.org/wiki/Phylogenetic_tree)
 
 >[phyloxml](http://www.phyloxml.org/)
+
+>[List of phylogenetic tree visualization software](https://en.wikipedia.org/wiki/List_of_phylogenetic_tree_visualization_software)
 
 ## 使用CDN加速
 CDN访问的两个阶段
@@ -112,6 +122,12 @@ CDN访问的两个阶段
 >[设置 jupyter notebook 可远程访问](https://www.jianshu.com/p/444c3ae23035)
 
 >[解决jupyter “Running as root is not recommended.xxx”错误 && jupyter配置方法](https://blog.csdn.net/donaldsy/article/details/96194346)
+
+
+## website monitor
+Traffic record of django website,
+Getting started with IPStack API
+>[Traffic record of django website](https://dev.to/paulwababu/build-a-web-traffic-monitor-with-django-and-ipstack-3n2g)
 
 ## 参考
 >[ZEAMAP](http://www.zeamap.com/resource/genetics)
