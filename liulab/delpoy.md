@@ -167,6 +167,17 @@ tmux attach
 -   第三方模块处理，pymysql模块
 -   以文件导入的方式加载
 
+## 文件和图片上传 
+-   本地存储
+-   使用分布式文件存储，如：hdfs
+-   使用云OSS存储
+    -   复用前面创建好的类，把存储替换为OSS存储
+    -   提升系统扩展性、可靠性
+
+    -   使用OSS存储文件/图片
+    -   安装OSS库
+    -   OSS的依赖项目添加django_oss_storage到APPS
+    -   settings里面添加OSS设置
 
 ## 报错
 ```bash
