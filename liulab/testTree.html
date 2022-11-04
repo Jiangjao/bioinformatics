@@ -3,14 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="https://cdn.jsdelivr.net/npm/igv@2.12.6/dist/igv.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/igv@2.12.6/dist/igv.min.js"></script> -->
 
 </head>
 <body>
-<div id ="igv-div"></div>
-<iframe src="https://itol.embl.de/tree/10113115917701454332422">
+<!-- <div id ="igv-div"></div> -->
+<!-- <iframe src="https://itol.embl.de/tree/10113115917701454332422">
 
-</iframe>
+</iframe> -->
+    <iframe
+            class="container"
+            id="inlineFrameExample"
+            title="Inline Frame Example"
+            frameborder="0"
+            scrolling="no"
+            marginheight="0"
+            marginwidth="0"
+            border="0"
+            onload="this.style.height=(this.contentWindow.document.body.scrollHeight+20)+'px';
+        this.style.width=(this.contentWindow.document.body.scrollWidth+20)+'px';"
+            width="1000px"
+            height="1000px"
+            src="https://www.evolgenius.info/evolview-v3/#shared/teatree11_03_XBmOXuzDus/2152">
+        <!--here url is different from remote area url-->
+    </iframe>
+
 <script type="text/javascript">
     var igvDiv = document.getElementById("igv-div");
       var options =
