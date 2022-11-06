@@ -1,217 +1,220 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="UTF-8">
-<title>Title</title>
-<!-- <script src="https://cdn.jsdelivr.net/npm/igv@2.12.6/dist/igv.min.js"></script> -->
-<!-- source from http://frontendfreecode.com/dynamic-bootstrap-table-with-features -->
-<!-- This script got from frontendfreecode.com -->
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/igv@2.12.6/dist/igv.min.js"></script> -->
+    <!-- source from http://frontendfreecode.com/dynamic-bootstrap-table-with-features -->
+    <!-- This script got from frontendfreecode.com -->
 
-<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css'>
-<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.css'>
-<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.13/css/all.css'>
-<script src='https://code.jquery.com/jquery-3.3.1.js'></script>
-<script src='https://unpkg.com/popper.js/dist/umd/popper.min.js'></script>
-<script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.js'></script>
-<script src='https://rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/extensions/export/bootstrap-table-export.js'></script>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.css'>
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.13/css/all.css'>
+    <script src='https://code.jquery.com/jquery-3.3.1.js'></script>
+    <script src='https://unpkg.com/popper.js/dist/umd/popper.min.js'></script>
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.js'></script>
+    <script src='https://rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js'></script>
+    <script
+        src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/extensions/export/bootstrap-table-export.js'></script>
 
-<style>
-* {
-  font-size: 0.93rem;
-}
-.fa-refresh::before {
-  content: "\f2f1";
-}
+    <style>
+        * {
+            font-size: 0.93rem;
+        }
 
-.fa-toggle-up:before,
-.fa-caret-square-o-up:before {
-  content: "\f151";
-}
+        .fa-refresh::before {
+            content: "\f2f1";
+        }
 
-.fa-toggle-down:before,
-.fa-caret-square-o-down:before {
-  content: "\f150";
-}
+        .fa-toggle-up:before,
+        .fa-caret-square-o-up:before {
+            content: "\f151";
+        }
 
-.fa-toggle-on:before {
-  content: "\f205";
-}
+        .fa-toggle-down:before,
+        .fa-caret-square-o-down:before {
+            content: "\f150";
+        }
 
-.fa-toggle-off:before {
-  content: "\f204";
-}
+        .fa-toggle-on:before {
+            content: "\f205";
+        }
 
-.dropdown-menu > li > a {
-  display: block;
-  padding: 3px 20px;
-  clear: both;
-  font-weight: 400;
-  line-height: 1.42857143;
-  color: #333;
-  white-space: nowrap;
-}
+        .fa-toggle-off:before {
+            content: "\f204";
+        }
 
-.dropdown-menu > li > a:hover,
-.dropdown-menu > li > a:focus {
-  color: #262626;
-  text-decoration: none;
-  background-color: #f5f5f5;
-}
-.pagination>li>a, .pagination>li>span {
-  position: relative;
-  float: left;
-  padding: 6px 12px;
-  margin-left: -1px;
-  line-height: 1.42857143;
-  color: #428bca;
-  text-decoration: none;
-  background-color: #fff;
-  border: 1px solid #ddd;
-}
+        .dropdown-menu>li>a {
+            display: block;
+            padding: 3px 20px;
+            clear: both;
+            font-weight: 400;
+            line-height: 1.42857143;
+            color: #333;
+            white-space: nowrap;
+        }
 
-.pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus {
-  z-index: 2;
-  color: #fff;
-  cursor: default;
-  background-color: #428bca!important;
-  border-color: #428bca!important;
-}
+        .dropdown-menu>li>a:hover,
+        .dropdown-menu>li>a:focus {
+            color: #262626;
+            text-decoration: none;
+            background-color: #f5f5f5;
+        }
 
-.pagination>li:first-child>a, .pagination>li:first-child>span {
-  margin-left: 0;
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-}
+        .pagination>li>a,
+        .pagination>li>span {
+            position: relative;
+            float: left;
+            padding: 6px 12px;
+            margin-left: -1px;
+            line-height: 1.42857143;
+            color: #428bca;
+            text-decoration: none;
+            background-color: #fff;
+            border: 1px solid #ddd;
+        }
 
-.pagination>li:last-child>a, .pagination>li:last-child>span {
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
-}
+        .pagination>.active>a,
+        .pagination>.active>span,
+        .pagination>.active>a:hover,
+        .pagination>.active>span:hover,
+        .pagination>.active>a:focus,
+        .pagination>.active>span:focus {
+            z-index: 2;
+            color: #fff;
+            cursor: default;
+            background-color: #428bca !important;
+            border-color: #428bca !important;
+        }
 
-.dropdown {
-  position: relative;
-}
+        .pagination>li:first-child>a,
+        .pagination>li:first-child>span {
+            margin-left: 0;
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+        }
 
-.dropdown-toggle i,
-.nav-link i {
-  font-size: 12px;
-  margin-left: 5px;
-  font-weight: bold;
-}
+        .pagination>li:last-child>a,
+        .pagination>li:last-child>span {
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
 
-.dropdown-header {
-  display: block;
-  padding: 0rem 1.5rem;
-  margin-bottom: 0;
-  font-size: 0.875rem;
-  color: #868e96;
-  white-space: nowrap;
-}
+        .dropdown {
+            position: relative;
+        }
 
-.dropdown-toggle::after {
-  border-top: none;
-  border-right: none;
-  border-left: none;
-}
+        .dropdown-toggle i,
+        .nav-link i {
+            font-size: 12px;
+            margin-left: 5px;
+            font-weight: bold;
+        }
 
-.dropdown-menu {
-  border: 0px;
-  border-radius: 0.25rem;
-  box-shadow: 0px 3px 6px #999;
-  z-index: 9999;
-}
+        .dropdown-header {
+            display: block;
+            padding: 0rem 1.5rem;
+            margin-bottom: 0;
+            font-size: 0.875rem;
+            color: #868e96;
+            white-space: nowrap;
+        }
 
-.dropdown-menu > .active > a,
-.dropdown-menu > .active > a:hover,
-.dropdown-menu > .active > a:focus {
-  color: #fff!important;
-  text-decoration: none;
-  background-color: #428bca!important;
-  outline: 0;
-}
+        .dropdown-toggle::after {
+            border-top: none;
+            border-right: none;
+            border-left: none;
+        }
 
-.dropdown-menu > li > a {
-  display: block;
-  padding: 3px 20px;
-  clear: both;
-  font-weight: 400;
-  line-height: 1.42857143;
-  color: #333;
-  white-space: nowrap;
-}
+        .dropdown-menu {
+            border: 0px;
+            border-radius: 0.25rem;
+            box-shadow: 0px 3px 6px #999;
+            z-index: 9999;
+        }
 
-.dropdown-menu > li > a:hover,
-.dropdown-menu > li > a:focus {
-  color: #262626;
-  text-decoration: none;
-  background-color: #f5f5f5;
-}
+        .dropdown-menu>.active>a,
+        .dropdown-menu>.active>a:hover,
+        .dropdown-menu>.active>a:focus {
+            color: #fff !important;
+            text-decoration: none;
+            background-color: #428bca !important;
+            outline: 0;
+        }
 
-.dropdown-item {
-  display: block;
-  width: 100%;
-  padding: 0.25rem 1.5rem;
-  clear: both;
-  font-weight: normal;
-  /*color: #212529;*/
-  color: #555 !important;
-  /*cosine-edit*/
-  text-align: inherit;
-  white-space: nowrap;
-  background: none;
-  border: 0;
-  font-size: 12px;
-  /*cosine-edit*/
-}
+        .dropdown-menu>li>a {
+            display: block;
+            padding: 3px 20px;
+            clear: both;
+            font-weight: 400;
+            line-height: 1.42857143;
+            color: #333;
+            white-space: nowrap;
+        }
 
-.dropdown-item:focus,
-.dropdown-item:hover {
-  /*color: #16181b;*/
-  color: #ffffff !important;
-  /*cosine-edit*/
-  text-decoration: none;
-  /*background-color: #f8f9fa;*/
-  background-color: #999 !important;
-  /*cosine-edit*/
-  transition: background-color 0.3s, color 0.2s;
-}
-</style>
+        .dropdown-menu>li>a:hover,
+        .dropdown-menu>li>a:focus {
+            color: #262626;
+            text-decoration: none;
+            background-color: #f5f5f5;
+        }
+
+        .dropdown-item {
+            display: block;
+            width: 100%;
+            padding: 0.25rem 1.5rem;
+            clear: both;
+            font-weight: normal;
+            /*color: #212529;*/
+            color: #555 !important;
+            /*cosine-edit*/
+            text-align: inherit;
+            white-space: nowrap;
+            background: none;
+            border: 0;
+            font-size: 12px;
+            /*cosine-edit*/
+        }
+
+        .dropdown-item:focus,
+        .dropdown-item:hover {
+            /*color: #16181b;*/
+            color: #ffffff !important;
+            /*cosine-edit*/
+            text-decoration: none;
+            /*background-color: #f8f9fa;*/
+            background-color: #999 !important;
+            /*cosine-edit*/
+            transition: background-color 0.3s, color 0.2s;
+        }
+    </style>
 
 </head>
+
 <body>
     <!-- <div id ="igv-div"></div> -->
-<!-- <iframe src="https://itol.embl.de/tree/10113115917701454332422">
+    <!-- <iframe src="https://itol.embl.de/tree/10113115917701454332422">
 
 </iframe> -->
-<iframe
-class="container"
-id="inlineFrameExample"
-title="Inline Frame Example"
-frameborder="0"
-scrolling="no"
-marginheight="0"
-marginwidth="0"
-border="0"
-onload="this.style.height=(this.contentWindow.document.body.scrollHeight+20)+'px';
-this.style.width=(this.contentWindow.document.body.scrollWidth+20)+'px';"
-width="1000px"
-height="1000px"
-src="https://www.evolgenius.info/evolview-v3/#shared/teatree11_03_XBmOXuzDus/2152">
-<!--here url is different from remote area url-->
-</iframe>
-<div class="container-fluid">
-  <div id="toolbar">
-   <button id="remove" class="btn btn-danger" disabled>Delete <i class="fas fa-trash-alt"></i></button>
-  </div>
+    <iframe class="container" id="inlineFrameExample" title="Inline Frame Example" frameborder="0" scrolling="no"
+        marginheight="0" marginwidth="0" border="0" onload="this.style.height=(this.contentWindow.document.body.scrollHeight+20)+'px';
+this.style.width=(this.contentWindow.document.body.scrollWidth+20)+'px';" width="1000px" height="1000px"
+        src="https://www.evolgenius.info/evolview-v3/#shared/teatree11_03_XBmOXuzDus/2152">
+        <!--here url is different from remote area url-->
+    </iframe>
+    <div class="container-fluid">
+        <div id="toolbar">
+            <button id="remove" class="btn btn-danger" disabled>Delete <i class="fas fa-trash-alt"></i></button>
+        </div>
 
-  <table id="table">
-    <col width="5%" />
-    <col width="5%" />
-    <col width="10%" />
-    <col width="30%" />
-    <!-- <col width="20%" />
+        <table id="table">
+            <col width="5%" />
+            <col width="5%" />
+            <col width="10%" />
+            <col width="30%" />
+            <!-- <col width="20%" />
     <col width="5%" />
     <col width="5%" />
     <col width="5%" />
@@ -219,1165 +222,1112 @@ src="https://www.evolgenius.info/evolview-v3/#shared/teatree11_03_XBmOXuzDus/215
     <col width="5%" />
     <col width="5%" />
     <col width="5%" /> -->
-        <tbody>
-            <tr>
-                <td>S1</td>
-                <td>Fuyun 6</td>
-                <td>Fujian</td>
-                <td>Tea Research Institute, Fujian Academy Of Agricultural Science, Fu'An, Fujian</td>
-            </tr>
-            <tr>
-                <td>S2</td>
-                <td>Fuyun 7</td>
-                <td>Fujian</td>
-                <td>Tea Research Institute, Fujian Academy Of Agricultural Science, Fu'An, Fujian</td>
-            </tr>
-            <tr>
-                <td>S4</td>
-                <td>Mingke 2</td>
-                <td>Fujian</td>
-                <td>Tea Research Institute, Fujian Academy Of Agricultural Science, Fu'An, Fujian</td>
-            </tr>
-            <tr>
-                <td>S5</td>
-                <td>Yuemingxiang</td>
-                <td>Fujian</td>
-                <td>Tea Research Institute, Fujian Academy Of Agricultural Science, Fu'An, Fujian</td>
-            </tr>
-            <tr>
-                <td>S6</td>
-                <td>Mingke 1</td>
-                <td>Fujian</td>
-                <td>Tea Research Institute, Fujian Academy Of Agricultural Science, Fu'An, Fujian</td>
-            </tr>
-            <tr>
-                <td>S7</td>
-                <td>Huangqi</td>
-                <td>Fujian</td>
-                <td>Tea Research Institute, Fujian Academy Of Agricultural Science, Fu'An, Fujian</td>
-            </tr>
-            <tr>
-                <td>S8</td>
-                <td>Fuyun 595</td>
-                <td>Fujian</td>
-                <td>Tea Research Institute, Fujian Academy Of Agricultural Science, Fu'An, Fujian</td>
-            </tr>
-            <tr>
-                <td>S9</td>
-                <td>Chaoyang</td>
-                <td>Fujian</td>
-                <td>Tea Research Institute, Fujian Academy Of Agricultural Science, Fu'An, Fujian</td>
-            </tr>
-            <tr>
-                <td>S10</td>
-                <td>Dangui</td>
-                <td>Fujian</td>
-                <td>Tea Research Institute, Fujian Academy Of Agricultural Science, Fu'An, Fujian</td>
-            </tr>
-            <tr>
-                <td>S12</td>
-                <td>Chunlan</td>
-                <td>Fujian</td>
-                <td>Tea Research Institute, Fujian Academy Of Agricultural Science, Fu'An, Fujian</td>
-            </tr>
-            <tr>
-                <td>S13</td>
-                <td>Zaochunhao</td>
-                <td>Fujian</td>
-                <td>Tea Research Institute, Fujian Academy Of Agricultural Science, Fu'An, Fujian</td>
-            </tr>
-            <tr>
-                <td>S14</td>
-                <td>Jinmudan</td>
-                <td>Fujian</td>
-                <td>Tea Research Institute, Fujian Academy Of Agricultural Science, Fu'An, Fujian</td>
-            </tr>
-            <tr>
-                <td>S20</td>
-                <td>Fuding Dabaicha</td>
-                <td>Fujian</td>
-                <td>Tea Research Institute, Fujian Academy Of Agricultural Science, Fu'An, Fujian</td>
-            </tr>
-            <tr>
-                <td>S21</td>
-                <td>Fuding Dahaocha</td>
-                <td>Fujian</td>
-                <td>Tea Research Institute, Fujian Academy Of Agricultural Science, Fu'An, Fujian</td>
-            </tr>
-            <tr>
-                <td>S22</td>
-                <td>Fu’an Dabaicha</td>
-                <td>Fujian</td>
-                <td>Tea Research Institute, Fujian Academy Of Agricultural Science, Fu'An, Fujian</td>
-            </tr>
-            <tr>
-                <td>S36</td>
-                <td>Jiulong Dabaicha</td>
-                <td>Fujian</td>
-                <td>Tea Research Institute, Fujian Academy Of Agricultural Science, Fu'An, Fujian</td>
-            </tr>
-            <tr>
-                <td>S38</td>
-                <td>Xingrencha</td>
-                <td>Fujian</td>
-                <td>Tea Research Institute, Fujian Academy Of Agricultural Science, Fu'An, Fujian</td>
-            </tr>
-            <tr>
-                <td>S40</td>
-                <td>Xiapu Chunbolv</td>
-                <td>Fujian</td>
-                <td>Tea Research Institute, Fujian Academy Of Agricultural Science, Fu'An, Fujian</td>
-            </tr>
-            <tr>
-                <td>S41</td>
-                <td>Zijuan</td>
-                <td>Yunnan</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S42</td>
-                <td>Jiulongpao</td>
-                <td>Fujian</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S43</td>
-                <td>Benshan</td>
-                <td>Fujian</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S44</td>
-                <td>Tieguanyin</td>
-                <td>Fujian</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S45</td>
-                <td>Meizhan</td>
-                <td>Fujian</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S46</td>
-                <td>Beidong</td>
-                <td>Fujian</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S47</td>
-                <td>Huangdan</td>
-                <td>Fujian</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S48</td>
-                <td>Aijiao Wulong</td>
-                <td>Fujian</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S49</td>
-                <td>Tieluohan</td>
-                <td>Fujian</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S50</td>
-                <td>Jinsuochi</td>
-                <td>Fujian</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S51</td>
-                <td>Taoxingye</td>
-                <td>Yunnan</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S52</td>
-                <td>Baxian</td>
-                <td>Fujian</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S53</td>
-                <td>Baiye 1</td>
-                <td>Zhejiang</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S54</td>
-                <td>Huangjinya</td>
-                <td>Zhejiang</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S55</td>
-                <td>Yunkang 10</td>
-                <td>Yunnan</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S56</td>
-                <td>Yulv</td>
-                <td>Hunan</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S57</td>
-                <td>Undetermined 1</td>
-                <td>Zhejiang</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S58</td>
-                <td>Shuchazao</td>
-                <td>Anhui</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S59</td>
-                <td>Jiaming 1</td>
-                <td>Zhejiang</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S60</td>
-                <td>Qiannianxue</td>
-                <td>Zhejiang</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S61</td>
-                <td>Yusun</td>
-                <td>Hunan</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S62</td>
-                <td>Xueya 100</td>
-                <td>Yunnan</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S63</td>
-                <td>Maoxie</td>
-                <td>Fujian</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S64</td>
-                <td>Taicha 12</td>
-                <td>Taiwan</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S65</td>
-                <td>Shuixian</td>
-                <td>Fujian</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S66</td>
-                <td>Qilan</td>
-                <td>Fujian</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S67</td>
-                <td>Ruixiang</td>
-                <td>Fujian</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S68</td>
-                <td>Chuntaoxiang</td>
-                <td>Fujian</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S69</td>
-                <td>Duanjie Baihao</td>
-                <td>Yunnan</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S70</td>
-                <td>Aifeng</td>
-                <td>Yunnan</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S71</td>
-                <td>Yungui</td>
-                <td>Yunnan</td>
-                <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
-            </tr>
-            <tr>
-                <td>S73</td>
-                <td>Jianbohuang 13</td>
-                <td>Hunan</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S74</td>
-                <td>Shangmeizhou</td>
-                <td>Jiangxi</td>
-                <td>"China National Germplasm Hangzhou Tea Repository,</td>
-            </tr>
-            <tr>
-                <td>Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang"</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>S75</td>
-                <td>Zhuyeqi 12</td>
-                <td>Hunan</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S76</td>
-                <td>Ningzhou 2</td>
-                <td>Jiangxi</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S77</td>
-                <td>Zhenghe Dabaicha</td>
-                <td>Fujian</td>
-                <td>"China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural</td>
-            </tr>
-            <tr>
-                <td>Science, Hangzhou Zhejiang"</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>S78</td>
-                <td>Shuchazao</td>
-                <td>Anhui</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S79</td>
-                <td>Damianbai</td>
-                <td>Jiangxi</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S80</td>
-                <td>Xicha 5</td>
-                <td>Jiangsu</td>
-                <td>"China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural</td>
-            </tr>
-            <tr>
-                <td>Science, Hangzhou Zhejiang"</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>S81</td>
-                <td>Xicha 11</td>
-                <td>Jiangsu</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S82</td>
-                <td>Zhuyeqi 9</td>
-                <td>Hunan</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S83</td>
-                <td>Baihaozao</td>
-                <td>Hunan</td>
-                <td>"China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural</td>
-            </tr>
-            <tr>
-                <td>Science, Hangzhou Zhejiang"</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>S84</td>
-                <td>Fuzao 2</td>
-                <td>Anhui</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S85</td>
-                <td>Anhui 7</td>
-                <td>Anhui</td>
-                <td>"China National Germplasm Hangzhou Tea Repository,</td>
-            </tr>
-            <tr>
-                <td>Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang"</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>S86</td>
-                <td>Echa1</td>
-                <td>Hubei</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S87</td>
-                <td>Yangshulin 783</td>
-                <td>Anhui</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S88</td>
-                <td>Wannong 95</td>
-                <td>Anhui</td>
-                <td>"China National Germplasm Hangzhou Tea Repository,</td>
-            </tr>
-            <tr>
-                <td>Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang"</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>S89</td>
-                <td>Qingfeng</td>
-                <td>Zhejiang</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S90</td>
-                <td>Jinfeng</td>
-                <td>Zhejiang</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S91</td>
-                <td>Echa 4</td>
-                <td>Hubei</td>
-                <td>"China National Germplasm Hangzhou Tea Repository,</td>
-            </tr>
-            <tr>
-                <td>Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang"</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>S92</td>
-                <td>Guilv1</td>
-                <td>Guangxi</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S93</td>
-                <td>Maolv</td>
-                <td>Zhejiang</td>
-                <td>"China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural</td>
-            </tr>
-            <tr>
-                <td>Science, Hangzhou Zhejiang"</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>S94</td>
-                <td>Zhongcha 102</td>
-                <td>Zhejiang</td>
-                <td>"China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural</td>
-            </tr>
-            <tr>
-                <td>Science, Hangzhou Zhejiang"</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>S95</td>
-                <td>Juhuachun</td>
-                <td>Zhejiang</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S96</td>
-                <td>Zhenong 113</td>
-                <td>Zhejiang</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S97</td>
-                <td>Hanlv</td>
-                <td>Zhejiang</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S98</td>
-                <td>Zhenong 12</td>
-                <td>Zhejiang</td>
-                <td>"China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural</td>
-            </tr>
-            <tr>
-                <td>Science, Hangzhou Zhejiang"</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>S99</td>
-                <td>Zhenong 21</td>
-                <td>Zhejiang</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S100</td>
-                <td>Baimao 2</td>
-                <td>Guangdong</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S101</td>
-                <td>Zhongcha 302</td>
-                <td>Zhejiang</td>
-                <td>"China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural</td>
-            </tr>
-            <tr>
-                <td>Science, Hangzhou Zhejiang"</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>S102</td>
-                <td>Zhongcha 108</td>
-                <td>Zhejiang</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S103</td>
-                <td>Shifocui</td>
-                <td>Anhui</td>
-                <td>"China National Germplasm Hangzhou Tea Repository,</td>
-            </tr>
-            <tr>
-                <td>Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang"</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>S104</td>
-                <td>Shuyong 906</td>
-                <td>Chongqing</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S105</td>
-                <td>Shuyong 401</td>
-                <td>Chongqing</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S106</td>
-                <td>Qiancha 8</td>
-                <td>Guizhou</td>
-                <td>"China National Germplasm Hangzhou Tea Repository,</td>
-            </tr>
-            <tr>
-                <td>Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang"</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>S107</td>
-                <td>Qianmei 419</td>
-                <td>Guizhou</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S108</td>
-                <td>Tianfucha 28</td>
-                <td>Sichuan</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S109</td>
-                <td>Wancha 91</td>
-                <td>Anhui</td>
-                <td>"China National Germplasm Hangzhou Tea Repository,</td>
-            </tr>
-            <tr>
-                <td>Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang"</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>S110</td>
-                <td>Huangmeigui</td>
-                <td>Fujian</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S111</td>
-                <td>Shuyong 1</td>
-                <td>Chongqing</td>
-                <td>"China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural</td>
-            </tr>
-            <tr>
-                <td>Science, Hangzhou Zhejiang"</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>S112</td>
-                <td>Nanjiang 1</td>
-                <td>Chongqing</td>
-                <td>"China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural</td>
-            </tr>
-            <tr>
-                <td>Science, Hangzhou Zhejiang"</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>S113</td>
-                <td>Guihong 3</td>
-                <td>Gunagxi</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S114</td>
-                <td>Yunkang 10</td>
-                <td>Yunnan</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S115</td>
-                <td>Lingtou Dancong</td>
-                <td>Guangdong</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S116</td>
-                <td>Yinghong 1</td>
-                <td>Guangdong</td>
-                <td>"China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural</td>
-            </tr>
-            <tr>
-                <td>Science, Hangzhou Zhejiang"</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>S117</td>
-                <td>Zhenong 117</td>
-                <td>Zhejiang</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S118</td>
-                <td>Longjing 43</td>
-                <td>Zhejiang</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S119</td>
-                <td>Mingshan Baihao 131</td>
-                <td>Sichuan</td>
-                <td>"China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural</td>
-            </tr>
-            <tr>
-                <td>Science, Hangzhou Zhejiang"</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>S120</td>
-                <td>Hongyan 7</td>
-                <td>Guangdong</td>
-                <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang</td>
-            </tr>
-            <tr>
-                <td>S121</td>
-                <td>Zaobaijian 5</td>
-                <td>Chongqing</td>
-                <td>"China National Germplasm Hangzhou Tea Repository,</td>
-            </tr>
-            <tr>
-                <td>Tea Research Institute, Chinese Academy Of Agricultural Science, Hangzhou Zhejiang"</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>S122</td>
-                <td>Changye Baihao</td>
-                <td>Yunnan</td>
-                <td>Longyuan Tea Industry Co., Ltd., Dadugang, Jinghong, Yunnan</td>
-            </tr>
-            <tr>
-                <td>S123</td>
-                <td>Yunkang 10</td>
-                <td>Yunnan</td>
-                <td>Longyuan Tea Industry Co., Ltd., Dadugang, Jinghong, Yunnan</td>
-            </tr>
-            <tr>
-                <td>S124</td>
-                <td>Dadonggang Dayecha</td>
-                <td>Yunnan</td>
-                <td>Longyuan Tea Industry Co., Ltd., Dadugang, Jinghong, Yunnan</td>
-            </tr>
-            <tr>
-                <td>S126</td>
-                <td>Jinggu Dabaicha</td>
-                <td>Yunnan</td>
-                <td>Longyuan Tea Industry Co., Ltd., Dadugang, Jinghong, Yunnan</td>
-            </tr>
-            <tr>
-                <td>S127</td>
-                <td>Ziya</td>
-                <td>Yunnan</td>
-                <td>Longyuan Tea Industry Co., Ltd., Dadugang, Jinghong, Yunnan</td>
-            </tr>
-            <tr>
-                <td>S129</td>
-                <td>Nannuoshan Dayecha 2</td>
-                <td>Yunnan</td>
-                <td>Nannuo Mountain, Xishuangbanna, Yunnan</td>
-            </tr>
-            <tr>
-                <td>S131</td>
-                <td>Nannuoshan Dayecha 3</td>
-                <td>Yunnan</td>
-                <td>Nannuo Mountain, Xishuangbanna, Yunnan</td>
-            </tr>
-            <tr>
-                <td>S132</td>
-                <td>Nannuoshan Zhongxiaoyech A</td>
-                <td>Yunnan</td>
-                <td>Nannuo Mountain, Xishuangbanna, Yunnan</td>
-            </tr>
-            <tr>
-                <td>S133</td>
-                <td>Rougui</td>
-                <td>Fujian</td>
-                <td>Wuyi Star Tea Industry Co., Ltd., Wuyishan City, Fujian</td>
-            </tr>
-            <tr>
-                <td>S134</td>
-                <td>Dahongpao</td>
-                <td>Fujian</td>
-                <td>Wuyi Star Tea Industry Co., Ltd., Wuyishan City, Fujian</td>
-            </tr>
-            <tr>
-                <td>S135</td>
-                <td>Baijiguan</td>
-                <td>Fujian</td>
-                <td>Wuyi Star Tea Industry Co., Ltd., Wuyishan City, Fujian</td>
-            </tr>
-            <tr>
-                <td>S136</td>
-                <td>Queshe</td>
-                <td>Fujian</td>
-                <td>Wuyi Star Tea Industry Co., Ltd., Wuyishan City, Fujian</td>
-            </tr>
-            <tr>
-                <td>S137</td>
-                <td>Shuijingui</td>
-                <td>Fujian</td>
-                <td>Wuyi Star Tea Industry Co., Ltd., Wuyishan City, Fujian</td>
-            </tr>
-            <tr>
-                <td>S138</td>
-                <td>Bantianyao</td>
-                <td>Fujian</td>
-                <td>Wuyi Star Tea Industry Co., Ltd., Wuyishan City, Fujian</td>
-            </tr>
-            <tr>
-                <td>S140</td>
-                <td>Guazijin</td>
-                <td>Fujian</td>
-                <td>Wuyi Star Tea Industry Co., Ltd., Wuyishan City, Fujian</td>
-            </tr>
-            <tr>
-                <td>S141</td>
-                <td>Foshou</td>
-                <td>Fujian</td>
-                <td>Wuyi Star Tea Industry Co., Ltd., Wuyishan City, Fujian</td>
-            </tr>
-            <tr>
-                <td>S142</td>
-                <td>Xiaoye Maoxie</td>
-                <td>Fujian</td>
-                <td>Wuyi Star Tea Industry Co., Ltd., Wuyishan City, Fujian</td>
-            </tr>
-            <tr>
-                <td>S143</td>
-                <td>Jingmaishan Dayecha 1</td>
-                <td>Yunnan</td>
-                <td>Jingmai Mountain, Lancang, Puer, Yunnan</td>
-            </tr>
-            <tr>
-                <td>S144</td>
-                <td>Jingmaishan Dayecha 2</td>
-                <td>Yunnan</td>
-                <td>Jingmai Mountain, Lancang, Puer, Yunnan</td>
-            </tr>
-            <tr>
-                <td>S145</td>
-                <td>Jingmaishan Dayecha 3</td>
-                <td>Yunnan</td>
-                <td>Jingmai Mountain, Lancang, Puer, Yunnan</td>
-            </tr>
-            <tr>
-                <td>S146</td>
-                <td>Undetermined 2</td>
-                <td>Yunnan</td>
-                <td>Menglang, Lancang, Puer, Yunnan</td>
-            </tr>
-            <tr>
-                <td>S147</td>
-                <td>Zijuan</td>
-                <td>Yunnan</td>
-                <td>Menglang, Lancang, Puer, Yunnan</td>
-            </tr>
-            <tr>
-                <td>S148</td>
-                <td>Xianggui Yinhao</td>
-                <td>Yunnan</td>
-                <td>Lincang Tea Research Institute, Lincang, Yunnan</td>
-            </tr>
-            <tr>
-                <td>S149</td>
-                <td>Xianggui Chunzao</td>
-                <td>Yunnan</td>
-                <td>Lincang Tea Research Institute, Lincang, Yunnan</td>
-            </tr>
-            <tr>
-                <td>S150</td>
-                <td>Shilixiang</td>
-                <td>Yunnan</td>
-                <td>Lincang Tea Research Institute, Lincang, Yunnan</td>
-            </tr>
-            <tr>
-                <td>S151</td>
-                <td>Qingshui 3</td>
-                <td>Yunnan</td>
-                <td>Lincang Tea Research Institute, Lincang, Yunnan</td>
-            </tr>
-            <tr>
-                <td>S152</td>
-                <td>Lincang Dayecha</td>
-                <td>Yunnan</td>
-                <td>Jiamu Tea Industry Co., Ltd., Yunxian, Lincang, Yunnan</td>
-            </tr>
-            <tr>
-                <td>S153</td>
-                <td>Bixiangzao</td>
-                <td>Hunan</td>
-                <td>Jiamu Tea Industry Co., Ltd., Yunxian, Lincang, Yunnan</td>
-            </tr>
-            <tr>
-                <td>S154</td>
-                <td>Zhuyeqi</td>
-                <td>Hunan</td>
-                <td>Jiamu Tea Industry Co., Ltd., Yunxian, Lincang, Yunnan</td>
-            </tr>
-            <tr>
-                <td>S155</td>
-                <td>Yusun</td>
-                <td>Hunan</td>
-                <td>Jiamu Tea Industry Co., Ltd., Yunxian, Lincang, Yunnan</td>
-            </tr>
-            <tr>
-                <td>S156</td>
-                <td>Baihaozao</td>
-                <td>Hunan</td>
-                <td>Jiamu Tea Industry Co., Ltd., Yunxian, Lincang, Yunnan</td>
-            </tr>
-            <tr>
-                <td>S157</td>
-                <td>Foxiang 3-3</td>
-                <td>Yunnan</td>
-                <td>Jiamu Tea Industry Co., Ltd., Yunxian, Lincang, Yunnan</td>
-            </tr>
-            <tr>
-                <td>S158</td>
-                <td>Wulong</td>
-                <td>Yunnan</td>
-                <td>Jiamu Tea Industry Co., Ltd., Yunxian, Lincang, Yunnan</td>
-            </tr>
-            <tr>
-                <td>S159</td>
-                <td>Dali Yeshengcha</td>
-                <td>Yunnan</td>
-                <td>Jiamu Tea Industry Co., Ltd., Yunxian, Lincang, Yunnan</td>
-            </tr>
-            <tr>
-                <td>S160</td>
-                <td>Dabaihao</td>
-                <td>Yunnan</td>
-                <td>Jiamu Tea Industry Co., Ltd., Yunxian, Lincang, Yunnan</td>
-            </tr>
-            <tr>
-                <td>S161</td>
-                <td>Taoyuan Daye</td>
-                <td>Hunan</td>
-                <td>Jiamu Tea Industry Co., Ltd., Yunxian, Lincang, Yunnan</td>
-            </tr>
-            <tr>
-                <td>S162</td>
-                <td>Meizhang</td>
-                <td>Yunnan</td>
-                <td>Jiamu Tea Industry Co., Ltd., Yunxian, Lincang, Yunnan</td>
-            </tr>
-            <tr>
-                <td>S164</td>
-                <td>Yunkang 10</td>
-                <td>Yunnan</td>
-                <td>Jiamu Tea Industry Co., Ltd., Yunxian, Lincang, Yunnan</td>
-            </tr>
-        </tbody>
-  </table>
-</div><div id="bcl"><a style="font-size:8pt;text-decoration:none;" href="http://www.devanswer.com">Free Frontend</a></div>
-<script>
-var $table = $("#table"),
-$remove = $("#remove"),
-selections = [];
-    // <td>Sample ID</td>
-    // <td>Accession Name</td>
-    // <td>Geographical Origin</td>
-    // <td>Sample Site</td>
-$(function () {
-  $table.bootstrapTable("destroy");
-  $table.bootstrapTable({
-    columns: [
-    [
-    // {
-    //   field: "state",
-    //   checkbox: true,
-    //   align: "center",
-    //   valign: "middle" },
+            <tbody>
+                <tr>
+                    <td>S1</td>
+                    <td>Fuyun 6</td>
+                    <td>Fujian</td>
+                    <td>Tea Research Institute, Fujian Academy of Agricultural Science, Fu'an, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S2</td>
+                    <td>Fuyun 7</td>
+                    <td>Fujian</td>
+                    <td>Tea Research Institute, Fujian Academy of Agricultural Science, Fu'an, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S4</td>
+                    <td>Mingke 2</td>
+                    <td>Fujian</td>
+                    <td>Tea Research Institute, Fujian Academy of Agricultural Science, Fu'an, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S5</td>
+                    <td>Yuemingxiang</td>
+                    <td>Fujian</td>
+                    <td>Tea Research Institute, Fujian Academy of Agricultural Science, Fu'an, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S6</td>
+                    <td>Mingke 1</td>
+                    <td>Fujian</td>
+                    <td>Tea Research Institute, Fujian Academy of Agricultural Science, Fu'an, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S7</td>
+                    <td>Huangqi</td>
+                    <td>Fujian</td>
+                    <td>Tea Research Institute, Fujian Academy of Agricultural Science, Fu'an, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S8</td>
+                    <td>Fuyun 595</td>
+                    <td>Fujian</td>
+                    <td>Tea Research Institute, Fujian Academy of Agricultural Science, Fu'an, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S9</td>
+                    <td>Chaoyang</td>
+                    <td>Fujian</td>
+                    <td>Tea Research Institute, Fujian Academy of Agricultural Science, Fu'an, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S10</td>
+                    <td>Dangui</td>
+                    <td>Fujian</td>
+                    <td>Tea Research Institute, Fujian Academy of Agricultural Science, Fu'an, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S12</td>
+                    <td>Chunlan</td>
+                    <td>Fujian</td>
+                    <td>Tea Research Institute, Fujian Academy of Agricultural Science, Fu'an, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S13</td>
+                    <td>Zaochunhao</td>
+                    <td>Fujian</td>
+                    <td>Tea Research Institute, Fujian Academy of Agricultural Science, Fu'an, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S14</td>
+                    <td>Jinmudan</td>
+                    <td>Fujian</td>
+                    <td>Tea Research Institute, Fujian Academy of Agricultural Science, Fu'an, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S20</td>
+                    <td>Fuding Dabaicha</td>
+                    <td>Fujian</td>
+                    <td>Tea Research Institute, Fujian Academy of Agricultural Science, Fu'an, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S21</td>
+                    <td>Fuding Dahaocha</td>
+                    <td>Fujian</td>
+                    <td>Tea Research Institute, Fujian Academy of Agricultural Science, Fu'an, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S22</td>
+                    <td>Fu’an Dabaicha</td>
+                    <td>Fujian</td>
+                    <td>Tea Research Institute, Fujian Academy of Agricultural Science, Fu'an, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S36</td>
+                    <td>Jiulong Dabaicha</td>
+                    <td>Fujian</td>
+                    <td>Tea Research Institute, Fujian Academy of Agricultural Science, Fu'an, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S38</td>
+                    <td>Xingrencha</td>
+                    <td>Fujian</td>
+                    <td>Tea Research Institute, Fujian Academy of Agricultural Science, Fu'an, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S40</td>
+                    <td>Xiapu Chunbolv</td>
+                    <td>Fujian</td>
+                    <td>Tea Research Institute, Fujian Academy of Agricultural Science, Fu'an, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S41</td>
+                    <td>Zijuan</td>
+                    <td>Yunnan</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S42</td>
+                    <td>Jiulongpao</td>
+                    <td>Fujian</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S43</td>
+                    <td>Benshan</td>
+                    <td>Fujian</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S44</td>
+                    <td>Tieguanyin</td>
+                    <td>Fujian</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S45</td>
+                    <td>Meizhan</td>
+                    <td>Fujian</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S46</td>
+                    <td>Beidong</td>
+                    <td>Fujian</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S47</td>
+                    <td>Huangdan</td>
+                    <td>Fujian</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S48</td>
+                    <td>Aijiao Wulong</td>
+                    <td>Fujian</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S49</td>
+                    <td>Tieluohan</td>
+                    <td>Fujian</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S50</td>
+                    <td>Jinsuochi</td>
+                    <td>Fujian</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S51</td>
+                    <td>Taoxingye</td>
+                    <td>Yunnan</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S52</td>
+                    <td>Baxian</td>
+                    <td>Fujian</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S53</td>
+                    <td>Baiye 1</td>
+                    <td>Zhejiang</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S54</td>
+                    <td>Huangjinya</td>
+                    <td>Zhejiang</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S55</td>
+                    <td>Yunkang 10</td>
+                    <td>Yunnan</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S56</td>
+                    <td>Yulv</td>
+                    <td>Hunan</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S57</td>
+                    <td>Undetermined 1</td>
+                    <td>Zhejiang</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S58</td>
+                    <td>Shuchazao</td>
+                    <td>Anhui</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S59</td>
+                    <td>Jiaming 1</td>
+                    <td>Zhejiang</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S60</td>
+                    <td>Qiannianxue</td>
+                    <td>Zhejiang</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S61</td>
+                    <td>Yusun</td>
+                    <td>Hunan</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S62</td>
+                    <td>Xueya 100</td>
+                    <td>Yunnan</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S63</td>
+                    <td>Maoxie</td>
+                    <td>Fujian</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S64</td>
+                    <td>Taicha 12</td>
+                    <td>Taiwan</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S65</td>
+                    <td>Shuixian</td>
+                    <td>Fujian</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S66</td>
+                    <td>Qilan</td>
+                    <td>Fujian</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S67</td>
+                    <td>Ruixiang</td>
+                    <td>Fujian</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S68</td>
+                    <td>Chuntaoxiang</td>
+                    <td>Fujian</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S69</td>
+                    <td>Duanjie Baihao</td>
+                    <td>Yunnan</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S70</td>
+                    <td>Aifeng</td>
+                    <td>Yunnan</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S71</td>
+                    <td>Yungui</td>
+                    <td>Yunnan</td>
+                    <td>BAMA Tea Industry Co., Ltd., Anxi, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S73</td>
+                    <td>Jianbohuang 13</td>
+                    <td>Hunan</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S74</td>
+                    <td>Shangmeizhou</td>
+                    <td>Jiangxi</td>
+                    <td>China National Germplasm Hangzhou Tea Repository,Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S75</td>
+                    <td>Zhuyeqi 12</td>
+                    <td>Hunan</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S76</td>
+                    <td>Ningzhou 2</td>
+                    <td>Jiangxi</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S77</td>
+                    <td>Zhenghe Dabaicha</td>
+                    <td>Fujian</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S78</td>
+                    <td>Shuchazao</td>
+                    <td>Anhui</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S79</td>
+                    <td>Damianbai</td>
+                    <td>Jiangxi</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S80</td>
+                    <td>Xicha 5</td>
+                    <td>Jiangsu</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S81</td>
+                    <td>Xicha 11</td>
+                    <td>Jiangsu</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S82</td>
+                    <td>Zhuyeqi 9</td>
+                    <td>Hunan</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S83</td>
+                    <td>Baihaozao</td>
+                    <td>Hunan</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S84</td>
+                    <td>Fuzao 2</td>
+                    <td>Anhui</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S85</td>
+                    <td>Anhui 7</td>
+                    <td>Anhui</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S86</td>
+                    <td>Echa1</td>
+                    <td>Hubei</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S87</td>
+                    <td>Yangshulin 783</td>
+                    <td>Anhui</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S88</td>
+                    <td>Wannong 95</td>
+                    <td>Anhui</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S89</td>
+                    <td>Qingfeng</td>
+                    <td>Zhejiang</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S90</td>
+                    <td>Jinfeng</td>
+                    <td>Zhejiang</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S91</td>
+                    <td>Echa 4</td>
+                    <td>Hubei</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S92</td>
+                    <td>Guilv1</td>
+                    <td>Guangxi</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S93</td>
+                    <td>Maolv</td>
+                    <td>Zhejiang</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S94</td>
+                    <td>Zhongcha 102</td>
+                    <td>Zhejiang</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S95</td>
+                    <td>Juhuachun</td>
+                    <td>Zhejiang</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S96</td>
+                    <td>Zhenong 113</td>
+                    <td>Zhejiang</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S97</td>
+                    <td>Hanlv</td>
+                    <td>Zhejiang</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S98</td>
+                    <td>Zhenong 12</td>
+                    <td>Zhejiang</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S99</td>
+                    <td>Zhenong 21</td>
+                    <td>Zhejiang</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S100</td>
+                    <td>Baimao 2</td>
+                    <td>Guangdong</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S101</td>
+                    <td>Zhongcha 302</td>
+                    <td>Zhejiang</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S102</td>
+                    <td>Zhongcha 108</td>
+                    <td>Zhejiang</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S103</td>
+                    <td>Shifocui</td>
+                    <td>Anhui</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S104</td>
+                    <td>Shuyong 906</td>
+                    <td>Chongqing</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S105</td>
+                    <td>Shuyong 401</td>
+                    <td>Chongqing</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S106</td>
+                    <td>Qiancha 8</td>
+                    <td>Guizhou</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S107</td>
+                    <td>Qianmei 419</td>
+                    <td>Guizhou</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S108</td>
+                    <td>Tianfucha 28</td>
+                    <td>Sichuan</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S109</td>
+                    <td>Wancha 91</td>
+                    <td>Anhui</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S110</td>
+                    <td>Huangmeigui</td>
+                    <td>Fujian</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S111</td>
+                    <td>Shuyong 1</td>
+                    <td>Chongqing</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S112</td>
+                    <td>Nanjiang 1</td>
+                    <td>Chongqing</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S113</td>
+                    <td>Guihong 3</td>
+                    <td>Gunagxi</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S114</td>
+                    <td>Yunkang 10</td>
+                    <td>Yunnan</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S115</td>
+                    <td>Lingtou Dancong</td>
+                    <td>Guangdong</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S116</td>
+                    <td>Yinghong 1</td>
+                    <td>Guangdong</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S117</td>
+                    <td>Zhenong 117</td>
+                    <td>Zhejiang</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S118</td>
+                    <td>Longjing 43</td>
+                    <td>Zhejiang</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S119</td>
+                    <td>Mingshan Baihao 131</td>
+                    <td>Sichuan</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S120</td>
+                    <td>Hongyan 7</td>
+                    <td>Guangdong</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S121</td>
+                    <td>Zaobaijian 5</td>
+                    <td>Chongqing</td>
+                    <td>China National Germplasm Hangzhou Tea Repository, Tea Research Institute, Chinese Academy of
+                        Agricultural Science, Hangzhou Zhejiang</td>
+                </tr>
+                <tr>
+                    <td>S122</td>
+                    <td>Changye Baihao</td>
+                    <td>Yunnan</td>
+                    <td>Longyuan Tea Industry Co., Ltd., Dadugang, Jinghong, Yunnan</td>
+                </tr>
+                <tr>
+                    <td>S123</td>
+                    <td>Yunkang 10</td>
+                    <td>Yunnan</td>
+                    <td>Longyuan Tea Industry Co., Ltd., Dadugang, Jinghong, Yunnan</td>
+                </tr>
+                <tr>
+                    <td>S124</td>
+                    <td>Dadonggang Dayecha</td>
+                    <td>Yunnan</td>
+                    <td>Longyuan Tea Industry Co., Ltd., Dadugang, Jinghong, Yunnan</td>
+                </tr>
+                <tr>
+                    <td>S126</td>
+                    <td>Jinggu Dabaicha</td>
+                    <td>Yunnan</td>
+                    <td>Longyuan Tea Industry Co., Ltd., Dadugang, Jinghong, Yunnan</td>
+                </tr>
+                <tr>
+                    <td>S127</td>
+                    <td>Ziya</td>
+                    <td>Yunnan</td>
+                    <td>Longyuan Tea Industry Co., Ltd., Dadugang, Jinghong, Yunnan</td>
+                </tr>
+                <tr>
+                    <td>S129</td>
+                    <td>Nannuoshan Dayecha 2</td>
+                    <td>Yunnan</td>
+                    <td>Nannuo Mountain, Xishuangbanna, Yunnan</td>
+                </tr>
+                <tr>
+                    <td>S131</td>
+                    <td>Nannuoshan Dayecha 3</td>
+                    <td>Yunnan</td>
+                    <td>Nannuo Mountain, Xishuangbanna, Yunnan</td>
+                </tr>
+                <tr>
+                    <td>S132</td>
+                    <td>Nannuoshan Zhongxiaoyech a</td>
+                    <td>Yunnan</td>
+                    <td>Nannuo Mountain, Xishuangbanna, Yunnan</td>
+                </tr>
+                <tr>
+                    <td>S133</td>
+                    <td>Rougui</td>
+                    <td>Fujian</td>
+                    <td>Wuyi Star Tea Industry Co., Ltd., Wuyishan City, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S134</td>
+                    <td>Dahongpao</td>
+                    <td>Fujian</td>
+                    <td>Wuyi Star Tea Industry Co., Ltd., Wuyishan City, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S135</td>
+                    <td>Baijiguan</td>
+                    <td>Fujian</td>
+                    <td>Wuyi Star Tea Industry Co., Ltd., Wuyishan City, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S136</td>
+                    <td>Queshe</td>
+                    <td>Fujian</td>
+                    <td>Wuyi Star Tea Industry Co., Ltd., Wuyishan City, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S137</td>
+                    <td>Shuijingui</td>
+                    <td>Fujian</td>
+                    <td>Wuyi Star Tea Industry Co., Ltd., Wuyishan City, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S138</td>
+                    <td>Bantianyao</td>
+                    <td>Fujian</td>
+                    <td>Wuyi Star Tea Industry Co., Ltd., Wuyishan City, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S140</td>
+                    <td>Guazijin</td>
+                    <td>Fujian</td>
+                    <td>Wuyi Star Tea Industry Co., Ltd., Wuyishan City, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S141</td>
+                    <td>Foshou</td>
+                    <td>Fujian</td>
+                    <td>Wuyi Star Tea Industry Co., Ltd., Wuyishan City, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S142</td>
+                    <td>Xiaoye Maoxie</td>
+                    <td>Fujian</td>
+                    <td>Wuyi Star Tea Industry Co., Ltd., Wuyishan City, Fujian</td>
+                </tr>
+                <tr>
+                    <td>S143</td>
+                    <td>Jingmaishan Dayecha 1</td>
+                    <td>Yunnan</td>
+                    <td>Jingmai Mountain, Lancang, Puer, Yunnan</td>
+                </tr>
+                <tr>
+                    <td>S144</td>
+                    <td>Jingmaishan Dayecha 2</td>
+                    <td>Yunnan</td>
+                    <td>Jingmai Mountain, Lancang, Puer, Yunnan</td>
+                </tr>
+                <tr>
+                    <td>S145</td>
+                    <td>Jingmaishan Dayecha 3</td>
+                    <td>Yunnan</td>
+                    <td>Jingmai Mountain, Lancang, Puer, Yunnan</td>
+                </tr>
+                <tr>
+                    <td>S146</td>
+                    <td>Undetermined 2</td>
+                    <td>Yunnan</td>
+                    <td>Menglang, Lancang, Puer, Yunnan</td>
+                </tr>
+                <tr>
+                    <td>S147</td>
+                    <td>Zijuan</td>
+                    <td>Yunnan</td>
+                    <td>Menglang, Lancang, Puer, Yunnan</td>
+                </tr>
+                <tr>
+                    <td>S148</td>
+                    <td>Xianggui Yinhao</td>
+                    <td>Yunnan</td>
+                    <td>Lincang Tea Research Institute, Lincang, Yunnan</td>
+                </tr>
+                <tr>
+                    <td>S149</td>
+                    <td>Xianggui Chunzao</td>
+                    <td>Yunnan</td>
+                    <td>Lincang Tea Research Institute, Lincang, Yunnan</td>
+                </tr>
+                <tr>
+                    <td>S150</td>
+                    <td>Shilixiang</td>
+                    <td>Yunnan</td>
+                    <td>Lincang Tea Research Institute, Lincang, Yunnan</td>
+                </tr>
+                <tr>
+                    <td>S151</td>
+                    <td>Qingshui 3</td>
+                    <td>Yunnan</td>
+                    <td>Lincang Tea Research Institute, Lincang, Yunnan</td>
+                </tr>
+                <tr>
+                    <td>S152</td>
+                    <td>Lincang Dayecha</td>
+                    <td>Yunnan</td>
+                    <td>Jiamu Tea Industry Co., Ltd., Yunxian, Lincang, Yunnan</td>
+                </tr>
+                <tr>
+                    <td>S153</td>
+                    <td>Bixiangzao</td>
+                    <td>Hunan</td>
+                    <td>Jiamu Tea Industry Co., Ltd., Yunxian, Lincang, Yunnan</td>
+                </tr>
+                <tr>
+                    <td>S154</td>
+                    <td>Zhuyeqi</td>
+                    <td>Hunan</td>
+                    <td>Jiamu Tea Industry Co., Ltd., Yunxian, Lincang, Yunnan</td>
+                </tr>
+                <tr>
+                    <td>S155</td>
+                    <td>Yusun</td>
+                    <td>Hunan</td>
+                    <td>Jiamu Tea Industry Co., Ltd., Yunxian, Lincang, Yunnan</td>
+                </tr>
+                <tr>
+                    <td>S156</td>
+                    <td>Baihaozao</td>
+                    <td>Hunan</td>
+                    <td>Jiamu Tea Industry Co., Ltd., Yunxian, Lincang, Yunnan</td>
+                </tr>
+                <tr>
+                    <td>S157</td>
+                    <td>Foxiang 3-3</td>
+                    <td>Yunnan</td>
+                    <td>Jiamu Tea Industry Co., Ltd., Yunxian, Lincang, Yunnan</td>
+                </tr>
+                <tr>
+                    <td>S158</td>
+                    <td>Wulong</td>
+                    <td>Yunnan</td>
+                    <td>Jiamu Tea Industry Co., Ltd., Yunxian, Lincang, Yunnan</td>
+                </tr>
+                <tr>
+                    <td>S159</td>
+                    <td>Dali Yeshengcha</td>
+                    <td>Yunnan</td>
+                    <td>Jiamu Tea Industry Co., Ltd., Yunxian, Lincang, Yunnan</td>
+                </tr>
+                <tr>
+                    <td>S160</td>
+                    <td>Dabaihao</td>
+                    <td>Yunnan</td>
+                    <td>Jiamu Tea Industry Co., Ltd., Yunxian, Lincang, Yunnan</td>
+                </tr>
+                <tr>
+                    <td>S161</td>
+                    <td>Taoyuan Daye</td>
+                    <td>Hunan</td>
+                    <td>Jiamu Tea Industry Co., Ltd., Yunxian, Lincang, Yunnan</td>
+                </tr>
+                <tr>
+                    <td>S162</td>
+                    <td>Meizhang</td>
+                    <td>Yunnan</td>
+                    <td>Jiamu Tea Industry Co., Ltd., Yunxian, Lincang, Yunnan</td>
+                </tr>
+                <tr>
+                    <td>S164</td>
+                    <td>Yunkang 10</td>
+                    <td>Yunnan</td>
+                    <td>Jiamu Tea Industry Co., Ltd., Yunxian, Lincang, Yunnan</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="bcl"><a style="font-size:8pt;text-decoration:none;" href="http://www.devanswer.com">Free Frontend</a></div>
+    <script>
+        var $table = $("#table"),
+            $remove = $("#remove"),
+            selections = [];
+        // <td>Sample ID</td>
+        // <td>Accession Name</td>
+        // <td>Geographical Origin</td>
+        // <td>Sample Site</td>
+        $(function () {
+            $table.bootstrapTable("destroy");
+            $table.bootstrapTable({
+                columns: [
+                    [
+                        // {
+                        //   field: "state",
+                        //   checkbox: true,
+                        //   align: "center",
+                        //   valign: "middle" },
 
-    // {
-    //   title: "ID",
-    //   field: "id",
-    //   sortable: true,
-    //   valign: "middle" },
+                        // {
+                        //   title: "ID",
+                        //   field: "id",
+                        //   sortable: true,
+                        //   valign: "middle" },
 
-    // {
-    //   title: "Date",
-    //   field: "date",
-    //   sortable: true,
-    //   valign: "middle",
-    //   id: "dob",
-    //   editable: {
-    //     type: "combodate",
-    //     format: "YYYY/MM/DD",
-    //     template: "YYYY / MM / DD",
-    //     combodate: {
-    //       maxYear: 2030,
-    //       minYear: 2018,
-    //       firstItem: "none" //'name', 'empty', 'none'
-    //     },
-    //     emptytext: "-" } },
+                        // {
+                        //   title: "Date",
+                        //   field: "date",
+                        //   sortable: true,
+                        //   valign: "middle",
+                        //   id: "dob",
+                        //   editable: {
+                        //     type: "combodate",
+                        //     format: "YYYY/MM/DD",
+                        //     template: "YYYY / MM / DD",
+                        //     combodate: {
+                        //       maxYear: 2030,
+                        //       minYear: 2018,
+                        //       firstItem: "none" //'name', 'empty', 'none'
+                        //     },
+                        //     emptytext: "-" } },
 
 
-    {
-      title: "Samples",
-      field: "samples",
-      sortable: true,
-      valign: "middle",
-      editable: {
-        type: "text" } },
+                        {
+                            title: "Samples ID",
+                            field: "samples",
+                            sortable: true,
+                            valign: "middle",
+                            editable: {
+                                type: "text"
+                            }
+                        },
 
 
-    {
-      title: "Items",
-      field: "items",
-      sortable: true,
-      valign: "middle",
-      editable: {
-        type: "text" } },
+                        {
+                            title: "Accession Name",
+                            field: "accession",
+                            sortable: true,
+                            valign: "middle",
+                            editable: {
+                                type: "text"
+                            }
+                        },
 
 
-    {
-      title: "Deadline",
-      field: "deadline",
-      sortable: true,
-      valign: "middle",
-      editable: {
-        type: "text" } },
+                        {
+                            title: "Geographical Origin",
+                            field: "origin",
+                            sortable: true,
+                            valign: "middle",
+                            editable: {
+                                type: "text"
+                            }
+                        },
 
 
-    // {
-    //   title: "Quantity",
-    //   field: "quantity",
-    //   sortable: true,
-    //   valign: "middle",
-    //   editable: {
-    //     type: "text" } },
+                        // {
+                        //   title: "Quantity",
+                        //   field: "quantity",
+                        //   sortable: true,
+                        //   valign: "middle",
+                        //   editable: {
+                        //     type: "text" } },
 
 
-    // {
-    //   title: "Amount",
-    //   field: "amount",
-    //   sortable: true,
-    //   valign: "middle",
-    //   editable: {
-    //     type: "number" } },
+                        // {
+                        //   title: "Amount",
+                        //   field: "amount",
+                        //   sortable: true,
+                        //   valign: "middle",
+                        //   editable: {
+                        //     type: "number" } },
 
 
-    // {
-    //   title: "Closing",
-    //   field: "closing",
-    //   align: "center",
-    //   sortable: true,
-    //   id: "status",
-    //   valign: "middle",
-    //   editable: {
-    //     type: "select",
-    //     placement: "right",
-    //     value: "是",
-    //     source: [{ value: "10 PM", text: "10 PM" }, { value: "是", text: "是" }] } },
+                        // {
+                        //   title: "Closing",
+                        //   field: "closing",
+                        //   align: "center",
+                        //   sortable: true,
+                        //   id: "status",
+                        //   valign: "middle",
+                        //   editable: {
+                        //     type: "select",
+                        //     placement: "right",
+                        //     value: "是",
+                        //     source: [{ value: "10 PM", text: "10 PM" }, { value: "是", text: "是" }] } },
 
 
-    {
-      title: "Supplier",
-      field: "upplier",
-      align: "center",
-      sortable: true,
-      valign: "middle" },
+                        {
+                            title: "Supplier",
+                            field: "upplier",
+                            align: "center",
+                            sortable: true,
+                            valign: "middle"
+                        },
 
-    // {
-    //   title: "Print",
-    //   field: "print",
-    //   align: "center",
-    //   sortable: true,
-    //   valign: "middle" },
+                        // {
+                        //   title: "Print",
+                        //   field: "print",
+                        //   align: "center",
+                        //   sortable: true,
+                        //   valign: "middle" },
 
-    // {
-    //   title: "Action",
-    //   field: "action",
-    //   align: "center",
-    //   sortable: true,
-    //   valign: "middle",
-    //   events: actionEvents,
-    //   formatter: actionFormatter }
-    ]],
+                        // {
+                        //   title: "Action",
+                        //   field: "action",
+                        //   align: "center",
+                        //   sortable: true,
+                        //   valign: "middle",
+                        //   events: actionEvents,
+                        //   formatter: actionFormatter }
+                    ]],
 
 
 
-    classes: "table table-hover table-no-bordered",
-    toolbar: "#toolbar",
-    buttonsClass: "outline-secondary",
-    sortClass: undefined, 
-    undefinedText: "-", 
-    striped: true, 
-    sortName: "number", 
-    sortOrder: "desc", 
-    sortStable: false, 
-    sortable: true, 
-    pagination: true, 
-    paginationLoop: false, 
-    onlyInfoPagination: false, 
-    pageNumber: 1, 
-    pageSize: 5, 
-    pageList: [1, 3, 5, 10, "ALL"], 
-    paginationPreText: "Previous", 
-    paginationNextText: "Next", 
-    selectItemName: "btSelectItem", 
-    smartDisplay: true, 
-    search: true, 
-    searchOnEnterKey: false, 
-    strictSearch: false, 
-    searchText: "", 
-    searchTimeOut: "500", 
-    trimOnSearch: true, 
-    searchalign: "right", 
-    buttonsAlign: "right", 
-    toolbarAlign: "left", 
-    paginationVAlign: "bottom", 
-    paginationHAlign: "right", 
-    paginationDetailHAlign: "left", 
-    showHeader: true, 
-    showFooter: false, 
-    showColumns: true, 
-    showRefresh: true, 
-    showToggle: false, 
-    showExport: true,
-    showPaginationSwitch: true, 
-    showFullscreen: false, 
-    minimumCountColumns: 5, 
-    idField: undefined, 
-    clickToSelect: false, 
-    uniqueId: "id", 
-    singleSelect: false, 
-    checkboxHeader: true, 
-    maintainSelected: true 
-    // reorderableColumns: true,
-    // iconsPrefix: "material-icons", // material-icons of fa (font awesome)
-    // icons: {
-    //   paginationSwitchDown: "material-icons-collapse-down icon-chevron-down",
-    //   paginationSwitchUp: "material-icons-collapse-up icon-chevron-up",
-    //   refresh: "material-icons-refresh icon-refresh",
-    //   toggle: "material-icons-list-alt icon-list-alt",
-    //   columns: "material-icons-th icon-th",
-    //   detailOpen: "glyphicon-plus icon-plus",
-    //   detailClose: "glyphicon-minus icon-minus"
-    // }
-  });
-  $table.on(
-  "check.bs.table uncheck.bs.table " +
-  "check-all.bs.table uncheck-all.bs.table",
-  function () {
-    $remove.prop("disabled", !$table.bootstrapTable("getSelections").length);
-    selections = getIdSelections();
-  });
+                classes: "table table-hover table-no-bordered",
+                toolbar: "#toolbar",
+                buttonsClass: "outline-secondary",
+                sortClass: undefined,
+                undefinedText: "-",
+                striped: true,
+                sortName: "number",
+                sortOrder: "desc",
+                sortStable: false,
+                sortable: true,
+                pagination: true,
+                paginationLoop: false,
+                onlyInfoPagination: false,
+                pageNumber: 1,
+                pageSize: 5,
+                pageList: [1, 3, 5, 10, "ALL"],
+                paginationPreText: "Previous",
+                paginationNextText: "Next",
+                selectItemName: "btSelectItem",
+                smartDisplay: true,
+                search: true,
+                searchOnEnterKey: false,
+                strictSearch: false,
+                searchText: "",
+                searchTimeOut: "500",
+                trimOnSearch: true,
+                searchalign: "right",
+                buttonsAlign: "right",
+                toolbarAlign: "left",
+                paginationVAlign: "bottom",
+                paginationHAlign: "right",
+                paginationDetailHAlign: "left",
+                showHeader: true,
+                showFooter: false,
+                showColumns: true,
+                showRefresh: true,
+                showToggle: false,
+                showExport: true,
+                showPaginationSwitch: true,
+                showFullscreen: false,
+                minimumCountColumns: 5,
+                idField: undefined,
+                clickToSelect: false,
+                uniqueId: "id",
+                singleSelect: false,
+                checkboxHeader: true,
+                maintainSelected: true
+                // reorderableColumns: true,
+                // iconsPrefix: "material-icons", // material-icons of fa (font awesome)
+                // icons: {
+                //   paginationSwitchDown: "material-icons-collapse-down icon-chevron-down",
+                //   paginationSwitchUp: "material-icons-collapse-up icon-chevron-up",
+                //   refresh: "material-icons-refresh icon-refresh",
+                //   toggle: "material-icons-list-alt icon-list-alt",
+                //   columns: "material-icons-th icon-th",
+                //   detailOpen: "glyphicon-plus icon-plus",
+                //   detailClose: "glyphicon-minus icon-minus"
+                // }
+            });
+            $table.on(
+                "check.bs.table uncheck.bs.table " +
+                "check-all.bs.table uncheck-all.bs.table",
+                function () {
+                    $remove.prop("disabled", !$table.bootstrapTable("getSelections").length);
+                    selections = getIdSelections();
+                });
 
-  $remove.click(function () {
-    var ids = getIdSelections();
-    $table.bootstrapTable("remove", {
-      field: "id",
-      values: ids });
+            $remove.click(function () {
+                var ids = getIdSelections();
+                $table.bootstrapTable("remove", {
+                    field: "id",
+                    values: ids
+                });
 
-    $remove.prop("disabled", true);
-  });
-  $('[data-toggle="dropdown"] >i').
-  removeClass("glyphicon-export").
-  addClass("fa-download");
-});
-function getIdSelections() {
-  return $.map($table.bootstrapTable("getSelections"), function (row) {
-    return row.id;
-  });
-}
-function actionFormatter(value, row, index) {
-  return ['<button class="remove btn btn-danger btn-sm">Delete</button>'].join(
-  "");
+                $remove.prop("disabled", true);
+            });
+            $('[data-toggle="dropdown"] >i').
+                removeClass("glyphicon-export").
+                addClass("fa-download");
+        });
+        function getIdSelections() {
+            return $.map($table.bootstrapTable("getSelections"), function (row) {
+                return row.id;
+            });
+        }
+        function actionFormatter(value, row, index) {
+            return ['<button class="remove btn btn-danger btn-sm">Delete</button>'].join(
+                "");
 
-}
-window.actionEvents = {
-  "click .remove": function (e, value, row, index) {
-    $table.bootstrapTable("remove", {
-      field: "id",
-      values: [row.id] });
+        }
+        window.actionEvents = {
+            "click .remove": function (e, value, row, index) {
+                $table.bootstrapTable("remove", {
+                    field: "id",
+                    values: [row.id]
+                });
 
-  } };
-</script>
+            }
+        };
+    </script>
 
 </body>
+
 </html>
