@@ -168,3 +168,7 @@ Getting started with IPStack API
 >[Django on jupter](https://www.youtube.com/watch?v=t3mk_u0rprM)
 
 >[如何在jupyter使用django](https://blog.csdn.net/dudu3332/article/details/102890738)
+
+>[dynamic table](https://www.freecodecamp.org/news/convert-html-table-to-dynamic-javascript-data-grid/)
+
+>[excel2table](https://tableconvert.com/excel-to-html)

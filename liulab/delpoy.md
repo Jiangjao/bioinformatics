@@ -179,6 +179,29 @@ tmux attach
     -   OSS的依赖项目添加django_oss_storage到APPS
     -   settings里面添加OSS设置
 
+## 数据建模 & 企业级数据库设计原则
+3个基础原则，4个扩展性原则，3个完备性原则
+基础原则，构建数据表都会用
+扩展性原则，根据实际应用来判断，可以根据应用的数据量和支持的并发量来评估
+面向C端的大数据量高并发的互联网应用
+
+3个基础原则
+-   结构清晰：表名、字段命名没有歧义，能一眼看懂
+-   唯一职责：一表一用，领域定义清晰，不存储无关信息，相关数据在一张表中
+-   主键原则：设计不带物理意义的主键；有唯一约束，确保幂等
+
+4个扩展性原则（影响系统的性能和容量）
+-   长短分离：可以扩展，长文本独立存储；有合适的容量设计
+-   冷热分离：当前数据与历史数据分离
+-   索引完备：有合适索引方便查询
+-   不适用关联查询：不使用一切的SQL Join操作，不做2个表或更多表的关联查询
+
+3个完备性原则
+-   完整性：保证数据的准确性和完整性，重要的内容都有记录
+-   可追溯性：可追溯创建时间，修改时间，可以逻辑删除
+-   一致性原则：数据之间保持一致，尽可能避免同样的数据存储在不同表中
+
+
 ## 报错
 ```bash
 mysql.connector.errors.DatabaseError: 2068 (HY000): LOAD DATA LOCAL INFILE file request rejected due to restrictions on access
@@ -191,3 +214,4 @@ mysql.connector.errors.DatabaseError: 2068 (HY000): LOAD DATA LOCAL INFILE file 
 
 >[Python并发编程入门：(一)概览](https://zhuanlan.zhihu.com/p/438107406)
 
+>[若谷学院技术分享 ](https://www.ruoguedu.com/post/django-course-faq/)
