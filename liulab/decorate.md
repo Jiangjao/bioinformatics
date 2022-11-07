@@ -32,9 +32,14 @@ S106    #d5a6bd
 ## Phylogenetic tree visualisation
 
 >[TnT Tree](http://tntvis.github.io/tnt.tree/examples/index.html)
+>[C3BI-pasteur-fr](https://github.com/C3BI-pasteur-fr/ngphylogeny-django)
 
 ## 参考
 >[LEAF COLORS](https://www.evolgenius.info/evolview-v3/helpsite/dat6.html)
 >[my project version1](https://www.evolgenius.info/evolview-v3/#shared/teatree11_03_SdJOddiAUB/teatree%20:%20teatree11_03)
 >[instructions for deploying [evolview v3 and ver2] (http://www.evolgenius.info/evolview) to a local computer](https://balaram26.github.io/evolview.github.io/locdeploy/)
 >[bio.tools ](https://www.bio.tools/phylocloud)
+
+>[PHYLOGENY tree](https://molbiol-tools.ca/Phylogeny.htm)
+
+>[django-ipinfo](https://github.com/ipinfo/django)
