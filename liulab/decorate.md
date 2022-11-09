@@ -47,6 +47,22 @@ S106    #d5a6bd
 
 >[phylotree.js articles](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-018-2283-2)
 
+>[hyphy](http://hyphy.org/)
+
+>[phylotree examples ](https://bl.ocks.org/spond)
+
+## file folder tree examples
+>[amigo 2](http://amigo.geneontology.org/amigo/dd_browse)
+
+
+## ipinfo
+IPinfo Django Client Library
+register on IPinfo client
+
+>[ipinfo](https://github.com/ipinfo/django#local-development-and-testing)
+
+>[django-ip-restriction 1.1.1](https://pypi.org/project/django-ip-restriction/)
+
 ## 参考
 >[LEAF COLORS](https://www.evolgenius.info/evolview-v3/helpsite/dat6.html)
 
