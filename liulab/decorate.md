@@ -73,10 +73,13 @@ register on IPinfo client
 >[如何查看和检查网站流量](https://zhuanlan.zhihu.com/p/380752061)
 
 >[Django 统计网站访问次数、访问 ip 、访问端点及次数](https://blog.csdn.net/Fweiren/article/details/84776962)
-Django 开发的基础知识
->[django框架篇 ](https://zhuanlan.zhihu.com/p/484957572)
 
 >[[个人网站搭建]·极简方式统计个人网页访问量（基于百度统计）](https://www.cnblogs.com/xiaosongshine/p/10618638.html)
+
+## Django 开发的基础和进阶知识
+>[django框架篇 ](https://zhuanlan.zhihu.com/p/484957572)
+
+>[django-book-2 ](https://wizardforcel.gitbooks.io/django-book-20-zh-cn/content/16.html)
 
 ## 参考
 >[LEAF COLORS](https://www.evolgenius.info/evolview-v3/helpsite/dat6.html)
