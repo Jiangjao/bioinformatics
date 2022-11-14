@@ -77,8 +77,51 @@ ps:其实它的species是7个
     -   基于位点变异频率分布
         -   Tajima's D检验
         -   Fu & Li's D和F检验
+        -   Fay & Wu's H检验
+    -   基于连锁不平衡
+        -   在一段DNA序列中，位点与位点之间存在连锁的关系。不同位点间的连锁构成了单倍型。随着，重组的积累，特定的单倍型会被稍弱而逐渐消失。由于重组率与连锁距离有关，所以连锁不平衡范围会逐渐缩短。对于新产生的一个单倍型，由于重组来不及破坏位点之间的连锁，所以它们之间的连锁不平衡的区域往往会比较大。在中性假设下，如果某个单倍型是较新产生的，那么它的频率往往比较低，而频率较高的单倍型，需要经历很长一段时间才可能因为受到遗传漂变的影响达到较高的频率。如果群体经历了正向选择，那么有利于位点连锁的周围位点会由于搭载效应频率很快提升。所以，包含有利位点的单倍体型，一方面有着较高的频率，另一方面由于经历的时间不长,存在较大的连锁不平衡范围。基于这个特征可以用来检测群体内是否发生了正向选择。
+            -   LRH 检验
+            -   HS检验
+            -   LDD检验
+            -   IBD检验
+    -   基于群体分化
+    -   基于溯祖树
 
+
+
+## 单倍型估计方法(Haplotype_estimation)
+
+按照 Grant 等(1998)提出的标准，单倍型多样性以 0.5 为临界值，核苷酸多样性以 0.005 为临界值，二者的值越大，群体的多样性程度越高。
+
+已经提出了许多统计方法来估计单倍型。一些最早的方法使用简单的多项式模型，其中与样本一致的每个可能的单倍型都被赋予一个未知的频率参数，并且这些参数是用期望最大化算法估计的。这些方法一次只能处理少量站点，尽管后来开发了顺序版本，特别是 SNPHAP 方法。
+
+最准确和广泛使用的单倍型估计方法利用某种形式的隐马尔可夫模型(HMM) 进行推理。长期以来，PHASE是最准确的方法。PHASE 是第一个利用聚结理论中关于单倍型联合分布的想法的方法。该方法使用Gibbs 抽样方法，其中每个个体的单倍型都根据来自所有其他样本的单倍型的当前估计值进行更新。以一组其他单倍型为条件的单倍型分布的近似值被用于吉布斯采样器的条件分布。PHASE 用于估计来自HapMap 项目的单倍型. PHASE 受到速度的限制，不适用于全基因组关联研究的数据集。
+
+fastPHASE 和 BEAGLE 方法引入了适用于GWAS大小的数据集的单倍型集群模型。随后引入了与 PHASE 方法相似但速度更快的 IMPUTE2 和 MaCH 方法。这些方法迭代地更新每个样本的单倍型估计，条件是其他样本的 K 个单倍型估计的子集。IMPUTE2 引入了仔细选择单倍型子集以提高准确性的想法。精度随 K 而增加，但随二次方O(K^{2})计算复杂度。
+
+SHAPEIT1 方法通过引入线性O(K)仅在与个体基因型一致的单倍型空间上运行的复杂性方法。HAPI-UR 方法随后提出了一种非常相似的方法。SHAPEIT2 结合了 SHAPEIT1 和 IMPUTE2 的最佳特性，以提高效率和准确性。
+
+-   间接推断法根据研究对象的不同又可分为两类：
+    -   群体推断法和家族推断法。
+    -   群体推断法是通过构建一些关联群体的基因池并用统计学方法对预测结果进行分析推断样本的单倍型。如果群体中存在一些突变频率较低的个体，它受连锁不平衡程度的影响往往会被遗漏而无法获得其单倍型信息。
+    -   家族推断法是根据同一家族众多个体的基因型信息对待测样本进行推断获得其单倍型信息，在使用前要确保同一家族中这些样本基因型信息的可靠性。家族推断法在遗传疾病的研究中有非常重要的作用。研究者对一个家庭的父母及其子女四口人进行全基因组测序，经过序列分析可以得知子代基因组精确的重组位点和一些稀有的单核苷酸变异位点。更重要的是，发现该家庭两子女含有米勒综合症和原发性纤毛运动障碍性疾病两个隐性致病基因，对寻找致病基因和疾病治疗方法有重要作用。
+
+## 实战
+
+## 引用
+
+>[Haplotype](https://en.wikipedia.org/wiki/Haplotype)
+
+>[Haplotype_estimation](https://en.wikipedia.org/wiki/Haplotype_estimation)
 
 >[单倍型组装与推断](http://doc.aporc.org/attach/Course001/Bioinformatics-3.pdf)
 
 >[杨少滢,缪立生,肖成,刘宇,沈宏旭,吴健,高青山,赵玉民,曹阳.沃金黑牛FGF14基因单倍型与生长性状的相关性分析[J/OL].中国畜牧杂志:1-10[2022-11-13].DOI:10.19556/j.0258-7033.20220630-02.](https://oversea.cnki.net/KCMS/detail/detail.aspx?dbcode=CAPJ&dbname=CAPJLAST&filename=ZGXM20221103001&uniplatform=OVERSEA&v=_qqq1X2svHerNGtKoHmuhxQcfEjGEfOT0foOyQEXgkR_M5xTnlxJbLNs8w1YlWAB)
+
+>[单倍型分析技术研究进展](https://cjb.ijournals.cn/html/cjbcn/2018/6/gc18060852.htm#zz)
+
+>[Grant WAS, Bowen BW. Shallow population histories in deep evolutionary lineages of marine fishes: Insights from sardines and anchovies and lessons for conservation. Journal of Heredity, 1998, 89(5): 415–426](#)
+
+>[haploview 单倍型分析](https://www.broadinstitute.org/haploview/haploview)
+
+>[Haploview软件使用-连锁不平衡分析 ](https://www.jianshu.com/p/c1bddbba735f)
