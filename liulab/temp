@@ -35,3 +35,14 @@ S106	#d5a6bd
 ##S58,S78 shuchazao
 ##S61,S155	Yusun
 ##S41,S147	Zijuan
+
+Statistical Analyses that Can Handle Outliers
+What do you do when you can’t legitimately remove outliers, but they violate the assumptions of your statistical analysis? You want to include them but don’t want them to distort the results. Fortunately, there are various statistical analyses up to the task. Here are several options you can try.
+
+-   Nonparametric hypothesis tests are robust to outliers. For these alternatives to the more common parametric tests, outliers won’t necessarily violate their assumptions or distort their results.
+
+-   In regression analysis, you can try transforming your data or using a robust regression analysis available in some statistical packages.
+
+-   Finally, bootstrapping techniques use the sample data as they are and don’t make assumptions about distributions.
+
+-   These types of analyses allow you to capture the full variability of your dataset without violating assumptions and skewing results.
