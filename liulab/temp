@@ -46,3 +46,12 @@ What do you do when you can’t legitimately remove outliers, but they violate t
 -   Finally, bootstrapping techniques use the sample data as they are and don’t make assumptions about distributions.
 
 -   These types of analyses allow you to capture the full variability of your dataset without violating assumptions and skewing results.
+
+$ git rm -r --cached superlists/__pycache__
+rm 'superlists/__pycache__/__init__.cpython-36.pyc'
+rm 'superlists/__pycache__/settings.cpython-36.pyc'
+rm 'superlists/__pycache__/urls.cpython-36.pyc'
+rm 'superlists/__pycache__/wsgi.cpython-36.pyc'
+$ echo "__pycache__" >> .gitignore
+$ echo "*.pyc" >> .gitignore
+
