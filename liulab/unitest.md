@@ -52,6 +52,8 @@ class Fig4C(models.Model):
 
 
 
+## pytest 测试页面
+
 ## references
 
 >[自动化测试简介](https://docs.djangoproject.com/zh-hans/4.1/intro/tutorial05/)
@@ -69,4 +71,9 @@ class Fig4C(models.Model):
 >[Django 项目单元测试的几个套路: 统计代码覆盖率](https://zhuanlan.zhihu.com/p/44402618)
 
 >[Django 教程 10: 测试 Django 网页应用](https://developer.mozilla.org/zh-CN/docs/learn/Server-side/Django/Testing)
+
+>[how-should-i-test-a-database-driven-django-cms-for-404-errors](https://stackoverflow.com/questions/43876310/how-should-i-test-a-database-driven-django-cms-for-404-errors)
+
+>[An Overview of SNP Genotyping Technologies](https://www.cd-genomics.com/an-overview-of-snp-genotyping-technologies.html)
+
 

@@ -80,6 +80,8 @@ systemctl restart test_blog    # 重新启动my_blog进程
 
 >[Linux 利用systemd开机自启shell脚本](https://blog.csdn.net/qq_41539778/article/details/109361023)
 
+>[fullstackpython](https://www.fullstackpython.com/table-of-contents.html)
+
 ## share
 :►/play flawless
 :cherry_blossom:[weibo](https://weibo.com/newlogin?tabtype=weibo&gid=102803&openLoginLayer=0&url=https%3A%2F%2Fweibo.com%2F)
