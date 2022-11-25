@@ -51,7 +51,8 @@ class Fig4C(models.Model):
 -   mock，替换掉网络调用或者rpc请求等
 
 
-
+## selenium测试页面
+pass
 ## pytest 测试页面
 
 ## references
@@ -76,4 +77,4 @@ class Fig4C(models.Model):
 
 >[An Overview of SNP Genotyping Technologies](https://www.cd-genomics.com/an-overview-of-snp-genotyping-technologies.html)
 
-
+>[selenium常见问题 ](https://blog.csdn.net/sin_404/article/details/102720066)

@@ -68,6 +68,7 @@ systemctl stop test_blog    # 终止my_blog进程
 systemctl start test_blog    # 启动my_blog进程
 systemctl restart test_blog    # 重新启动my_blog进程
 ```
+## 大量小文件的存储场景，有什么优化办法？
 
 ## 引用
 >[Nohup](https://zh.wikipedia.org/zh-cn/Nohup)
@@ -81,6 +82,10 @@ systemctl restart test_blog    # 重新启动my_blog进程
 >[Linux 利用systemd开机自启shell脚本](https://blog.csdn.net/qq_41539778/article/details/109361023)
 
 >[fullstackpython](https://www.fullstackpython.com/table-of-contents.html)
+
+>[大量小文件的存储场景，有什么优化办法？](https://www.zhihu.com/question/26504749)
+
+>[HDFS海量小文件存储方案](https://zhuanlan.zhihu.com/p/363478313)
 
 ## share
 :►/play flawless
