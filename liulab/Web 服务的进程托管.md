@@ -69,6 +69,21 @@ systemctl start test_blog    # 启动my_blog进程
 systemctl restart test_blog    # 重新启动my_blog进程
 ```
 ## 大量小文件的存储场景，有什么优化办法？
+其实是要实现的是**中小型分布式文件系统管理**
+fasthdfs?
+PostgreSQL似乎可以
+api-->PostgREST
+好像就是这样子的
+
+## HDFS 配置与使用
+之前提到过的 Hadoop 三种模式：单机模式、伪集群模式和集群模式。
+
+-   单机模式：Hadoop 仅作为库存在，可以在单计算机上执行 MapReduce 任务，仅用于开发者搭建学习和试验环境。
+-   伪集群模式：此模式 Hadoop 将以守护进程的形式在单机运行，一般用于开发者搭建学习和试验环境。
+-   集群模式：此模式是 Hadoop 的生产环境模式，也就是说这才是 Hadoop 真正使用的模式，用于提供生产级服务。
+
+
+## Tripal 的使用
 
 ## 引用
 >[Nohup](https://zh.wikipedia.org/zh-cn/Nohup)
@@ -86,6 +101,9 @@ systemctl restart test_blog    # 重新启动my_blog进程
 >[大量小文件的存储场景，有什么优化办法？](https://www.zhihu.com/question/26504749)
 
 >[HDFS海量小文件存储方案](https://zhuanlan.zhihu.com/p/363478313)
+
+>[HDFS 配置与使用](https://www.runoob.com/w3cnote/hdfs-setup.html)
+
 
 ## share
 :►/play flawless

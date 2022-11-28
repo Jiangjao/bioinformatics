@@ -53,7 +53,15 @@ class Fig4C(models.Model):
 
 ## selenium测试页面
 pass
+
 ## pytest 测试页面
+pass
+
+## Javascript 测试页面
+有很多工具:jsUnit、Qunit、Mocha、Chutzpath、Karma、Testacular、Jasmine等。
+选择其中一个工具后，还得选择一个断言框架和报告程序，或许还要选择一个模拟技术库。
+试试Qunit,它足够简单，跟Python单元测试很像，而且能很好地和jQuery配合使用。
+
 
 ## references
 
