@@ -65,6 +65,8 @@ pass
 
 ## references
 
+>Test-Driven Development with Python,2nd edition, by Harry Percival (O'Reilly). Copyright 2017 Harry Percival, 978-1-491-95870-4.
+
 >[自动化测试简介](https://docs.djangoproject.com/zh-hans/4.1/intro/tutorial05/)
 
 >[单元测试](https://zhuanlan.zhihu.com/p/29968920)
@@ -86,3 +88,5 @@ pass
 >[An Overview of SNP Genotyping Technologies](https://www.cd-genomics.com/an-overview-of-snp-genotyping-technologies.html)
 
 >[selenium常见问题 ](https://blog.csdn.net/sin_404/article/details/102720066)
+
+>[qunitjs ](https://qunitjs.com/)
