@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<head>2233
+
+    <script src="https://unpkg.com/@phylocanvas/phylocanvas.gl@latest/dist/bundle.min.js"></script>
+      <script src="https://unpkg.com/phylocanvas@2.8.1/polyfill.js"></script>
+
+</head>
+<body>
+    <div id="demo"></div>
+    <script type="text/javascript">
+        const tree = new phylocanvas.PhylocanvasGL(
+        document.querySelector("#demo"),
+        {
+            type: phylocanvas.TreeTypes.Radial,
+            interactive:true,
+            showLabels: true,
+            alignLabels: true,
+            showLeafLabels: true,
+            size: { width: 400, height: 300 },
+            source: `(Bovine:0.69395,(Gibbon:0.36079,(Orangutan:0.33636,(Gorilla:0.17147,(Chimp:1.19268,Human:0.11927):0.08386):0.06124):0.15057):0.54939,Mouse:1.21460);`,
+        },
+            [
+        phylocanvas.plugins.scalebar,
+        // phylocanvas.plugins.contextMenuPlugin,
+
+    ],
+        );
+
+        // or change type after a tree has been created
+        tree.setTreeType(phylocanvas.TreeTypes.Radial)
+        tree.shiftKeyDrag = true;
+    </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Complete Example</title>
+
+<script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-2.4.3.min.js"></script>
+<script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-gl-2.4.3.min.js"></script>
+<script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-2.4.3.min.js"></script>
+<script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-2.4.3.min.js"></script>
+<script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-mathjax-2.4.3.min.js"></script>
+<script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-api-2.4.3.min.js"></script>
+
+<script>
+//The order of CSS and JS imports above is important.
+</script>
+<script>
+// create a data source to hold data
+const source = new Bokeh.ColumnDataSource({
+    data: { x: [], y: [] }
+});
+
+// make a plot with some tools
+const plot = Bokeh.Plotting.figure({
+    title: 'Example of random data',
+    tools: "pan,wheel_zoom,box_zoom,reset,save",
+    height: 300,
+    width: 300
+});
+
+// add a line with data from the source
+plot.line({ field: "x" }, { field: "y" }, {
+    source: source,
+    line_width: 2
+});
+
+// show the plot, appending it to the end of the current section
+Bokeh.Plotting.show(plot);
+
+function addPoint() {
+    // add data --- all fields must be the same length.
+    source.data.x.push(Math.random())
+    source.data.y.push(Math.random())
+
+    // update the data source with local changes
+    source.change.emit()
+}
+
+const addDataButton = document.createElement("Button");
+addDataButton.appendChild(document.createTextNode("Some data."));
+document.currentScript.parentElement.appendChild(addDataButton);
+addDataButton.addEventListener("click", addPoint);
+
+addPoint();
+addPoint();
+</script>
+</head>
+
+<body>
+</body>
+
+</html>

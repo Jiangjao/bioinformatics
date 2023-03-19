@@ -51,6 +51,14 @@ S106    #d5a6bd
 
 >[phylotree examples ](https://bl.ocks.org/spond)
 
+## 使用shiptv 构建进化树
+```bash
+shiptv -n newick.treefile --metadata my-metadata.tsv -o shiptv-tree.html
+```
+注意源码需要修改...
+
+> [shiptv](https://github.com/peterk87/shiptv)
+
 ## file folder tree examples
 >[amigo 2](http://amigo.geneontology.org/amigo/dd_browse)
 

@@ -44,10 +44,11 @@ def genregion(chromeinfo:list, table="testmgwas"):
                 # yield (flag, regoin, chrome)
 
                 # FIXME(xiaojiao):n aggregated query without GROUP BY,sql_mode=only_full_group_by 2022/09/16 #
-                yield   f'SELECT  `index`, chrom,ps, min(p_wald), \' {flag} - {regoin} \' as \'location\' ' \
-                        + f', {detailLength} as \'detailX\' ' \
+                yield   f'SELECT id, chr, ps, LEAST(min(p_wald)) as siginifican, padjust, \' {flag} - {regoin} \' as location ' \
+                        + f', {detailLength} as detailX ' \
                         + f'from {table} WHERE  ps >=  {flag} ' \
-                        + f'AND ps <=  {regoin} AND chrom={chrome};'
+                        + f'AND ps <=  {regoin} AND chr={chrome} \
+                        group by id, p_wald order by p_wald limit 1;'
                 if (regoin + step) >= length:
                     flag = 0
                 else:
@@ -55,10 +56,13 @@ def genregion(chromeinfo:list, table="testmgwas"):
         # SELECT `index`, chr,ps, min(p_wald) from testmgwas WHERE  ps >= 220000000 AND ps <= 220500000 AND chr="Chr"
         # SELECT `index`, chr,ps, min(p_wald),  '148500000-149000000' as "location" \
         #       from testmgwas WHERE  ps >= 148500000 AND ps <= 149000000 AND chr=2;
-        yield   f'SELECT  `index`, chrom,ps, min(p_wald), \' {regoin} - {length} \' as \'location\' ' \
-                    + f', {detailLength} as \'detailX\' ' \
+        # SELECT id, chr, ps, LEAST(min(p_wald)) as siginifican, padjust from "S_POS_16.88_731.4145_MLM_sig" WHERE  ps >= 220000000 AND ps <= 220500000 AND chr=1
+        #     group by id, p_wald order by p_wald limit 1
+        yield   f'SELECT id, chr, ps, LEAST(min(p_wald)) as siginifican, padjust, \' {regoin} - {length} \' as location ' \
+                    + f', {detailLength} as detailX ' \
                     + f'from {table} WHERE  ps >=  {regoin} ' \
-                    + f'AND ps <=  {length} AND chrom={chrome};'
+                    + f'AND ps <=  {length} AND chr={chrome} group \
+                        by id, p_wald order by p_wald limit 1;'
         # break
 
 # so need to fix location

@@ -1,0 +1,37 @@
+<html>
+
+    <head>
+        <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+        <title>test my database</title>
+        <script src='https://code.jquery.com/jquery-3.3.1.js'></script>
+        <script>
+            var temp = 1;
+              $.ajax({
+                type: "get",
+                contentType: 'application/json',
+                crossDomain: true,
+                // data : {
+                //     "query": {
+                //         "match": {
+                //             "Metabolite ID" : "sucrose"
+                //         }
+                //         }
+                // },
+                url: `http://116.205.232.152:9200/metabolitekegg/`,
+                success(data) {
+                    temp = data
+                    alert(data[0])
+                    $("p").append(temp['metabolitekegg'] + " ");
+                    console.log("ok")
+                },
+              error(data) { 
+                console.log("hello")
+              }
+            })
+
+        </script>
+    </head>
+    <body>
+        <p></p>
+    </body>
+</html>

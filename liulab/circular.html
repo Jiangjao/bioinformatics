@@ -1,0 +1,2636 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <link rel="stylesheet" href="https://www.canvasxpress.org/dist/canvasXpress.css" type="text/css"/>
+        <script type="text/javascript" src="https://www.canvasxpress.org/dist/canvasXpress.min.js"></script>
+        
+        <title>test circular1</title>
+        <script type="text/javascript">
+            onReady(function () {
+          new CanvasXpress({
+            "version": 41.4,
+            "renderTo": "circular1",
+            "data": {
+                "z": {
+                    "Ring": [1,2,2,3]
+                },
+                "x": {
+                    "Species": ["setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","versicolor","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica","virginica"]
+                },
+                "y": {
+                    "vars": ["Sepal.Length","Sepal.Width","Petal.Length","Petal.Width"],
+                    "smps": ["s1","s2","s3","s4","s5","s6","s7","s8","s9","s10","s11","s12","s13","s14","s15","s16","s17","s18","s19","s20","s21","s22","s23","s24","s25","s26","s27","s28","s29","s30","s31","s32","s33","s34","s35","s36","s37","s38","s39","s40","s41","s42","s43","s44","s45","s46","s47","s48","s49","s50","s51","s52","s53","s54","s55","s56","s57","s58","s59","s60","s61","s62","s63","s64","s65","s66","s67","s68","s69","s70","s71","s72","s73","s74","s75","s76","s77","s78","s79","s80","s81","s82","s83","s84","s85","s86","s87","s88","s89","s90","s91","s92","s93","s94","s95","s96","s97","s98","s99","s100","s101","s102","s103","s104","s105","s106","s107","s108","s109","s110","s111","s112","s113","s114","s115","s116","s117","s118","s119","s120","s121","s122","s123","s124","s125","s126","s127","s128","s129","s130","s131","s132","s133","s134","s135","s136","s137","s138","s139","s140","s141","s142","s143","s144","s145","s146","s147","s148","s149","s150"],
+                    "data": [
+                        [5.1,4.9,4.7,4.6,5,5.4,4.6,5,4.4,4.9,5.4,4.8,4.8,4.3,5.8,5.7,5.4,5.1,5.7,5.1,5.4,5.1,4.6,5.1,4.8,5,5,5.2,5.2,4.7,4.8,5.4,5.2,5.5,4.9,5,5.5,4.9,4.4,5.1,5,4.5,4.4,5,5.1,4.8,5.1,4.6,5.3,5,7,6.4,6.9,5.5,6.5,5.7,6.3,4.9,6.6,5.2,5,5.9,6,6.1,5.6,6.7,5.6,5.8,6.2,5.6,5.9,6.1,6.3,6.1,6.4,6.6,6.8,6.7,6,5.7,5.5,5.5,5.8,6,5.4,6,6.7,6.3,5.6,5.5,5.5,6.1,5.8,5,5.6,5.7,5.7,6.2,5.1,5.7,6.3,5.8,7.1,6.3,6.5,7.6,4.9,7.3,6.7,7.2,6.5,6.4,6.8,5.7,5.8,6.4,6.5,7.7,7.7,6,6.9,5.6,7.7,6.3,6.7,7.2,6.2,6.1,6.4,7.2,7.4,7.9,6.4,6.3,6.1,7.7,6.3,6.4,6,6.9,6.7,6.9,5.8,6.8,6.7,6.7,6.3,6.5,6.2,5.9],
+                        [3.5,3,3.2,3.1,3.6,3.9,3.4,3.4,2.9,3.1,3.7,3.4,3,3,4,4.4,3.9,3.5,3.8,3.8,3.4,3.7,3.6,3.3,3.4,3,3.4,3.5,3.4,3.2,3.1,3.4,4.1,4.2,3.1,3.2,3.5,3.6,3,3.4,3.5,2.3,3.2,3.5,3.8,3,3.8,3.2,3.7,3.3,3.2,3.2,3.1,2.3,2.8,2.8,3.3,2.4,2.9,2.7,2,3,2.2,2.9,2.9,3.1,3,2.7,2.2,2.5,3.2,2.8,2.5,2.8,2.9,3,2.8,3,2.9,2.6,2.4,2.4,2.7,2.7,3,3.4,3.1,2.3,3,2.5,2.6,3,2.6,2.3,2.7,3,2.9,2.9,2.5,2.8,3.3,2.7,3,2.9,3,3,2.5,2.9,2.5,3.6,3.2,2.7,3,2.5,2.8,3.2,3,3.8,2.6,2.2,3.2,2.8,2.8,2.7,3.3,3.2,2.8,3,2.8,3,2.8,3.8,2.8,2.8,2.6,3,3.4,3.1,3,3.1,3.1,3.1,2.7,3.2,3.3,3,2.5,3,3.4,3],
+                        [1.4,1.4,1.3,1.5,1.4,1.7,1.4,1.5,1.4,1.5,1.5,1.6,1.4,1.1,1.2,1.5,1.3,1.4,1.7,1.5,1.7,1.5,1,1.7,1.9,1.6,1.6,1.5,1.4,1.6,1.6,1.5,1.5,1.4,1.5,1.2,1.3,1.4,1.3,1.5,1.3,1.3,1.3,1.6,1.9,1.4,1.6,1.4,1.5,1.4,4.7,4.5,4.9,4,4.6,4.5,4.7,3.3,4.6,3.9,3.5,4.2,4,4.7,3.6,4.4,4.5,4.1,4.5,3.9,4.8,4,4.9,4.7,4.3,4.4,4.8,5,4.5,3.5,3.8,3.7,3.9,5.1,4.5,4.5,4.7,4.4,4.1,4,4.4,4.6,4,3.3,4.2,4.2,4.2,4.3,3,4.1,6,5.1,5.9,5.6,5.8,6.6,4.5,6.3,5.8,6.1,5.1,5.3,5.5,5,5.1,5.3,5.5,6.7,6.9,5,5.7,4.9,6.7,4.9,5.7,6,4.8,4.9,5.6,5.8,6.1,6.4,5.6,5.1,5.6,6.1,5.6,5.5,4.8,5.4,5.6,5.1,5.1,5.9,5.7,5.2,5,5.2,5.4,5.1],
+                        [0.2,0.2,0.2,0.2,0.2,0.4,0.3,0.2,0.2,0.1,0.2,0.2,0.1,0.1,0.2,0.4,0.4,0.3,0.3,0.3,0.2,0.4,0.2,0.5,0.2,0.2,0.4,0.2,0.2,0.2,0.2,0.4,0.1,0.2,0.2,0.2,0.2,0.1,0.2,0.2,0.3,0.3,0.2,0.6,0.4,0.3,0.2,0.2,0.2,0.2,1.4,1.5,1.5,1.3,1.5,1.3,1.6,1,1.3,1.4,1,1.5,1,1.4,1.3,1.4,1.5,1,1.5,1.1,1.8,1.3,1.5,1.2,1.3,1.4,1.4,1.7,1.5,1,1.1,1,1.2,1.6,1.5,1.6,1.5,1.3,1.3,1.3,1.2,1.4,1.2,1,1.3,1.2,1.3,1.3,1.1,1.3,2.5,1.9,2.1,1.8,2.2,2.1,1.7,1.8,1.8,2.5,2,1.9,2.1,2,2.4,2.3,1.8,2.2,2.3,1.5,2.3,2,2,1.8,2.1,1.8,1.8,1.8,2.1,1.6,1.9,2,2.2,1.5,1.4,2.3,2.4,1.8,1.8,2.1,2.4,2.3,1.9,2.3,2.5,2.3,1.9,2,2.3,1.8]
+                    ],
+                    "desc": ["centimeters"]
+                },
+                "m": {
+                    "Name": "Anderson's Iris data set",
+                    "Description": "The data set consists of 50 Ss from each of three species of Iris (Iris setosa, Iris virginica and Iris versicolor). Four features were measured from each S: the length and the width of the sepals and petals, in centimetres.",
+                    "Reference": "R. A. Fisher (1936). The use of multiple measurements in taxonomic problems. Annals of Eugenics 7 (2): 179-188."
+                }
+            },
+            "config": {
+                "connections": [
+                    ["rgb(255,0,0)","s1","s15"],
+                    ["rgb(0,255,0)","s25","s120"],
+                    ["rgb(255,0,0)","s34","s2"],
+                    ["rgb(255,0,0)","s47","s69"],
+                    ["rgb(255,0,0)","s15","s74"],
+                    ["rgb(0,120,0)","s57","s87"],
+                    ["rgb(255,34,0)","s54","s118"],
+                    ["rgb(255,0,100)","s78","s18"],
+                    ["rgb(255,134,0)","s90","s48"],
+                    ["rgb(120,0,0)","s120","s68"],
+                    ["rgb(255,0,0)","s131","s92"],
+                    ["rgb(0,255,0)","s148","s119"],
+                    ["rgb(0,0,255)","s10","s14"],
+                    ["rgb(255,0,0)","s56","s6"],
+                    ["rgb(255,0,0)","s98","s90"],
+                    ["rgb(255,0,0)","s113","s20"]
+                ],
+                "graphType": "Circular",
+                "legendKeyBackgroundBorderColor": "rgba(255,255,255,0)",
+                "legendKeyBackgroundColor": "rgba(255,255,255,0)",
+                "ringGraphType": ["dot","heatmap","bar"],
+                "ringGraphWeight": [0.5,0.25,0.25],
+                "segregateSamplesBy": ["Species"],
+                "segregateVariablesBy": ["Ring"],
+                "showTransition": false,
+                "smpOverlays": ["Species"],
+                "title": "Iris flower data set (1D Circular Plot)",
+                "transitionStep": 50,
+                "transitionTime": 1500,
+                "graphOrientation": "horizontal"
+            },
+            "events": false,
+            "info": false,
+            "afterRenderInit": false,
+            "afterRender": [
+                [
+                    "setDimensions",
+                    [709,609,true]
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 644.015625,
+                                "y": 213.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 964,
+                            "clientY": 287,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": 100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 645,
+                            "layerY": 214,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 644,
+                            "offsetY": 213,
+                            "pageX": 964,
+                            "pageY": 693,
+                            "returnValue": false,
+                            "screenX": 964,
+                            "screenY": 390,
+                            "shiftKey": false,
+                            "timeStamp": 7156.700000047684,
+                            "type": "mousewheel",
+                            "wheelDelta": -120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": -120,
+                            "which": 0,
+                            "x": 964,
+                            "y": 287
+                        },
+                        -1,
+                        {
+                            "x": 644.015625,
+                            "y": 213.453125
+                        }
+                    ],
+                    {
+                        "panningX": 0,
+                        "panningY": 0
+                    },
+                    1670901187981
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 641.015625,
+                                "y": 309.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 961,
+                            "clientY": 289,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": 100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 642,
+                            "layerY": 310,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 641,
+                            "offsetY": 309,
+                            "pageX": 961,
+                            "pageY": 789,
+                            "returnValue": false,
+                            "screenX": 961,
+                            "screenY": 392,
+                            "shiftKey": false,
+                            "timeStamp": 7196.899999976158,
+                            "type": "mousewheel",
+                            "wheelDelta": -120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": -120,
+                            "which": 0,
+                            "x": 961,
+                            "y": 289
+                        },
+                        -1,
+                        {
+                            "x": 641.015625,
+                            "y": 309.453125
+                        }
+                    ],
+                    {
+                        "panningX": -57.903125,
+                        "panningY": 18.209375
+                    },
+                    1670901188165
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 352.015625,
+                                "y": 329.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 672,
+                            "clientY": 509,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": 100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 353,
+                            "layerY": 330,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 352,
+                            "offsetY": 329,
+                            "pageX": 672,
+                            "pageY": 809,
+                            "returnValue": false,
+                            "screenX": 672,
+                            "screenY": 612,
+                            "shiftKey": false,
+                            "timeStamp": 103103.10000002384,
+                            "type": "mousewheel",
+                            "wheelDelta": -120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": -120,
+                            "which": 0,
+                            "x": 672,
+                            "y": 509,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        -1,
+                        {
+                            "x": 352.015625,
+                            "y": 329.453125
+                        }
+                    ],
+                    {
+                        "panningX": -115.20625000000001,
+                        "panningY": 17.21875
+                    },
+                    1670901283919
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 352.015625,
+                                "y": 329.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 672,
+                            "clientY": 509,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": 100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 353,
+                            "layerY": 330,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 352,
+                            "offsetY": 329,
+                            "pageX": 672,
+                            "pageY": 809,
+                            "returnValue": false,
+                            "screenX": 672,
+                            "screenY": 612,
+                            "shiftKey": false,
+                            "timeStamp": 103149.5,
+                            "type": "mousewheel",
+                            "wheelDelta": -120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": -120,
+                            "which": 0,
+                            "x": 672,
+                            "y": 509,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        -1,
+                        {
+                            "x": 352.015625,
+                            "y": 329.453125
+                        }
+                    ],
+                    {
+                        "panningX": -114.70937500000001,
+                        "panningY": 12.228124999999999
+                    },
+                    1670901284066
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 352.015625,
+                                "y": 329.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 672,
+                            "clientY": 509,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": 100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 353,
+                            "layerY": 330,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 352,
+                            "offsetY": 329,
+                            "pageX": 672,
+                            "pageY": 809,
+                            "returnValue": false,
+                            "screenX": 672,
+                            "screenY": 612,
+                            "shiftKey": false,
+                            "timeStamp": 103261,
+                            "type": "mousewheel",
+                            "wheelDelta": -120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": -120,
+                            "which": 0,
+                            "x": 672,
+                            "y": 509,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        -1,
+                        {
+                            "x": 352.015625,
+                            "y": 329.453125
+                        }
+                    ],
+                    {
+                        "panningX": -114.2125,
+                        "panningY": 7.237499999999998
+                    },
+                    1670901284181
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 352.015625,
+                                "y": 329.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 672,
+                            "clientY": 509,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": -100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 353,
+                            "layerY": 330,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 352,
+                            "offsetY": 329,
+                            "pageX": 672,
+                            "pageY": 809,
+                            "returnValue": false,
+                            "screenX": 672,
+                            "screenY": 612,
+                            "shiftKey": false,
+                            "timeStamp": 103733.80000007153,
+                            "type": "mousewheel",
+                            "wheelDelta": 120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": 120,
+                            "which": 0,
+                            "x": 672,
+                            "y": 509,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        1,
+                        {
+                            "x": 352.015625,
+                            "y": 329.453125
+                        }
+                    ],
+                    {
+                        "panningX": -113.715625,
+                        "panningY": 2.2468749999999975
+                    },
+                    1670901284551
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 352.015625,
+                                "y": 329.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 672,
+                            "clientY": 509,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": -200,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 353,
+                            "layerY": 330,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 352,
+                            "offsetY": 329,
+                            "pageX": 672,
+                            "pageY": 809,
+                            "returnValue": false,
+                            "screenX": 672,
+                            "screenY": 612,
+                            "shiftKey": false,
+                            "timeStamp": 103781.5,
+                            "type": "mousewheel",
+                            "wheelDelta": 240,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": 240,
+                            "which": 0,
+                            "x": 672,
+                            "y": 509,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        2,
+                        {
+                            "x": 352.015625,
+                            "y": 329.453125
+                        }
+                    ],
+                    {
+                        "panningX": -114.2125,
+                        "panningY": 7.237499999999998
+                    },
+                    1670901284634
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 352.015625,
+                                "y": 329.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 672,
+                            "clientY": 509,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": -100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 353,
+                            "layerY": 330,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 352,
+                            "offsetY": 329,
+                            "pageX": 672,
+                            "pageY": 809,
+                            "returnValue": false,
+                            "screenX": 672,
+                            "screenY": 612,
+                            "shiftKey": false,
+                            "timeStamp": 103829.60000002384,
+                            "type": "mousewheel",
+                            "wheelDelta": 120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": 120,
+                            "which": 0,
+                            "x": 672,
+                            "y": 509,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        1,
+                        {
+                            "x": 352.015625,
+                            "y": 329.453125
+                        }
+                    ],
+                    {
+                        "panningX": -114.70937500000001,
+                        "panningY": 12.228124999999999
+                    },
+                    1670901284696
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 352.015625,
+                                "y": 322.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 672,
+                            "clientY": 502,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": -100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 353,
+                            "layerY": 323,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 352,
+                            "offsetY": 322,
+                            "pageX": 672,
+                            "pageY": 802,
+                            "returnValue": false,
+                            "screenX": 672,
+                            "screenY": 605,
+                            "shiftKey": false,
+                            "timeStamp": 104301,
+                            "type": "mousewheel",
+                            "wheelDelta": 120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": 120,
+                            "which": 0,
+                            "x": 672,
+                            "y": 502,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        1,
+                        {
+                            "x": 352.015625,
+                            "y": 322.453125
+                        }
+                    ],
+                    {
+                        "panningX": -115.20625000000001,
+                        "panningY": 17.21875
+                    },
+                    1670901285115
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 352.015625,
+                                "y": 322.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 672,
+                            "clientY": 502,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": -100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 353,
+                            "layerY": 323,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 352,
+                            "offsetY": 322,
+                            "pageX": 672,
+                            "pageY": 802,
+                            "returnValue": false,
+                            "screenX": 672,
+                            "screenY": 605,
+                            "shiftKey": false,
+                            "timeStamp": 104324.89999997616,
+                            "type": "mousewheel",
+                            "wheelDelta": 120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": 120,
+                            "which": 0,
+                            "x": 672,
+                            "y": 502,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        1,
+                        {
+                            "x": 352.015625,
+                            "y": 322.453125
+                        }
+                    ],
+                    {
+                        "panningX": -115.70312500000001,
+                        "panningY": 20.809375
+                    },
+                    1670901285178
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 352.015625,
+                                "y": 322.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 672,
+                            "clientY": 502,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": -100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 353,
+                            "layerY": 323,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 352,
+                            "offsetY": 322,
+                            "pageX": 672,
+                            "pageY": 802,
+                            "returnValue": false,
+                            "screenX": 672,
+                            "screenY": 605,
+                            "shiftKey": false,
+                            "timeStamp": 104381.20000004768,
+                            "type": "mousewheel",
+                            "wheelDelta": 120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": 120,
+                            "which": 0,
+                            "x": 672,
+                            "y": 502,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        1,
+                        {
+                            "x": 352.015625,
+                            "y": 322.453125
+                        }
+                    ],
+                    {
+                        "panningX": -116.20000000000002,
+                        "panningY": 24.4
+                    },
+                    1670901285255
+                ],
+                [
+                    "updateDragCircular",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 507.015625,
+                                "y": 379.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 1,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 827,
+                            "clientY": 259,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "detail": 0,
+                            "eventPhase": 3,
+                            "isTrusted": true,
+                            "layerX": 508,
+                            "layerY": 380,
+                            "metaKey": false,
+                            "movementX": 25,
+                            "movementY": 2,
+                            "offsetX": 507,
+                            "offsetY": 379,
+                            "pageX": 827,
+                            "pageY": 859,
+                            "returnValue": false,
+                            "screenX": 827,
+                            "screenY": 362,
+                            "shiftKey": false,
+                            "timeStamp": 108357,
+                            "type": "mousemove",
+                            "which": 1,
+                            "x": 827,
+                            "y": 259,
+                            "xMouseDown": 507.015625,
+                            "yMouseDown": 379.453125
+                        },
+                        507.015625,
+                        379.453125,
+                        {
+                            "id": [3,40],
+                            "x": 237.80312499999997,
+                            "y": 353.490625,
+                            "ac": {
+                                "x": 315.015625,
+                                "y": 364.453125
+                            },
+                            "ring": null
+                        },
+                        482.015625,
+                        377.453125
+                    ],
+                    {
+                        "circularRotate": -2.572254974921691,
+                        "moveCircular": {
+                            "id": [3,40],
+                            "x": 237.80312499999997,
+                            "y": 353.490625,
+                            "ac": {
+                                "x": 315.015625,
+                                "y": 364.453125
+                            }
+                        },
+                        "panningX": -116.69687500000002,
+                        "panningY": 27.990624999999998,
+                        "xMouseDown": 507.015625,
+                        "yMouseDown": 379.453125
+                    },
+                    1670901289233
+                ],
+                [
+                    "handleDragEventCircular",
+                    [
+                        {
+                            "srcElement": "",
+                            "target": "",
+                            "ac": {
+                                "x": 507.015625,
+                                "y": 379.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": true,
+                            "cancelable": true,
+                            "clientX": 827,
+                            "clientY": 259,
+                            "ctrlKey": false,
+                            "defaultPrevented": false,
+                            "detail": 1,
+                            "eventPhase": 3,
+                            "isTrusted": true,
+                            "layerX": 507,
+                            "layerY": 379,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 827,
+                            "offsetY": 859,
+                            "pageX": 827,
+                            "pageY": 859,
+                            "returnValue": true,
+                            "screenX": 827,
+                            "screenY": 362,
+                            "shiftKey": false,
+                            "timeStamp": 108445,
+                            "type": "mouseup",
+                            "which": 1,
+                            "x": 827,
+                            "y": 259,
+                            "xMouseDown": 507.015625,
+                            "yMouseDown": 379.453125
+                        }
+                    ],
+                    {},
+                    1670901289360
+                ],
+                [
+                    "updateDragCircular",
+                    [
+                        {
+                            "srcElement": "",
+                            "target": "",
+                            "ac": {
+                                "x": 368.015625,
+                                "y": 328.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 1,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 688,
+                            "clientY": 208,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "detail": 0,
+                            "eventPhase": 3,
+                            "isTrusted": true,
+                            "layerX": 13,
+                            "layerY": 13,
+                            "metaKey": false,
+                            "movementX": -6,
+                            "movementY": 2,
+                            "offsetX": 13,
+                            "offsetY": 13,
+                            "pageX": 688,
+                            "pageY": 808,
+                            "returnValue": false,
+                            "screenX": 688,
+                            "screenY": 311,
+                            "shiftKey": false,
+                            "timeStamp": 112525,
+                            "type": "mousemove",
+                            "which": 1,
+                            "x": 688,
+                            "y": 208,
+                            "xMouseDown": 368.015625,
+                            "yMouseDown": 328.453125
+                        },
+                        368.015625,
+                        328.453125,
+                        {
+                            "id": [3,117],
+                            "x": 237.80312499999997,
+                            "y": 353.490625,
+                            "ac": {
+                                "x": 160.015625,
+                                "y": 343.453125
+                            },
+                            "ring": null
+                        },
+                        374.015625,
+                        326.453125
+                    ],
+                    {
+                        "circularRotate": -200.80902550485038,
+                        "moveCircular": {
+                            "id": [3,117],
+                            "x": 237.80312499999997,
+                            "y": 353.490625,
+                            "ac": {
+                                "x": 160.015625,
+                                "y": 343.453125
+                            }
+                        },
+                        "panningX": -116.69687500000002,
+                        "panningY": 27.990624999999998,
+                        "xMouseDown": 368.015625,
+                        "yMouseDown": 328.453125
+                    },
+                    1670901293374
+                ],
+                [
+                    "handleDragEventCircular",
+                    [
+                        {
+                            "srcElement": "",
+                            "target": "",
+                            "ac": {
+                                "x": 368.015625,
+                                "y": 328.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": true,
+                            "cancelable": true,
+                            "clientX": 688,
+                            "clientY": 208,
+                            "ctrlKey": false,
+                            "defaultPrevented": false,
+                            "detail": 1,
+                            "eventPhase": 3,
+                            "isTrusted": true,
+                            "layerX": 368,
+                            "layerY": 328,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 688,
+                            "offsetY": 808,
+                            "pageX": 688,
+                            "pageY": 808,
+                            "returnValue": true,
+                            "screenX": 688,
+                            "screenY": 311,
+                            "shiftKey": false,
+                            "timeStamp": 112837.80000007153,
+                            "type": "mouseup",
+                            "which": 1,
+                            "x": 688,
+                            "y": 208,
+                            "xMouseDown": 368.015625,
+                            "yMouseDown": 328.453125
+                        }
+                    ],
+                    {},
+                    1670901293657
+                ],
+                [
+                    "updateDragCircular",
+                    [
+                        {
+                            "srcElement": "",
+                            "target": "",
+                            "ac": {
+                                "x": 537.015625,
+                                "y": 352.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 1,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 857,
+                            "clientY": 232,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "detail": 0,
+                            "eventPhase": 3,
+                            "isTrusted": true,
+                            "layerX": 13,
+                            "layerY": 13,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": -1,
+                            "offsetX": 13,
+                            "offsetY": 13,
+                            "pageX": 857,
+                            "pageY": 832,
+                            "returnValue": false,
+                            "screenX": 857,
+                            "screenY": 335,
+                            "shiftKey": false,
+                            "timeStamp": 113990,
+                            "type": "mousemove",
+                            "which": 1,
+                            "x": 857,
+                            "y": 232,
+                            "xMouseDown": 537.015625,
+                            "yMouseDown": 352.453125
+                        },
+                        537.015625,
+                        352.453125,
+                        0,
+                        537.015625,
+                        353.453125
+                    ],
+                    {
+                        "circularRotate": -200.80902550485038,
+                        "moveCircular": false,
+                        "panningX": 23.30312499999998,
+                        "panningY": 42.990624999999994,
+                        "xMouseDown": 537.015625,
+                        "yMouseDown": 352.453125
+                    },
+                    1670901294808
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 317.015625,
+                                "y": 396.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 637,
+                            "clientY": 276,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": -100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 318,
+                            "layerY": 397,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 317,
+                            "offsetY": 396,
+                            "pageX": 637,
+                            "pageY": 876,
+                            "returnValue": false,
+                            "screenX": 637,
+                            "screenY": 379,
+                            "shiftKey": false,
+                            "timeStamp": 115024.10000002384,
+                            "type": "mousewheel",
+                            "wheelDelta": 120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": 120,
+                            "which": 0,
+                            "x": 637,
+                            "y": 276,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        1,
+                        {
+                            "x": 317.015625,
+                            "y": 396.453125
+                        }
+                    ],
+                    {
+                        "panningX": 23.30312499999998,
+                        "panningY": 42.990624999999994
+                    },
+                    1670901295840
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 317.015625,
+                                "y": 396.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 637,
+                            "clientY": 276,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": -100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 318,
+                            "layerY": 397,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 317,
+                            "offsetY": 396,
+                            "pageX": 637,
+                            "pageY": 876,
+                            "returnValue": false,
+                            "screenX": 637,
+                            "screenY": 379,
+                            "shiftKey": false,
+                            "timeStamp": 115069.89999997616,
+                            "type": "mousewheel",
+                            "wheelDelta": 120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": 120,
+                            "which": 0,
+                            "x": 637,
+                            "y": 276,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        1,
+                        {
+                            "x": 317.015625,
+                            "y": 396.453125
+                        }
+                    ],
+                    {
+                        "panningX": 15.80624999999998,
+                        "panningY": 61.381249999999994
+                    },
+                    1670901295966
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 317.015625,
+                                "y": 396.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 637,
+                            "clientY": 276,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": 100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 318,
+                            "layerY": 397,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 317,
+                            "offsetY": 396,
+                            "pageX": 637,
+                            "pageY": 876,
+                            "returnValue": false,
+                            "screenX": 637,
+                            "screenY": 379,
+                            "shiftKey": false,
+                            "timeStamp": 116085.70000004768,
+                            "type": "mousewheel",
+                            "wheelDelta": -120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": -120,
+                            "which": 0,
+                            "x": 637,
+                            "y": 276,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        -1,
+                        {
+                            "x": 317.015625,
+                            "y": 396.453125
+                        }
+                    ],
+                    {
+                        "panningX": 8.309374999999982,
+                        "panningY": 79.771875
+                    },
+                    1670901296901
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 316.015625,
+                                "y": 396.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 636,
+                            "clientY": 276,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": 200,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 317,
+                            "layerY": 397,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 316,
+                            "offsetY": 396,
+                            "pageX": 636,
+                            "pageY": 876,
+                            "returnValue": false,
+                            "screenX": 636,
+                            "screenY": 379,
+                            "shiftKey": false,
+                            "timeStamp": 116132.89999997616,
+                            "type": "mousewheel",
+                            "wheelDelta": -240,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": -240,
+                            "which": 0,
+                            "x": 636,
+                            "y": 276,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        -2,
+                        {
+                            "x": 316.015625,
+                            "y": 396.453125
+                        }
+                    ],
+                    {
+                        "panningX": 15.80624999999998,
+                        "panningY": 61.381249999999994
+                    },
+                    1670901296970
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 316.015625,
+                                "y": 396.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 636,
+                            "clientY": 276,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": 100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 317,
+                            "layerY": 397,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 316,
+                            "offsetY": 396,
+                            "pageX": 636,
+                            "pageY": 876,
+                            "returnValue": false,
+                            "screenX": 636,
+                            "screenY": 379,
+                            "shiftKey": false,
+                            "timeStamp": 116533.20000004768,
+                            "type": "mousewheel",
+                            "wheelDelta": -120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": -120,
+                            "which": 0,
+                            "x": 636,
+                            "y": 276,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        -1,
+                        {
+                            "x": 316.015625,
+                            "y": 396.453125
+                        }
+                    ],
+                    {
+                        "panningX": 23.503124999999983,
+                        "panningY": 42.990624999999994
+                    },
+                    1670901297348
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 316.015625,
+                                "y": 396.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 636,
+                            "clientY": 276,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": 100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 317,
+                            "layerY": 397,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 316,
+                            "offsetY": 396,
+                            "pageX": 636,
+                            "pageY": 876,
+                            "returnValue": false,
+                            "screenX": 636,
+                            "screenY": 379,
+                            "shiftKey": false,
+                            "timeStamp": 116580.89999997616,
+                            "type": "mousewheel",
+                            "wheelDelta": -120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": -120,
+                            "which": 0,
+                            "x": 636,
+                            "y": 276,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        -1,
+                        {
+                            "x": 316.015625,
+                            "y": 396.453125
+                        }
+                    ],
+                    {
+                        "panningX": 31.19999999999998,
+                        "panningY": 24.599999999999994
+                    },
+                    1670901297456
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 316.015625,
+                                "y": 396.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 636,
+                            "clientY": 276,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": 100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 317,
+                            "layerY": 397,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 316,
+                            "offsetY": 396,
+                            "pageX": 636,
+                            "pageY": 876,
+                            "returnValue": false,
+                            "screenX": 636,
+                            "screenY": 379,
+                            "shiftKey": false,
+                            "timeStamp": 117021.10000002384,
+                            "type": "mousewheel",
+                            "wheelDelta": -120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": -120,
+                            "which": 0,
+                            "x": 636,
+                            "y": 276,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        -1,
+                        {
+                            "x": 316.015625,
+                            "y": 396.453125
+                        }
+                    ],
+                    {
+                        "panningX": 38.89687499999998,
+                        "panningY": 6.209374999999994
+                    },
+                    1670901297835
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 316.015625,
+                                "y": 398.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 636,
+                            "clientY": 278,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": 100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 317,
+                            "layerY": 399,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 316,
+                            "offsetY": 398,
+                            "pageX": 636,
+                            "pageY": 878,
+                            "returnValue": false,
+                            "screenX": 636,
+                            "screenY": 381,
+                            "shiftKey": false,
+                            "timeStamp": 117046.5,
+                            "type": "mousewheel",
+                            "wheelDelta": -120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": -120,
+                            "which": 0,
+                            "x": 636,
+                            "y": 278,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        -1,
+                        {
+                            "x": 316.015625,
+                            "y": 398.453125
+                        }
+                    ],
+                    {
+                        "panningX": 46.59374999999998,
+                        "panningY": -12.181250000000006
+                    },
+                    1670901297948
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 316.015625,
+                                "y": 398.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 636,
+                            "clientY": 278,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": 100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 317,
+                            "layerY": 399,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 316,
+                            "offsetY": 398,
+                            "pageX": 636,
+                            "pageY": 878,
+                            "returnValue": false,
+                            "screenX": 636,
+                            "screenY": 381,
+                            "shiftKey": false,
+                            "timeStamp": 117068.89999997616,
+                            "type": "mousewheel",
+                            "wheelDelta": -120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": -120,
+                            "which": 0,
+                            "x": 636,
+                            "y": 278,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        -1,
+                        {
+                            "x": 316.015625,
+                            "y": 398.453125
+                        }
+                    ],
+                    {
+                        "panningX": 54.29062499999998,
+                        "panningY": -30.971875000000008
+                    },
+                    1670901298055
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 222.015625,
+                                "y": 424.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 542,
+                            "clientY": 304,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": -100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 223,
+                            "layerY": 425,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 222,
+                            "offsetY": 424,
+                            "pageX": 542,
+                            "pageY": 904,
+                            "returnValue": false,
+                            "screenX": 542,
+                            "screenY": 407,
+                            "shiftKey": false,
+                            "timeStamp": 121414.10000002384,
+                            "type": "mousewheel",
+                            "wheelDelta": 120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": 120,
+                            "which": 0,
+                            "x": 542,
+                            "y": 304,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        1,
+                        {
+                            "x": 222.015625,
+                            "y": 424.453125
+                        }
+                    ],
+                    {
+                        "panningX": 61.987499999999976,
+                        "panningY": -49.76250000000001
+                    },
+                    1670901302230
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 222.015625,
+                                "y": 424.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 542,
+                            "clientY": 304,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": -200,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 223,
+                            "layerY": 425,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 222,
+                            "offsetY": 424,
+                            "pageX": 542,
+                            "pageY": 904,
+                            "returnValue": false,
+                            "screenX": 542,
+                            "screenY": 407,
+                            "shiftKey": false,
+                            "timeStamp": 121477.10000002384,
+                            "type": "mousewheel",
+                            "wheelDelta": 240,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": 240,
+                            "which": 0,
+                            "x": 542,
+                            "y": 304,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        2,
+                        {
+                            "x": 222.015625,
+                            "y": 424.453125
+                        }
+                    ],
+                    {
+                        "panningX": 35.49062499999997,
+                        "panningY": -25.77187500000001
+                    },
+                    1670901302333
+                ],
+                [
+                    "filterUserData",
+                    [
+                        "filterVarBy",
+                        "vars",
+                        "exact",
+                        ["Petal.Length"],
+                        false,
+                        null
+                    ],
+                    {
+                        "hiddenLegends": {
+                            "Var-2": true
+                        }
+                    },
+                    1670901305709
+                ],
+                [
+                    "filterUserData",
+                    [
+                        "filterVarBy",
+                        "vars",
+                        "exact",
+                        ["Petal.Width"],
+                        false,
+                        null
+                    ],
+                    {
+                        "hiddenLegends": {
+                            "Var-2": true,
+                            "Var-3": true
+                        }
+                    },
+                    1670901306650
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 350.015625,
+                                "y": 456.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 670,
+                            "clientY": 336,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": -100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 351,
+                            "layerY": 457,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 350,
+                            "offsetY": 456,
+                            "pageX": 670,
+                            "pageY": 936,
+                            "returnValue": false,
+                            "screenX": 670,
+                            "screenY": 439,
+                            "shiftKey": false,
+                            "timeStamp": 133436.89999997616,
+                            "type": "mousewheel",
+                            "wheelDelta": 120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": 120,
+                            "which": 0,
+                            "x": 670,
+                            "y": 336,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        1,
+                        {
+                            "x": 350.015625,
+                            "y": 456.453125
+                        }
+                    ],
+                    {
+                        "panningX": 8.99374999999997,
+                        "panningY": -1.781250000000007
+                    },
+                    1670901314251
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 350.015625,
+                                "y": 456.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 670,
+                            "clientY": 336,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": -100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 351,
+                            "layerY": 457,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 350,
+                            "offsetY": 456,
+                            "pageX": 670,
+                            "pageY": 936,
+                            "returnValue": false,
+                            "screenX": 670,
+                            "screenY": 439,
+                            "shiftKey": false,
+                            "timeStamp": 133477.10000002384,
+                            "type": "mousewheel",
+                            "wheelDelta": 120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": 120,
+                            "which": 0,
+                            "x": 670,
+                            "y": 336,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        1,
+                        {
+                            "x": 350.015625,
+                            "y": 456.453125
+                        }
+                    ],
+                    {
+                        "panningX": 8.09687499999997,
+                        "panningY": 28.609374999999993
+                    },
+                    1670901314314
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 350.015625,
+                                "y": 456.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 670,
+                            "clientY": 336,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": -100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 351,
+                            "layerY": 457,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 350,
+                            "offsetY": 456,
+                            "pageX": 670,
+                            "pageY": 936,
+                            "returnValue": false,
+                            "screenX": 670,
+                            "screenY": 439,
+                            "shiftKey": false,
+                            "timeStamp": 133517,
+                            "type": "mousewheel",
+                            "wheelDelta": 120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": 120,
+                            "which": 0,
+                            "x": 670,
+                            "y": 336,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        1,
+                        {
+                            "x": 350.015625,
+                            "y": 456.453125
+                        }
+                    ],
+                    {
+                        "panningX": 7.199999999999971,
+                        "panningY": 58.99999999999999
+                    },
+                    1670901314389
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 348.015625,
+                                "y": 457.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 668,
+                            "clientY": 337,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": 100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 349,
+                            "layerY": 458,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 348,
+                            "offsetY": 457,
+                            "pageX": 668,
+                            "pageY": 937,
+                            "returnValue": false,
+                            "screenX": 668,
+                            "screenY": 440,
+                            "shiftKey": false,
+                            "timeStamp": 134069.20000004768,
+                            "type": "mousewheel",
+                            "wheelDelta": -120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": -120,
+                            "which": 0,
+                            "x": 668,
+                            "y": 337,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        -1,
+                        {
+                            "x": 348.015625,
+                            "y": 457.453125
+                        }
+                    ],
+                    {
+                        "panningX": 6.303124999999971,
+                        "panningY": 89.390625
+                    },
+                    1670901314897
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 346.015625,
+                                "y": 460.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 666,
+                            "clientY": 340,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": 100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 347,
+                            "layerY": 461,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 346,
+                            "offsetY": 460,
+                            "pageX": 666,
+                            "pageY": 940,
+                            "returnValue": false,
+                            "screenX": 666,
+                            "screenY": 443,
+                            "shiftKey": false,
+                            "timeStamp": 134101.89999997616,
+                            "type": "mousewheel",
+                            "wheelDelta": -120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": -120,
+                            "which": 0,
+                            "x": 666,
+                            "y": 340,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        -1,
+                        {
+                            "x": 346.015625,
+                            "y": 460.453125
+                        }
+                    ],
+                    {
+                        "panningX": 7.599999999999971,
+                        "panningY": 58.8
+                    },
+                    1670901314967
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 346.015625,
+                                "y": 461.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 666,
+                            "clientY": 341,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": 100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 347,
+                            "layerY": 462,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 346,
+                            "offsetY": 461,
+                            "pageX": 666,
+                            "pageY": 941,
+                            "returnValue": false,
+                            "screenX": 666,
+                            "screenY": 444,
+                            "shiftKey": false,
+                            "timeStamp": 134149,
+                            "type": "mousewheel",
+                            "wheelDelta": -120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": -120,
+                            "which": 0,
+                            "x": 666,
+                            "y": 341,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        -1,
+                        {
+                            "x": 346.015625,
+                            "y": 461.453125
+                        }
+                    ],
+                    {
+                        "panningX": 9.296874999999972,
+                        "panningY": 27.609374999999996
+                    },
+                    1670901315026
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 346.015625,
+                                "y": 461.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 666,
+                            "clientY": 341,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": 100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 347,
+                            "layerY": 462,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 346,
+                            "offsetY": 461,
+                            "pageX": 666,
+                            "pageY": 941,
+                            "returnValue": false,
+                            "screenX": 666,
+                            "screenY": 444,
+                            "shiftKey": false,
+                            "timeStamp": 134253.30000007153,
+                            "type": "mousewheel",
+                            "wheelDelta": -120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": -120,
+                            "which": 0,
+                            "x": 666,
+                            "y": 341,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        -1,
+                        {
+                            "x": 346.015625,
+                            "y": 461.453125
+                        }
+                    ],
+                    {
+                        "panningX": 10.993749999999972,
+                        "panningY": -3.7812500000000036
+                    },
+                    1670901315089
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 194.015625,
+                                "y": 494.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 514,
+                            "clientY": 374,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": 100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 195,
+                            "layerY": 495,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 194,
+                            "offsetY": 494,
+                            "pageX": 514,
+                            "pageY": 974,
+                            "returnValue": false,
+                            "screenX": 514,
+                            "screenY": 477,
+                            "shiftKey": false,
+                            "timeStamp": 144661.70000004768,
+                            "type": "mousewheel",
+                            "wheelDelta": -120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": -120,
+                            "which": 0,
+                            "x": 514,
+                            "y": 374,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        -1,
+                        {
+                            "x": 194.015625,
+                            "y": 494.453125
+                        }
+                    ],
+                    {
+                        "panningX": 12.690624999999972,
+                        "panningY": -35.171875
+                    },
+                    1670901325477
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 194.015625,
+                                "y": 494.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 514,
+                            "clientY": 374,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": 100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 195,
+                            "layerY": 495,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 194,
+                            "offsetY": 494,
+                            "pageX": 514,
+                            "pageY": 974,
+                            "returnValue": false,
+                            "screenX": 514,
+                            "screenY": 477,
+                            "shiftKey": false,
+                            "timeStamp": 144749,
+                            "type": "mousewheel",
+                            "wheelDelta": -120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": -120,
+                            "which": 0,
+                            "x": 514,
+                            "y": 374,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        -1,
+                        {
+                            "x": 194.015625,
+                            "y": 494.453125
+                        }
+                    ],
+                    {
+                        "panningX": 44.78749999999998,
+                        "panningY": -73.1625
+                    },
+                    1670901325592
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 194.015625,
+                                "y": 494.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 514,
+                            "clientY": 374,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": -100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 195,
+                            "layerY": 495,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 194,
+                            "offsetY": 494,
+                            "pageX": 514,
+                            "pageY": 974,
+                            "returnValue": false,
+                            "screenX": 514,
+                            "screenY": 477,
+                            "shiftKey": false,
+                            "timeStamp": 145839,
+                            "type": "mousewheel",
+                            "wheelDelta": 120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": 120,
+                            "which": 0,
+                            "x": 514,
+                            "y": 374,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        1,
+                        {
+                            "x": 194.015625,
+                            "y": 494.453125
+                        }
+                    ],
+                    {
+                        "panningX": 76.88437499999998,
+                        "panningY": -111.15312499999999
+                    },
+                    1670901326655
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 209.015625,
+                                "y": 483.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 529,
+                            "clientY": 363,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": -100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 210,
+                            "layerY": 484,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 209,
+                            "offsetY": 483,
+                            "pageX": 529,
+                            "pageY": 963,
+                            "returnValue": false,
+                            "screenX": 529,
+                            "screenY": 466,
+                            "shiftKey": false,
+                            "timeStamp": 146349,
+                            "type": "mousewheel",
+                            "wheelDelta": 120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": 120,
+                            "which": 0,
+                            "x": 529,
+                            "y": 363,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        1,
+                        {
+                            "x": 209.015625,
+                            "y": 483.453125
+                        }
+                    ],
+                    {
+                        "panningX": 44.78749999999997,
+                        "panningY": -73.1625
+                    },
+                    1670901327169
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 209.015625,
+                                "y": 483.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 529,
+                            "clientY": 363,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": -100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 210,
+                            "layerY": 484,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 209,
+                            "offsetY": 483,
+                            "pageX": 529,
+                            "pageY": 963,
+                            "returnValue": false,
+                            "screenX": 529,
+                            "screenY": 466,
+                            "shiftKey": false,
+                            "timeStamp": 146389.10000002384,
+                            "type": "mousewheel",
+                            "wheelDelta": 120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": 120,
+                            "which": 0,
+                            "x": 529,
+                            "y": 363,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        1,
+                        {
+                            "x": 209.015625,
+                            "y": 483.453125
+                        }
+                    ],
+                    {
+                        "panningX": 15.690624999999972,
+                        "panningY": -37.371874999999996
+                    },
+                    1670901327212
+                ],
+                [
+                    "handleWheelEvent",
+                    [
+                        {
+                            "srcElement": "circular1-events",
+                            "target": "circular1-events",
+                            "ac": {
+                                "x": 209.015625,
+                                "y": 483.453125
+                            },
+                            "altKey": false,
+                            "bubbles": true,
+                            "button": 0,
+                            "buttons": 0,
+                            "cancelBubble": false,
+                            "cancelable": true,
+                            "clientX": 529,
+                            "clientY": 363,
+                            "ctrlKey": false,
+                            "defaultPrevented": true,
+                            "deltaMode": 0,
+                            "deltaX": 0,
+                            "deltaY": -100,
+                            "deltaZ": 0,
+                            "detail": 0,
+                            "eventPhase": 2,
+                            "isTrusted": true,
+                            "layerX": 210,
+                            "layerY": 484,
+                            "metaKey": false,
+                            "movementX": 0,
+                            "movementY": 0,
+                            "offsetX": 209,
+                            "offsetY": 483,
+                            "pageX": 529,
+                            "pageY": 963,
+                            "returnValue": false,
+                            "screenX": 529,
+                            "screenY": 466,
+                            "shiftKey": false,
+                            "timeStamp": 146421,
+                            "type": "mousewheel",
+                            "wheelDelta": 120,
+                            "wheelDeltaX": 0,
+                            "wheelDeltaY": 120,
+                            "which": 0,
+                            "x": 529,
+                            "y": 363,
+                            "xMouseDown": false,
+                            "yMouseDown": false
+                        },
+                        1,
+                        {
+                            "x": 209.015625,
+                            "y": 483.453125
+                        }
+                    ],
+                    {
+                        "panningX": -13.406250000000028,
+                        "panningY": -1.5812499999999972
+                    },
+                    1670901327265
+                ]
+            ],
+            "noValidate": true
+          });
+        })
+        
+        </script>
+    </head>
+<body>
+<canvas id='circular1' width='709' height='609'></canvas>
+
+</body>
+</html>

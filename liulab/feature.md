@@ -72,6 +72,7 @@ Evolview 如何？ Embed tree in othre website...
 >[Evolview v2](https://www.evolgenius.info/evolview-v2/#sharetrees)
 >[Evolview v3](https://www.evolgenius.info/evolview/#/treeview)
 
+> [Evolview local deploy](https://www.evolgenius.info/help/locdeploy/)
 radial-tree-layout?
 visuliztion by what?
 
@@ -136,6 +137,26 @@ Traffic record of django website,
 Getting started with IPStack API
 >[Traffic record of django website](https://dev.to/paulwababu/build-a-web-traffic-monitor-with-django-and-ipstack-3n2g)
 
+
+## 植物常用数据库
+>[植物生物学常用数据库--拟南芥](https://ics.caas.cn/zwjyyfzsjzxz/zwjyyfzsjzxzzkxzb/140020.htm)
+
+
+## 植物最全甲基化表观调控数据库
+>[EWAS](https://zhuanlan.zhihu.com/p/340075830)
+
+> An integrative analysis of metabolomics, DNA methylation and RNA-Seq data reveals key genes involved in albino tea 'Haishun2'
+
+> 
+## dask的使用
+>[dask deployed](https://docs.dask.org/en/stable/deploying.html)
+
+
+## motig插件
+>[](https://meme-suite.org/meme/tools/spamo)
+
+
+
 ## 参考
 >[ZEAMAP](http://www.zeamap.com/resource/genetics)
 
@@ -172,3 +193,5 @@ Getting started with IPStack API
 >[dynamic table](https://www.freecodecamp.org/news/convert-html-table-to-dynamic-javascript-data-grid/)
 
 >[excel2table](https://tableconvert.com/excel-to-html)
+
+>DNA methylome analysis provides evidence that the expansion of the tea genome is linked to TE bursts

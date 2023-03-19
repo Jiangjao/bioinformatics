@@ -24,6 +24,9 @@ GWAS研究是植物育种的重要工具。凭借大量的基因分型和表型�
 ## 甲基化数据
 >[茶树的DNA甲基化组](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE119992)
 
+>[Camellia sinensis var. sinensis cultivar:SCZ](https://www.ncbi.nlm.nih.gov/bioproject/?term=PRJNA694840)
+
+>[methylation + tea NCBI](https://www.ncbi.nlm.nih.gov/search/all/?term=methylation%20+%20tea)
 
 ## 小分子数据库模拟搜索
 >[simulation query set](https://smpdb.ca/text_query)
@@ -47,6 +50,17 @@ You must enable/allow the following to run the Marvin JS editor:
 识别化合物的还行, 所以如何安装？
 
 >[nmrium](https://github.com/cheminfo/nmrium)
+
+## cheminfo
+化合物搜索和注释
+>[Wikipedia Chemical Structure Explorer ](https://github.com/cheminfo/wikipedia)
+
+
+## circrna
+>
+
+## 甲基化研究
+>(甲基化引物测试)[http://www.urogene.org/methprimer/index.html]
 
 ## 引用
 >[GENOME-WIDE ASSOCIATION STUDIES](https://www.genome.gov/genetics-glossary/Genome-Wide-Association-Studies)
