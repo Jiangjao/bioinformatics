@@ -26,53 +26,99 @@
 ### 试题：
 1.从UCSC Xena数据库TCGA 肝癌转录组数据及临床信息
 Transcriptome data and clinical information of hepatocellular carcinoma
+```bash
+1  wget -c  https://tcga-xena-hub.s3.us-east-1.amazonaws.com/download/TCGA.LIHC.sampleMap%2FLIHC_clinicalMatrix
+2  wget -c https://tcga-xena-hub.s3.us-east-1.amazonaws.com/download/TCGA.LIHC.sampleMap%2FHiSeqV2.gz 
+4  wget -c https://tcga-xena-hub.s3.us-east-1.amazonaws.com/download/probeMap%2Fhugo_gencode_good_hg19_V24lift37_probemap 
+
+```
 
 ```R
-# version 01
+# version 02
 rm(list = ls())
 options(stringsAsFactors = F)
 
+# 安装并载入所需的包
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+# BiocManager::install("edgeR")
+library(edgeR)
+# install.packages("SummarizedExperiment")
+# BiocManager::install("locfit")
+# BiocManager::install("DESeq2")
+# install.packages("DESeq2")
+# BiocManager::install("SummarizedExperiment",lib="/cloud/lib")
+# library(DESeq2)
+
+
+# BiocManager::install("DESeq2")
+
 # 1. 数据预处理
-data <- read.table("TCGA.LIHC.sampleMap%2FHiSeqV2",
+data <- read.table("/fafu/jiangxiaojiao/data/TCGA.LIHC.sampleMap%2FHiSeqV2.gz",
                    header = TRUE, sep = "\t", row.names = 1)
 data_clean <- na.omit(data) # 删除缺失值或空值
 
-data_clinal <- read.table("TCGA.LIHC.sampleMap%2FLIHC_clinicalMatrix", 
+data_clinal <- read.table("/fafu/jiangxiaojiao/data/TCGA.LIHC.sampleMap%2FLIHC_clinicalMatrix", 
                                 header = TRUE, sep = "\t", row.names = 1)
 # data_clean_clinal <- na.omit(data_clinal)
 
 # 获取患者的癌症状态
 sample_id <- colnames(data_clean)
-num<-as.numeric(substring(sample_id, 14, 15))  #截取字符串后转为数字
-group_list=ifelse(num%in%1:9,"Tumor","Normal")  #ifelse实现分组
+num <- as.numeric(substring(sample_id, 14, 15))  #截取字符串后转为数字
+group_list = ifelse(num%in%1:9,"Tumor","Normal")  #ifelse实现分组
 
-cancer_status <- data_clean_clinal$`X_primary_disease`
-if (grepl("normal", cancer.status, ignore.case = TRUE)) {
-  cat("This patient is a normal control.")
-} else {
-  cat("This patient has cancer.")
-}
+# 将 group_list 转换为只有一列的数据框
+group_df <- as.data.frame(group_list)
+group_df_clean <- na.omit(group_df)
 
-# 2. 样本分类
-disease_samples <- subset(data_clean, group == "disease")
-normal_samples <- subset(data_clean, group == "normal")
+# 在合并后的数据框中添加分组信息
+df <- as.data.frame(sample_id)
+df$Group <- ""
+# 使用 substr 截取 A 列的最后 2 个字符
+last_two_chars <- substr(df$A, nchar(df$A) - 1, nchar(df$A))
 
-# 3. 基因筛选
-expression_disease <- disease_samples[, -1] # 第一列为样本名称，从第二列开始为基因表达数据
-expression_normal <- normal_samples[, -1]
-min_expression <- 5 # 设定最小表达量阈值
-genes <- names(expression_disease)[apply(expression_disease >= min_expression, 2, any)]
+# 使用 ifelse 根据截取结果设置 B 列的值
+df$Group <- ifelse(num%in%1:9,"Tumor","Normal")  #ifelse实现分组
+# merged_data$Group <- ifelse(merged_data$Sample_Type == "Tumor", "disease", "normal")
+# 将两个数据框按照 ID 列进行合并
+# merged_df <- merge(sample_id, group_list)
+# # 使用 ifelse 设置 B 中值的条件
+# merged_df$y <- ifelse(df$A>0, TRUE, FALSE)
 
-# 4. 差异分析
-p_values <- sapply(genes, function(gene) t.test(expression_disease[gene], expression_normal[gene])$p.value)
+# 按照样品名以字母顺序排序
+pheno <- pheno[order(rownames(pheno)), ]
 
-# 5. 功能注释
-# 可使用其他生物信息学工具进行GO、KEGG等分析
+# 将表型信息添加到矩阵中，并为每组分配分组信息
+group <- factor(df$Group)
+design <- model.matrix(~group)
 
-# 6. 结果可视化
-result_df <- data.frame(Gene = genes, `P-value` = p_values)
-result_df <- result_df[order(result_df$`P-value`), ]
-plot(result_df$Gene, -log10(result_df$`P-value`), pch=16, xlab="Gene", ylab="-log10(P-value)", main="Differential Expression Analysis")
+
+
+# 查看 group_list 的类型
+class(group_list)
+class(data_clean)
+
+# 创建 edgeR 对象
+y <- DGEList(counts = data_clean, group = group)
+
+# 进行基因过滤，按照要求选择出需要进行差异分析的基因
+keep <- filterByExpr(y, design)
+y <- y[keep,,keep.lib.sizes=FALSE]
+
+# 规范化矩阵
+y <- calcNormFactors(y)
+
+# 估计离散度
+y <- estimateDisp(y, design)
+
+# 对规范化后的表达矩阵进行差异分析
+fit <- glmQLFit(y, design)
+qlf <- glmQLFTest(fit, coef=2)
+
+# 筛选差异表达显著的基因
+differentially_expressed_genes <- topTags(qlf, adjust.method = "BH", sort.by = "PValue", n = Inf)
+
 
 
 ```
@@ -99,3 +145,5 @@ plot(result_df$Gene, -log10(result_df$`P-value`), pch=16, xlab="Gene", ylab="-lo
 >[TCGA_BRCA数据挖掘测试](https://github.com/jmzeng1314/TCGA_BRCA)
 
 >[An Integrated TCGA Pan-Cancer Clinical Data Resource (TCGA-CDR) to drive high quality survival outcome analytics]()
+
+>[利用R代码从UCSC XENA下载mRNA, lncRNA, miRNA表达数据并匹配临床信息](https://blog.csdn.net/qazplm12_3/article/details/114684113)
