@@ -33,6 +33,7 @@ Transcriptome data and clinical information of hepatocellular carcinoma
 
 ```
 
+## 2.对疾病和正常样本进行差异分析筛选出基因并进行差异分析
 ```R
 # version 02
 rm(list = ls())
@@ -135,8 +136,148 @@ differentially_expressed_genes <- topTags(qlf, adjust.method = "BH", sort.by = "
 >[一文讲清TCGA数据库中样本编码信息](https://zhuanlan.zhihu.com/p/564801425)
 
 
-2.对疾病和正常样本进行差异分析筛选出基因并进行差异分析
-3.将差异基因与自噬基因取(需要自己去找自噬基因集)交集
+
+## 3.将差异基因与自噬基因取(需要自己去找自噬基因集)交集
+自噬。Autophagy（自噬）来自于希腊语，是auto=self和phagy=phagein=to eat的结合。
+您可以通过在公共数据库（如KEGG、GO等）中查找与自噬相关的基因集，然后将其与差异表达基因进行比较以找出它们的交集。以下是可能帮助您的示例代码：
+
+```R
+# 将自噬基因从文件中读入到 R 中，这里假设自噬基因的文件名为 "autophagy_genes.txt"
+autophagy_genes <- read.table("autophagy_genes.txt", header=TRUE, stringsAsFactors=FALSE)
+autophagy_genes <- autophagy_genes$GeneID
+
+# 假设您已经得到了一组差异表达基因，以向量形式保存在 diff_expr_genes 变量中
+
+# 找到交集
+intersection <- intersect(diff_expr_genes, autophagy_genes)
+
+# 输出结果
+print(intersection)
+```
+在上面的代码中，我们首先将自噬基因从文件中读取到 R 中，并将其存储在向量 autophagy_genes中。然后，我们假设您已经得到了一组差异表达基因列表（以向量 diff_expr_genes 的形式给出），并使用 intersect() 函数找到它们与自噬基因列表中的交集。最后，我们将结果打印输出。请注意，在运行此代码之前，确保您已将差异表达基因和自噬基因的文件正确准备。
+### 获取自噬基因
+```python
+# /usr/bin/python3
+# -- encoding: utf-8 -
+
+import requests
+import functools
+from bs4 import BeautifulSoup
+import bs4
+
+# 发送HTTP请求
+url = "http://www.autophagy.lu/clustering/index.html"
+response = requests.get(url)
+
+# 解析HTML页面
+soup = BeautifulSoup(response.content, 'html.parser')
+# print(soup)
+# 从第四个table开始
+global flag
+flag = True
+
+def extract_table_data(table):
+    """
+    提取单个表格的数据
+
+    table like this:
+
+
+    <table width="100%">
+        <tr>
+            <td width="30%">
+                <a href="http://www.lih.lu" style="border-color:white">
+                    <img alt="LIH" height="" src="/Supplements/Pictures/public-research-center.png" style="border-color:white" title="LIH" width=""/>
+                </a>
+            </td>
+            <td width="40%"></td>
+            <td id="update_in_progress" style="border-color:red;text-align:right;font-size:12px" width="30%">
+                <!--- marquee -->
+                Update in progress
+                <!---/marquee-->
+            </td>
+        </tr>
+    </table>
+    """
+
+
+    soup = BeautifulSoup(str(table), 'html.parser')
+    table = soup.table
+    rows = table.find_all('tr')
+
+    for row in rows:
+        cells = row.find_all('td')
+        row_data = [cell.text.strip() for cell in cells]
+        print(row_data)
+        load_into_file(row_data)
+
+def load_into_file(line):
+    # 去重不必要的字符
+    line = [element.replace("\n", "").replace("\t","") for element in line]
+    # line =  ','.join(str(line).split())
+    
+    # 由于tables是GeneId	Name	Symbol的结构（三个字符)
+    # 起始字符GeneId是数字
+    # 只需要判断line长度起码在3
+    length = len(line)
+    if length >=3:
+        line_start = line[0]
+        # 起始字符GeneId不是数字，舍弃
+        if not line_start[:1].isdigit():
+            return
+        with open("./gene_temp.csv", mode="a+", encoding="utf-8") as f:
+            f.write(",".join(line))
+            f.write("\n")
+        print("**** genes list ****")
+        print(line[-1], file=open("./gene_temp.txt", mode="a+", encoding="utf-8"))
+    # for element in line:
+    #     print(element.strip(), file=open("./gene_temp.txt", mode="a+", encoding="utf-8"))
+    #     print("\n")
+# functools模块中的lru_cache装饰器来优化函数的性能。
+# lru_cache装饰器会缓存函数的结果，并且在后续调用相同参数的函数时，直接返回缓存的结果，避免重复计算
+@functools.lru_cache(maxsize=None)
+def extract_all_tables(soup):
+    """
+    递归地提取所有表格的数据
+    """
+    all_data = []
+    # if all_data == []:
+    #     tables = soup.find_all('table')[:4]
+    #     flag = False
+    # else:
+    tables = soup.find_all('table')
+    valid_tables = []  # 保存有效的HTML标签对象
+    for table in tables:
+        if isinstance(table, bs4.element.Tag):  # 判断是否为HTML标签对象
+            valid_tables.append(table)
+    if valid_tables:
+        # 第四个table
+        for table in tables:
+            # data = extract_table_data(table)
+            # all_data.append(data)
+            if len(table.find_all('table')) > 0:
+                sub_soup = BeautifulSoup(str(table), 'html.parser')
+                sub_data = extract_all_tables(sub_soup)
+                # all_data += sub_data
+            else:
+                yield table
+    # return all_data
+
+# 解析HTML代码
+# soup = BeautifulSoup(html, 'html.parser')
+
+# 提取所有表格的数据
+# tables = soup.find_all('table')[:3]
+# tables = BeautifulSoup(str(tables), 'html.parser')
+soup = BeautifulSoup(response.content, 'html.parser')
+all_data = extract_all_tables(soup)
+
+# print(all_data)
+for table in all_data:
+    # print(table)
+    extract_table_data(table)
+```
+
 4.利用交集基因构建多因素预后模型，画模型的ROC曲线。
 
 ## 参考文献
@@ -147,3 +288,7 @@ differentially_expressed_genes <- topTags(qlf, adjust.method = "BH", sort.by = "
 >[An Integrated TCGA Pan-Cancer Clinical Data Resource (TCGA-CDR) to drive high quality survival outcome analytics]()
 
 >[利用R代码从UCSC XENA下载mRNA, lncRNA, miRNA表达数据并匹配临床信息](https://blog.csdn.net/qazplm12_3/article/details/114684113)
+
+>[自噬相关基因集合](https://zhuanlan.zhihu.com/p/560835923)
+
+>[HADb Human Autophagy Database](http://www.autophagy.lu/index.html)
