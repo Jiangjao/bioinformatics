@@ -120,7 +120,22 @@ qlf <- glmQLFTest(fit, coef=2)
 # 筛选差异表达显著的基因
 differentially_expressed_genes <- topTags(qlf, adjust.method = "BH", sort.by = "PValue", n = Inf)
 
+percentage <- nrow(differentially_expressed_genes) / nrow(data_clean)
 
+# 取交集
+# 将differentially_expressed_genes转换为数据框对象
+differentially_expressed_genes_name <- row.names(differentially_expressed_genes)
+# differentially_expressed_genes_name <- as.data.frame()
+autophagy_genes <- read.table("/fafu/jiangxiaojiao/methy_array/gene_temp.txt", header = FALSE)
+# write.table(differentially_expressed_genes_name, file = "output.txt", sep = ",", row.names = FALSE)
+vec2 <- as.vector(autophagy_genes[,])
+result <- intersect(differentially_expressed_genes_name, vec2)
+
+# 使用unique函数去除重复行
+unique_result <- unique(result)
+
+# 输出结果
+unique_result
 
 ```
 
@@ -278,6 +293,26 @@ for table in all_data:
     extract_table_data(table)
 ```
 
+取交集
+```R
+percentage <- nrow(differentially_expressed_genes) / nrow(data_clean)
+
+# 取交集
+# 将differentially_expressed_genes转换为数据框对象
+differentially_expressed_genes_name <- row.names(differentially_expressed_genes)
+# differentially_expressed_genes_name <- as.data.frame()
+autophagy_genes <- read.table("/fafu/jiangxiaojiao/methy_array/gene_temp.txt", header = FALSE)
+# write.table(differentially_expressed_genes_name, file = "output.txt", sep = ",", row.names = FALSE)
+vec2 <- as.vector(autophagy_genes[,])
+result <- intersect(differentially_expressed_genes_name, vec2)
+
+# 使用unique函数去除重复行
+unique_result <- unique(result)
+
+# 输出结果
+unique_result
+# [145] "ARNT"      "SESN2"     "DNAJB1"    "RAF1"      "EIF4EBP1"  "SIRT2"  
+```
 4.利用交集基因构建多因素预后模型，画模型的ROC曲线。
 
 ## 参考文献
