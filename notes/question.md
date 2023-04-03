@@ -25,7 +25,7 @@
 >[phenotype](https://xenabrowser.net/datapages/?cohort=TCGA%20Liver%20Cancer%20(LIHC)&removeHub=https%3A%2F%2Fxena.treehouse.gi.ucsc.edu%3A443)
 
 ### 试题：
-1.从UCSC Xena数据库TCGA 肝癌转录组数据及临床信息
+## 1.从UCSC Xena数据库TCGA 肝癌转录组数据及临床信息
 Transcriptome data and clinical information of hepatocellular carcinoma
 ```bash
 1  wget -c  https://tcga-xena-hub.s3.us-east-1.amazonaws.com/download/TCGA.LIHC.sampleMap%2FLIHC_clinicalMatrix
@@ -35,6 +35,16 @@ Transcriptome data and clinical information of hepatocellular carcinoma
 ```
 2. 从TCGA下载临床数据
     clinical.project-TCGA-LIHC.2023-04-02.tar.gz
+### 数据的下载
+通过R包UCSCXenaTools连接UCSC的XENA浏览器来探索TCGA等公共浏览器
+
+>[生信专栏 | TCGA数据下载友好型——利用UCSC xena下载](https://zhuanlan.zhihu.com/p/539346572)
+>[TCGA数据库的初次了解](https://www.jianshu.com/p/d662069a4a3d)
+>[TCGA-LIHC](https://portal.gdc.cancer.gov/exploration?facetTab=cases&filters=%7B%22op%22%3A%22and%22%2C%22content%22%3A%5B%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22cases.case_id%22%2C%22value%22%3A%5B%22109436aa-a655-429b-8d3b-1a43385c9016%22%2C%22146c5332-1af5-4c49-b740-9a9edc795f24%22%2C%224c960eee-e4b5-499d-a596-238aa78745a4%22%2C%226ed0b780-1b87-54ce-a036-8e74ece2a705%22%2C%229f056388-7529-4fd1-af11-c82cc350f51c%22%2C%22d884561b-5828-4c47-acd7-3f02e181b596%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22cases.project.program.name%22%2C%22value%22%3A%5B%22TCGA%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22cases.project.project_id%22%2C%22value%22%3A%5B%22TCGA-LIHC%22%5D%7D%7D%5D%7D&searchTableTab=cases)
+
+>[一文讲清TCGA数据库中样本编码信息](https://zhuanlan.zhihu.com/p/564801425)
+
+
 
 ## 2.对疾病和正常样本进行差异分析筛选出基因并进行差异分析
 ```R
@@ -209,35 +219,13 @@ unique_result
 
 
 
-## 数据的下载
-通过R包UCSCXenaTools连接UCSC的XENA浏览器来探索TCGA等公共浏览器
-
->[生信专栏 | TCGA数据下载友好型——利用UCSC xena下载](https://zhuanlan.zhihu.com/p/539346572)
->[TCGA数据库的初次了解](https://www.jianshu.com/p/d662069a4a3d)
->[TCGA-LIHC](https://portal.gdc.cancer.gov/exploration?facetTab=cases&filters=%7B%22op%22%3A%22and%22%2C%22content%22%3A%5B%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22cases.case_id%22%2C%22value%22%3A%5B%22109436aa-a655-429b-8d3b-1a43385c9016%22%2C%22146c5332-1af5-4c49-b740-9a9edc795f24%22%2C%224c960eee-e4b5-499d-a596-238aa78745a4%22%2C%226ed0b780-1b87-54ce-a036-8e74ece2a705%22%2C%229f056388-7529-4fd1-af11-c82cc350f51c%22%2C%22d884561b-5828-4c47-acd7-3f02e181b596%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22cases.project.program.name%22%2C%22value%22%3A%5B%22TCGA%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22cases.project.project_id%22%2C%22value%22%3A%5B%22TCGA-LIHC%22%5D%7D%7D%5D%7D&searchTableTab=cases)
-
->[一文讲清TCGA数据库中样本编码信息](https://zhuanlan.zhihu.com/p/564801425)
-
-
 
 ## 3.将差异基因与自噬基因取(需要自己去找自噬基因集)交集
-自噬。Autophagy（自噬）来自于希腊语，是auto=self和phagy=phagein=to eat的结合。
-您可以通过在公共数据库（如KEGG、GO等）中查找与自噬相关的基因集，然后将其与差异表达基因进行比较以找出它们的交集。以下是可能帮助您的示例代码：
+自噬,先搜集资料
+-   Autophagy（自噬）来自于希腊语，是auto=self和phagy=phagein=to eat的结合。
+-   您可以通过在公共数据库（如KEGG、GO等）中查找与自噬相关的基因集，然后将其与差异表达基因进行比较以找出它们的交集。
 
-```R
-# 将自噬基因从文件中读入到 R 中，这里假设自噬基因的文件名为 "autophagy_genes.txt"
-autophagy_genes <- read.table("autophagy_genes.txt", header=TRUE, stringsAsFactors=FALSE)
-autophagy_genes <- autophagy_genes$GeneID
 
-# 假设您已经得到了一组差异表达基因，以向量形式保存在 diff_expr_genes 变量中
-
-# 找到交集
-intersection <- intersect(diff_expr_genes, autophagy_genes)
-
-# 输出结果
-print(intersection)
-```
-在上面的代码中，我们首先将自噬基因从文件中读取到 R 中，并将其存储在向量 autophagy_genes中。然后，我们假设您已经得到了一组差异表达基因列表（以向量 diff_expr_genes 的形式给出），并使用 intersect() 函数找到它们与自噬基因列表中的交集。最后，我们将结果打印输出。请注意，在运行此代码之前，确保您已将差异表达基因和自噬基因的文件正确准备。
 ### 获取自噬基因
 ```python
 # /usr/bin/python3
