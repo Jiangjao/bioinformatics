@@ -202,9 +202,9 @@ unique_result
 
 ```
 
-![DEG_top50_pca](/bioinformatics/images/question_edgeR_DEG_top50_pca.png)
-![edgeR_DEG_top50_heatmap](/bioinformatics/images/question_edgeR_need_DEG_top50_heatmap.png)
-![edgeR_DEG_top50_volcano](/bioinformatics/images/question_edgeR_volcano.png)
+![DEG_top50_pca](../images/question_edgeR_DEG_top50_pca.png)
+![edgeR_DEG_top50_heatmap](../images/question_edgeR_need_DEG_top50_heatmap.png)
+![edgeR_DEG_top50_volcano](../images/question_edgeR_volcano.png)
 
 
 
