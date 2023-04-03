@@ -18,6 +18,7 @@
 -   临床数据如何确定
 其他的大概涉及到梳理统计，选择什么工具
 -   生产环境
+实验室设备
 >[online R clod](https://posit.cloud)
 -   数据下载来源
 >[dataset: gene expression RNAseq - IlluminaHiSeq](https://xenabrowser.net/datapages/?dataset=TCGA.LIHC.sampleMap%2FHiSeqV2&host=https%3A%2F%2Ftcga.xenahubs.net&removeHub=http%3A%2F%2F127.0.0.1%3A7222)
@@ -32,6 +33,8 @@ Transcriptome data and clinical information of hepatocellular carcinoma
 4  wget -c https://tcga-xena-hub.s3.us-east-1.amazonaws.com/download/probeMap%2Fhugo_gencode_good_hg19_V24lift37_probemap 
 
 ```
+2. 从TCGA下载临床数据
+    clinical.project-TCGA-LIHC.2023-04-02.tar.gz
 
 ## 2.对疾病和正常样本进行差异分析筛选出基因并进行差异分析
 ```R
@@ -313,7 +316,541 @@ unique_result <- unique(result)
 unique_result
 # [145] "ARNT"      "SESN2"     "DNAJB1"    "RAF1"      "EIF4EBP1"  "SIRT2"  
 ```
-4.利用交集基因构建多因素预后模型，画模型的ROC曲线。
+
+## 4.利用交集基因构建多因素预后模型，画模型的ROC曲线。
+在R中，可以使用多种方法构建多因素预后模型，并使用ROC曲线评估模型的性能。以下是一种基于逻辑回归模型的方法：
+
+1. 准备数据
+
+首先，需要准备数据，包括基因表达数据和生存数据。基因表达数据可以是一个包含基因表达矩阵的数据框，生存数据可以是一个包含生存时间、生存状态（0表示死亡，1表示存活）和其他相关信息的数据框。需要将两个数据框按照样本编号进行合并，得到一个包含基因表达数据和生存数据的完整数据框。
+
+2. 特征选择
+
+然后，可以使用交集基因作为特征，或者使用其他方法进行特征选择，例如LASSO、Elastic Net等。这些方法可以帮助筛选出与生存相关的基因，并排除噪音。
+
+3. 构建逻辑回归模型
+
+接下来，可以使用逻辑回归模型构建多因素预后模型。逻辑回归模型可以通过glm函数进行拟合，其中dependent变量为生存状态（0或1），independent变量为基因表达数据。在拟合模型时，需要使用交叉验证等方法进行参数选择和模型评估。
+
+4. 评估模型性能
+
+最后，可以使用ROC曲线等指标评估模型的性能。ROC曲线可以使用pROC包中的roc函数绘制，其中需要提供真阳性率（TPR）和假阳性率（FPR）两个参数。可以使用predict函数预测样本的生存概率，并根据生存概率和实际生存状态计算TPR和FPR。通过改变逻辑回归模型的阈值，可以得到不同的TPR和FPR，从而绘制ROC曲线。
+
+下面是一个简单的示例代码，用于构建逻辑回归模型并绘制ROC曲线：
+
+```R
+library(pROC)
+
+# 准备数据，gene_data为基因表达数据，surv_data为生存数据
+data <- merge(gene_data, surv_data, by = "sample_id")
+
+# 特征选择，使用交集基因作为特征
+features <- intersect(gene_data$gene_name, survival_genes)
+
+# 构建逻辑回归模型
+model <- glm(survival_status ~ ., data = data[, c(features, "survival_status")], family = "binomial")
+
+# 预测样本的生存概率
+probs <- predict(model, newdata = data[, features], type = "response")
+
+# 计算TPR和FPR，并绘制ROC曲线
+roc_data <- roc(data$survival_status, probs)
+plot(roc_data)
+```
+
+在上述代码中，首先使用merge函数将基因表达数据和生存数据合并，得到一个包含基因表达数据和生存数据的完整数据框。然后，使用intersect函数筛选出与生存相关的基因，并将其作为逻辑回归模型的independent变量。使用glm函数拟合逻辑回归模型，并使用predict函数预测样本的生存概率。最后，使用roc函数计算TPR和FPR，并使用plot函数绘制ROC曲线。需要注意的是，代码中的survival_status和survival_genes需要根据实际情况进行修改。
+
+
+要利用交集基因构建多因素预后模型并绘制模型的ROC曲线，您可以按照以下步骤操作：
+
+筛选交集基因：从多个研究中筛选出在所有研究中都具有显著差异表达的基因，作为交集基因。
+
+构建预后模型：使用多因素Cox回归分析，以交集基因的表达水平和临床协变量（如年龄、性别、分期等）作为自变量，构建预后模型。
+
+验证模型：使用独立数据集验证预后模型的准确性和可靠性。可以计算模型的一些评估指标，如一致性指数（C-index）和生存曲线比较的P值等。
+
+绘制ROC曲线：根据预后模型的预测结果和实际观察结果，绘制接收者操作特征曲线（ROC曲线）。ROC曲线展示了模型在不同阈值下的真阳性率和假阳性率。您可以计算曲线下面积（AUC），以评估模型的整体预测能力。
+
+这些步骤并不是固定不变的，具体的流程可能会根据实际情况和研究目的而有所不同。此外，构建多因素预后模型并绘制ROC曲线通常需要使用专业的统计软件和生物信息学工具。
+
+
+## script
+```R
+rm(list = ls())
+options(stringsAsFactors = F)
+
+# 安装并载入所需的包
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+# BiocManager::install("survival")
+# BiocManager::install("pROC")
+library(dplyr)
+library(edgeR)
+library(survival)
+library(pROC)
+# install.packages("SummarizedExperiment")
+# BiocManager::install("locfit")
+# BiocManager::install("DESeq2")
+# install.packages("DESeq2")
+# BiocManager::install("SummarizedExperiment",lib="/cloud/lib")
+# library(DESeq2)
+
+
+# BiocManager::install("DESeq2")
+
+# 1. 数据预处理
+data <- read.table("/fafu/jiangxiaojiao/data/TCGA.LIHC.sampleMap%2FHiSeqV2.gz",
+                   header = TRUE, sep = "\t", row.names = 1)
+data_clean <- na.omit(data) # 删除缺失值或空值
+
+data_clinal <- read.table("/fafu/jiangxiaojiao/data/TCGA.LIHC.sampleMap%2FLIHC_clinicalMatrix", 
+                                header = TRUE, sep = "\t", row.names = 1)
+
+meta_filed_with_data_clinal = data_clinal[, c(
+    "X_PATIENT",
+    "age_at_initial_pathologic_diagnosis",
+    "gender",
+    "pathologic_stage",
+    "bcr_patient_barcode"
+)]
+
+# data_clean_clinal <- na.omit(data_clinal)
+
+# 获取患者的癌症状态
+sample_id <- colnames(data_clean)
+num <- as.numeric(substring(sample_id, 14, 15))  #截取字符串后转为数字
+group_list = ifelse(num%in%1:9,"Tumor","Normal")  #ifelse实现分组
+
+# 将 group_list 转换为只有一列的数据框
+group_df <- as.data.frame(group_list)
+group_df_clean <- na.omit(group_df)
+
+# 在合并后的数据框中添加分组信息
+df <- as.data.frame(sample_id)
+df$Group <- ""
+# 使用 substr 截取 A 列的最后 2 个字符
+last_two_chars <- substr(df$A, nchar(df$A) - 1, nchar(df$A))
+
+# 使用 ifelse 根据截取结果设置 B 列的值
+df$Group <- ifelse(num%in%1:9,"Tumor","Normal")  #ifelse实现分组
+# merged_data$Group <- ifelse(merged_data$Sample_Type == "Tumor", "disease", "normal")
+# 将两个数据框按照 ID 列进行合并
+# merged_df <- merge(sample_id, group_list)
+# # 使用 ifelse 设置 B 中值的条件
+# merged_df$y <- ifelse(df$A>0, TRUE, FALSE)
+
+# 按照样品名以字母顺序排序
+# pheno <- pheno[order(rownames(pheno)), ]
+
+# 将表型信息添加到矩阵中，并为每组分配分组信息
+group <- factor(df$Group)
+design <- model.matrix(~group)
+
+
+
+# 查看 group_list 的类型
+class(group_list)
+class(data_clean)
+
+# 创建 edgeR 对象
+y <- DGEList(counts = data_clean, group = group)
+
+# 进行基因过滤，按照要求选择出需要进行差异分析的基因
+keep <- filterByExpr(y, design)
+y <- y[keep,,keep.lib.sizes=FALSE]
+
+# 规范化矩阵
+y <- calcNormFactors(y)
+
+# 估计离散度
+y <- estimateDisp(y, design)
+
+# 对规范化后的表达矩阵进行差异分析
+fit <- glmQLFit(y, design)
+qlf <- glmQLFTest(fit, coef=2)
+
+# 筛选差异表达显著的基因
+differentially_expressed_genes <- topTags(qlf, adjust.method = "BH", sort.by = "PValue", n = Inf)
+differentially_expressed_genes <- differentially_expressed_genes[differentially_expressed_genes$table$PValue < 0.05, ]
+
+differentially_expressed_genes$PValue
+# 检查两个数据框的行数
+nrow(data_clean)
+nrow(group_df)
+nrow(differentially_expressed_genes)
+
+percentage <- nrow(differentially_expressed_genes) / nrow(data_clean)
+
+# 取交集
+# 将differentially_expressed_genes转换为数据框对象
+differentially_expressed_genes_name <- row.names(differentially_expressed_genes)
+# differentially_expressed_genes_name <- as.data.frame()
+autophagy_genes <- read.table("/fafu/jiangxiaojiao/methy_array/gene_temp.txt", header = FALSE)
+# write.table(differentially_expressed_genes_name, file = "output.txt", sep = ",", row.names = FALSE)
+vec2 <- as.vector(autophagy_genes[,])
+result <- intersect(differentially_expressed_genes_name, vec2)
+
+# 使用unique函数去除重复行
+unique_genes <- unique(result)
+
+# 输出结果
+unique_genes
+
+
+################### 2023/03/31 #########################
+BRCA <- data_clean[unique_genes,]
+survival_data<- read.table("/fafu/jiangxiaojiao/methy_array/TCGA-LIHC.survival.tsv", header = T)
+# clinical_TCGA_data <- read.table("/fafu/jiangxiaojiao/methy_array/clinical.tsv",
+#     sep = "\t",
+#     fill = TRUE,
+#     header = T
+# )
+
+################### 2023/04/03 #########################
+# 获取Expr的rownames
+sample_id_with_lasfix <- survival_data$sample
+sample_id_without_lasfix <- substring(sample_id_with_lasfix, 1, 15) # 截取字符串后转为数字
+survival_data$sample_id_without_lasfix <- sample_id_without_lasfix
+
+meta = left_join(survival_data,data_clinal,by = c("sample"= "bcr_sample_barcode"))
+# 去掉表达矩阵里没有的样本
+library(stringr)
+exprSet <- data_clean
+
+# 将列名中的点号替换为下划线
+tmp <- t(exprSet)
+colnames(exprSet) <- gsub("\\.", "-", colnames(exprSet))
+
+
+
+k = meta$sample_id_without_lasfix %in% colnames(exprSet);table(k)
+meta = meta[k,]
+
+# 去掉生存信息不全或者生存时间小于30天的样本，样本纳排标准不唯一，且差别很大
+# 去掉没有性别的样本
+k1 = meta$OS.time >= 30;table(k1)
+k2 = !(is.na(meta$OS.time)|is.na(meta$OS));table(k2)
+k3 = !(is.na(meta$gender)|is.na(meta$gender));table(k3)
+meta = meta[k1 & k2, ]
+meta = meta[k3,]
+
+# 选择有用的列
+tmp = data.frame(colnames(meta))
+meta = meta[, c(
+    "sample",
+    "sample_id_without_lasfix",
+    "OS",
+    "OS.time",
+    "histological_type",
+    "age_at_initial_pathologic_diagnosis",
+    "gender",
+    "pathologic_T"
+)]
+
+
+dim(meta)
+
+meta[1:4,1:4]
+
+#简化meta的列名
+colnames(meta)=c('sample','sample_id','event', 'time','type','age','gender','stage')
+
+# 空着的值、not reported改为NA
+meta[meta == "" | meta == "not reported"] = NA
+meta <- na.omit(meta)
+rownames(meta) <- meta$sample_id
+survival_data[1:4, 1:4]
+dim(survival_data)
+
+######### 3.实现表达矩阵与临床信息的匹配 ###########
+# clinical_data_preparation <- merge(meta_filed_with_data_clinal, survival_data)
+# dim(clinical_data_preparation)
+# dim(meta_filed_with_data_clinal)
+dim(survival_data)
+# 将列名中的点号替换为下划线
+colnames(BRCA) <- gsub("\\.", "-", colnames(BRCA))
+# tmp <- t(BRCA)
+
+# 输出修改后的列名
+# 将矩阵转换为数据框
+tmp_df <- t(as.data.frame(BRCA))
+# tmp_df$X_PATIENT <- rownames(tmp_df)
+# 将矩阵转换为数据框
+# survival_data <- as.data.frame(survival_data)
+
+# 调整meta行名与exprSet列名一一对应
+s = intersect(rownames(tmp_df), meta$sample_id);table(s)
+exprSet <- tmp_df[s,]
+meta = meta[s,]
+identical(rownames(meta), rownames(exprSet))
+
+
+#### 4. 整理生存分析的输入数据
+#### 生存分析的输入数据里，要求结局事件必须用0和1表示，0表示活着，1表示死了; 生存时间的单位（月）;
+table(meta$event)
+range(meta$time)
+meta$time = meta$time/30
+range(meta$time)
+
+# 去除stage里的冗余信息
+head(meta$stage)
+
+meta$stage = meta$stage %>% 
+  str_remove("stage ") %>% 
+  str_to_upper()
+
+table(meta$stage,useNA = "always")
+
+# 不需要ABC可以去掉，需要的话就保留，不运行下面这句
+meta$stage = str_remove(meta$stage,"A|B|C") 
+
+head(meta)
+
+# 二.生存分析 ################################
+ls()
+exprSet[1:4,1:4]
+meta[1:4, 1:4]
+library(survival)
+library(survminer)
+
+sfit <- survfit(Surv(time, event)~gender, data=meta)
+ggsurvplot(sfit,pval=TRUE)
+ggsurvplot(sfit,
+           palette = "jco",
+           risk.table =TRUE,
+           pval =TRUE,
+           conf.int =TRUE)
+# save(meta,exprSet,proj,file = paste0(proj,"_sur_model.Rdata"))
+
+# 年龄
+group = ifelse(meta$age>median(meta$age,na.rm = T),"older","younger")
+table(group)
+sfit=survfit(Surv(time, event)~group, data=meta)
+ggsurvplot(sfit,pval =TRUE, data = meta, risk.table = TRUE)
+
+# 基因
+g = colnames(exprSet)[1]
+g
+# 将数据框中所有列转换为数值型
+# exprSet <- apply(exprSet, 2, as.numeric)
+meta$gene = ifelse(exprSet[,g]> median(exprSet[,g],na.rm = T),'high','low')
+sfit=survfit(Surv(time, event)~gene, data=meta)
+ggsurvplot(sfit,pval =TRUE, data = meta, risk.table = TRUE)
+
+save(meta,exprSet,file = paste0("step_01","_sur_model.Rdata"))
+# 如何保存图片来着？
+
+# logrankfile = paste0("step_01", "_sur_model.Rdata")
+# 3.log-rank test ##########################
+logrankfile = paste0("step_01","_log_rank_p.Rdata")
+load("step_01_sur_model.Rdata")
+if(!file.exists(logrankfile)){
+  log_rank_p <- apply(t(exprSet) , 1 , function(gene){
+    meta$group=ifelse(gene>median(gene),'high','low')  
+    data.survdiff=survdiff(Surv(time, event)~group,data=meta)
+    p.val = 1 - pchisq(data.survdiff$chisq, length(data.survdiff$n) - 1)
+    return(p.val)
+  })
+  log_rank_p=sort(log_rank_p)
+  save(log_rank_p,file = logrankfile)
+}
+load(logrankfile)
+table(log_rank_p<0.01) 
+table(log_rank_p < 0.05)
+
+# 4.批量单因素cox ##############################
+proj <- "step_01"
+coxfile = paste0(proj,"_cox.Rdata")
+if(!file.exists(coxfile)){
+  cox_results <- apply(t(exprSet), 1 , function(gene){
+  meta$gene = gene
+  #可直接使用连续型变量
+  m = coxph(Surv(time, event) ~ gene, data =  meta)
+  #也可使用二分类变量
+  #meta$group=ifelse(gene>median(gene),'high','low') 
+  #meta$group = factor(meta$group,levels = c("low","high"))
+  #m=coxph(Surv(time, event) ~ group, data =  meta)
+  
+  beta <- coef(m)
+  se <- sqrt(diag(vcov(m)))
+  HR <- exp(beta)
+  HRse <- HR * se
+  
+  #summary(m)
+  tmp <- round(cbind(coef = beta, 
+                     se = se, z = beta/se, 
+                     p = 1 - pchisq((beta/se)^2, 1),
+                     HR = HR, HRse = HRse,
+                     HRz = (HR - 1) / HRse, 
+                     HRp = 1 - pchisq(((HR - 1)/HRse)^2, 1),
+                     HRCILL = exp(beta - qnorm(.975, 0, 1) * se),
+                     HRCIUL = exp(beta + qnorm(.975, 0, 1) * se)), 3)
+  
+  return(tmp['gene',]) 
+  #return(tmp['grouphigh',])#二分类变量
+})
+  cox_results=as.data.frame(t(cox_results))
+  save(cox_results,file = coxfile)
+}
+load(coxfile)
+table(cox_results$p<0.01)
+table(cox_results$p<0.05)
+
+lr = names(log_rank_p)[log_rank_p<0.01];length(lr)
+cox = rownames(cox_results)[cox_results$p<0.01];length(cox)
+length(intersect(lr,cox))
+save(lr,cox,file = paste0(proj,"_logrank_cox_gene.Rdata"))
+
+
+# 5.lasso回归
+# 1.准备输入数据
+rm(list = ls())
+# proj = "TCGA-KIRC"
+proj <- "step_01"
+load(paste0(proj,"_sur_model.Rdata"))
+ls()
+exprSet[1:4,1:4]
+meta[1:4,1:4]
+load(paste0(proj,"_logrank_cox_gene.Rdata"))
+exprSet = t(exprSet)[cox, ]
+
+# 2.构建lasso回归模型
+x=t(exprSet)  # x行名为样本，列名为基因
+y=meta$event
+library(glmnet)
+
+## 2.1挑选合适的λ值
+#调优参数
+set.seed(1006) # 选取不同的数，画出来的效果不同
+cv_fit <- cv.glmnet(x=x, y=y)
+plot(cv_fit)
+
+# #系数图
+# fit <- glmnet(x=x, y=y)
+# plot(fit, xvar = "lambda")
+
+# 2.2 用这两个λ值重新建模
+model_lasso_min <- glmnet(x=x, y=y,lambda=cv_fit$lambda.min)
+model_lasso_1se <- glmnet(x = x, y = y, lambda = cv_fit$lambda.1se)
+
+head(model_lasso_min$beta,20)
+choose_gene_min=rownames(model_lasso_min$beta)[as.numeric(model_lasso_min$beta)!=0]
+choose_gene_1se=rownames(model_lasso_1se$beta)[as.numeric(model_lasso_1se$beta)!=0]
+length(choose_gene_min)
+length(choose_gene_1se)
+save(choose_gene_min,file = paste0(proj,"_lasso_choose_gene_min.Rdata"))
+save(choose_gene_1se, file = paste0(proj, "_lasso_choose_gene_1se.Rdata"))
+
+# 3.模型预测和评估
+lasso.prob <- predict(cv_fit, newx=x , s=c(cv_fit$lambda.min,cv_fit$lambda.1se) )
+re=cbind(y ,lasso.prob)
+head(re)
+re=as.data.frame(re)
+colnames(re)=c('event','prob_min','prob_1se')
+re$event=as.factor(re$event)
+# ROC曲线
+library(pROC)
+library(ggplot2)
+m <- roc(meta$event, re$prob_min)
+g <- ggroc(m,legacy.axes = T,size = 1,color = "#2fa1dd")
+auc(m)  # Area under the curve: 0.9953
+
+g + theme_minimal() +
+  geom_segment(aes(x = 0, xend = 1, y = 0, yend = 1), 
+               colour = "grey", linetype = "dashed")+
+  annotate("text",x = .75, y = .25,
+           label = paste("AUC of min = ",format(round(as.numeric(auc(m)),2),nsmall = 2)),color = "#2fa1dd")
+
+# 计算AUC取值范围在0.5-1之间，越接近于1越好。可以根据预测结果绘制ROC曲线。
+# 两个模型的曲线画在一起
+m2 <- roc(meta$event, re$prob_1se)
+auc(m2) # Area under the curve: 0.9136
+g <- ggroc(list(min = m,se = m2),legacy.axes = T,size = 1)
+
+g + theme_minimal() +
+  scale_color_manual(values = c("#2fa1dd", "#f87669"))+
+  geom_segment(aes(x = 0, xend = 1, y = 0, yend = 1), 
+               colour = "grey", linetype = "dashed")+
+  annotate("text",x = .75, y = .25,
+           label = paste("AUC of min = ",format(round(as.numeric(auc(m)),2),nsmall = 2)),color = "#2fa1dd")+
+  annotate("text",x = .75, y = .15,
+           label = paste("AUC of 1se = ",format(round(as.numeric(auc(m2)),2),nsmall = 2)),color = "#f87669")
+
+# 5.切割数据构建模型并预测
+## 5.1 切割数据
+library(caret)
+set.seed(12345679)
+sam<- createDataPartition(meta$event, p = .5,list = FALSE)
+head(sam)
+train <- exprSet[,sam]
+test <- exprSet[,-sam]
+train_meta <- meta[sam,]
+test_meta <- meta[-sam,]
+
+prop.table(table(train_meta$stage))
+prop.table(table(test_meta$stage)) 
+prop.table(table(test_meta$gender)) 
+prop.table(table(train_meta$gender))
+
+# 5.2 切割后的train数据集建模
+#计算lambda
+x = t(train)
+y = train_meta$event
+cv_fit <- cv.glmnet(x=x, y=y)
+plot(cv_fit)
+
+#构建模型
+model_lasso_min <- glmnet(x=x, y=y,lambda=cv_fit$lambda.min)
+model_lasso_1se <- glmnet(x=x, y=y,lambda=cv_fit$lambda.1se)
+#挑出基因
+head(model_lasso_min$beta)
+choose_gene_min=rownames(model_lasso_min$beta)[as.numeric(model_lasso_min$beta)!=0]
+choose_gene_1se=rownames(model_lasso_1se$beta)[as.numeric(model_lasso_1se$beta)!=0]
+length(choose_gene_min)
+length(choose_gene_1se)
+
+# 4.模型预测
+lasso.prob <- predict(cv_fit, newx=t(test), s=c(cv_fit$lambda.min,cv_fit$lambda.1se) )
+re=cbind(event = test_meta$event ,lasso.prob)
+re=as.data.frame(re)
+colnames(re)=c('event','prob_min','prob_1se')
+re$event=as.factor(re$event)
+head(re)
+
+# 再画ROC曲线
+library(pROC)
+library(ggplot2)
+m <- roc(test_meta$event, re$prob_min)
+g <- ggroc(m,legacy.axes = T,size = 1,color = "#2fa1dd")
+auc(m) #Area under the curve: 0.7752
+
+g + theme_minimal() +
+  geom_segment(aes(x = 0, xend = 1, y = 0, yend = 1), 
+               colour = "grey", linetype = "dashed")+
+  annotate("text",x = .75, y = .25,
+           label = paste("AUC of min = ",format(round(as.numeric(auc(m)),2),nsmall = 2)),color = "#2fa1dd")
+
+
+# 计算AUC取值范围在0.5-1之间，越接近于1越好。可以根据预测结果绘制ROC曲线。
+# 两个模型的曲线画在一起
+m2 <- roc(test_meta$event, re$prob_1se)
+auc(m2)  # Area under the curve: 0.7426
+g <- ggroc(list(min = m,se = m2),legacy.axes = T,size = 1)
+
+g + theme_minimal() +
+  scale_color_manual(values = c("#2fa1dd", "#f87669"))+
+  geom_segment(aes(x = 0, xend = 1, y = 0, yend = 1), 
+               colour = "grey", linetype = "dashed")+
+  annotate("text",x = .75, y = .25,
+           label = paste("AUC of min = ",format(round(as.numeric(auc(m)),2),nsmall = 2)),color = "#2fa1dd")+
+  annotate("text",x = .75, y = .15,
+           label = paste("AUC of 1se = ",format(round(as.numeric(auc(m2)),2),nsmall = 2)),color = "#f87669")
+
+```
+
+
+
 
 ## 参考文献
 >[UCSC xena如何下载TCGA临床数据](https://zhuanlan.zhihu.com/p/113110843)
@@ -327,3 +864,9 @@ unique_result
 >[自噬相关基因集合](https://zhuanlan.zhihu.com/p/560835923)
 
 >[HADb Human Autophagy Database](http://www.autophagy.lu/index.html)
+
+>[生新技能树 TCGA知识图谱](https://www.bilibili.com/video/BV1db411L7GX/?p=7&spm_id_from=pageDriver&vd_source=fc7282bf77f47fb8bcc75df72ff205f0)
+
+>[预后模型构建”思路攻略](https://zhuanlan.zhihu.com/p/452437203)
+
+>[【生信常用图表】一：数据挖掘之预后模型的构建](https://mp.weixin.qq.com/s?src=11&timestamp=1680228767&ver=4439&signature=PiW0hEOJLgRH*FZe2Om1MKxh6LmHJ7yK-hiHajV6LObP2yOYjU1fRNJ5zSSF*IJS10tMwQn4UQh4tZLibL7gW*fcmc9oD6PmLp15R0WdcP8tQOYttyVy8Na8QPcTTvKK&new=1)
