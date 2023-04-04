@@ -1033,3 +1033,5 @@ with(test_dat,rcorr.cens(fp,Surv(time, event)))
 >[预后模型构建”思路攻略](https://zhuanlan.zhihu.com/p/452437203)
 
 >[【生信常用图表】一：数据挖掘之预后模型的构建](https://mp.weixin.qq.com/s?src=11&timestamp=1680228767&ver=4439&signature=PiW0hEOJLgRH*FZe2Om1MKxh6LmHJ7yK-hiHajV6LObP2yOYjU1fRNJ5zSSF*IJS10tMwQn4UQh4tZLibL7gW*fcmc9oD6PmLp15R0WdcP8tQOYttyVy8Na8QPcTTvKK&new=1)
+
+>[生信技能树 TCGA癌症数据挖掘之预后模型建立和评价](https://cloud.tencent.com/developer/article/2018520)
