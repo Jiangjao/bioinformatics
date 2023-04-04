@@ -4,36 +4,41 @@
 
 ## 思路
 平时做的是植物的，对应动物的数据接触的比较少。
-首先，有个大概的认识[TCGA系列5-UCSC Xena网站的简单使用和数据下载-哔哩哔哩]()
+首先，有个大概的认识
+
 >[TCGA系列5-UCSC Xena网站的简单使用和数据下载-哔哩哔哩](https://b23.tv/QXwE4oH)
 -   如何确定TCGA-DD-AA3A-01编码含义
+    -   官方网站查询
 
 ```txt
 简而言之，编码机构BRS（Biospeciman Core Resource）根据来源机构（Tissue Source Site，TSS）和捐献者（Participation），给予编号TCGA-02 和 TCGA-02-0001，根据组织类型（Sample）如癌组织、正常组织等，编为TCGA-02-0001-01（01-09为癌组织，10-14为正常组织，组织类型编码详见https://gdc.cancer.gov/resources-tcga-users/tcga-code-tables/sample-type-codes）。同一种组织的标本又会被分装进不同容器（Vial），同一容器内又可分为多个小份（Portion），进一步编为 TCGA-02-0001-01B和TCGA-02-0001-01B-02。样品送至检测机构后，制备成不同的分析物（Analyte）检测，用不同字母编码，例如D表示DNA，R表示RNA。同一份分析物在检测过程中被加到检测板的某一加样孔中，分别编号 TCGA-02-0001-01B-02D-0182和TCGA-02-0001-01B-02D-0182-06。
-
 ```
 
 >[组织类型编码](https://gdc.cancer.gov/resources-tcga-users/tcga-code-tables/sample-type-codes)
 >[TCGA条码](https://zhuanlan.zhihu.com/p/539346572)
--   临床数据如何确定
+-   临床数据如何确定可用信息
 其他的大概涉及到梳理统计，选择什么工具
 -   生产环境
 实验室设备
+Linux  4.10.0-38-generic #42~16.04.1-Ubuntu
+8 cpu
+125G mem
 >[online R clod](https://posit.cloud)
 -   数据下载来源
 >[dataset: gene expression RNAseq - IlluminaHiSeq](https://xenabrowser.net/datapages/?dataset=TCGA.LIHC.sampleMap%2FHiSeqV2&host=https%3A%2F%2Ftcga.xenahubs.net&removeHub=http%3A%2F%2F127.0.0.1%3A7222)
 >[phenotype](https://xenabrowser.net/datapages/?cohort=TCGA%20Liver%20Cancer%20(LIHC)&removeHub=https%3A%2F%2Fxena.treehouse.gi.ucsc.edu%3A443)
 
-### 试题：
+
+
 ## 1.从UCSC Xena数据库TCGA 肝癌转录组数据及临床信息
-Transcriptome data and clinical information of hepatocellular carcinoma
+clinical information 
 ```bash
 1  wget -c  https://tcga-xena-hub.s3.us-east-1.amazonaws.com/download/TCGA.LIHC.sampleMap%2FLIHC_clinicalMatrix
 2  wget -c https://tcga-xena-hub.s3.us-east-1.amazonaws.com/download/TCGA.LIHC.sampleMap%2FHiSeqV2.gz 
 4  wget -c https://tcga-xena-hub.s3.us-east-1.amazonaws.com/download/probeMap%2Fhugo_gencode_good_hg19_V24lift37_probemap 
 
 ```
-2. 从TCGA下载临床数据
+1. 从TCGA下载临床数据
     clinical.project-TCGA-LIHC.2023-04-02.tar.gz
 ### 数据的下载
 通过R包UCSCXenaTools连接UCSC的XENA浏览器来探索TCGA等公共浏览器
@@ -370,7 +375,7 @@ unique_result
 # [145] "ARNT"      "SESN2"     "DNAJB1"    "RAF1"      "EIF4EBP1"  "SIRT2"  
 ```
 
-## 4.利用交集基因构建多因素预后模型，画模型的ROC曲线。
+## 4.利用交集基因构建多因素预后模型，画模型的ROC曲线
 在R中，可以使用多种方法构建多因素预后模型，并使用ROC曲线评估模型的性能。以下是一种基于逻辑回归模型的方法：
 
 1. 准备数据
@@ -388,30 +393,6 @@ unique_result
 4. 评估模型性能
 
 最后，可以使用ROC曲线等指标评估模型的性能。ROC曲线可以使用pROC包中的roc函数绘制，其中需要提供真阳性率（TPR）和假阳性率（FPR）两个参数。可以使用predict函数预测样本的生存概率，并根据生存概率和实际生存状态计算TPR和FPR。通过改变逻辑回归模型的阈值，可以得到不同的TPR和FPR，从而绘制ROC曲线。
-
-下面是一个简单的示例代码，用于构建逻辑回归模型并绘制ROC曲线：
-
-```R
-library(pROC)
-
-# 准备数据，gene_data为基因表达数据，surv_data为生存数据
-data <- merge(gene_data, surv_data, by = "sample_id")
-
-# 特征选择，使用交集基因作为特征
-features <- intersect(gene_data$gene_name, survival_genes)
-
-# 构建逻辑回归模型
-model <- glm(survival_status ~ ., data = data[, c(features, "survival_status")], family = "binomial")
-
-# 预测样本的生存概率
-probs <- predict(model, newdata = data[, features], type = "response")
-
-# 计算TPR和FPR，并绘制ROC曲线
-roc_data <- roc(data$survival_status, probs)
-plot(roc_data)
-```
-
-在上述代码中，首先使用merge函数将基因表达数据和生存数据合并，得到一个包含基因表达数据和生存数据的完整数据框。然后，使用intersect函数筛选出与生存相关的基因，并将其作为逻辑回归模型的independent变量。使用glm函数拟合逻辑回归模型，并使用predict函数预测样本的生存概率。最后，使用roc函数计算TPR和FPR，并使用plot函数绘制ROC曲线。需要注意的是，代码中的survival_status和survival_genes需要根据实际情况进行修改。
 
 
 要利用交集基因构建多因素预后模型并绘制模型的ROC曲线，您可以按照以下步骤操作：
@@ -436,21 +417,12 @@ options(stringsAsFactors = F)
 if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 
-# BiocManager::install("survival")
-# BiocManager::install("pROC")
+
 library(dplyr)
 library(edgeR)
 library(survival)
 library(pROC)
-# install.packages("SummarizedExperiment")
-# BiocManager::install("locfit")
-# BiocManager::install("DESeq2")
-# install.packages("DESeq2")
-# BiocManager::install("SummarizedExperiment",lib="/cloud/lib")
-# library(DESeq2)
 
-
-# BiocManager::install("DESeq2")
 
 # 1. 数据预处理
 data <- read.table("/fafu/jiangxiaojiao/data/TCGA.LIHC.sampleMap%2FHiSeqV2.gz",
@@ -460,15 +432,7 @@ data_clean <- na.omit(data) # 删除缺失值或空值
 data_clinal <- read.table("/fafu/jiangxiaojiao/data/TCGA.LIHC.sampleMap%2FLIHC_clinicalMatrix", 
                                 header = TRUE, sep = "\t", row.names = 1)
 
-meta_filed_with_data_clinal = data_clinal[, c(
-    "X_PATIENT",
-    "age_at_initial_pathologic_diagnosis",
-    "gender",
-    "pathologic_stage",
-    "bcr_patient_barcode"
-)]
 
-# data_clean_clinal <- na.omit(data_clinal)
 
 # 获取患者的癌症状态
 sample_id <- colnames(data_clean)
@@ -487,14 +451,6 @@ last_two_chars <- substr(df$A, nchar(df$A) - 1, nchar(df$A))
 
 # 使用 ifelse 根据截取结果设置 B 列的值
 df$Group <- ifelse(num%in%1:9,"Tumor","Normal")  #ifelse实现分组
-# merged_data$Group <- ifelse(merged_data$Sample_Type == "Tumor", "disease", "normal")
-# 将两个数据框按照 ID 列进行合并
-# merged_df <- merge(sample_id, group_list)
-# # 使用 ifelse 设置 B 中值的条件
-# merged_df$y <- ifelse(df$A>0, TRUE, FALSE)
-
-# 按照样品名以字母顺序排序
-# pheno <- pheno[order(rownames(pheno)), ]
 
 # 将表型信息添加到矩阵中，并为每组分配分组信息
 group <- factor(df$Group)
@@ -525,9 +481,69 @@ qlf <- glmQLFTest(fit, coef=2)
 
 # 筛选差异表达显著的基因
 differentially_expressed_genes <- topTags(qlf, adjust.method = "BH", sort.by = "PValue", n = Inf)
-differentially_expressed_genes <- differentially_expressed_genes[differentially_expressed_genes$table$PValue < 0.05, ]
 
-differentially_expressed_genes$PValue
+differentially_expressed_genes <- differentially_expressed_genes[differentially_expressed_genes$table$PValue < 0.05, ]
+nrDEG=as.data.frame(differentially_expressed_genes)
+
+head(nrDEG)
+edgeR_DEG =nrDEG 
+nrDEG=edgeR_DEG[,c(1,5)]
+colnames(nrDEG) = c("log2FoldChange", "pvalue")
+
+draw_h_v <- function(exprSet,need_DEG,n='DEseq2',group_list,logFC_cutoff){
+  ## we only need two columns of DEG, which are log2FoldChange and pvalue
+  ## heatmap
+  
+  library(pheatmap)
+  choose_gene=head(rownames(need_DEG),50) ## 50 maybe better
+  choose_matrix=exprSet[choose_gene,]
+  choose_matrix[1:4,1:4]
+  choose_matrix=t(scale(t(log2(choose_matrix+1)))) 
+  ## http://www.bio-info-trainee.com/1980.html
+  annotation_col = data.frame( group_list=group_list  )
+  rownames(annotation_col)=colnames(exprSet)
+  pheatmap(choose_matrix,show_colnames = F,annotation_col = annotation_col,
+           filename = paste0(n,'_need_DEG_top50_heatmap.png'))
+  
+  
+  library(ggfortify)
+  df=as.data.frame(t(choose_matrix))
+  df$group=group_list
+  png(paste0(n,'_DEG_top50_pca.png'),res=120)
+  p=autoplot(prcomp( df[,1:(ncol(df)-1)] ), data=df,colour = 'group')+theme_bw()
+  print(p)
+  dev.off()
+  
+  
+  if(! logFC_cutoff){
+    logFC_cutoff <- with(need_DEG,mean(abs( log2FoldChange)) + 2*sd(abs( log2FoldChange)) )
+    
+  }
+  # logFC_cutoff=1
+  
+  need_DEG$change = as.factor(ifelse(need_DEG$pvalue < 0.05 & abs(need_DEG$log2FoldChange) > logFC_cutoff,
+                                     ifelse(need_DEG$log2FoldChange > logFC_cutoff ,'UP','DOWN'),'NOT')
+  )
+  this_tile <- paste0('Cutoff for logFC is ',round(logFC_cutoff,3),
+                      '\nThe number of up gene is ',nrow(need_DEG[need_DEG$change =='UP',]) ,
+                      '\nThe number of down gene is ',nrow(need_DEG[need_DEG$change =='DOWN',])
+  )
+  library(ggplot2)
+  g = ggplot(data=need_DEG, 
+             aes(x=log2FoldChange, y=-log10(pvalue), 
+                 color=change)) +
+    geom_point(alpha=0.4, size=1.75) +
+    theme_set(theme_set(theme_bw(base_size=20)))+
+    xlab("log2 fold change") + ylab("-log10 p-value") +
+    ggtitle( this_tile ) + theme(plot.title = element_text(size=15,hjust = 0.5))+
+    scale_colour_manual(values = c('blue','black','red')) ## corresponding to the levels(res$change)
+  print(g)
+  ggsave(g,filename = paste0(n,'_volcano.png'))
+  dev.off()
+}
+draw_h_v(data_clean, nrDEG, "edgeR", group_list, 1)
+  
+# differentially_expressed_genes$PValue
 # 检查两个数据框的行数
 nrow(data_clean)
 nrow(group_df)
@@ -554,11 +570,7 @@ unique_genes
 ################### 2023/03/31 #########################
 BRCA <- data_clean[unique_genes,]
 survival_data<- read.table("/fafu/jiangxiaojiao/methy_array/TCGA-LIHC.survival.tsv", header = T)
-# clinical_TCGA_data <- read.table("/fafu/jiangxiaojiao/methy_array/clinical.tsv",
-#     sep = "\t",
-#     fill = TRUE,
-#     header = T
-# )
+
 
 ################### 2023/04/03 #########################
 # 获取Expr的rownames
@@ -772,13 +784,16 @@ exprSet = t(exprSet)[cox, ]
 x=t(exprSet)  # x行名为样本，列名为基因
 y=meta$event
 library(glmnet)
-
+library(ggplot2)
 ## 2.1挑选合适的λ值
 #调优参数
 set.seed(1006) # 选取不同的数，画出来的效果不同
-cv_fit <- cv.glmnet(x=x, y=y)
-plot(cv_fit)
+cv_fit <- cv.glmnet(x = x, y = y)
+# png("myplot.png", width = 1000, height = 1000)
 
+plot(cv_fit)
+# dev.off()
+# ggsave("myplot.png", plot = myplot, device = "png", width = 6, height = 4, dpi = 300)
 # #系数图
 # fit <- glmnet(x=x, y=y)
 # plot(fit, xvar = "lambda")
@@ -900,10 +915,105 @@ g + theme_minimal() +
   annotate("text",x = .75, y = .15,
            label = paste("AUC of 1se = ",format(round(as.numeric(auc(m2)),2),nsmall = 2)),color = "#f87669")
 
+# 6.cox-forest
+# 输入数据
+if(!require(My.stepwise))install.packages("My.stepwise")
+load(paste0(proj,"_sur_model.Rdata"))
+load(paste0(proj,"_lasso_choose_gene_1se.Rdata"))
+g = choose_gene_1se
+# 2.构建coxph模型
+library(stringr)
+e=t(exprSet[,g])
+colnames(e)= str_replace_all(colnames(e),"-","_")
+dat = cbind(meta, t(e))
+
+dat$gender=as.numeric(factor(dat$gender))
+dat$stage=as.numeric(factor(dat$stage))
+colnames(dat)
+
+# 逐步回归法构建最优模型
+library(survival)
+library(survminer)
+# 不能允许缺失值
+dat2 = na.omit(dat)
+library(My.stepwise)
+vl <- colnames(dat)[c(5:ncol(dat))]
+# My.stepwise.coxph(Time = "time",
+#                   Status = "event",
+#                   variable.list = vl,
+#                   data = dat2)
+# 使用输出结果里的最后一个模型
+model = coxph(formula = Surv(time, event) ~ stage + age  + 
+    PPP1R15A + GABARAPL1, data = dat2)
+
+# 3.模型可视化-森林图
+ggforest(model,data = dat2)
+
+fp <- predict(model,newdata = dat2)
+library(Hmisc)
+options(scipen=200)
+with(dat2,rcorr.cens(fp,Surv(time, event)))
+# > with(dat2,rcorr.cens(fp,Surv(time, event)))
+#        C Index            Dxy           S.D.              n        missing 
+#     0.33787188    -0.32425625     0.05842713   238.00000000     0.00000000 
+#     uncensored Relevant Pairs     Concordant      Uncertain 
+#   105.00000000 29378.00000000  9926.00000000 26986.00000000 
+
+# 7.切割数据构建模型并预测
+# 7.1 用R包caret切割数据，生成的结果是一组代表列数的数字
+
+library(caret)
+set.seed(12345679)
+sam <- createDataPartition(meta$event, p = .5, list = FALSE)
+exprSet <- t(exprSet)
+train <- exprSet[,sam]
+test <- exprSet[,-sam]
+train_meta <- meta[sam,]
+test_meta <- meta[-sam,]
+# 7.2 切割后的train数据集建模
+e=t(train[g,])
+colnames(e)= str_replace_all(colnames(e),"-","_")
+dat=cbind(train_meta,e)
+
+dat$gender=as.numeric(factor(dat$gender))
+dat$stage=as.numeric(factor(dat$stage))
+colnames(dat)
+library(My.stepwise)
+dat2 = na.omit(dat)
+vl <- colnames(dat2)[c(5:ncol(dat2))]
+# My.stepwise.coxph(Time = "time",
+#                   Status = "event",
+#                   variable.list = vl,
+#                   data = dat2)
+model = coxph(formula = Surv(time, event) ~ stage + age  + 
+    PPP1R15A + GABARAPL1, data = dat2)
+
+# 7.3 模型可视化
+ggforest(model, data =dat2)
+# 7.4 用切割后的数据test数据集验证模型
+e=t(test[g,])
+colnames(e)= str_replace_all(colnames(e),"-","_")
+test_dat=cbind(test_meta,e)
+test_dat$gender=as.numeric(factor(test_dat$gender))
+test_dat$stage=as.numeric(factor(test_dat$stage))
+fp <- predict(model,newdata = test_dat)
+library(Hmisc)
+with(test_dat,rcorr.cens(fp,Surv(time, event)))
+#  > with(test_dat,rcorr.cens(fp,Surv(time, event)))
+#        C Index            Dxy           S.D.              n        missing 
+#     0.37171655    -0.25656689     0.09203007   119.00000000     0.00000000 
+#     uncensored Relevant Pairs     Concordant      Uncertain 
+#    47.00000000  6548.00000000  2434.00000000  7488.00000000 
 ```
-
-
-
+![edgeR_DEG_top50_volcano](../images/question4_gene_sur.png)
+![DEG_top50_pca](../images/question1plot.png)
+![edgeR_DEG_top50_volcano](../images/question1ROCplot.png)
+![edgeR_DEG_top50_heatmap](../images/question1ROCcombineplot.png)
+![edgeR_DEG_top50_volcano](../images/question2plotmodeltrain.png)
+![edgeR_DEG_top50_volcano](../images/question2plotmodelafter.png)
+![edgeR_DEG_top50_volcano](../images/question2trainmodeplot.png)
+![edgeR_DEG_top50_volcano](../images/question4_cox_forsest.png)
+![edgeR_DEG_top50_volcano](../images/question4_cox_forsest_after_filter.png)
 
 ## 参考文献
 >[UCSC xena如何下载TCGA临床数据](https://zhuanlan.zhihu.com/p/113110843)
