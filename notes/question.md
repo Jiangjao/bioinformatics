@@ -31,16 +31,17 @@ Linux  4.10.0-38-generic #42~16.04.1-Ubuntu
 
 
 ## 1.从UCSC Xena数据库TCGA 肝癌转录组数据及临床信息
-clinical information 
+1. clinical information 
 ```bash
 1  wget -c  https://tcga-xena-hub.s3.us-east-1.amazonaws.com/download/TCGA.LIHC.sampleMap%2FLIHC_clinicalMatrix
 2  wget -c https://tcga-xena-hub.s3.us-east-1.amazonaws.com/download/TCGA.LIHC.sampleMap%2FHiSeqV2.gz 
+3 wget -c https://xenabrowser.net/datapages/?dataset=TCGA-LIHC.survival.tsv&host=https%3A%2F%2Fgdc.xenahubs.net&removeHub=https%3A%2F%2Fxena.treehouse.gi.ucsc.edu%3A443
 4  wget -c https://tcga-xena-hub.s3.us-east-1.amazonaws.com/download/probeMap%2Fhugo_gencode_good_hg19_V24lift37_probemap 
 
 ```
-1. 从TCGA下载临床数据
+2. 从TCGA下载临床数据, 并查看
     clinical.project-TCGA-LIHC.2023-04-02.tar.gz
-### 数据的下载
+### 数据的其他下载方式
 通过R包UCSCXenaTools连接UCSC的XENA浏览器来探索TCGA等公共浏览器
 
 >[生信专栏 | TCGA数据下载友好型——利用UCSC xena下载](https://zhuanlan.zhihu.com/p/539346572)
