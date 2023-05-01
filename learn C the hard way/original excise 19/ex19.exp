@@ -1,0 +1,62 @@
+#!/usr/bin/expect
+
+# 启动 C 语言命令行程序
+spawn ./ex19
+
+
+# 模拟用户输入并等待程序输出
+expect "You can go:*"
+send "l\r"
+expect "You can go:*\n NORTH"
+
+# 模拟用户输入并等待程序输出
+expect "You can go:*"
+send "n\r"
+expect "You go north, into:*"
+
+# 模拟用户输入并等待程序输出
+expect "You can go:*"
+send "l\r"
+expect "You can go:*\n NORTH"
+
+# 模拟用户输入并等待程序输出
+expect "You can go:*"
+send "e\r"
+expect "You can go:*\n NORTH"
+
+# 模拟用户输入并等待程序输出
+expect "You can go:*"
+send "w\r"
+expect "You can go:*\n NORTH"
+
+# 模拟用户输入并等待程序输出
+expect "You can go:*"
+send "s\r"
+expect "You can go:*\n NORTH"
+
+# 模拟用户输入并等待程序输出
+expect "You can go:*"
+send "n\r"
+expect "You can go:*\n NORTH"
+
+# 模拟用户输入并等待程序输出
+expect "You can go:*"
+send "w\r"
+expect "You can go:*\n NORTH"
+
+# 模拟用户输入并等待程序输出
+expect "You can go:*"
+send "a\r"
+expect "You can go:*\n NORTH"
+
+# 模拟用户输入并等待程序输出
+expect "You can go:*"
+send "a\r"
+expect "You can go:*\n NORTH"
+
+# 模拟用户输入并等待程序输出
+expect "You can go:*"
+send -- "-1\r"
+expect eof
+
+

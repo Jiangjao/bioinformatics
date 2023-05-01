@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>testTree style1</title>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/igv@2.12.6/dist/igv.min.js"></script> -->
+    <!-- source from http://frontendfreecode.com/dynamic-bootstrap-table-with-features -->
+    <!-- This script got from frontendfreecode.com -->
+
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.css'>
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.13/css/all.css'>
+    <script src='https://code.jquery.com/jquery-3.3.1.js'></script>
+    <script src='https://unpkg.com/popper.js/dist/umd/popper.min.js'></script>
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.js'></script>
+    <script src='https://rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js'></script>
+    <script
+        src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/extensions/export/bootstrap-table-export.js'></script>
+    
+    <!-- pdf.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.5.141/pdf.sandbox.min.js" 
+    integrity="sha512-7PFYtBvamWIUzp0OoCQMmM0sqoVspyNxNl/G4ZUj/5d1sRHjw6k00tV9q9I9+xdkJ1BZ1rnIHpCy0/rv4Qcmyw==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        * {
+            font-size: 0.93rem;
+        }
+
+        .fa-refresh::before {
+            content: "\f2f1";
+        }
+
+        .fa-toggle-up:before,
+        .fa-caret-square-o-up:before {
+            content: "\f151";
+        }
+
+        .fa-toggle-down:before,
+        .fa-caret-square-o-down:before {
+            content: "\f150";
+        }
+
+        .fa-toggle-on:before {
+            content: "\f205";
+        }
+
+        .fa-toggle-off:before {
+            content: "\f204";
+        }
+
+        .dropdown-menu>li>a {
+            display: block;
+            padding: 3px 20px;
+            clear: both;
+            font-weight: 400;
+            line-height: 1.42857143;
+            color: #333;
+            white-space: nowrap;
+        }
+
+        .dropdown-menu>li>a:hover,
+        .dropdown-menu>li>a:focus {
+            color: #262626;
+            text-decoration: none;
+            background-color: #f5f5f5;
+        }
+
+        .pagination>li>a,
+        .pagination>li>span {
+            position: relative;
+            float: left;
+            padding: 6px 12px;
+            margin-left: -1px;
+            line-height: 1.42857143;
+            color: #428bca;
+            text-decoration: none;
+            background-color: #fff;
+            border: 1px solid #ddd;
+        }
+
+        .pagination>.active>a,
+        .pagination>.active>span,
+        .pagination>.active>a:hover,
+        .pagination>.active>span:hover,
+        .pagination>.active>a:focus,
+        .pagination>.active>span:focus {
+            z-index: 2;
+            color: #fff;
+            cursor: default;
+            background-color: #428bca !important;
+            border-color: #428bca !important;
+        }
+
+        .pagination>li:first-child>a,
+        .pagination>li:first-child>span {
+            margin-left: 0;
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+        }
+
+        .pagination>li:last-child>a,
+        .pagination>li:last-child>span {
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-toggle i,
+        .nav-link i {
+            font-size: 12px;
+            margin-left: 5px;
+            font-weight: bold;
+        }
+
+        .dropdown-header {
+            display: block;
+            padding: 0rem 1.5rem;
+            margin-bottom: 0;
+            font-size: 0.875rem;
+            color: #868e96;
+            white-space: nowrap;
+        }
+
+        .dropdown-toggle::after {
+            border-top: none;
+            border-right: none;
+            border-left: none;
+        }
+
+        .dropdown-menu {
+            border: 0px;
+            border-radius: 0.25rem;
+            box-shadow: 0px 3px 6px #999;
+            z-index: 9999;
+        }
+
+        .dropdown-menu>.active>a,
+        .dropdown-menu>.active>a:hover,
+        .dropdown-menu>.active>a:focus {
+            color: #fff !important;
+            text-decoration: none;
+            background-color: #428bca !important;
+            outline: 0;
+        }
+
+        .dropdown-menu>li>a {
+            display: block;
+            padding: 3px 20px;
+            clear: both;
+            font-weight: 400;
+            line-height: 1.42857143;
+            color: #333;
+            white-space: nowrap;
+        }
+
+        .dropdown-menu>li>a:hover,
+        .dropdown-menu>li>a:focus {
+            color: #262626;
+            text-decoration: none;
+            background-color: #f5f5f5;
+        }
+
+        .dropdown-item {
+            display: block;
+            width: 100%;
+            padding: 0.25rem 1.5rem;
+            clear: both;
+            font-weight: normal;
+            /*color: #212529;*/
+            color: #555 !important;
+            /*cosine-edit*/
+            text-align: inherit;
+            white-space: nowrap;
+            background: none;
+            border: 0;
+            font-size: 12px;
+            /*cosine-edit*/
+        }
+
+        .dropdown-item:focus,
+        .dropdown-item:hover {
+            /*color: #16181b;*/
+            color: #ffffff !important;
+            /*cosine-edit*/
+            text-decoration: none;
+            /*background-color: #f8f9fa;*/
+            background-color: #999 !important;
+            /*cosine-edit*/
+            transition: background-color 0.3s, color 0.2s;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>PDF presentation local</h1>
+
+<div>
+
+</div>
+<iframe class= "container" allowfullscreen="true" frameborder="0"
+    src="Box_plot_for_10.09_866.1683_with_Chr3_10842347.pdf" 
+    width="100%" height="600px"
+
+    >
+
+</iframe>
+<canvas id="the-canvas"></canvas>
+    <p>pdf inline test</p>
+<embed class="container" src="Box_plot_for_10.09_866.1683_with_Chr3_10842347.pdf" type="application/pdf" width="100%" height="520px" />
+
+
+    </div>
+
+   
+</body>
+
+</html>

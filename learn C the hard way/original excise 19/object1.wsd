@@ -1,0 +1,84 @@
+@startuml
+
+class Object {
+-void self
+-char description
++void destroy(void *self)
++void describe(void *self)
++int init(void self)
++void move(void *self, Direction direction)
++int attack(void *self, int damage)
+}
+
+enum Direction {
+    NORTH,
+    SOUTH,
+    EAST,
+    WEST
+}
+
+' class Object_new {
+'     +Object_new(size_t, ObjectProto, char*): void*
+' }
+
+interface Object_new {
+    +Object_new(size_t, ObjectProto, char*): void*
+}
+
+interface Object_init {
+    -init(void*): int
+}
+
+interface Object_destroy {
+    -destroy(void*): void
+}
+
+interface  Object_describe {
+    -describe(void*): void
+}
+
+interface Object_move {
+    -move(void*, Direction): void*
+}
+
+interface Object_attack {
+    -attack(void*, int): int
+}
+
+' Object -> ObjectInterface
+' ObjectInterface <|.. Object
+Object_new  <|.. Object
+Object <|-- ObjectProto
+Object_new <|.. ObjectProto
+Object_init  <|.. Object
+Object_destroy  <|.. Object
+Object_describe <|.. Object
+Object_move  <|.. Object
+Object_attack  <|.. Object
+Object -->Direction
+
+note right of Object
+封 装 了 对 象的 基本 操作
+end note
+
+note left of Object::destroy
+实现了 Object 的 destroy 方法
+end note
+
+note left of Object::describe
+实现了 Object 的 describe 方法
+end note
+
+note left of Object::init
+实现了 Object 的 init 方法
+end note
+
+note left of Object::move
+实现了 Object 的 move 方法
+end note
+
+note left of Object::attack
+实现了 Object 的 attack 方法
+end note
+
+@enduml

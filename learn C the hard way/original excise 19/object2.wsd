@@ -1,0 +1,94 @@
+@startuml ex19_h
+
+interface ex19_h {
+    + Monster_attack(void *self, int damage)
+    + Monster_init(void *self)
+    + Room_move(void *self, Direction direction)
+    + Room_attack(void *self, int damage)
+    + Room_init(void *self)
+    + Map_move(void *self, Direction direction)
+    + Map_attack(void *self, int damage)
+    + Map_init(void *self)
+}
+
+class Object {
+    + init(void *self)
+}
+
+' class Monster {
+'     - hit_points: int
+'     -Object proto
+'     + Monster_attack(void *self, int damage)
+'     + Monster_init(void *self)
+' }
+
+' interface Monster_attack
+
+interface Monster_attack {
+    +Monster_attack(void *self, int damage);
+}
+
+interface Monster_init {
+    +Monster_init(void *self);
+}
+
+
+interface Room_move {
+    + Room_move(void *self, Direction direction)
+}
+
+interface Room_attack {
+    + Room_attack(void *self, int damage)
+}
+
+interface Room_init {
+    + Room_init(void *self)
+}
+
+interface Map_move {
+    + Map_move(void *self, Direction direction)
+}
+
+interface Map_move {
+    + Map_move(void *self, Direction direction)
+}
+
+interface Map_attack {
+    + Map_attack(void *self, int damage)
+}
+
+interface Map_init {
+    + Map_init(void *self)
+}
+
+struct Room {
+    - Object proto;
+    - bad_guy: Monster*
+    - struct north: Room*
+    - struct south: Room*
+    - struct east: Room*
+    - struct west: Room*
+    ' + Room_move(void *self, Direction direction)
+    ' + Room_attack(void *self, int damage)
+    ' + Room_init(void *self)
+}
+
+struct Map {
+    - Object proto;
+    - struct start: Room*
+    - struct location: Room*
+    ' + Map_move(void *self, Direction direction)
+    ' + Map_attack(void *self, int damage)
+    ' + Map_init(void *self)
+}
+
+struct Monster {
+    -<b>object</b> proto;
+    -int (*attack)(void *self, int damage);
+}
+
+Object <|-- Monster
+Object <|-- Room
+Object <|-- Map
+
+@enduml

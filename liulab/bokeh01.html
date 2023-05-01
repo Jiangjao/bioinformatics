@@ -11,8 +11,65 @@
 <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-mathjax-2.4.3.min.js"></script>
 <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-api-2.4.3.min.js"></script>
 
+<a href="http://116.205.232.152:3000/S_NEG_1.01_342.1160_MLM_sig" download>download</a>
+<a href="http://116.205.232.152:3000/S_NEG_1.01_342.1160_MLM_sig" id="test">download</a>
+
+<!--  source Code : https://juejin.cn/post/6985087489547436045
+ -->
+    <button onclick="download()">下载（跨域）</button>
+
+    <script>
+      function download() {
+        var url = 'http://116.205.232.152:3000/S_NEG_1.01_342.1160_MLM_sig';
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true); // 异步
+        xhr.responseType = 'blob'; // blob 类型
+        xhr.onload = function () {
+          if (xhr.status != 200) {
+            alert('下载异常！');
+            return;
+          }
+          if (window.navigator.msSaveOrOpenBlob) {
+            // IE
+            navigator.msSaveBlob(xhr.response, filename);
+          } else {
+            var newUrl = window.URL.createObjectURL(xhr.response);
+            var a = document.createElement('a');
+            a.setAttribute('href', newUrl);
+            a.setAttribute('target', '_blank');
+            a.setAttribute('download', '模板文件.xlsx'); // 自定义文件名（有效）
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+          }
+        };
+        xhr.send();
+      }
+    </script>
+
+
 <script>
 //The order of CSS and JS imports above is important.
+function download(url, filename) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', url, true);
+  xhr.responseType = 'blob';
+  xhr.onload = function(e) {
+    if (this.status == 200) {
+      var blob = this.response;
+      var a = document.createElement('a');
+      var a = document.getElementById("test")
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+  };
+  xhr.send();
+}
+download("http://116.205.232.152:3000/S_NEG_1.01_342.1160_MLM_sig", "test")
+console.log("hello")
 </script>
 <script>
 // create a data source to hold data
