@@ -57,9 +57,18 @@ gcc -c ex19_without_main.c
 gcc -c ex19_main.c
 // object.o has been done before
 gcc -o ex19 ex19_main.o ex19_without_main.o object.o
+
+// /usr/bin/ld: warning: object.o: unsupported GNU_PROPERTY_TYPE (5) type: 0xc0010002
+// /usr/bin/ld: warning: object.o: unsupported GNU_PROPERTY_TYPE (5) type: 0xc0010001
 ```
 
-
+### tips
+```bash
+# original ex19 I don't have enough knowledge to complete  it, so there are some propblem hidden...
+```
 ## ref
 >[expect](https://core.tcl-lang.org/expect/index)
->[learn c the hard way solution ex19](https://github.com/Frederick-S/Learn-C-The-Hard-Way-Exercise)
+
+>[learn c the hard way solution orginal ex19](https://github.com/Frederick-S/Learn-C-The-Hard-Way-Exercise)
+
+>[learn c the hard way solution ex19](https://github.com/preslavmihaylov/learn-c-the-hard-way)

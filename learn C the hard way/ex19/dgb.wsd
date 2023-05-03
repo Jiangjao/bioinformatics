@@ -1,0 +1,39 @@
+@startuml
+
+!define AWESOME
+
+package "dbg.h" {
+  [debug]
+  [clean_errno]
+  [log_err]
+  [log_warn]
+  [log_info]
+  [check]
+  [sentinel]
+  [check_mem]
+  [check_debug]
+
+    note bottom of clean_errno
+    This function cleans the global errno variable before calling another function.
+    It returns 0 if the errno variable was already 0, and 1 otherwise.
+
+    function:
+    #define clean_errno() (errno == 0? "None" : strerror(errno))
+    end note
+}
+
+debug -down-> clean_errno
+log_err -down-> clean_errno
+log_warn -down-> clean_errno
+log_info -down-> clean_errno
+check -down-> log_err
+' check -down-> clean_errno
+sentinel -down-> log_err
+check_mem -down-> check
+check_debug -down-> debug
+' check_debug -down-> clean_errno
+
+
+
+
+@enduml
