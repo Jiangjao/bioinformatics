@@ -52,11 +52,32 @@ Breaking It
 * Try to directly access variables in ``ex22.c`` from ``ex22_main.c``
   that you think you can't.  For example, can you get at ``ratio``
   inside ``update_ratio``? What if you had a pointer to it?
+  No, some error will happen...
+```bash
+ error: ‘ratio’ undeclared (first use in this function)
+     printf("ratio address is ?", &ratio);
+```
+
 * Ditch the ``extern`` declaration in ``ex22.h`` to see what
   errors or warnings you get.
+```bash
+# it seems nothing happened...
+```
+
 * Add ``static`` or ``const`` specifiers to different variables,
   and then try to change them.
+```C
+// if I assigned THE_SIZE with constation in ex22.c, then some error will happend...
+// const int THE_SIZE = 1000;
+ex22.c:5:11: error: conflicting type qualifiers for ‘THE_SIZE’
+ const int THE_SIZE = 1000;
+           ^~~~~~~~
+In file included from ex22.c:2:0:
+ex22.h:5:5: note: previous declaration of ‘THE_SIZE’ was here
+ int THE_SIZE;
+     ^~~~~~~~
 
+```
 
 
 Extra Credit
@@ -64,6 +85,34 @@ Extra Credit
 
 * Research the concept of pass by value verses pass by reference.  Write an
   example of both.
+```C
+#include <stdio.h>
+#include "ex22.h"
+#include "dbg.h"
+
+void swap_with_pointer(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void swap(int a, int b) {
+    int temp = a;
+    a = b;
+    b = temp;
+}
+
+int main() {
+    int x = 1, y = 2;
+    swap(x, y);
+    printf("swap a, b without pointer x=%d, y=%d\n", x, y);
+    swap_with_pointer(&x, &y);
+    printf("swap a, b with pointer x=%d, y=%d\n", x, y);
+
+    return 0;
+}
+```
+
 * Use pointers to gain access to things you shouldn't have access to.
 * Use your debugger to see what this kind of access looks like when you
   do it wrong.
