@@ -1,0 +1,257 @@
+61062  ,intronic            ,Chr1
+31783  ,exonic              ,Chr1
+31193  ,intergenic          ,Chr1
+9498   ,downstream          ,Chr1
+6742   ,UTR3                ,Chr1
+5518   ,upstream            ,Chr1
+2729   ,UTR5                ,Chr1
+537    ,upstream;downstream ,Chr1
+59     ,splicing            ,Chr1
+
+
+       ,62459               ,intronic            ,Chr2
+       ,30566               ,exonic              ,Chr2
+       ,29254               ,intergenic          ,Chr2
+       ,9439                ,downstream          ,Chr2
+       ,6997                ,UTR3                ,Chr2
+       ,5729                ,upstream            ,Chr2
+       ,2779                ,UTR5                ,Chr2
+       ,618                 ,upstream;downstream ,Chr2
+       ,48                  ,splicing            ,Chr2
+       ,11                  ,UTR5;UTR3           ,Chr2
+
+
+
+       ,52366               ,intronic            ,Chr3
+       ,27321               ,exonic              ,Chr3
+       ,33772               ,intergenic          ,Chr3
+       ,7269                ,downstream          ,Chr3
+       ,5285                ,UTR3                ,Chr3
+       ,4737                ,upstream            ,Chr3
+       ,2123                ,UTR5                ,Chr3
+       ,336                 ,upstream;downstream ,Chr3
+       ,21                  ,splicing            ,Chr3
+
+       ,51339               ,intronic            ,Chr4
+       ,26419               ,exonic              ,Chr4
+       ,27565               ,intergenic          ,Chr4
+       ,7709                ,downstream          ,Chr4
+       ,5965                ,UTR3                ,Chr4
+       ,4504                ,upstream            ,Chr4
+       ,2322                ,UTR5                ,Chr4
+       ,368                 ,upstream;downstream ,Chr4
+       ,47                  ,splicing            ,Chr4
+
+       ,36867               ,intronic            ,Chr5
+       ,21626               ,exonic              ,Chr5
+       ,28142               ,intergenic          ,Chr5
+       ,6017                ,downstream          ,Chr5
+       ,4110                ,UTR3                ,Chr5
+       ,3246                ,upstream            ,Chr5
+       ,1388                ,UTR5                ,Chr5
+       ,266                 ,upstream;downstream ,Chr5
+       ,33                  ,splicing            ,Chr5
+
+
+       ,50975               ,intronic            ,Chr6
+       ,25441               ,exonic              ,Chr6
+       ,27191               ,intergenic          ,Chr6
+       ,7926                ,downstream          ,Chr6
+       ,5992                ,UTR3                ,Chr6
+       ,5016                ,upstream            ,Chr6
+       ,2303                ,UTR5                ,Chr6
+       ,404                 ,upstream;downstream ,Chr6
+       ,30                  ,splicing            ,Chr6
+       ,1                   ,UTR5;UTR3           ,Chr6
+
+
+       ,52187               ,intronic            ,Chr7
+       ,25773               ,exonic              ,Chr7
+       ,24562               ,intergenic          ,Chr7
+       ,8163                ,downstream          ,Chr7
+       ,5663                ,UTR3                ,Chr7
+       ,4855                ,upstream            ,Chr7
+       ,2359                ,UTR5                ,Chr7
+       ,505                 ,upstream;downstream ,Chr7
+       ,33                  ,splicing            ,Chr7
+       ,2                   ,UTR5;UTR3           ,Chr7
+
+
+       ,32619               ,intronic            ,Chr8
+       ,17689               ,exonic              ,Chr8
+       ,18749               ,intergenic          ,Chr8
+       ,5103                ,downstream          ,Chr8
+       ,3094                ,UTR3                ,Chr8
+       ,2905                ,upstream            ,Chr8
+       ,1342                ,UTR5                ,Chr8
+       ,248                 ,upstream;downstream ,Chr8
+       ,31                  ,splicing            ,Chr8
+
+       ,43115               ,intronic            ,Chr9
+       ,23068               ,exonic              ,Chr9
+       ,27451               ,intergenic          ,Chr9
+       ,6633                ,downstream          ,Chr9
+       ,4972                ,UTR3                ,Chr9
+       ,4083                ,upstream            ,Chr9
+       ,2003                ,UTR5                ,Chr9
+       ,407                 ,upstream;downstream ,Chr9
+       ,29                  ,splicing            ,Chr9
+
+
+       ,34011               ,intronic            ,Chr10
+       ,19447               ,exonic              ,Chr10
+       ,23654               ,intergenic          ,Chr10
+       ,5492                ,downstream          ,Chr10
+       ,3921                ,UTR3                ,Chr10
+       ,3370                ,upstream            ,Chr10
+       ,1530                ,UTR5                ,Chr10
+       ,330                 ,upstream;downstream ,Chr10
+       ,20                  ,splicing            ,Chr10
+
+
+       ,41921               ,intronic            ,Chr11
+       ,19919               ,exonic              ,Chr11
+       ,21708               ,intergenic          ,Chr11
+       ,6644                ,downstream          ,Chr11
+       ,4635                ,UTR3                ,Chr11
+       ,4058                ,upstream            ,Chr11
+       ,1844                ,UTR5                ,Chr11
+       ,377                 ,upstream;downstream ,Chr11
+       ,25                  ,splicing            ,Chr11
+
+       ,27730               ,intronic            ,Chr12
+       ,16963               ,exonic              ,Chr12
+       ,20391               ,intergenic          ,Chr12
+       ,4477                ,downstream          ,Chr12
+       ,3326                ,UTR3                ,Chr12
+       ,2823                ,upstream            ,Chr12
+       ,1160                ,UTR5                ,Chr12
+       ,234                 ,upstream;downstream ,Chr12
+       ,25                  ,splicing            ,Chr12
+
+
+       ,38672               ,intronic            ,Chr13
+       ,18114               ,exonic              ,Chr13
+       ,21618               ,intergenic          ,Chr13
+       ,5460                ,downstream          ,Chr13
+       ,3800                ,UTR3                ,Chr13
+       ,3176                ,upstream            ,Chr13
+       ,1375                ,UTR5                ,Chr13
+       ,264                 ,upstream;downstream ,Chr13
+       ,34                  ,splicing            ,Chr13
+
+       ,35180               ,intronic            ,Chr14
+       ,17625               ,exonic              ,Chr14
+       ,21765               ,intergenic          ,Chr14
+       ,4989                ,downstream          ,Chr14
+       ,3945                ,UTR3                ,Chr14
+       ,3117                ,upstream            ,Chr14
+       ,1482                ,UTR5                ,Chr14
+       ,319                 ,upstream;downstream ,Chr14
+       ,20                  ,splicing            ,Chr14
+
+       ,31196               ,intronic            ,Chr15
+       ,15182               ,exonic              ,Chr15
+       ,14960               ,intergenic          ,Chr15
+       ,4361                ,downstream          ,Chr15
+       ,3327                ,UTR3                ,Chr15
+       ,2843                ,upstream            ,Chr15
+       ,1362                ,UTR5                ,Chr15
+       ,180                 ,upstream;downstream ,Chr15
+       ,27                  ,splicing            ,Chr15
+       ,1                   ,UTR5;UTR3           ,Chr15
+
+       ,summary table
+       ,739538              ,intronic
+       ,396316              ,exonic
+       ,426143              ,intergenic
+       ,114974              ,downstream
+       ,83601               ,UTR3
+       ,69950               ,upstream
+       ,32537               ,UTR5
+       ,6244                ,upstream;downstream
+       ,573                 ,splicing
+       ,15                  ,UTR5;UTR3
+
+exnoic ,summary
+198639 ,synonymous
+195214 ,nonsynonymous
+2125   ,stopgain
+338    ,stoploss
+
+       ,15894               ,synonymous          ,SNV   ,Chr1
+       ,15735               ,nonsynonymous       ,SNV   ,Chr1
+       ,137                 ,stopgain            ,Chr1
+       ,17                  ,stoploss            ,Chr1
+
+       ,15268               ,synonymous          ,SNV   ,Chr2
+       ,15087               ,nonsynonymous       ,SNV   ,Chr2
+       ,188                 ,stopgain            ,Chr2
+       ,23                  ,stoploss            ,Chr2
+
+       ,13570               ,synonymous          ,SNV   ,Chr3
+       ,13574               ,nonsynonymous       ,SNV   ,Chr3
+       ,161                 ,stopgain            ,Chr3
+       ,16                  ,stoploss            ,Chr3
+
+       ,13364               ,synonymous          ,SNV   ,Chr4
+       ,12900               ,nonsynonymous       ,SNV   ,Chr4
+       ,126                 ,stopgain            ,Chr4
+       ,29                  ,stoploss            ,Chr4
+
+       ,10795               ,synonymous          ,SNV   ,Chr5
+       ,10696               ,nonsynonymous       ,SNV   ,Chr5
+       ,120                 ,stopgain            ,Chr5
+       ,15                  ,stoploss            ,Chr5
+
+       ,12784               ,synonymous          ,SNV   ,Chr6
+       ,12530               ,nonsynonymous       ,SNV   ,Chr6
+       ,112                 ,stopgain            ,Chr6
+       ,15                  ,stoploss            ,Chr6
+
+
+       ,13045               ,synonymous          ,SNV   ,Chr7
+       ,12570               ,nonsynonymous       ,SNV   ,Chr7
+       ,126                 ,stopgain            ,Chr7
+       ,32                  ,stoploss            ,Chr7
+
+       ,8790                ,synonymous          ,SNV   ,Chr8
+       ,8770                ,nonsynonymous       ,SNV   ,Chr8
+       ,113                 ,stopgain            ,Chr8
+       ,16                  ,stoploss            ,Chr8
+
+       ,11497               ,synonymous          ,SNV   ,Chr9
+       ,11438               ,nonsynonymous       ,SNV   ,Chr9
+       ,118                 ,stopgain            ,Chr9
+       ,15                  ,stoploss            ,Chr9
+
+
+       ,9694                ,synonymous          ,SNV   ,Chr10
+       ,9623                ,nonsynonymous       ,SNV   ,Chr10
+       ,114                 ,stopgain            ,Chr10
+       ,16                  ,stoploss            ,Chr10
+
+       ,10150               ,synonymous          ,SNV   ,Chr11
+       ,9649                ,nonsynonymous       ,SNV   ,Chr11
+       ,101                 ,stopgain            ,Chr11
+       ,19                  ,stoploss            ,Chr11
+
+       ,8512                ,synonymous          ,SNV   ,Chr12
+       ,8353                ,nonsynonymous       ,SNV   ,Chr12
+       ,75                  ,stopgain            ,Chr12
+       ,23                  ,stoploss            ,Chr12
+
+       ,9268                ,synonymous          ,SNV   ,Chr13
+       ,8736                ,nonsynonymous       ,SNV   ,Chr13
+       ,90                  ,stopgain            ,Chr13
+       ,20                  ,stoploss            ,Chr13
+
+       ,8762                ,synonymous          ,SNV   ,Chr14
+       ,8718                ,nonsynonymous       ,SNV   ,Chr14
+       ,120                 ,stopgain            ,Chr14
+       ,25                  ,stoploss            ,Chr14
+
+       ,7813                ,synonymous          ,SNV   ,Chr15
+       ,7273                ,nonsynonymous       ,SNV   ,Chr15
+       ,85                  ,stopgain            ,Chr15
+       ,11                  ,stoploss            ,Chr15

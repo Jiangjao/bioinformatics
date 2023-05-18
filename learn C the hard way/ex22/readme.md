@@ -114,11 +114,30 @@ int main() {
 ```
 
 * Use pointers to gain access to things you shouldn't have access to.
-* Use your debugger to see what this kind of access looks like when you
-  do it wrong.
-* Write a recursive function that causes a stack overflow.  Don't know
-  what a recursive function is?  Try calling ``scope_demo`` at the
-  bottom of ``scope_demo`` itself so that it loops.
+* Use your debugger to see what this kind of access looks like when you do it wrong.
+* Write a recursive function that causes a stack overflow.  Don't know  what a recursive function is?  Try calling ``scope_demo`` at the  bottom of ``scope_demo`` itself so that it loops.
+```C
+// if I modified the scope_demo as suggested...
+void scope_demo(int count) {
+    log_info("count is:%d", count);
+
+    if (count > 10) {
+        int numbers = 100;  // BAD! BUGS!
+
+        log_info("count in this scope is %d", numbers);
+    }
+
+    log_info("count is at exit:%d", count);
+
+    count = 3000;
+
+    log_info("count after assign: %d", count);
+    scope_demo(count);
+}
+
+//   Console is outputting infinitely.
+```
+
 * Rewrite the ``Makefile`` so that it can build this.
 
 
