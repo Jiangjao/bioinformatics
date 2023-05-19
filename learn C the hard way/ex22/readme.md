@@ -139,7 +139,9 @@ void scope_demo(int count) {
 ```
 
 * Rewrite the ``Makefile`` so that it can build this.
-
+```
+please see the Makefile
+```
 
 
 End Of Lecture 22
