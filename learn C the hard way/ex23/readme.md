@@ -81,6 +81,87 @@ Extra Credit
 ====
 
 * Change the ``main`` to conduct some speed tests to see which one is  really the fastest.
+```shell
+make ex23_test_faster_unit
+chmod u+x ex23.sh
+./ex23.sh
+# it seems normal_copy fastest...
+# loading ...
+# action c
+# normal_copy run 10000 cost average time : 0.000026311000000 seconds
+# action g
+# duffs_device run 10000 cost average time : 0.000029554000000 seconds
+# action s
+# zeds_device run 10000 cost average time : 0.000029562000000 seconds
+
+# loading ...
+# action c
+# normal_copy run 100000 cost average time : 0.000293526000000 seconds
+# action g
+# duffs_device run 100000 cost average time : 0.000305960000000 seconds
+# action s
+# zeds_device run 100000 cost average time : 0.000296731000000 seconds
+
+# loading ...
+# action c
+# normal_copy run 1000000 cost average time : 0.002607822999976 seconds
+# action g
+# duffs_device run 1000000 cost average time : 0.003009530999975 seconds
+# action s
+# zeds_device run 1000000 cost average time : 0.003007402999983 seconds
+
+# loading ...
+# action c
+# normal_copy run 10000000 cost average time : 0.027023892996450 seconds
+# action g
+# duffs_device run 10000000 cost average time : 0.029896372997290 seconds
+# action s
+# zeds_device run 10000000 cost average time : 0.029655178997044 seconds
+
+# finished all test
+
+
+# By default, C compilers usually enable some compiler optimizations to improve the performance and efficiency of the generated target code
+
+# if I disable compiler optimizations
+gcc -O0 -o ex23_test_faster_unit ex23_test_faster_unit.c
+./ex23.sh
+# loading ...
+# action c
+# normal_copy run 10000 average time of :0.000032442000000 seconds
+# action g
+# duffs_device run 10000 average time of :0.000031513000000 seconds
+# action s
+# zeds_device run 10000 average time of :0.000032082000000 seconds
+
+# loading ...
+# action c
+# normal_copy run 100000 average time of :0.000268576000000 seconds
+# action g
+# duffs_device run 100000 average time of :0.000315572000000 seconds
+# action s
+# zeds_device run 100000 average time of :0.000297272000000 seconds
+
+# loading ...
+# action c
+# normal_copy run 1000000 average time of :0.002626407999976 seconds
+# action g
+# duffs_device run 1000000 average time of :0.002968008999975 seconds
+# action s
+# zeds_device run 1000000 average time of :0.002966174999976 seconds
+
+# loading ...
+# action c
+# normal_copy run 10000000 average time of :0.027230612996723 seconds
+# action g
+# duffs_device run 10000000 average time of :0.030157066997339 seconds
+# action s
+# zeds_device run 10000000 average time of :0.029839208997072 seconds
+
+# finished all test
+
+# it seems normal_copy slow at first.
+```
 * Read about ``memcpy``, ``memmove``, and ``memset``, and also compare  their speed.
 * Never use this again!
 
