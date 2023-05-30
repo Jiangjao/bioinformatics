@@ -163,6 +163,70 @@ gcc -O0 -o ex23_test_faster_unit ex23_test_faster_unit.c
 # it seems normal_copy slow at first.
 ```
 * Read about ``memcpy``, ``memmove``, and ``memset``, and also compare  their speed.
+These three functions are memory operation functions in the C language, and their differences can be summarized as follows:
+
+  - memcpy: used to copy memory blocks by copying the contents of the source memory block to the destination memory block.
+
+     Syntax: void *memcpy(void *dest, const void *src, size_t n);
+     Purpose: Copies the first n bytes of memory area src to memory area dest.
+     Returns: Returns a pointer to dest.
+
+  - memmove: used to move memory blocks, similar to memcpy, but supports moving overlapping memory blocks.
+
+     Syntax: void *memmove(void *dest, const void *src, size_t n);
+     Purpose: Moves the first n bytes of memory area src to memory area dest.
+     Returns: Returns a pointer to dest.
+
+  - memset: used to fill memory by setting the first n bytes of a memory block to a specified value.
+
+     Syntax: void *memset(void *s, int c, size_t n);
+     Purpose: Sets the first n bytes of memory area s to the value of character c (an unsigned char).
+     Returns: Returns a pointer to s.
+
+  In summary:
+
+  - memcpy is used for copying non-overlapping memory blocks, while memmove is used for overlapping memory blocks.
+  - memset is used for filling memory with a specific character.
+  - These three functions are used to manipulate memory and are highly efficient.
+
+    Overlapping memory blocks refer to situations where the source and destination memory areas specified in a memory operation function (such as memcpy or memmove) have some common memory locations. In other words, the source and destination memory areas have some overlapping memory locations. 
+
+    - how to understand overlapping memory?
+    For example, consider the following scenario where we have two memory blocks `A` and `B`:
+
+    ```
+            A:  [1][2][3][4][5][6][7][8]
+            B:  [ ][ ][ ][ ][ ][ ][ ][ ]
+    ```
+
+    If we want to move the first 4 bytes of `A` to `B`, we can use `memcpy` like this:
+
+    ```
+            memcpy(B, A, 4);
+    ```
+
+    The resulting memory blocks would be:
+
+    ```
+            A:  [1][2][3][4][5][6][7][8]
+            B:  [1][2][3][4][ ][ ][ ][ ]
+    ```
+
+    However, if we want to move the first 4 bytes of `A` to the last 4 bytes of `A`, we cannot use `memcpy`, because the source and destination memory areas overlap. In this case, we need to use `memmove`:
+
+    ```
+            memmove(A+4, A, 4);
+    ```
+
+    The resulting memory blocks would be:
+
+    ```
+        A:  [5][6][7][8][1][2][3][4]
+        B:  [ ][ ][ ][ ][ ][ ][ ][ ]
+    ```
+    Thus, `memmove` works correctly even when there is overlap between the source and destination memory areas.
+
+
 * Never use this again!
 
 
