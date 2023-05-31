@@ -75,7 +75,31 @@ Extra Credit
 >[Duff's device on wiki](https://en.wikipedia.org/wiki/Duff%27s_device)
 * Create a set of macros that lets you create any length of device like this. For example, what if you wanted to have 32 case statements and didn't want to write out all of them? Can you do a macro that lays down eight at a time?
 
+```shell
+gcc -E ex23_macro_expand.c
+```
+then the deffs_device will expand into that below:
+```C
 
+int deffs_device(char *from, char *to, int count) {
+    {
+        int n = (count + 31) / 32;
+
+        switch(count % 32) {
+            case 0: do {
+                *to ++ = *from ++;
+                case ((036) + 1): *to ++ = *from ++; case ((035) + 1): *to ++ = *from ++; case ((034) + 1): *to ++ = *from ++; case ((033) + 1): *to ++ = *from ++; case ((032) + 1): *to ++ = *from ++; case ((031) + 1): *to ++ = *from ++; case ((030) + 1): *to ++ = *from ++;;
+                case ((027) + 1): *to ++ = *from ++; case ((026) + 1): *to ++ = *from ++; case ((025) + 1): *to ++ = *from ++; case ((024) + 1): *to ++ = *from ++; case ((023) + 1): *to ++ = *from ++; case ((022) + 1): *to ++ = *from ++; case ((021) + 1): *to ++ = *from ++; case ((020) + 1): *to ++ = *from ++;;
+                case ((017) + 1): *to ++ = *from ++; case ((016) + 1): *to ++ = *from ++; case ((015) + 1): *to ++ = *from ++; case ((014) + 1): *to ++ = *from ++; case ((013) + 1): *to ++ = *from ++; case ((012) + 1): *to ++ = *from ++; case ((011) + 1): *to ++ = *from ++; case ((010) + 1): *to ++ = *from ++;;
+                case ((007) + 1): *to ++ = *from ++; case ((006) + 1): *to ++ = *from ++; case ((005) + 1): *to ++ = *from ++; case ((004) + 1): *to ++ = *from ++; case ((003) + 1): *to ++ = *from ++; case ((002) + 1): *to ++ = *from ++; case ((001) + 1): *to ++ = *from ++; case ((000) + 1): *to ++ = *from ++;;
+            } while(--n > 0);
+        }
+    }
+
+    return count;
+}
+```
+>[Writing a macro for Duff's Device on Stack Overflow](https://stackoverflow.com/questions/20602415/writing-a-macro-for-duffs-device)
 
 Extra Credit
 ====
