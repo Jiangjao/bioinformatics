@@ -281,6 +281,69 @@ Extra Credit
 
 * Use ``scanf`` to write a function that reads one character at a time and files in the names but doesn't go past the end.  Make this function generic so it can take a size for the string, but just make sure you end the string with ``'\0'`` no matter what.
 
+    1. The function can read a string of any length, but not beyond the end of the string.
+    2. It is generic and can take a size for the string as a parameter.
+    3. It ensures that the string is terminated with '\0', regardless of whether the number of characters read reaches the length of the string.
+```C
+#include <stdio.h>
+#include <stdlib.h>
+#include "dbg.h"
+
+#define MAX_DATA 100
+
+int write_character() {
+    FILE *temp;
+    // open a file
+    temp = fopen("test.txt", "a+");
+    printf("How lod are you?");
+    char age_input;
+    int rc = scanf("%c", &age_input);
+    
+    if (rc <= 0) {
+        printf("you have to enter a character.");
+    }
+
+    // wite something into file
+    if (temp != NULL) {
+        
+        fputc(age_input, temp);
+        fputc('\0', temp);
+        fclose(temp);
+    }
+    printf("----- RESULTS ------\n");
+
+    printf("Age: %c\n", age_input);
+
+    return rc;
+}
+
+void read_string(char *str, int size) {
+    int i = 0;
+    char c;
+
+    // read character, stop by '\n' or size limitation
+    while (i < size - 1 && scanf("%c", &c) == 1 && c != '\n') {
+        str[i++] = c;
+    }
+
+    // ensure the string end with '\0'
+    str[i] = '\0';
+}
+
+int main(int argc, char *argv[]) {
+    char str[100];
+    printf("########## some string will input below ##########\n");
+
+    read_string(str, 100);
+
+    printf("%s have been input\n", str);
+
+    return 0;
+}
+```
+
+
+
 
 
 End Of Lecture 24
