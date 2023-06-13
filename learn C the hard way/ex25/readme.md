@@ -193,6 +193,80 @@ Extra Credit
 ====
 
 * Write a similar function to ``printf`` that uses the varargs system, and rewrite ``main`` to use it.
+
+```C
+// A simple example
+#include <stdio.h>
+#include <stdarg.h>
+
+void my_printf(const char *format, ...) {
+    va_list args;
+    va_start(args, format);
+    vprintf(format, args);
+    va_end(args);
+}
+
+int main() {
+    int a = 42;
+    char *str = "world";
+    my_printf("Hello, %s! The answer is %d.\n", str, a);
+    return 0;
+}
+```
+
+```C
+#include <stdio.h>
+#include <stdarg.h>
+
+void my_printf(const char *format, ...) {
+    va_list args;
+    va_start(args, format);
+
+    for (const char *p = format; *p != '\0'; p++) {
+        if (*p == '%' && *(p + 1) != '\0') {
+            p ++;
+            switch (*p) {
+                case 'c': {
+                    char c = (char) va_arg(args, int);
+                    putchar(c);
+                    break;
+                }
+                case 'd': {
+                    int i = va_arg(args, int);
+                    printf("%d", i);
+                    break;
+                }
+                case 'f': {
+                    double d = va_arg(args, double);
+                    printf("%f", d);
+                    break;
+                }
+                case 's': {
+                    char *s = va_arg(args, char *);
+                    printf("%s", s);
+                    break;
+                }
+                default:
+                    putchar('%');
+                    putchar(*p);
+            }
+        } else {
+            putchar(*p);
+        }
+    }
+
+    va_end(args);
+}
+
+
+int main() {
+    my_printf("Hello, %s\n", "world");
+    my_printf("Integer:%d, Float: %f, Char:%c\n", 42, 3.1415, 'A');
+
+    return 0;
+}
+```
+
 * As usual, read the man page on all of this so that you know what it does on your platform.  Some platforms will use macros, others will use functions, and some will have these do nothing.  It all depends on the compiler and the platform you use.
 
 
