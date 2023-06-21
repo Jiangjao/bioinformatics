@@ -28,7 +28,7 @@ int list_files(glob_t *pglob) {
 
 
         // dump work around to a stupid design in glob
-        if (glob_flags == GLOB_TILDE) glob_flags != GLOB_APPEND;
+        if (glob_flags == GLOB_TILDE) glob_flags |= GLOB_APPEND;
     }
 
     for (i = 0; i < pglob->gl_pathc; i++) {
