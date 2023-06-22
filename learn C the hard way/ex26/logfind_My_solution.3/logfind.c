@@ -90,7 +90,10 @@ char *process_arguments(int argc, char *argv[], char *match) {
 }
 
 void printf_match_line_with_file(char *match_string, char **files) {
-    char *match = match_string;
+    
+    // char *match = match_string;
+    char *match_temp = malloc((MAX_LINE_LENGTH));
+    strcpy(match_temp, match_string);
     FILE *fp = NULL;
     char buffer[MAX_LINE_LENGTH];
     int line_number = 1;
@@ -103,18 +106,29 @@ void printf_match_line_with_file(char *match_string, char **files) {
         } else {
             // reset the line_number at first.
             line_number = 1;
-            while (fgets(buffer, MAX_LINE_LENGTH, fp) != NULL) {
+            printf("match is <%s> match\n", match_temp);
+            while (fgets(buffer, MAX_LINE_LENGTH - 1, fp) != NULL) {
+                // flush the buffer mem
+                // memset(buffer, 0, MAX_LINE_LENGTH);
                 // Why can it even match white spaces?
                 // (TODO:xiajiao)Why I use ./logfind5 word word, it can match each line? 2023/06/21
-                if (strstr(buffer, match) != NULL) {
-                    printf("file %s \nLine %d: %s", files[i], line_number, buffer);
+                // When using string variables as function parameters, 
+                // their values can be dynamically changed as needed during program execution.  
+                // Fixit(xiaojiao)SO I use a memory on heap by match_temp          2023/06/22
+                // it cannot match exactly...
+                if (strcasestr(buffer, match_temp) != NULL) {
+                    // printf("##################\n");
+                    printf("file <%s> Line %d: %s, <match:%s>\n", files[i], line_number, buffer, match_temp);
+                    // printf("##################\n");
                 }
                 line_number ++;
             }
             fclose(fp);
         }
+
         free(files[i]);
     }
+    free(match_temp);
 }
 
 int main(int argc, char *argv[]) {
@@ -128,15 +142,18 @@ int main(int argc, char *argv[]) {
     char *match = argv[1];
     // char *match = "";
 
-    match = process_arguments(argc, argv, match);
+    char *match_string = process_arguments(argc, argv, match);
 
-    printf("match_string loaded...%s\n", match);
+    printf("match_string loaded...<%s>\n", match_string);
 
     // Find all files in the specified directory.
     const char *pattern = "/home/ubuntu/learn_C_the_hard_way/ex26/logfind.1/*";
     char **files = find_files(pglob, pattern);
 
-    printf_match_line_with_file(match, files);
+    // When using string variables as function parameters, 
+    // their values can be dynamically changed as needed during program execution.
+    char *tmp_match = "word word";
+    printf_match_line_with_file(tmp_match, files);
 
     free(files);
 

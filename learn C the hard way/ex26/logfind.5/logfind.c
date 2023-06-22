@@ -64,7 +64,7 @@ int scan_file(const char *filename, int use_or, int search_len, char *search_for
     check(file, "Failed to open file: %s", filename);
 
     // check each line of the line and search that line for the contents
-    while (fgets(line, MAX_LINE -1, file) != NULL) {
+    while (fgets(line, MAX_LINE - 1, file) != NULL) {
         for (i = 0; i < search_len; i++) {
             if (strcasestr(line, search_for[i]) != NULL) {
                 debug("file: %s, line:%s, search: %s", filename, line, search_for[i]);
