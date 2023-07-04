@@ -41,10 +41,7 @@ Breaking It
 Extra Credit
 ====
 
-* Were you paying attention to the bad code I have in the ``libex29.c`` functions?
-  Do you see how, even though I use a for-loop they still check for ``'\0'``
-  endings?  Fix this so that the functions always take a length for the
-  string to work with inside the function.
+* Were you paying attention to the bad code I have in the ``libex29.c`` functions? Do you see how, even though I use a for-loop they still check for ``'\0'`` endings?  Fix this so that the functions always take a length for the string to work with inside the function.
 
 ```C
 #include <stdio.h>
@@ -103,9 +100,7 @@ int fail_on_purpose(const char *msg) {
 
 ```
 
-* Read the ``man dlopen`` documentation and read about all of the
-  related functions.  Try some of the other options to ``dlopen``
-  beside ``RTLD_NOW``.
+* Read the ``man dlopen`` documentation and read about all of the related functions.  Try some of the other options to ``dlopen``  beside ``RTLD_NOW``.
 
 ```text
 please see the hello_test.c

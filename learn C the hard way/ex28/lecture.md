@@ -47,3 +47,7 @@ End Of Lecture 28
 =====
 
 
+## Reference
+>[make file tutor](https://zhuanlan.zhihu.com/p/92010728)
+
+>[how-to-write-makefile](https://github.com/seisman/how-to-write-makefile)
