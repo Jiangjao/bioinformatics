@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>SVG植物示例</title>
+    <style>
+          title {
+             border: 1px solid black;
+             border-radius: 3%;
+             background-color: rgb(215, 250, 231);
+            }
+            /* .tooltip {
+    position: absolute;
+    z-index: 9999;
+    display: none;
+    padding: 5px;
+    border: 1px solid black;
+    background-color: #fff;
+  } */
+        .leaf {
+            fill: green;
+            transition: fill 0.5s ease;
+        }
+
+        .leaf:hover {
+            fill: red;
+        }
+
+        .trunk {
+            stroke: brown;
+            stroke-width: 10;
+        }
+
+        .root {
+            fill: brown;
+        }
+    </style>
+</head>
+
+<body>
+    <select id="tissue-select">
+        <option value="leaf">Leaf tissue</option>
+        <option value="stem">Stem tissue</option>
+        <option value="root">Root tissue</option>
+    </select>
+
+    <svg width="400" height="400">
+        <!-- 主干 -->
+        <path class="trunk" d="M200,50 C220,80 220,100 200,150 C180,200 190,250 200,350" />
+
+        <!-- 根 -->
+        <path class="root" d="M200,350 C210,360 210,370 200,380 C190,370 190,360 200,350" />
+
+        <!-- 叶子 -->
+        <path class="leaf leaf-leaf leaf-leaf-1"
+            d="M150,100 C160,120 170,120 180,100 C170,115 170,135 160,150 C150,165 150,165 140,150 C130,135 130,115 120,100 Z">
+            <title>leaf color depeth</title>
+
+        </path>
+        <path class="leaf leaf-leaf leaf-leaf-2"
+            d="M200,70 C210,90 220,90 230,70 C220,85 220,105 210,120 C200,135 200,135 190,120 C180,105 180,85 170,70 Z">
+            <title>leaf</title>
+        </path>
+        <path class="leaf leaf-leaf leaf-leaf-3"
+            d="M250,100 C260,120 270,120 280,100 C270,115 270,135 260,150 C250,165 250,165 240,150 C230,135 230,115 220,100 Z">
+            <title>leaf</title>
+        </path>
+        <path class="leaf leaf-stem leaf-stem-1" d="M200,150 C210,170 210,190 200,200 C190,190 190,170 200,150">
+            <title>stem</title>
+        </path>
+        <path class="leaf leaf-stem leaf-stem-2" d="M200,175 C210,195 210,215 200,225 C190,215 190,195 200,175">
+            <title>stem</title>
+        </path>
+        
+        <path class="leaf leaf-stem leaf-stem-3" d="M200,200 C210,220 210,240 200,250 C190,240 190,220 200,200">
+            <title>stem</title>
+        </path>
+        
+        <path class="leaf leaf-root leaf-root-1"
+            d="M180,370 C190,380 210,380 220,370 C210,375 210,385 200,390 C190,385 190,375 180,370">
+            <title>root</title></path>
+        <path class="leaf leaf-root leaf-root-2"
+            d="M200,370 C210,380 220,380 230,370 C220,375 220,385 210,390 C200,385 200,375 190,370">
+            <title>root</title></path>
+        <path class="leaf leaf-root leaf-root-3"
+            d="M220,370 C230,380 250,380 260,370 C250,375 250,385 240,390 C230,385 230,375 220,370">
+            <title>root</title></path>
+        <defs>
+            <linearGradient id="myGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="green" />
+                <stop offset="100%" stop-color="red" />
+            </linearGradient>
+        </defs>
+
+        <!-- 在这里绘制您的图形 -->
+        <path d="M50,50 L60,50 L60,100 L50,100 Z" fill="url(#myGradient)" />
+
+        <!-- 添加文本 -->
+        <text x="20" y="118" font-size="9">test Gradient color</text>
+        <path class="root" d="M200,350 L200,380 L200,400">
+            <title>test</title>
+        </path>/>
+
+        <path class="leaf leaf-root leaf-root-3"
+            d="M220,370 C230,380 250,380 260,370 C250,375 250,385 240,390 C230,385 230,375 220,370">
+            <title>M220,370 C230,380 250,380 260,370 C250,375 250,385 240,390 C230,385 230,375 220,370</title>
+        </path>
+    </svg>
+
+    <script>
+        const tissueSelect = document.getElementById('tissue-select');
+        const leafLeaves = document.querySelectorAll('.leaf-leaf');
+        const stemLeaves = document.querySelectorAll('.leaf-stem');
+        const rootLeaves = document.querySelectorAll('.leaf-root');
+
+        tissueSelect.addEventListener('change', (event) => {
+            const selectedTissue = event.target.value;
+
+            // 隐藏所有叶子
+            leafLeaves.forEach(leaf => leaf.style.display = 'none');
+            stemLeaves.forEach(leaf => leaf.style.display = 'none');
+            rootLeaves.forEach(leaf => leaf.style.display = 'none');
+
+            // 显示所选组织的叶子
+            if (selectedTissue === 'leaf') {
+                leafLeaves.forEach(leaf => leaf.style.display = 'block');
+            } else if (selectedTissue === 'stem') {
+                stemLeaves.forEach(leaf => leaf.style.display = 'block');
+            } else if (selectedTissue === 'root') {
+                rootLeaves.forEach(leaf => leaf.style.display = 'block');
+            }
+        });
+    </script>
+    <script>
+        // var tooltips = document.querySelectorAll('svg title');
+        // tooltips.forEach(function(tooltip) {
+        //   tooltip.addEventListener('mouseover', function(event) {
+        //     var tooltipBox = document.createElement('div');
+        //     tooltipBox.className = 'tooltip';
+        //     tooltipBox.innerHTML = this.textContent;
+        //     document.body.appendChild(tooltipBox);
+        //     tooltipBox.style.left = event.pageX + 'px';
+        //     tooltipBox.style.top = event.pageY + 'px';
+        //     tooltipBox.style.display = 'block';
+        //   });
+        //   tooltip.addEventListener('mouseout', function() {
+        //     var tooltipBox = document.querySelector('.tooltip');
+        //     tooltipBox.parentNode.removeChild(tooltipBox);
+        //   });
+        // });
+      </script>
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>SVG 表达量上色</title>
+    <style>
+          title {
+             border: 1px solid black;
+             border-radius: 3%;
+             background-color: rgb(215, 250, 231);
+            }
+    </style>
+</head>
+
+<body>
+
+
+    <svg>
+        <path d="M50,50 L350,50 L350,350 L50,350 Z" fill="yellow" stroke="black" stroke-width="2" id="myPath" />
+        <text x="180" y="20" font-size="18" text-anchor="middle" id="myText">change in expressive power</text>
+      </svg>
+<script>
+    var path = document.getElementById('myPath');
+    var text = document.getElementById('myText');
+    var originalPathFill = path.getAttribute('fill');
+    var originalPathStroke = path.getAttribute('stroke');
+    var originalTextFill = text.getAttribute('fill');
+    
+    path.addEventListener('mouseover', function() {
+      path.setAttribute('fill', 'blue');
+      path.setAttribute('stroke', 'red');
+      text.setAttribute('fill', 'red');
+    });
+  
+    path.addEventListener('mouseout', function() {
+      path.setAttribute('fill', originalPathFill);
+      path.setAttribute('stroke', originalPathStroke);
+      text.setAttribute('fill', originalTextFill);
+    });
+  </script>
+</body>
+
+</html>
