@@ -1,13 +1,25 @@
 #include <stdlib.h>
 #include "list.h"
 #include "lcthw/dbg.h"
-
+#include <assert.h>
 
 List *List_create() {
-	return calloc(1, sizeof(List));	     
+	List *list = calloc(1, sizeof(List));
+	
+	// init list
+	list->first = NULL;
+	list->last = NULL;
+	list->count = 0;
+	ASSERT_COUNT_GE_ZERO(list);
+	ASSERT_FIRST_NOT_NULL(list);
+	return list;	    
+error:
+	free(list);
+	return NULL; 
 }
 
 void List_destroy(List *list) {
+	check(list != NULL, "Invalid list."); 
 	LIST_FOREACH(list, first, next, cur) {
 		if (cur->prev) {
 			free(cur->prev);
@@ -16,19 +28,40 @@ void List_destroy(List *list) {
 	
 	free(list->last);
 	free(list);
+error:
+	return;
 }
 
 void List_clear(List *list) {
+	check(list != NULL, "Invalid list."); 
 	LIST_FOREACH(list, first, next, cur) {
 		free(cur->value);
 	}
+error:
+	return;
 }
 
 void List_clear_destroy(List *list) {
-	List_clear(list);
-	List_destroy(list);
+	check(list != NULL, "Invalid list."); 
+	LIST_FOREACH(list, first, next, cur) {
+		free(cur->value);
+		if (cur->prev) {
+			free(cur->prev);
+		}
+	}
+	free(list->last);
+	free(list);
+	// List_clear(list);
+	// List_destroy(list);
+error:
+	return;
 }
 
+int List_counts(List *list) {
+	if (!list) return 0;
+	return list->count;
+}
+	
 void List_push(List *list, void *value) {
 	check(list != NULL, "Invalid list."); 
 	ListNode *node = calloc(1, sizeof(ListNode));
@@ -59,6 +92,8 @@ error:
 }
 
 void List_unshift(List *list, void *value) {
+	
+	check(list != NULL, "Invalid list.");
 	ListNode *node = calloc(1, sizeof(ListNode));
 	check_mem(node);
 
@@ -80,8 +115,11 @@ error:
 }
 
 void *List_shift(List *list) {
+	check(list != NULL, "Invalid list.");
 	ListNode *node = list->first;
 	return node != NULL ? List_remove(list, node) : NULL;
+error:
+	return NULL;
 }
 
 void *List_remove(List *list, ListNode *node) {
