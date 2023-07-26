@@ -112,6 +112,41 @@ Overall, both singly linked lists and doubly linked lists have their own advanta
 ```
 * What operations are missing that you can imagine needing?  Some examples are copying, joining, and splitting.  Implement these operations and write the unit tests for them.
 
+```C
+// copy
+List *List_copy(List *list) {
+        check(list != NULL, "Invalid list.");
+        List *list_dubp = List_create();
+        list_dubp->first = list->first;
+
+        LIST_FOREACH(list, first, next, cur) {
+                List_push(list_dubp, cur->value);
+    }
+        return list_dubp;
+error:
+        return NULL;
+}
+
+// joining return new list
+List *List_cat(List *list1, List *list2) {
+        check(list1 != NULL, "Invalid list.");
+        check(list2 != NULL, "Invalid list.");
+
+        List *list_dubp = List_copy(list1);
+
+        LIST_FOREACH(list2, first, next, cur) {
+                List_push(list_dubp, cur->value);
+        }
+
+
+
+        return list_dubp;
+error:
+        return NULL;
+}
+
+// splitting
+```
 
 
 End Of Lecture 32
