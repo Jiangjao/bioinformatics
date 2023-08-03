@@ -146,6 +146,44 @@ error:
 }
 
 // splitting
+ListNode **List_split_inplace(List *list, int boundary) {
+	check(list != NULL, "Invalid list.");
+	
+	if ((list->count < 2) || (list->count >= boundary)) {
+		// List *list_dubp = List_copy(list);
+		// return &list_dubp;
+		printf("List length less than 2\n");
+		return NULL;
+	}
+
+	//List *list_new1 = List_create();
+	//List *list_new2 = List_create();
+	
+	//LIST_FOREACH(list, first, next, cur) {
+	//	if (list->count < boundary) {
+	//		List_push(list_new1, cur->value);
+	//	} else {
+	//		List_push(list_new2, cur->value);
+	//	}
+	//}
+	
+	// replace with new splited-list
+	// List_clear_destroy(list);
+	// list = list_new1;	
+	// return list_new2;
+	ListNode *fast = list->first;
+
+	for (int i = 0; i < boundary; i++) {
+		fast = fast->next;
+	}
+	
+	ListNode **result = (ListNode  **)malloc(2 * sizeof(ListNode *));
+	result[0] = list->first;
+	result[1] = fast->next;
+	return result;
+error:
+	return NULL;
+}
 ```
 
 
