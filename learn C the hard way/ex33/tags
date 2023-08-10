@@ -1,0 +1,82 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+CFLAGS	liblcthw/Makefile	/^CFLAGS=-g -O2 -Wall -Wextra -Isrc -rdynamic -DNDEBUG $(OPTFLAGS)$/;"	m
+CFLAGS	liblcthw/Makefile	/^dev: CFLAGS=-g -Wall -Isrc -Wall -Wextra $(OPTFLAGS)$/;"	m
+LIBS	liblcthw/Makefile	/^LIBS=-ldl $(OPTLIBS)$/;"	m
+LIST_FOREACH	liblcthw/src/lcthw/list.h	37;"	d
+List	liblcthw/src/lcthw/list.h	/^typedef struct List {$/;"	s
+List	liblcthw/src/lcthw/list.h	/^} List;$/;"	t	typeref:struct:List
+ListNode	liblcthw/src/lcthw/list.h	/^typedef struct ListNode {$/;"	s
+ListNode	liblcthw/src/lcthw/list.h	/^} ListNode;$/;"	t	typeref:struct:ListNode
+List_clear	liblcthw/src/lcthw/list.c	/^void List_clear(List *list) {$/;"	f
+List_clear_destroy	liblcthw/src/lcthw/list.c	/^void List_clear_destroy(List *list) {$/;"	f
+List_count	liblcthw/src/lcthw/list.h	25;"	d
+List_create	liblcthw/src/lcthw/list.c	/^List *List_create() {$/;"	f
+List_destroy	liblcthw/src/lcthw/list.c	/^void List_destroy(List *list) {$/;"	f
+List_first	liblcthw/src/lcthw/list.h	26;"	d
+List_last	liblcthw/src/lcthw/list.h	27;"	d
+List_pop	liblcthw/src/lcthw/list.c	/^void *List_pop(List *list) {$/;"	f
+List_push	liblcthw/src/lcthw/list.c	/^void List_push(List *list, void *value) {$/;"	f
+List_remove	liblcthw/src/lcthw/list.c	/^void *List_remove(List *list, ListNode *node) {$/;"	f
+List_shift	liblcthw/src/lcthw/list.c	/^void *List_shift(List *list) {$/;"	f
+List_unshift	liblcthw/src/lcthw/list.c	/^void List_unshift(List *list, void *value) {$/;"	f
+NDEBUG	liblcthw/tests/minunit.h	1;"	d
+OBJECTS	liblcthw/Makefile	/^OBJECTS=$(patsubst %.c,%.o,$(SOURCES))$/;"	m
+PREFIX	liblcthw/Makefile	/^PREFIX?=\/usr\/local$/;"	m
+RUN_TESTS	liblcthw/tests/minunit.h	16;"	d
+SOURCES	liblcthw/Makefile	/^SOURCES=$(wildcard src\/**\/*.c src\/*.c)$/;"	m
+SO_TARGET	liblcthw/Makefile	/^SO_TARGET=$(patsubst %.a,%.so,$(TARGET))$/;"	m
+TARGET	liblcthw/Makefile	/^TARGET=build\/libYOUR_LIBRARY.a$/;"	m
+TESTS	liblcthw/Makefile	/^TESTS=$(patsubst %.c,%,$(TEST_SRC))$/;"	m
+TEST_SRC	liblcthw/Makefile	/^TEST_SRC=$(wildcard tests\/*_tests.c)$/;"	m
+__dbg_h__	liblcthw/src/lcthw/dbg.h	2;"	d
+_minunit_h	liblcthw/tests/minunit.h	3;"	d
+all_test	liblcthw/tests/list_fullteststemp.c	/^char *all_test(){$/;"	f
+all_tests	liblcthw/tests/list_fullteststemp.c	/^RUN_TEST(all_tests);$/;"	v
+all_tests	liblcthw/tests/list_tests.c	/^RUN_TESTS(all_tests);$/;"	v
+all_tests	liblcthw/tests/list_tests.c	/^char *all_tests() {$/;"	f
+check	liblcthw/src/lcthw/dbg.h	28;"	d
+check_debug	liblcthw/src/lcthw/dbg.h	36;"	d
+check_mem	liblcthw/src/lcthw/dbg.h	34;"	d
+clean_errno	liblcthw/src/lcthw/dbg.h	15;"	d
+count	liblcthw/src/lcthw/list.h	/^    int count;$/;"	m	struct:List
+debug	liblcthw/src/lcthw/dbg.h	11;"	d
+debug	liblcthw/src/lcthw/dbg.h	9;"	d
+first	liblcthw/src/lcthw/list.h	/^    ListNode *first;$/;"	m	struct:List
+last	liblcthw/src/lcthw/list.h	/^    ListNode *last;$/;"	m	struct:List
+lcthw_List_h	liblcthw/src/lcthw/list.h	2;"	d
+list	liblcthw/tests/list_tests.c	/^static List *list = NULL;$/;"	v	file:
+log_err	liblcthw/src/lcthw/dbg.h	17;"	d
+log_info	liblcthw/src/lcthw/dbg.h	25;"	d
+log_warn	liblcthw/src/lcthw/dbg.h	21;"	d
+mu_assert	liblcthw/tests/minunit.h	11;"	d
+mu_run_test	liblcthw/tests/minunit.h	13;"	d
+mu_suite_start	liblcthw/tests/minunit.h	9;"	d
+next	liblcthw/src/lcthw/list.h	/^    struct ListNode *next;$/;"	m	struct:ListNode	typeref:struct:ListNode::ListNode
+prev	liblcthw/src/lcthw/list.h	/^    struct ListNode *prev;$/;"	m	struct:ListNode	typeref:struct:ListNode::ListNode
+sentinel	liblcthw/src/lcthw/dbg.h	31;"	d
+test1	liblcthw/tests/list_tests.c	/^char *test1 = "test1 data";$/;"	v
+test2	liblcthw/tests/list_tests.c	/^char *test2 = "test2 data";$/;"	v
+test3	liblcthw/tests/list_tests.c	/^char *test3 = "test3 data";$/;"	v
+test_create	liblcthw/tests/list_tests.c	/^char *test_create() {$/;"	f
+test_destroy	liblcthw/tests/list_tests.c	/^char *test_destroy() {$/;"	f
+test_list_count	liblcthw/tests/list_fullteststemp.c	/^char *test_list_count() {$/;"	f
+test_list_create	liblcthw/tests/list_fullteststemp.c	/^char *test_list_create() {$/;"	f
+test_list_destroy	liblcthw/tests/list_fullteststemp.c	/^char *test_list_destroy(){$/;"	f
+test_list_first	liblcthw/tests/list_fullteststemp.c	/^char *test_list_first() {$/;"	f
+test_list_last	liblcthw/tests/list_fullteststemp.c	/^char *test_list_last() {$/;"	f
+test_list_pop	liblcthw/tests/list_fullteststemp.c	/^char *test_list_pop() {$/;"	f
+test_list_push	liblcthw/tests/list_fullteststemp.c	/^char *test_list_push() {$/;"	f
+test_list_remove	liblcthw/tests/list_fullteststemp.c	/^char *test_list_remove() {$/;"	f
+test_list_shift	liblcthw/tests/list_fullteststemp.c	/^char *test_list_shift() {$/;"	f
+test_list_unshift	liblcthw/tests/list_fullteststemp.c	/^char *test_list_unshift() {$/;"	f
+test_push_pop	liblcthw/tests/list_tests.c	/^char *test_push_pop() {$/;"	f
+test_remove	liblcthw/tests/list_tests.c	/^char *test_remove() {$/;"	f
+test_shift	liblcthw/tests/list_tests.c	/^char *test_shift() {$/;"	f
+test_unshift	liblcthw/tests/list_tests.c	/^char *test_unshift() {$/;"	f
+tests_run	liblcthw/tests/minunit.h	/^int tests_run;$/;"	v
+value	liblcthw/src/lcthw/list.h	/^    void *value;$/;"	m	struct:ListNode
