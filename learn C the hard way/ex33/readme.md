@@ -251,19 +251,160 @@ Extra Credit
 ====
 
 * Create a unit test that compares the performance of the two algorithms.  You'll want to look at ``man 3 time`` for a basic timer function,  and run enough iterations to at least have a few seconds of samples.
-* Play with the amount of data in the lists that need to be sorted and see if that changes your timing.
-* Find a way to simulate filling different sized random lists, measuring how long they take. Then, graph the result to see how it compares to the description of the algorithm.
 
+```C
+// ex33/liblcthw/tests/list_algos_tests.c
+char *test_performance_of_merge_sort() {
+    List *words  = create_words();
+
+    // test 1000 times;
+    
+    // List *res = NULL;
+
+    // start $$ calculate time
+    clock_t start = clock();
+    for (int i = 0; i < RUN_TIMES; i++) {
+        List_merge_sort(words, (List_compare) strcmp);
+    }
+    clock_t end = clock();
+
+    // time spends
+    double tim_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("\nMerge Sort Time: %f seconds \n", tim_used);
+
+    List_destroy(words);
+    return NULL;
+}
+
+
+char *test_performance_of_bubble_sort() {
+    List *words  = create_words();
+
+    // test 1000 times;
+
+    // List *res = NULL;
+
+    // start $$ calculate time
+    clock_t start = clock();
+    for (int i = 0; i < RUN_TIMES; i++) {
+        List_bubble_sort(words, (List_compare) strcmp);
+    }
+    clock_t end = clock();
+
+    // time spends
+    double tim_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("\nbubble_sort Time: %f seconds \n", tim_used);
+
+    List_destroy(words);
+    return NULL;
+}
+
+```
+* Play with the amount of data in the lists that need to be sorted and see if that changes your timing.
+
+```C
+// time spending maybe n ~ O(nlogn)
+
+// source: https://en.wikipedia.org/wiki/Merge_sort
+```
+* Find a way to simulate filling different sized random lists, measuring how long they take. Then, graph the result to see how it compares to the description of the algorithm.
+```C
+
+char *generate_random_string(int length) {
+    char *random_string = malloc((length + 1) * sizeof(char));
+    srand(time(NULL));
+
+    const char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    int charset_length = sizeof(charset) - 1;
+
+    for (int i = 0; i < length; i++) {
+        int random_index = rand() % charset_length;
+        random_string[i] = charset[random_index];
+    }
+
+    random_string[length] = '\0';
+    return random_string;
+}
+
+
+List *create_list_by_specific_words(int word_length, int list_length) {
+    List *words = List_create();
+
+    // added into list
+    for (int j = 0; j < list_length; j++) {
+        char *value = generate_random_string(word_length);
+        List_push(words, value);
+    }
+    return words;    
+}
+
+void *create_different_size_of_bubble_sort(int list_length) {
+    List *words = create_list_by_specific_words(3, list_length);
+
+    // start $$ calculate time
+    clock_t start = clock();
+    for (int i = 0; i < RUN_TIMES; i++) {
+        List_bubble_sort(words, (List_compare) strcmp);
+    }
+    clock_t end = clock();
+
+    // time spends
+    double tim_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("\nbubble_sort Time: %f seconds \n", tim_used);
+
+    List_destroy(words);
+}
+
+char *test_different_size_of_bubble_sort() {
+    for (int i = 0; i < RUN_TIMES; i++) {
+        create_different_size_of_bubble_sort(i);
+    }
+    return NULL;
+}
+
+
+// Merge Sort has some problems...
+// Killed
+// Makefile:39: recipe for target 'tests' failed
+// make: *** [tests] Error 1
+// xiaojiao 2023/08/13 pm
+
+void *create_different_size_of_merge_sort(int list_length) {
+    List *words = create_list_by_specific_words(3, list_length);
+
+    // start $$ calculate time
+    clock_t start = clock();
+    for (int i = 0; i < RUN_TIMES; i++) {
+        List_merge_sort(words, (List_compare) strcmp);
+    }
+    clock_t end = clock();
+
+    // time spends
+    double tim_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("\nmerge_sort Time: %f seconds \n", tim_used);
+
+    List_destroy(words);
+}
+
+
+char *test_different_size_of_merge_sort() {
+    for (int i = 0; i < RUN_TIMES; i++) {
+        create_different_size_of_merge_sort(i);
+    }
+    return NULL;
+}
+```
 
 
 Extra Credit
 ====
 
 * Try to explain why sorting linked lists is a really bad idea.
-* Implement a ``List_insert_sorted`` that will take a given value, and using the ``List_compare``, insert the element at the
-  right position so that the list is always sorted.  How does using this method compare to sorting a list after you've built it?
-* Try implementing the bottom-up merge sort described on the Wikipedia page.  The code there is already C, so it should be easy to
-  recreate, but try to understand how it's working compared to the slower one I have here.
+1. swap node which needs memory
+2. seek random place which needed from head to end
+3. other
+* Implement a ``List_insert_sorted`` that will take a given value, and using the ``List_compare``, insert the element at the right position so that the list is always sorted.  How does using this method compare to sorting a list after you've built it?
+* Try implementing the bottom-up merge sort described on the Wikipedia page.  The code there is already C, so it should be easy to recreate, but try to understand how it's working compared to the slower one I have here.
 
 
 
