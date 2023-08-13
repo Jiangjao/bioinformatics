@@ -151,8 +151,91 @@ int List_bubble_sort(List *list, List_compare cmp) {
 }
 ```
 * Can you use the ``List_split`` and ``List_join`` (if you implemented them) to improve merge sort?
-* Go through of all the defensive programming checks and improve the robustness of this implementation, protecting against bad ``NULL`` pointers, and then create an optional debug level invariant that works like ``is_sorted`` does
-  after a sort.
+
+```C
+// update code in ex33/liblcthw/src/lcthw/list_algos.c
+inline List *List_merge(List *left, List *right, List_compare cmp) {
+   List *result = List_create();
+   
+	void *val = NULL;
+	// int i = 0, j = 0;
+   	while ((List_count(left) > 0) && (List_count(right) > 0)) {
+    	if (cmp(List_first(left) , List_first(right)) <= 0) {
+            // List_push(result, List_first(left));
+            // i += 1;
+			val = List_shift(left);
+        } else {
+            // List_push(result, List_first(right));
+            // j += 1;    
+			val = List_shift(right);        
+        }
+		List_push(result, val);
+   	}
+
+
+    //  Add the remaining elements to the result array
+    while (List_count(left) > 0) {
+        // remove first node in left list
+        val = List_shift(left);
+		List_push(result, val);
+    }
+    
+    // right as well
+    while (List_count(right) > 0) {
+        // remove first node in left list
+        val = List_shift(right);
+		List_push(result, val);
+    }
+
+    return result;
+}
+
+
+List *List_merge_sort(List *array, List_compare cmp) {
+    if (List_count(array) <= 1) {
+        return array;
+    }
+
+    // Split the array
+    // int mid = List_count(array) / 2;
+
+    // List *left = List_create();
+    // List *right = List_create();
+    // LIST_FOREACH(array, first, next, cur) {
+    //     if (mid > 0) {
+    //         List_push(left, cur->value);
+    //     } else {
+    //         List_push(right, cur->value);
+    //     }
+	// 	mid -= 1;
+    // }
+    List *left = List_split_by_mid(array);
+    List *right = array;
+
+    List *sort_left = List_merge_sort(left, cmp);
+    List *sort_right = List_merge_sort(right, cmp);
+
+    if (sort_left != left) List_destroy(left);
+    if (sort_right != right) List_destroy(right);
+    return List_merge(sort_left, sort_right, cmp);
+}
+```
+* Go through of all the defensive programming checks and improve the robustness of this implementation, protecting against bad ``NULL`` pointers, and then create an optional debug level invariant that works like ``is_sorted`` does after a sort.
+
+```C
+
+#ifdef DEBUG // only check in debug mode
+assert(List_is_sorted(list, cmp));  // invariant: list must be sorted
+#endif
+
+// modify list somehow
+// code here
+// update code in ex33/liblcthw/src/lcthw/list_algos.c
+
+#ifdef DEBUG // only check in debug mode
+assert(List_is_sorted(list, cmp));  // invariant: list must be sorted
+#endif
+```
 
 
 

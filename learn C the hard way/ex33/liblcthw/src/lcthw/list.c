@@ -222,3 +222,30 @@ error:
 	return NULL;
 }
 
+List *List_split_by_mid(List *list) {
+	check(list != NULL, "Invalid list.");
+
+	if (List_count(list) <= 1) {
+		return NULL;
+	}
+
+	List *left =  List_create();
+	// List *right = List_create();
+	int mid = List_count(list) / 2;
+
+
+	ListNode *node = NULL;
+	node = list->first;
+	
+	while ((node->next != NULL) && (mid > 0)){
+		List_push(left, node->value);
+		node = node->next;
+		List_pop(list);
+		mid -= 1;
+	}
+
+	return left;
+
+error:
+	return NULL;
+}

@@ -2,9 +2,13 @@
 #include "lcthw/dbg.h"
 
 inline void ListNode_swap(ListNode *a, ListNode *b) {
+    check(a != NULL, "Invalid ListNode.");
+    check(b != NULL, "Invalid ListNode.");
     void *temp = a->value;
     a->value = b->value;
     b->value = temp;
+error:
+    printf("something wrong with Node");
 }
 
 int List_bubble_sort(List *list, List_compare cmp) {
