@@ -404,8 +404,203 @@ Extra Credit
 2. seek random place which needed from head to end
 3. other
 * Implement a ``List_insert_sorted`` that will take a given value, and using the ``List_compare``, insert the element at the right position so that the list is always sorted.  How does using this method compare to sorting a list after you've built it?
-* Try implementing the bottom-up merge sort described on the Wikipedia page.  The code there is already C, so it should be easy to recreate, but try to understand how it's working compared to the slower one I have here.
 
+```C
+List *List_insert_sorted(List *list, void *value, List_compare cmp) {
+    // list required sorted
+    // check(is_sorted(list) == 0, "list is not sorted.");
+    check(list != NULL, "Invalid list.");
+
+    List *array = List_copy(list);
+    List *result = NULL;
+
+    ListNode *node = NULL;
+	node = array->first;
+
+    if (List_count(list) == 0) {
+        List_push(array, value);
+        return array;
+    } 
+
+    if (cmp(array->first->value, value) >= 0) {
+        List_unshift(array, value);
+        return array;
+    }
+
+    if (cmp(array->last->value, value) <= 0) {
+        List_push(array, value);
+        return array;
+    }
+
+    // if the length of list less than 2
+
+     if (List_count(list) <= 3) {
+        // result = List_copy(list);
+        result = array;
+        List_push(result, value);
+        List_bubble_sort(result, cmp);
+        return result;
+    }  
+
+    while (node) {
+        if ((cmp(node->value, value) <= 0) && (cmp(node->next->value, value) >= 0)) {
+            // split list into part two..
+            ListNode *listafter = NULL;
+            ListNode *listbefore = NULL;
+
+            // init insertNode
+            ListNode *newNode = calloc(1, sizeof(ListNode));
+            check_mem(newNode);
+            newNode->value = value;
+
+            listafter = node->next;
+            listbefore = node;
+            // node->next = NULL;
+            // node->next->prev = NULL;
+
+            // join two part 
+            // List_push(listbefore, value);
+
+            // maybe test this function List_cat... (xiaojiao 2023/08/14)
+
+            node->next = newNode;
+            node->next->prev = newNode;
+            newNode->prev = listbefore;
+            newNode->next = listafter;
+
+            result = array;
+            // printf("result <<<<<<<<<<<<<<<<<<<<<%d>>>>>>>>>>>>>>>>>>>>>>>>>\n", List_count(result));
+            result->count += 1;
+            break;
+        }
+        node = node->next;
+    }
+    result = array;
+
+    return result;
+
+error:
+    return NULL;
+}
+
+```
+
+differences:
+less sort time....
+* Try implementing the bottom-up merge sort described on the Wikipedia page.  The code there is already C, so it should be easy to recreate, but try to understand how it's working compared to the slower one I have here.
+```C
+// this problem seems really hard... 2023/08/15
+
+inline List *List_merge(List *left, List *right, List_compare cmp) {
+   List *result = List_create();
+   
+	void *val = NULL;
+	// int i = 0, j = 0;
+   	while ((List_count(left) > 0) && (List_count(right) > 0)) {
+    	if (cmp(List_first(left) , List_first(right)) <= 0) {
+            // List_push(result, List_first(left));
+            // i += 1;
+			val = List_shift(left);
+        } else {
+            // List_push(result, List_first(right));
+            // j += 1;    
+			val = List_shift(right);        
+        }
+		List_push(result, val);
+   	}
+
+
+    //  Add the remaining elements to the result array
+    while (List_count(left) > 0) {
+        // remove first node in left list
+        val = List_shift(left);
+		List_push(result, val);
+    }
+    
+    // right as well
+    while (List_count(right) > 0) {
+        // remove first node in left list
+        val = List_shift(right);
+		List_push(result, val);
+    }
+
+    return result;
+}
+
+// split double linked-list into two sub lists...
+List* split(List *list, int size) {
+    if (list == NULL) {
+        return NULL;
+    }
+    
+    int i = 1;
+    ListNode *current = head;
+    
+    while (current->next && i < size) {
+        current = current->next;
+        i++;
+    }
+    
+    ListNode *next_head = current->next;
+    current->next = NULL;
+    
+    if (next_head) {
+        next_head->prev = NULL;
+    }
+    
+    return next_head;
+}
+
+List *List_BottomUP_Merge_sort(List *list, List_compare cmp) {
+    int length = List_count(list);
+
+    if (length <= 1) {
+        return list;
+    }
+
+    int sub_size = 1;
+    int right = 0;
+    int left = 0;
+    int mid = 0;
+    List *tempArr = List_create();
+    ListNode *dummy = (struct ListNode *)malloc(sizeof(ListNode));
+
+    ListNode *left = NULL;
+    ListNode *right = NULL;
+    ListNode *current;
+    ListNode *tail = dummy;
+    List *merged = NULL;
+    while (sub_size < length) {
+        // left = 0;
+        current = list->first;
+        while (current) {
+            left  = current;
+            right = List_split(left, sub_size);
+            current = List_split(right, sub_size);
+            merged = List_merge(left, right, cmp);
+
+            tail->next = merged;
+            if (merged) {
+                merged->prev = tail;
+            }
+
+            while (tail->next) {
+                tail = tail->next;
+            }
+        }   
+        // ?
+        list = list->next;
+        sub_size *= 2;
+        // while (left < (length - sub_size)) {
+
+        // }
+        // sub_size *= 2;
+    }
+    return  list;
+}
+
+```
+>[wiki merge sort](https://en.wikipedia.org/wiki/Merge_sort)
 
 
 End Of Lecture 33
