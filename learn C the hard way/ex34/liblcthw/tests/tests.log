@@ -1,0 +1,37 @@
+DEBUG tests/darray_tests.c:114: ----- RUNNING: ./tests/darray_tests
+DEBUG tests/darray_tests.c:102: 
+----- test_create
+DEBUG tests/darray_tests.c:103: 
+----- test_new
+DEBUG tests/darray_tests.c:104: 
+----- test_set
+DEBUG tests/darray_tests.c:105: 
+----- test_get
+DEBUG tests/darray_tests.c:106: 
+----- test_remove
+DEBUG tests/darray_tests.c:107: 
+----- test_expand_contract
+DEBUG tests/darray_tests.c:108: 
+----- test_push_pop
+DEBUG tests/darray_tests.c:109: 
+----- test_destroy
+DEBUG tests/list_algos_tests.c:239: ----- RUNNING: ./tests/list_algos_tests
+DEBUG tests/list_algos_tests.c:235: 
+----- test_list_insert_sorted
+DEBUG tests/list_tests.c:164: ----- RUNNING: ./tests/list_tests
+DEBUG tests/list_tests.c:152: 
+----- test_create
+DEBUG tests/list_tests.c:153: 
+----- test_push_pop
+DEBUG tests/list_tests.c:154: 
+----- test_unshift
+DEBUG tests/list_tests.c:155: 
+----- test_remove
+DEBUG tests/list_tests.c:156: 
+----- test_shift
+DEBUG tests/list_tests.c:157: 
+----- test_destroy
+DEBUG tests/list_tests.c:159: 
+----- test_list_split_by_mid
+DEBUG tests/list_tests.c:160: 
+----- test_list_cat
