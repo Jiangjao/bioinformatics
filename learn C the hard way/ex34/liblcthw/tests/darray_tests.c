@@ -1,5 +1,8 @@
+#include <time.h>
 #include "minunit.h"
 #include "lcthw/darray.h"
+
+#define RUN_TIMES 3000
 
 static DArray *array = NULL;
 static int *val1 = NULL;
@@ -122,6 +125,52 @@ char *test_element_get() {
     return NULL;
 }
 
+void *generate_DArray_with_size(int size) {
+    int i = 0;
+    for(i = 0; i < size; i++) {
+        int *val = DArray_new(array);
+        *val = i * 333;
+        DArray_push(array, val);
+    }
+
+
+    for (i = size; i >= 0; i--) {
+        int *val = DArray_pop(array);
+        DArray_free(val);
+    }
+
+    return NULL;
+}
+
+char *test_performance_of_push_pop_with_different_size_Drray() {
+
+    clock_t start = clock();
+    for (int i = 0; i < RUN_TIMES; i++) {
+        generate_DArray_with_size(i);
+    }
+    clock_t end = clock();
+
+    // time spends
+    double tim_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("\npush_pop Time: %f seconds \n", tim_used);
+
+    return NULL;
+}
+
+char *test_expand_contract_with_double_increasement() {
+    int old_max = array->max;
+    DArray_expand_with_double_increasement(array);
+    mu_assert((unsigned int)array->max == old_max * 2, "wrong size after expand.");
+
+    DArray_contract(array);
+    mu_assert((unsigned int)array->max == array->expand_rate + 1, "Should stay at the expand_rate at least.");
+
+    DArray_contract(array);
+    mu_assert((unsigned int)array->max == array->expand_rate + 1, "Should stat at the expand_rate at least.");
+
+    return NULL;
+}
+
 char *all_tests() {
     mu_suite_start();
 
@@ -133,6 +182,8 @@ char *all_tests() {
     mu_run_test(test_expand_contract);
     mu_run_test(test_push_pop);
     mu_run_test(test_element_get);
+    // mu_run_test(test_performance_of_push_pop_with_different_size_Drray);
+    mu_run_test(test_expand_contract_with_double_increasement);
     mu_run_test(test_destroy);
 
     return NULL;

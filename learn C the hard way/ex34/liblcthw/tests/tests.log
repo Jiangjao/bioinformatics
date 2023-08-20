@@ -1,19 +1,64 @@
-DEBUG tests/darray_tests.c:114: ----- RUNNING: ./tests/darray_tests
-DEBUG tests/darray_tests.c:102: 
+DEBUG tests/darray_tests.c:192: ----- RUNNING: ./tests/darray_tests
+DEBUG tests/darray_tests.c:177: 
 ----- test_create
-DEBUG tests/darray_tests.c:103: 
+DEBUG tests/darray_tests.c:178: 
 ----- test_new
-DEBUG tests/darray_tests.c:104: 
+DEBUG tests/darray_tests.c:179: 
 ----- test_set
-DEBUG tests/darray_tests.c:105: 
+DEBUG tests/darray_tests.c:180: 
 ----- test_get
-DEBUG tests/darray_tests.c:106: 
+DEBUG tests/darray_tests.c:181: 
 ----- test_remove
-DEBUG tests/darray_tests.c:107: 
+DEBUG tests/darray_tests.c:182: 
 ----- test_expand_contract
-DEBUG tests/darray_tests.c:108: 
+DEBUG tests/darray_tests.c:183: 
 ----- test_push_pop
-DEBUG tests/darray_tests.c:109: 
+DEBUG tests/darray_tests.c:184: 
+----- test_element_get
+DEBUG tests/darray_tests.c:186: 
+----- test_expand_contract_with_double_increasement
+DEBUG tests/darray_tests.c:187: 
+----- test_destroy
+DEBUG tests/list_algos_tests.c:239: ----- RUNNING: ./tests/list_algos_tests
+DEBUG tests/list_algos_tests.c:235: 
+----- test_list_insert_sorted
+DEBUG tests/list_tests.c:164: ----- RUNNING: ./tests/list_tests
+DEBUG tests/list_tests.c:152: 
+----- test_create
+DEBUG tests/list_tests.c:153: 
+----- test_push_pop
+DEBUG tests/list_tests.c:154: 
+----- test_unshift
+DEBUG tests/list_tests.c:155: 
+----- test_remove
+DEBUG tests/list_tests.c:156: 
+----- test_shift
+DEBUG tests/list_tests.c:157: 
+----- test_destroy
+DEBUG tests/list_tests.c:159: 
+----- test_list_split_by_mid
+DEBUG tests/list_tests.c:160: 
+----- test_list_cat
+DEBUG tests/darray_tests.c:192: ----- RUNNING: ./tests/darray_tests
+DEBUG tests/darray_tests.c:177: 
+----- test_create
+DEBUG tests/darray_tests.c:178: 
+----- test_new
+DEBUG tests/darray_tests.c:179: 
+----- test_set
+DEBUG tests/darray_tests.c:180: 
+----- test_get
+DEBUG tests/darray_tests.c:181: 
+----- test_remove
+DEBUG tests/darray_tests.c:182: 
+----- test_expand_contract
+DEBUG tests/darray_tests.c:183: 
+----- test_push_pop
+DEBUG tests/darray_tests.c:184: 
+----- test_element_get
+DEBUG tests/darray_tests.c:186: 
+----- test_expand_contract_with_double_increasement
+DEBUG tests/darray_tests.c:187: 
 ----- test_destroy
 DEBUG tests/list_algos_tests.c:239: ----- RUNNING: ./tests/list_algos_tests
 DEBUG tests/list_algos_tests.c:235: 

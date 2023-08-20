@@ -61,6 +61,19 @@ error:
     return -1;
 }
 
+int DArray_expand_with_double_increasement(DArray *array) {
+    size_t old_max = array->max;
+    check(DArray_resize(array, array->max * 2) == 0,
+            "Failed to expand array to new size: %d",
+            array->max + (int)array->expand_rate);
+
+    memset(array->contents + old_max, 0, array->expand_rate + 1);
+    return 0;
+
+error:
+    return -1;
+}
+
 int DArray_contract(DArray *array) {
     int new_size = array->end < (int)array->expand_rate ? (int)array->expand_rate : array->end;
 
