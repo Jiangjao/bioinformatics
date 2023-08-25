@@ -226,6 +226,26 @@ char *test_expand_contract_with_double_increasement() {
     return NULL;
 }
 ```
+
+The choice between using a multiplicative increase or a constant increase for dynamic array resizing depends on the specific application scenario and requirements.
+
+Advantages of a multiplicative increase include:
+
+1. Higher memory utilization: Multiplicative increase better utilizes memory space, avoiding frequent memory allocations and deallocations, thereby improving memory utilization.
+1. Reduced memory reallocation: Multiplicative increase reduces the number of memory reallocations for the dynamic array since the capacity becomes significantly larger than the current number of elements after each expansion, reducing the need for subsequent expansions.
+
+Advantages of a constant increase include:
+
+1. Fine-grained control over memory growth: Constant increase allows for more precise control over memory growth by expanding the array with a fixed step size, mitigating excessive memory usage.
+1. Reduced memory fragmentation: Constant increase can mitigate memory fragmentation as each expansion increases the capacity by a fixed amount, minimizing scattered memory fragmentation issues.
+
+Considering these factors, here are some recommendations:
+
+- If higher memory utilization and reducing memory allocations are more important, and you can tolerate higher memory usage, a multiplicative increase is a good choice. The commonly used multiplier is 2, meaning the capacity is doubled with each expansion.
+- If you are more sensitive to memory usage and memory fragmentation, and require finer control over memory, a constant increase may be more suitable. Common choices for the constant increment can be a fixed value like 256 or 512.
+
+The choice should be based on the specific application scenario and requirements. In practice, performance testing and memory analysis can be performed to evaluate the pros and cons of different strategies and optimize them accordingly.
+
 End Of Lecture 34
 =====
 
