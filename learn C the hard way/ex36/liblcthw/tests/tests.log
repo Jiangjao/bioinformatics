@@ -1,0 +1,31 @@
+DEBUG tests/darray_algos_tests.c:68: ----- RUNNING: ./tests/darray_algos_tests
+DEBUG tests/darray_algos_tests.c:61: 
+----- test_qsort
+DEBUG tests/darray_algos_tests.c:36: --- Testing qsort sorting algorithm
+DEBUG tests/darray_algos_tests.c:62: 
+----- test_heapsort
+DEBUG tests/darray_algos_tests.c:36: --- Testing heapsort sorting algorithm
+DEBUG tests/darray_algos_tests.c:63: 
+----- test_mergesort
+DEBUG tests/darray_algos_tests.c:36: --- Testing mergesort sorting algorithm
+DEBUG tests/darray_tests.c:192: ----- RUNNING: ./tests/darray_tests
+DEBUG tests/darray_tests.c:177: 
+----- test_create
+DEBUG tests/darray_tests.c:178: 
+----- test_new
+DEBUG tests/darray_tests.c:179: 
+----- test_set
+DEBUG tests/darray_tests.c:180: 
+----- test_get
+DEBUG tests/darray_tests.c:181: 
+----- test_remove
+DEBUG tests/darray_tests.c:182: 
+----- test_expand_contract
+DEBUG tests/darray_tests.c:183: 
+----- test_push_pop
+DEBUG tests/darray_tests.c:184: 
+----- test_element_get
+DEBUG tests/darray_tests.c:186: 
+----- test_expand_contract_with_double_increasement
+DEBUG tests/darray_tests.c:187: 
+----- test_destroy

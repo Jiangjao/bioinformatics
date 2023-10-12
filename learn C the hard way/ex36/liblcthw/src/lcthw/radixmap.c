@@ -95,6 +95,58 @@ void RadixMap_sort(RadixMap *map) {
     radix_sort(3, map->end, temp, source);
 }
 
+void RadixMap_sort_with_index(RadixMap *map, int index) {
+    uint64_t *source = &map->contents[index].raw;
+    uint64_t *temp = &map->temp[index].raw;
+    radix_sort(0, map->end, source, temp);
+    radix_sort(1, map->end, temp, source);
+    radix_sort(2, map->end, source, temp);
+    radix_sort(3, map->end, temp, source);
+}
+
+void RadixMap_sort2(RadixMap *map, int start, int end, RMElement *source, RMElement *temp) {
+    if (end - start <= 1) {
+        return;
+    }
+
+    int num_buckets = 256;
+    int *counters = calloc(num_buckets, sizeof(int));
+    int *offsets = calloc(num_buckets, sizeof(int));
+
+    // Counting sort for the specified range
+    for (int i = start; i < end; i++) {
+        uint8_t byte = (source[i].raw >> (start * 8)) & 0xFF;
+        counters[bytes]++;
+    }
+
+    // Calculate offsets based on counters
+    int sum = 0;
+    for (int i = 0; i < num_buckets; i++) {
+        offsets[i] = sum;
+        sum += counters[i];
+    }
+
+    // Move elements to their correct positions
+    for (int i = start; i < end; i++) {
+        uint8_t byte = (source[i].raw >> (start * 8)) & 0xFF;
+        temp[offsets[byte] + start] = source[i];
+        offsets[byte]++;
+    }
+
+    // Copy elements back to the source array
+    memcpy(&source[start], &temp[start], (end - start) * sizeof(RMElement));
+
+    // Recursively sort each bucket
+    for (int i = 0; i < num_buckets; i++) {
+        int bucket_start = start + offsets[i];
+        int bucket_end = start + offsets[i + 1];
+        RadixMap_sort(map, bucket_start, bucket_end, source, temp);
+    }
+
+    free(counters);
+    free(offsets);
+}
+
 RMElement *RadixMap_find(RadixMap *map, uint32_t to_find) {
     int low = 0;
     int high = map->end - 1;
@@ -116,13 +168,49 @@ RMElement *RadixMap_find(RadixMap *map, uint32_t to_find) {
     return NULL;
 }
 
+int binary_search(RadixMap *map, uint32_t target) {
+    int low = 0;
+    int high = map->end - 1;
+    RMElement *data = map->contents;
+
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+        uint32_t key = data[middle].data.key;
+
+        if (to_find < key) {
+            high = middle - 1;
+        } else {
+            low = middle + 1;
+        }         
+    }
+    return low;
+}
+
 int RadixMap_add(RadixMap *map, uint32_t key, uint32_t value) {
     check(key < UINT32_MAX, "Key can't be equal to UINT32_MAX");
 
     RMElement element = {.data = {.key = key, .value = value}};
     check(map->end + 1 < map->max, "RadixMap is full.");
 
-    map->contents[map->end++] = element;
+    // 1. Use a binary search to find the minimum position for the new element
+    // 2. sort from the position
+
+    // 2.1 find the index 
+    int insert_index  = binary_search(map, value);
+
+    // 2.2 the largest index
+    // added by xiaojiao, 2023/10/11
+    if (insert_index > map->end) {
+        // no sort
+        map->contents[map->end++] = element;
+    } else {
+        map->contents[map->end++] = element;
+        RadixMap_sort_with_index(map, insert_index);
+        // RadixMap_sort(map); 
+
+    }
+
+    // map->contents[map->end++] = element;
 
     RadixMap_sort(map);
 
