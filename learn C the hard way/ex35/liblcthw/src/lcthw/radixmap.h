@@ -2,7 +2,7 @@
 #include <stdint.h>
 
 typedef union RMElement {
-    unit64_t raw;
+    uint64_t raw;
     struct {
         uint32_t key;
         uint32_t value;
@@ -23,7 +23,7 @@ void RadixMap_destroy(RadixMap *map);
 
 void RadixMap_sort(RadixMap *map);
 
-RMElement *RadixMap(RadixMap *map, uint32_t key);
+RMElement *RadixMap_find(RadixMap *map, uint32_t key);
 
 int RadixMap_add(RadixMap *map, uint32_t key, uint32_t value);
 

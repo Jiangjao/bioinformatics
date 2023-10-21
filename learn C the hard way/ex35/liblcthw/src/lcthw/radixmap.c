@@ -36,23 +36,40 @@ void RadixMap_destroy(RadixMap *map) {
     }
 }
 
-#define ByteOf(x, y)  (((uint8_t *)x)[(y)])
+#define ByteOf(x, y) (((uint8_t *)x)[(y)])
 
-static inline void radix_sort(short offset, uint64_t max, uint64_t *source, uint64_t *dest) {
+int get_max_bit_uint8(int value) {
+    int max_bit = -1;
+    // int digit = 0;
+
+    if (value == 0) return 0;
+
+    while (value != 0) {
+        value >>= 8;  // right shift the value by 1 bit
+        max_bit++;
+    }
+
+    return max_bit;
+}
+
+// https://github.com/zedshaw/liblcthw/blob/master/src/lcthw/radixmap.c
+// 很奇怪的错误，为啥复制github上的就没报错。。。
+static inline void radix_sort(short offset, uint64_t max, 
+        uint64_t *source, uint64_t *dest) {
     uint64_t count[256] = { 0 };
     uint64_t *cp = NULL;
     uint64_t *sp = NULL;
     uint64_t *end = NULL;
-    uint64_t s  = 0;
+    uint64_t s = 0;
     uint64_t c = 0;
 
     // count occurences of every byte value
     for (sp = source, end = source + max; sp < end; sp++) {
-        count[ByteOf(sp, offset)] ++;
+        count[ByteOf(sp, offset)]++;
     }
 
     // transform count into index by summing
-    // elements and sorting into same array
+    // elements and storing into same array
     for (s = 0, cp = count, end = count + 256; cp < end; cp++) {
         c = *cp;
         *cp = s;
@@ -63,8 +80,9 @@ static inline void radix_sort(short offset, uint64_t max, uint64_t *source, uint
     for (sp = source, end = source + max; sp < end; sp++) {
         cp = count + ByteOf(sp, offset);
         dest[*cp] = *sp;
-        ++(*sp);
+        ++(*cp);    // fix dest pointer
     }
+
 }
 
 /*
@@ -89,11 +107,64 @@ static inline void radix_sort(short offset, uint64_t max, uint64_t *source, uint
 void RadixMap_sort(RadixMap *map) {
     uint64_t *source = &map->contents[0].raw;
     uint64_t *temp = &map->temp[0].raw;
+    
     radix_sort(0, map->end, source, temp);
     radix_sort(1, map->end, temp, source);
     radix_sort(2, map->end, source, temp);
     radix_sort(3, map->end, temp, source);
 }
+
+void RadixMap_sort_with_index(RadixMap *map, int index) {
+    uint64_t *source = &map->contents[index].raw;
+    uint64_t *temp = &map->temp[index].raw;
+    radix_sort(0, map->end, source, temp);
+    radix_sort(1, map->end, temp, source);
+    radix_sort(2, map->end, source, temp);
+    radix_sort(3, map->end, temp, source);
+}
+
+// void RadixMap_sort2(RadixMap *map, int start, int end, RMElement *source, RMElement *temp) {
+//     if (end - start <= 1) {
+//         return;
+//     }
+
+//     int num_buckets = 256;
+//     int *counters = calloc(num_buckets, sizeof(int));
+//     int *offsets = calloc(num_buckets, sizeof(int));
+
+//     // Counting sort for the specified range
+//     for (int i = start; i < end; i++) {
+//         uint8_t byte = (source[i].raw >> (start * 8)) & 0xFF;
+//         counters[byte]++;
+//     }
+
+//     // Calculate offsets based on counters
+//     int sum = 0;
+//     for (int i = 0; i < num_buckets; i++) {
+//         offsets[i] = sum;
+//         sum += counters[i];
+//     }
+
+//     // Move elements to their correct positions
+//     for (int i = start; i < end; i++) {
+//         uint8_t byte = (source[i].raw >> (start * 8)) & 0xFF;
+//         temp[offsets[byte] + start] = source[i];
+//         offsets[byte]++;
+//     }
+
+//     // Copy elements back to the source array
+//     memcpy(&source[start], &temp[start], (end - start) * sizeof(RMElement));
+
+//     // Recursively sort each bucket
+//     for (int i = 0; i < num_buckets; i++) {
+//         int bucket_start = start + offsets[i];
+//         int bucket_end = start + offsets[i + 1];
+//         // RadixMap_sort(map, bucket_start, bucket_end, source, temp);
+//     }
+
+//     free(counters);
+//     free(offsets);
+// }
 
 RMElement *RadixMap_find(RadixMap *map, uint32_t to_find) {
     int low = 0;
@@ -116,11 +187,49 @@ RMElement *RadixMap_find(RadixMap *map, uint32_t to_find) {
     return NULL;
 }
 
+int binary_search(RadixMap *map, uint32_t to_find) {
+    int low = 0;
+    int high = map->end - 1;
+    RMElement *data = map->contents;
+
+    while (low <= high) {
+        int middle = low + (high - low) / 2;
+        uint32_t key = data[middle].data.key;
+
+        if (to_find < key) {
+            high = middle - 1;
+        } else {
+            low = middle + 1;
+        }         
+    }
+    return low;
+}
+
+// https://github.com/hysonger/liblcthw/blob/master/src/lcthw/radixmap.c
 int RadixMap_add(RadixMap *map, uint32_t key, uint32_t value) {
     check(key < UINT32_MAX, "Key can't be equal to UINT32_MAX");
 
-    RMElement element = {.data = {.key = key, .value = value}};
+    RMElement element = {.data = {.key = key, .value = value} };
     check(map->end + 1 < map->max, "RadixMap is full.");
+
+    // 1. Use a binary search to find the minimum position for the new element
+    // 2. sort from the position
+
+    // 2.1 find the index 
+    // int insert_index  = binary_search(map, value);
+
+    // printf("%d value max digit\n", get_max_bit_uint8(value));
+    // 2.2 the largest index
+    // added by xiaojiao, 2023/10/11
+    // if (insert_index > map->end) {
+    //     // no sort
+    //     map->contents[map->end++] = element;
+    // } else {
+    //     map->contents[map->end++] = element;
+    //     // RadixMap_sort_with_index(map, insert_index);
+    //     // RadixMap_sort(map); 
+
+    // }
 
     map->contents[map->end++] = element;
 
@@ -143,7 +252,7 @@ int RadixMap_delete(RadixMap *map, RMElement *el) {
         RadixMap_sort(map);
     }
 
-    map->end --;
+    map->end--;
 
     return 0;
 error:

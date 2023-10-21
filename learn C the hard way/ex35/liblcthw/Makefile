@@ -1,6 +1,14 @@
-CFLAGS=-g -O2 -Wall -Wextra -Isrc -rdynamic -DNDEBUG $(OPTFLAGS)
-LIBS=-ldl $(OPTLIBS)
+# CFLAGS=-g -O2 -Wall -Wextra -Isrc -rdynamic -DNDEBUG $(OPTFLAGS)
+LIBS=-ldl -lsort $(OPTLIBS)
 PREFIX?=/usr/local
+
+# added by xiaojiao, 2023/08/27
+# https://stackoverflow.com/questions/18368121/linking-to-bsd-stdlib-h
+
+CFLAGS=-g -O2 -Wall -Wextra -Isrc $(shell pkg-config --cflags libbsd) -rdynamic -DNDEBUG $(OPTFLAGS)
+COMMON_LIBS = $(shell pkg-config --libs libbsd) -ldl $(OPTLIBS)
+LDLIBS=$(COMMON_LIBS)
+# CFLAGS += -I/usr/include/bsd
 
 SOURCES=$(wildcard src/**/*.c src/*.c)
 OBJECTS=$(patsubst %.c,%.o,$(SOURCES))
@@ -20,7 +28,7 @@ dev: all
 # This way tests will not be rebuilt
 $(TESTS): $(TARGET) $(SO_TARGET)
 
-$(TARGET): CFLAGS += -fPIC
+$(TARGET): CFLAGS += -fPIC	
 $(TARGET): build $(OBJECTS)
 	ar rcs $@ $(OBJECTS)
 	ranlib $@

@@ -123,5 +123,86 @@ def bubble_sort(array):
     return array
 
 # bracket.append(example.pop())
-print(merge_sort(example))
+# print(merge_sort(example))
 
+def radix_sort_v1(arr):
+    """radix sort, element in array has to be positive integer
+
+    Args:
+        arr (list): postive integers
+
+    Returns:
+        arr (list): a list which elements in order
+    """
+    # Find the maximum value in the array to determine the number of digits
+    max_value = max(arr)
+    max_digits = len(str(abs(max_value)))
+
+    # Perform radix sort
+    for digit in range(max_digits):
+        # Create 10 buckets (0 to 9)
+        buckets = [[] for _ in range(10)]
+
+        # Place elements into the corresponding buckets
+        for num in arr:
+            # Get the digit value at the current position
+            digit_value = (num // (10 ** digit)) % 10
+            buckets[digit_value].append(num)
+        
+        # Collect elements from the buckets
+        # spread the bucket into one list which only contains integer
+        arr = [num for bucket in buckets for num in bucket]
+    
+    return arr
+
+
+
+def radix_sort_v2(arr):
+    """radix sort, element in array has to be positive integer
+
+    Args:
+        arr (list): postive integers
+
+    Returns:
+        arr (list): a list which elements in order
+    """
+    # Find the maximum value in the array to determine the number of digits
+    max_value = max(arr)
+    max_digits = len(str(abs(max_value)))
+
+    count = []
+    
+    # for digit in range(max_digits):
+    #     digit_count = [0] * 10
+    
+    digit_count = [0] * 10
+    # digit_count = [0] * max_digits
+    # digit = 
+    for num in arr:
+        digit_value = (int)(math.log10(num))
+        # print(digit_value) 
+        digit_count[digit_value] += 1
+        
+    # print(digit_count)
+    # Perform radix sort
+    for digit in range(max_digits):
+        # Create 10 buckets (0 to 9)
+        buckets = [[] for _ in range(10)]
+
+        # Place elements into the corresponding buckets
+        for num in arr:
+            # Get the digit value at the current position
+            digit_value = (num // (10 ** digit)) % 10
+            buckets[digit_value].append(num)
+        
+    
+        # Collect elements from the buckets
+        # spread the bucket into one list which only contains integer
+        arr = [num for bucket in buckets for num in bucket]
+        print(buckets)
+    return arr
+
+# Testing the code
+arr = [170, 45, 75, 90, 802, 24, 2, 66]
+sorted_arr = radix_sort_v2(arr)
+print(sorted_arr)

@@ -1,5 +1,7 @@
 #include "darray_algos.h"
 #include <stdlib.h>
+#include <bsd/stdlib.h>
+// please install bsd library...
 
 int DArray_qsort(DArray *array, DArray_compare cmp) {
     qsort(array->contents, DArray_count(array), sizeof(void *), cmp);

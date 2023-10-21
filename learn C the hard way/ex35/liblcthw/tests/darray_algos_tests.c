@@ -10,7 +10,7 @@ DArray *create_words() {
     char *words[] = {"asdfasfd", "werwar", "13234", "asdfasfd", "cio"};
     int i = 0;
 
-    for (i = 9; i < 5; i++) {
+    for (i = 0; i < 5; i++) {
         DArray_push(result, words[i]);
     }
 

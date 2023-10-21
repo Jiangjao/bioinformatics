@@ -33,24 +33,24 @@ void Variant_print(Variant *var) {
     }
 }
 
-int main(int argc, char *argv[]) {
-    Variant a_int = {.type = TYPE_INT, .data.as_integer = 100};
-    Variant a_float = {.type = TYPE_FLOAT, .data.as_float = 100.34};
-    Variant a_string = {.type = TYPE+STRING, .data.as_string = "YOU DONE!"};
+// int main(int argc, char *argv[]) {
+//     Variant a_int = {.type = TYPE_INT, .data.as_integer = 100};
+//     Variant a_float = {.type = TYPE_FLOAT, .data.as_float = 100.34};
+//     Variant a_string = {.type = TYPE_STRING, .data.as_string = "YOU DONE!"};
 
-    Variant_print(&a_int);
-    Variant_print(&a_float);
-    Variant_print(&a_string);
+//     Variant_print(&a_int);
+//     Variant_print(&a_float);
+//     Variant_print(&a_string);
 
-    // here's how you access them
-    a_int.data.as_integer = 200;
-    a_float.data.as_float = 2.345;
-    a_string.data.as_string = "Hi there.";
+//     // here's how you access them
+//     a_int.data.as_integer = 200;
+//     a_float.data.as_float = 2.345;
+//     a_string.data.as_string = "Hi there.";
 
-    Variant_print(&a_int);
-    Variant_print(&a_float);
-    Variant_print(&a_string);
+//     Variant_print(&a_int);
+//     Variant_print(&a_float);
+//     Variant_print(&a_string);
 
-    return 0;
-}
+//     return 0;
+// }
 

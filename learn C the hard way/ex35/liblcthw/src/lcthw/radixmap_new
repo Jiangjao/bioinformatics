@@ -1,0 +1,29 @@
+static inline void radix_sort(short offset, uint64_t max,
+        uint64_t * source, uint64_t * dest) {
+    uint64_t count[256] = { 0 };
+    uint64_t *cp = NULL;
+    uint64_t *sp = NULL;
+    uint64_t *end = NULL;
+    uint64_t s = 0;
+    uint64_t c = 0;
+
+    // count occurences of every byte value
+    for (sp = source, end = source + max; sp < end; sp++) {
+        count[ByteOf(sp, offset)]++;
+    }
+
+    // transform count into index by summing
+    // elements and storing into same array
+    for (s = 0, cp = count, end = count + 256; cp < end; cp++) {
+        c = *cp;
+        *cp = s;
+        s += c;
+    }
+
+    // fill dest with the right values in the right place
+    for (sp = source, end = source + max; sp < end; sp++) {
+        cp = count + ByteOf(sp, offset);
+        dest[*cp] = *sp;
+        ++(*cp);
+    }
+}
