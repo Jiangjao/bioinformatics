@@ -116,6 +116,9 @@ Extra Credit
 ====
 
 * Implement quicksort, heapsort, and merge sort and then provide a *#define*  that lets you pick between the two, or create a second set of functions you can call.  Use the technique I taught you to read the Wikipedia page for the algorithm, and then implement it with the psuedo-code.
+
+>[source code sorting](sorting.c)
+
 * Compare the performance of your optimizations to the original implementations.
 
 
