@@ -121,6 +121,7 @@ Extra Credit
 
 * Compare the performance of your optimizations to the original implementations.
 
+>[bench_performance.sh](liblcthw/src/lcthw/bench_performance.sh)
 
 
 Extra Credit
