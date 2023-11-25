@@ -128,6 +128,29 @@ Extra Credit
 ====
 
 * Use these sorting functions to create a *DArray_sort_add* that adds elements to the *DArray* but sorts the array after.
+```C
+// /learn_C_the_hard_way/ex35/liblcthw/tests/darray_algos_tests.c
+char *run_add_sort_test(int *(func)(DArray *, DArray_compare), const char *name) {
+    DArray *words = create_words();
+    mu_assert(!is_sorted(words), "Words should start not sorted.");
+
+    debug("--- Testing %s sorting algorithm", name);
+
+    int rc = func(words, (DArray_compare) testcmp);
+    mu_assert(rc == 0, "sort failed");
+    mu_assert(is_sorted(words), "didn't sort it");
+
+    // add 
+    DArray_push(words, "test");
+    mu_assert(is_sorted(words) == 0, "sort it");
+    rc = func(words, (DArray_compare) testcmp);
+    mu_assert(is_sorted(words), "didn't sort it");
+
+    DArray_destroy(words);
+
+    return NULL;
+}
+```
 * Write a *DArray_find* that uses the binary search algorithm from  *RadixMap_find* and the *DArray_compare* to find elements in a sorted *DArray*.
 
 
