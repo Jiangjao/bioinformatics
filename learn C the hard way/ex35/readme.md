@@ -152,7 +152,38 @@ char *run_add_sort_test(int *(func)(DArray *, DArray_compare), const char *name)
 }
 ```
 * Write a *DArray_find* that uses the binary search algorithm from  *RadixMap_find* and the *DArray_compare* to find elements in a sorted *DArray*.
+```C
 
+int DArray_compare(const void *a, const void *b) {
+    DArrayElement *da = (DArrayElement*)a;
+    DArrayElement *db = (DArrayElement*)b;
+
+    return da->key - db->key;
+}
+
+DArray *DArray_find(DArray *array, int key) {
+    int low = 0;
+    int high = array->element_size - 1;
+
+    while(low <= high) {
+        
+        int middle = low + (high - low) / 2;
+        DArrayElement *middleElement = &array->contents[middle];
+
+        int compare = DArray_compare(middleElement, key);
+
+        if(compare == 0) {
+            return middleElement;
+        } else if(compare > 0){
+            high = middle - 1; 
+        } else {
+            low = middle + 1;
+        }
+    }
+
+    return NULL;
+}
+```
 
 
 
