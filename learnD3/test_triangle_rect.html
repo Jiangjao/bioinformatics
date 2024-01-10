@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+</head>
+<body>
+
+        <script src="https://d3js.org/d3.v6.min.js"></script>
+      
+        <script>
+
+const width = 500;
+  const height = 500;
+  
+  const svg = d3.select("body")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+    const data1 = [{ 'group': 'Bacteroidetes', 'T1': 3.75, 'T2': 10.0, 'T3': 20.0, 'T4': 32.5, 'T5': 16.5, 'T6': 11.0, 'T7': 2.5, 'T8': 3.75 },
+        { 'group': 'Firmicutes', 'T1': 14.354066985645932, 'T2': 13.157894736842104, 'T3': 9.210526315789473, 'T4': 10.76555023923445, 'T5': 9.449760765550238, 'T6': 15.550239234449762, 'T7': 14.354066985645932, 'T8': 13.157894736842104 },
+        { 'group': 'Proteobacteria', 'T1': 8.38709677419355, 'T2': 14.838709677419354, 'T3': 21.29032258064516, 'T4': 12.258064516129032, 'T5': 11.612903225806452, 'T6': 12.258064516129032, 'T7': 10.967741935483872, 'T8': 8.38709677419355 },
+        { 'group': 'Thermotogae', 'T1': 16.3075131042516, 'T2': 16.8899242865463, 'T3': 20.3843913803145, 'T4': 11.648223645894001, 'T5': 11.0658124635993, 'T6': 10.483401281304602, 'T7': 7.454863133372161, 'T8': 5.765870704717531 },
+        { 'group': 'Coprothermobacterota', 'T1': 8.88888888888889, 'T2': 12.0, 'T3': 18.666666666666668, 'T4': 14.666666666666666, 'T5': 18.666666666666668, 'T6': 12.0, 'T7': 9.333333333333334, 'T8': 5.777777777777778 }]
+
+        const subgroups = Object.keys(data[0]).slice(1);
+
+        const stackedData = d3.stack()
+            .keys(subgroups)
+            (data1)
+
+        const data = [
+  {row: 1, x: 0, y: 0, width: 50, height: 50},
+  {row: 2, x: 0, y: 50, width: 50, height: 50}, 
+  {row: 2, x: 50, y: 50, width: 50, height: 50},
+  {row: 3, x: 0, y: 100, width: 50, height: 50},
+  {row: 3, x: 50, y: 100, width: 50, height: 50},  
+  {row: 3, x: 100, y: 100, width: 50, height: 50}
+];
+
+svg.selectAll("rect")
+  .data(data)
+  .enter()
+  .append("rect")
+  .attr("x", d => d.x)
+  .attr("y", d => d.y)
+  .attr("width", d => d.width)
+  .attr("height", d => d.height);
+        </script>
+
+</body>
+</html>

@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>D3.js Dynamic Stacked Bar Chart</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <!-- <script src="http://d3js.org/d3.v3.min.js"></script> -->
+    <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+
+    <style>
+        svg .container {
+            width: 100%;
+            height: 100%;
+        }
+
+        * {
+            margin:0;
+            /* padding:0; */
+        }
+
+        .tooltip {
+            position: absolute;
+            background-color: #f9f9f9;
+            padding: 8px;
+            border: 1px solid #ccc;
+            pointer-events: none;
+            font-size: 14px;
+        }
+
+        .basicSettings {
+            /* width: 80%; */
+            position: relative;
+            /* top: 38px; */
+            z-index: 1;
+        }
+
+        .downloadSettings {
+            width: 100%;
+            position: relative;
+            /* top: 18px; */
+            z-index: 2;
+        }
+
+        .sidebar {
+            width: 100%;
+            display: none;
+            /* 初始状态下隐藏下拉框 */
+        }
+
+        .sidebar.show {
+            width: 100%;
+            height: auto;
+            position: relative;
+            /* padding: inherit; */
+            display: block;
+            padding: 10px 11px;
+            /* 点击后显示下拉框 */
+            transition: max-height 0.3s ease;
+            z-index: 1;
+            /* 添加过渡效果 */
+        }
+
+        /* 添加button的样式 */
+        .button-like {
+            display: inline-block;
+            padding: 10px 0 10px 10%;
+            background-color: #4CAF50;
+            color: white;
+            text-align: left;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 90%;
+        }
+
+        .button-like:hover {
+            background-color: #45a049;
+        }
+
+        .button-like:active {
+            background-color: #3e8e41;
+        }
+
+        /* TODO:xiaojiao, @media screen and (max-width: 700px) 如何使用2023/10/23 */
+        div.tooltip-donut {
+            position: absolute;
+            text-align: center;
+            padding: .5rem;
+            background: #FFFFFF;
+            color: #313639;
+            border: 1px solid #313639;
+            border-radius: 8px;
+            pointer-events: none;
+            font-size: 1.3rem;
+        }
+
+        icon-i {
+            text-align: center;
+        }
+
+        .dropdown {
+            /* padding: 10px 11px; */
+            position: relative;
+            /* display: inline-block; */
+        }
+
+        .dropdown-content {
+            display: none;
+            position: relative;
+            /* top: 100%; */
+            /* left: 0; */
+            width: 100%;
+            /* padding: 10px 11px; */
+            background-color: #4CAF50;
+        }
+
+
+        .settingContent {
+            display: block;
+            position: relative;
+            /* top: 100%; */
+            /* left: 0; */
+            width: 100%;
+            padding: 10px 11px;
+        }
+
+        /* div#settingContent {} */
+        /* .dropdown:hover .dropdown-content {
+            display: block;
+
+        } */
+    </style>
+</head>
+
+<body>
+    <!-- <div>
+        <label for="color-input">颜色：</label>
+        <input type="color" id="color-input">
+    </div> -->
+    <!-- <div class="tooltip" id="tooltip"></div> -->
+
+    <div style="position: absolute; width:100%; height: 100%;">
+        <div
+            style="top:0px;background:#F9F9F9;height:40px;border-bottom:1px solid #DDD;margin:0px;border-radius:8px 8px 0 0;">
+            <div style="float:right;margin:8px 10px 0 0;"> 1<a class="draw_autoscreen icon-btn"
+                    style="width:25px;height:25px;display: block;float:left;border-radius:2px;cursor: pointer;position: relative;margin-right:25px;"
+                    active="active"> <i class="icon-i gd-icon-autofix" title="自适应"
+                        style="background-image: url(&quot;/tools/Public/Home/dist/js/Param/gd-autofix.png&quot;); display: inline-block; position: absolute; width: 20px; height: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); background-repeat: no-repeat;"></i></a>
+                <a class="draw_fullscreen icon-btn"
+                    style="width:25px;height:25px;display: block;float:left;border-radius:2px;cursor: pointer;position: relative;margin-right:25px;">
+                    2<i class="icon-i gd-icon-fullscreen" title="全屏/退出"
+                        style="background-image: url(&quot;/tools/Public/Home/dist/js/Param/gd-fullscreen.png&quot;); display: inline-block; position: absolute; width: 20px; height: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); background-repeat: no-repeat;"></i></a>
+                <a class="draw_zoom_up icon-btn"
+                    style="width:25px;height:25px;display: block;float:left;border-radius:2px;cursor: pointer;position: relative;margin-right:25px;">
+                    <i class="icon-i gd-icon-enlarge" title="放大"
+                        style="background-image: url(&quot;/tools/Public/Home/dist/js/Param/gd-enlarge.png&quot;); display: inline-block; position: absolute; width: 20px; height: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); background-repeat: no-repeat;"></i></a>
+                <a class="draw_zoom_down icon-btn"
+                    style="width:25px;height:25px;display: block;float:left;border-radius:2px;cursor: pointer;position: relative;margin-right:25px;">
+                    <i class="icon-i gd-icon-lessen" title="缩小"
+                        style="background-image: url(&quot;/tools/Public/Home/dist/js/Param/gd-lessen.png&quot;); display: inline-block; position: absolute; width: 20px; height: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); background-repeat: no-repeat;">
+                    </i></a>
+                <a class="draw_open_param icon-btn gd-border-active" title="参数调整"
+                    style="width:25px;height:25px;display: block;float:left;border-radius:2px;cursor: pointer;position: relative;margin-right:25px;">
+                    <i class="icon-i gd-icon-param" title="修改参数"
+                        style="background-image: none; display: inline-block; position: absolute; width: 20px; height: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); background-repeat: no-repeat;">
+                    </i></a>
+                <a class="draw_open_eye icon-btn" title="图片尺寸修改"
+                    style="width:25px;height:25px;display: block;float:left;border-radius:2px;cursor: pointer;position: relative;margin-right:25px;">
+                    <i class="icon-i gd-icon-eye"
+                        style="background-image: url(&quot;/tools/Public/Home/dist/js/Param/gd-eye.png&quot;); display: inline-block; position: absolute; width: 20px; height: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); background-repeat: no-repeat;"></i>
+                </a>
+
+            </div>
+
+            <div style="margin-left: auto; width: 20%;z-index: 1; position: absolute; right:5%; top:40px;">
+                <h1> setting here</h1>
+                <!-- <div style="align-items: center; display: flex;   gap: 10px;">
+                    <p>
+                        <a class="draw_open_download icon-btn" title="图片下载"
+                            style="width:25px;height:25px;display: block;float:left;border-radius:2px;cursor: pointer;position: relative;margin-right:25px;">
+                            <i class="icon-i gd-icon-download"
+                                style="display: inline-block; position: absolute; width: 20px; height: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); background-repeat: no-repeat;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-cloud-arrow-down" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                        d="M7.646 10.854a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 9.293V5.5a.5.5 0 0 0-1 0v3.793L6.354 8.146a.5.5 0 1 0-.708.708l2 2z" />
+                                    <path
+                                        d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z" />
+                                </svg>
+                            </i>
+                            <span>download</span></a>
+                    </p>
+                </div> -->
+
+                <div class="dropdown">
+                    <div id="dropdownTest" class="downloadSettings" style="background:#F9F9F9;width: 100%;">
+                        <p class="button-like">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-cloud-arrow-down" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M7.646 10.854a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 9.293V5.5a.5.5 0 0 0-1 0v3.793L6.354 8.146a.5.5 0 1 0-.708.708l2 2z" />
+                                <path
+                                    d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z" />
+                            </svg>
+                            download
+                        </p>
+                    </div>
+                    <div id="dropdownContent" class="dropdown-content"
+                        style="background:#F9F9F9;width: 100%;display: none;">
+                        <div class="sidebar show">
+                            <h2>Basic Settings</h2>
+                            <button id="export">下载 SVG</button>
+                            <!-- <br> -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <br> -->
+                <div class="dropdown" style="background:#F9F9F9;width: 100%;">
+                    <div class="basicSettings">
+                        <!-- <button type="button" id="exitBtn" class="btn" onClick="exitFullscreen()">退出全屏</button> -->
+                        <p type="button" id="btn" class="btn button-like" title="fullscreen">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-gear" viewBox="0 0 16 16">
+                                <path title="修改参数"
+                                    d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+                                <path title="修改参数"
+                                    d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z" />
+                            </svg>
+                            <path title="fullscreen" fill-rule="evenodd"
+                                d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z" />
+                            </svg>
+                            setting
+                        </p>
+                    </div>
+                    <div class="settingContent" id="settingContent">
+                        <div class="sidebar show">
+                            <h2>Basic Settings</h2>
+                            <label for="textColor">Text Color:</label>
+                            <input type="color" id="textColor">
+                            <br>
+                            <label for="yAxisColor">Y Axis Color:</label>
+                            <input type="color" id="yAxisColor">
+                            <br>
+                            <label for="xAxisColor">X Axis Color:</label>
+                            <input type="color" id="xAxisColor">
+                            <br>
+                            <label for="axisWidth">Axis Width:</label>
+                            <input type="number" id="axisWidth" min="0" step="1" value="1">
+                            <br>
+                            <br>
+                            <button id="reset">Reset</button>
+                            <button id="applySettings">Apply Settings</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- <br> -->
+                <!-- <br> -->
+                <div class="btns" id= "btns" style="background:#F9F9F9;width: 100%;">
+
+                    <!-- <button type="button" id="exitBtn" class="btn" onClick="exitFullscreen()">退出全屏</button> -->
+                    <p type="button" id="btn" class="btn button-like fullScreen" title="fullscreen">
+                        <svg title="fullscreen" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-arrows-fullscreen" viewBox="0 0 16 16">
+                            <path title="fullscreen" fill-rule="evenodd"
+                                d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z" />
+                        </svg>
+                        全屏
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="basicSettings" style="margin-left: auto; position: relative;">
+
+            </div>
+
+            <input type="file" id="fileInput">
+            <button onclick="parseFile()">解析文件</button>
+
+        </div>
+        <div id="container" style="display: flex; width: 100%;height: 100%;">
+            <svg id="chart"></svg>
+        </div>
+
+    </div>
+    <script>
+        let import_data = null;
+        function parseFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+
+            let data = [];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    const contents = event.target.result;
+
+                    // 在这里处理文件内容
+                    // console.log('文件内容:', contents);
+                    const temp = d3.csvParse(contents, function (line) {
+
+                        // TODO:xiaojiao, fix error here... 2023/10/25
+                        if (line) {
+                            console.log(line);
+                        }
+                        // csvdata.forEach(function(d) {
+                        //     d.value = +d.value;
+                        // });
+                        data.push(line);
+                        // console.log(csvdata);
+                        // return csvdata
+                    }) // [{foo: "1", bar: "2"}, columns: ["foo", "bar"]]
+                    import_data = data;
+                    console.log("data", data);
+                    // return [csvdata]
+                }
+                reader.readAsText(file);
+            } else {
+                console.error('未选择文件');
+            }
+        }
+    </script>
+
+    <script>
+        // 基本设置表单元素
+        const textColorInput = document.getElementById("textColor");
+        const yaxisColorInput = document.getElementById("yAxisColor");
+        const xaxisColorInput = document.getElementById("xAxisColor");
+        const axisWidthInput = document.getElementById("axisWidth");
+        const applySettingsButton = document.getElementById("applySettings");
+
+        // 默认设置
+        let textColor = "#000000";
+        let yaxisColor = "#000000";
+        let xaxisColor = "#000000";
+        let axisWidth = 1;
+
+        // 应用设置按钮点击事件处理程序
+        applySettingsButton.addEventListener("click", applySettings);
+
+        function applySettings() {
+            // 获取用户选择的设置值
+            textColor = textColorInput.value;
+            yaxisColor = yaxisColorInput.value;
+            xaxisColor = xaxisColorInput.value;
+            axisWidth = +axisWidthInput.value;
+
+            // 更新SVG图形属性
+            d3.select("#chart").selectAll("text")
+                .style("fill", textColor);
+
+            // TODO:xiaojiao, 更新图形的属性
+            d3.select("#chart").selectAll(".axis path, .axis line")
+                // .style("stroke", axisColor)
+                .style("stroke-width", axisWidth);
+
+            d3.select("#xaxis").style("stroke", xaxisColor).style("stroke-width", axisWidth);
+            d3.select("#yaxis").style("stroke", yaxisColor);
+
+            console.log("", svg.selectAll(".axis path, .axis line"));
+        }
+
+        // 获取 "Basic Settings" 元素
+        const basicSettings = document.querySelector(".basicSettings");
+
+        // icon-i gd-icon-param
+        console.log("basicSettings", basicSettings);
+
+
+        // 获取下拉框元素
+        const settingContent = document.querySelector("#settingContent");
+
+
+
+        // 添加点击事件监听器
+        basicSettings.addEventListener("click", function () {
+            // 切换下拉框的显示状态
+            // 获取元素的位置信息
+            var rect = this.getBoundingClientRect();
+            var position = {
+                top: rect.top,
+                left: rect.left,
+                right: rect.right,
+                bottom: rect.bottom
+            };
+            settingContent.style.display = (settingContent.style.display === "none") ? "block" : "none";
+
+        });
+
+
+        // 按钮点击事件处理函数
+        function handleButtonClick(contentElement) {
+            // 隐藏所有内容元素
+            // downloadDropdown.style.display = "none";
+            // settingsDropdown.style.display = "none";
+            // content3.style.display = "none";
+
+            // 显示指定的内容元素
+            contentElement.style.display = "block";
+
+        }
+
+        const downloadSettings = document.querySelector(".downloadSettings");
+
+        downloadSettings.addEventListener("click", function () {
+
+            console.log("download");
+        });
+
+        // 构建下拉展开
+        var dropdownTest = document.getElementById("dropdownTest")
+        var dropdownContent = document.getElementById("dropdownContent");
+
+        dropdownTest.addEventListener("click", function () {
+            dropdownContent.style.display = (dropdownContent.style.display === "none") ? "block" : "none";
+
+        });
+
+    </script>
+    <script>
+        // 数据
+        const data = [
+            { year: 2010, apples: 10, oranges: 15, bananas: 20 },
+            { year: 2011, apples: 12, oranges: 18, bananas: 22 },
+            { year: 2012, apples: 8, oranges: 16, bananas: 24 },
+            { year: 2013, apples: 15, oranges: 12, bananas: 18 },
+            { year: 2014, apples: 20, oranges: 10, bananas: 16 }
+        ];
+        // const data = [{ 'Phylum': 'Bacteroidetes', 'T1': 15, 'T2': 40, 'T3': 80, 'T4': 130, 'T5': 66, 'T6': 44, 'T7': 10, 'T8': 15 }, 
+        // { 'Phylum': 'Firmicutes', 'T1': 120, 'T2': 110, 'T3': 77, 'T4': 90, 'T5': 79, 'T6': 130, 'T7': 120, 'T8': 110 },
+        //  { 'Phylum': 'Proteobacteria', 'T1': 130, 'T2': 230, 'T3': 330, 'T4': 190, 'T5': 180, 'T6': 190, 'T7': 170, 'T8': 130 }, 
+        //  { 'Phylum': 'Thermotogae', 'T1': 280, 'T2': 290, 'T3': 350, 'T4': 200, 'T5': 190, 'T6': 180, 'T7': 128, 'T8': 99 }, 
+        //  { 'Phylum': 'Coprothermobacterota', 'T1': 200, 'T2': 270, 'T3': 420, 'T4': 330, 'T5': 420, 'T6': 270, 'T7': 210, 'T8': 130 }]
+
+        // const data = [{'Phylum': 'Bacteroidetes', 'T1': 15, 'T2': 40, 'T3': 80, 'T4': 130, 'T5': 66, 'T6': 44, 'T7': 10, 'T8': 15}, 
+        // {'Phylum': 'Firmicutes', 'T1': 120, 'T2': 110, 'T3': 77, 'T4': 90, 'T5': 79, 'T6': 130, 'T7': 120, 'T8': 110}, 
+        // {'Phylum': 'Proteobacteria', 'T1': 130, 'T2': 230, 'T3': 330, 'T4': 190, 'T5': 180, 'T6': 190, 'T7': 170, 'T8': 130},
+        //  {'Phylum': 'Thermotogae', 'T1': 280, 'T2': 290, 'T3': 350, 'T4': 200, 'T5': 190, 'T6': 180, 'T7': 128, 'T8': 99}, 
+        //  {'Phylum': 'Coprothermobacterota', 'T1': 200, 'T2': 270, 'T3': 420, 'T4': 330, 'T5': 420, 'T6': 270, 'T7': 210, 'T8': 130}]
+        // TODO:xiaojiao, 如何更新数据后，自动重新draw呢？
+        function processData(import_data) {
+            if (!import_data) {
+                return;
+            }
+
+            let data = import_data;
+
+            // 在这里继续处理数据和进行可视化
+            // ...
+
+            // 示例：打印数据
+            // console.log(data);
+        }
+        processData(import_data)
+        // if (!import_data) {
+        //     return;
+        // }
+        // let data = import_data;
+
+        // 设置绘图区域和尺寸
+        const margin = { top: 20, right: 30, bottom: 30, left: 50 };
+        const width = 600 - margin.left - margin.right;
+        const height = 400 - margin.top - margin.bottom;
+
+        // 创建比例尺
+        // TODO:xiaojiao ，取得data的第一个元素
+        // TODO:xiaojiao, d3.js中指定x轴，y轴数据 2023/10/26
+        const xScale = d3.scaleBand()
+            .domain(data.map(d => d.year))
+            .range([0, width])
+            .padding(0.1);
+
+        const yScale = d3.scaleLinear()
+            .domain([0, d3.max(data, d => d3.sum(Object.values(d).slice(1)))])
+            .range([height, 0]);
+
+        // 创建 SVG 容器
+        const svg = d3.select("#chart")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`)
+            .style("cursor", "crosshair");
+
+        // 获取父元素的宽度
+        var parentWidth = d3.select("#container").node().clientWidth;
+
+        // 选择 SVG 元素并设置宽度
+        d3.select("#chart")
+            .attr("width", parentWidth);
+
+        // 获取父元素的高度
+        var parentHeight = d3.select("#container").node().clientHeight;
+
+        // 选择 SVG 元素并设置宽度
+        d3.select("#chart")
+            .attr("height", parentHeight);
+
+        // 创建堆叠数据
+        const stack = d3.stack().keys(Object.keys(data[0]).slice(1));
+        const stackedData = stack(data);
+
+        // 创建颜色比例尺
+        const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+
+        function drawStackRect(data) {
+            const stack = d3.stack().keys(Object.keys(data[0]).slice(1));
+            const stackedData = stack(data);
+
+            // 绘制堆叠矩形
+            const rects = svg.selectAll("g")
+                .data(stackedData)
+                .enter().append("g")
+                .attr("class", "group")
+                .attr("fill", (_, i) => colorScale(i))
+                .selectAll("rect")
+                .data(d => d)
+                .join(
+                    // 处理新加入的元素
+                    function (enter) {
+                        // 对新加入的元素调用 append 方法创建 <rect> 元素
+                        console.log("enter draw new data 2");
+                        return enter.append('rect');
+                    },
+                    // 处理已存在的元素
+                    function (update) {
+                        // 设置已存在元素的透明度为 1
+                        console.log("update draw existence 2");
+                        //  console.log(svg.select(".group").style("fill", (_, i) => "#911818"));
+                        //  return update.attr("fill", (_, i) => "#911818");
+                        update.each(function (d, i) {
+                            // 在这里打印颜色
+                            console.log("Color of group element:", "#911818");
+                        });
+                        return update
+                        // .select(".group")
+                        // .style("fill", (_, i) => "#911818");
+
+                        return update.style('opacity', 0.1);
+                    }
+                )
+                // .enter().append("rect")
+                .attr("x", d => xScale(d.data.year))
+                .attr("y", d => yScale(d[1]))
+                .attr("height", d => yScale(d[0]) - yScale(d[1]))
+                .attr("width", xScale.bandwidth())
+                .transition()
+                .duration(800)
+                .delay((_, i) => i * 100)
+                .ease(d3.easeLinear);
+            // console.log(data);
+            return rects;
+            // console.log("enter drawRect");
+        }
+        const rects = drawStackRect(data);
+
+        // tool
+        const dataWithoutBananas = data.map(function (d) {
+            // 创建一个新的对象，将原始属性复制到新对象中
+            const newData = Object.assign({}, d);
+
+            // 删除 bananas 属性
+            delete newData.bananas;
+            // console.log(newData);
+            return newData;
+        });
+
+        // 添加 x 轴
+        const xAxis = svg.append("g")
+            .attr("transform", `translate(0, ${height})`)
+            .call(d3.axisBottom(xScale));
+
+        // 使用 D3 获取 x 轴元素
+        const xAxiselement = d3.select(xAxis.node());
+
+        // 添加y轴 id
+        const xfirstChild = xAxiselement.select(":first-child");
+        xfirstChild.attr("id", "xaxis");
+
+        // 添加 y 轴
+        const yAxis = svg.append("g")
+            .call(d3.axisLeft(yScale));
+
+        // 使用 D3 获取 y 轴元素
+        const yAxiselement = d3.select(yAxis.node());
+
+        // 添加y轴 id
+        const yfirstChild = yAxiselement.select(":first-child");
+        yfirstChild.attr("id", "yaxis");
+
+        // 监听颜色输入框的变化
+        // d3.select("#color-input").on("input", function () {
+        //     const color = d3.select(this).property("value");
+        //     rects.attr("fill", color);
+        //     console.log("color input first1");
+        // });
+
+        // 创建一个包含文字和按钮的组
+        var legendGroup = svg.append("g")
+            .attr("class", "legend-group")
+            .attr("transform", "translate(" + (width) + ", 20)")
+
+        // 添加文字
+        legendGroup.selectAll(".legend")
+            .data(Object.keys(data[0]).slice(1))
+            .enter()
+            .append("text")
+            .attr("class", "legend")
+            .attr("x", 10)
+            .attr("y", (_, i) => i * 20)
+            .text(d => d)
+            .attr("fill", (_, i) => colorScale(i))
+            .style("cursor", "pointer")
+            .on("click", function (d, i) {
+                var selectedElement = d3.select(this);
+
+                var temp = i;
+
+                // 检查当前元素的透明度
+                var currentOpacity = parseFloat(selectedElement.style("opacity"));
+                // console.log("selectedElement", this);
+                if (currentOpacity < 1) {
+                    // 如果透明度小于1，恢复原样式
+                    selectedElement.style("opacity", 1);
+                    // console.log(`${i}`);
+                    svg.selectAll(".group").style("opacity", function (_, i) {
+                        // console.log("_ is...", _);
+                        if (_.key == temp) {
+                            console.log("well done");
+
+                            // return "red";
+                            return 1;
+                        } else {
+                            // console.log("change color _.key here", `${i}`);
+                            return 1;
+                        }
+                    });
+
+                } else {
+                    // 否则，降低透明度
+                    selectedElement.style("opacity", 0.5);
+                    // 去除bananas
+                    const newdata = dataWithoutBananas;
+
+                    //     // TODO:xiaojiao, 获取对应元素的的key，并比较2023/10/19
+
+                    svg.selectAll(".group")
+                        // 选择所有子元素节点
+                        .each(function (_, i) {
+
+                            // TODO:xiaojiao, 获取对应元素的的key，并比较2023/10/19
+                            if (_.key == temp) {
+                                // console.log("well done");
+                                console.log("debug here", this, i);
+                                console.log("this, _, i, temp", this, _, i, temp); // 打印子元素节点的 DOM 节点对象
+                                console.log("select group", d3.select(this).style("opacity"));
+                                d3.select(this).style("opacity", 0.5);
+                                // return "red";
+                                // return 0.5;
+                            } else {
+                                // FIXME:xiaojiao, 这几步子涉及了重复计算..
+                                // return colorScale(i);
+                                console.log("this", this);
+                                return 1;
+                            }
+                        });
+                    // update data
+                    // TODO:it doesn't not work...
+                    // 更新数据并重新绘制矩形
+                    // const dataWithoutBananas = dataWithoutBananas.map(function(d) {
+                    //     const newData = Object.assign({}, d);
+                    //     delete newData.bananas;
+                    //     return newData;
+                    // });
+                    // drawStackRect(newdata);
+                    // console.log(data);
+                }
+
+                // 进行其他按钮点击事件的处理...
+            });
+
+        // // 添加按钮样式
+        // legendGroup.selectAll(".button")
+        // .data(Object.keys(data[0]).slice(1))
+        // .enter()
+        // .append("rect")
+        // .attr("class", "button")
+        // .attr("x", -10)
+        // .attr("y", (_, i) => i * 20 - 12)
+        // .attr("width", 20)
+        // .attr("height", 20)
+        // .attr("fill", "lightgray")
+        // ;
+
+        // 鼠标悬停事件处理
+        svg.selectAll("rect")
+            .on("mouseover", handleMouseOver)
+            .on("mouseout", handleMouseOut);
+
+
+        // var tip = d3.tip()
+        //     //类名可以自己设置；假如另有一个矩阵图，也需要添加d3-tip，则应创建2个tip，类名可分别设置为d3-tip_bar，d3-tip_matrix，方便分别控制。
+        //     .attr('class', 'd3-tip')
+        //     .offset([-10, 0])
+        //     .html(function(d) {
+        //     //d是数据集中的一条数据，它和一个矩形条绑定在一起。
+        //     return "<strong>Frequency:</strong> <span style='color:red'>" + d.frequency + "</span>";
+        //     })
+        // //其中html属性也可另行单独定义
+        // tip.html(function (d) {
+        //     let html_str = "<strong>Frequency:</strong> <span style='color:red'>" + d.frequency + "</span>";
+        //     return html_str;
+        // })
+
+        // // 调用tip
+        // svg.call(tip);	//调用指定函数一次，传入参数返回svg，相当于手动调用函数
+
+        // 创建悬停提示框
+        // const tooltip = d3.select(".tooltip");
+        var tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .attr("position", "absolute")
+            .style("opacity", 0);
+
+        // console.log(tooltip)
+        function handleMouseOver(d, i) {
+            // 计算矩形的位置和大小
+            const rect = this.getBoundingClientRect();
+
+            // console.log(rect)
+            // console.log(i)
+            // TODO:xiaojiao, 获取元素的大小
+            const data = d3.select(this).data();
+            // console.log(data);
+            // 获取当前矩形元素的父元素（g）上绑定的堆叠数据
+            const stackedData = d3.select(this.parentNode).datum();
+            // console.log(stackedData);
+
+            // 设置悬停提示框的内容和位置
+            tooltip.html(` ${stackedData.key}, Value: ${i.data[stackedData.key]}`)
+                .style("left", `${rect.left + rect.width / 2}px`)
+                .style("top", `${rect.top - 30}px`)
+                .style("opacity", 1);
+            // console.log("test")
+        }
+
+        function handleMouseOut() {
+            // 隐藏悬停提示框
+            tooltip.style("opacity", 0);
+        }
+
+
+        // https://d3-graph-gallery.com/index.html
+        // https://www.d3indepth.com/enterexit/
+        // https://stackoverflow.com/questions/64320537/d3-v6-zoom-and-drag-functionality
+
+        // 修复了zoom 抖动的, 没有绑定好容器
+        // https://juejin.cn/post/7257895211710955581
+        // 取得第一g元素
+        const g = d3.select("#chart").select("g");
+        g.attr("id", "content");
+        const zoom = d3.zoom().on('zoom', () => {
+            d3.select("#chart").attr('transform', d3.zoomTransform(d3.select("#chart").node()));
+        })
+
+        d3.select("#chart").call(
+            d3.zoom().on('zoom', (e) => {
+                const transform = `translate(${e.transform.x},${e.transform.y}) scale(${e.transform.k})`
+                g.attr('transform', transform)
+            })
+        )
+
+        // FIXME:xiaojiao,添加了zoomIdentit
+        // svg.call(zoom, d3.zoomIdentity)
+        //     .on('dblclick.zoom', null); // 禁用双击缩放
+
+        // 复位
+        // 创建复位按钮
+        const resetButton = d3.select("#reset")
+            .on("click", resetZoom);
+
+        resetZoom();
+
+        // FIXME:xiaojiao, 这个没有立即更新，是为啥？ 2023/1023
+        function resetZoom() {
+            // 将缩放和平移重置为初始状态
+            // d3.select("#container").transition()
+            //     .duration(500)
+            //     .call(zoom.transform, d3.zoomIdentity);
+            // svg.attr("transform", `translate(${margin.left},${margin.top})`);
+            // d3.select("#chart").transition().duration(500).call(zoom.transform, d3.zoomIdentity);
+            svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity);
+            // d3.select("#container").transition()
+            // .duration(500)
+            // .call(zoom.transform, d3.zoomIdentity);
+
+            // .on("end", function() {
+            //     d3.select("#chart").transition().duration(500).call(zoom.transform, d3.zoomIdentity);
+            //     console.log("testttt auto by clicking");
+            // });
+            // autoZoom();
+        }
+
+        // content auto reset
+        const zoomObj = d3.zoom().scaleExtent([1 / 50, 2]);
+        document.onkeydown = (e) => {
+            if (e.keyCode === 17) {
+                autoZoom(
+                    zoomObj,//传入zoomObj
+                    'chart',//<svg>的id
+                    'content',//<g>的id
+                    {
+                        row: 20,
+                        col: 10
+                    },//间隙参数（自定）
+                    1000 // 补间时长（自定）
+                );
+                console.log("press", e.keyCode);
+            }
+        }
+
+        //autoZoom() function body
+        /**
+          @param zoomObj: 放缩对象，设置了放缩比率
+          @param svgContainerId: 容器 <svg>
+          @param svgBodyId: 画布 <g>
+          @param marginParam: 间隙参数（自定义）
+          @param duration: 补间时长
+        **/
+        const autoZoom = (zoomObj, svgContainerId, svgBodyId, marginParam, duration) => {
+            const svgContainer = document.querySelector(`#${svgContainerId}`);
+            const svgBody = d3.select(`#${svgBodyId}`);
+            if (!svgContainer) {
+                return;
+            }
+            console.log("test auto reset");
+            const viewBox = svgBody.node().getBBox();//必须用d3.select,才有getBox，获取到长和宽
+
+            //svg（它是静止的）
+            const containerWidth = svgContainer.clientWidth//svg标签的宽
+            const containerHeight = svgContainer.clientHeight//svg标签的高
+
+            // margin setting
+            const rowMargin = marginParam.row
+            const colMargin = marginParam.col
+
+            //计算放缩倍数
+            const scale = Math.min((containerWidth - rowMargin) / viewBox.width, (containerHeight - colMargin) / viewBox.height)
+
+            //计算如果要居中，画布需要的偏移量
+            const offsetX = (containerWidth - rowMargin) / 2 - (viewBox.x + viewBox.width / 2) * scale
+            const offsetY = (containerHeight - colMargin) / 2 - (viewBox.y + viewBox.height / 2) * scale
+
+            // d3.zoomIdentity:缩放参数，返回Transform{k:1,x:0,y:0}
+            const t = d3.zoomIdentity.translate(offsetX + rowMargin / 2, offsetY).scale(scale)
+
+            //计算完毕得到放缩参数t，<svg>标签调用zoomObj和计算好的t
+            d3.select(`#${svgContainerId}`).transition().duration(duration).call(zoomObj.transform, t)
+            console.log("Finished...");
+        }
+
+
+        //需要修改特定transform的函数，以autoZoom为例
+        // 链接：https://juejin.cn/post/7257895211710955581
+        // const autoZoom = (transformX, transformY, k) => {
+        //     const new_transform = d3.zoomIdentity.translate(transformX, transformY).scale(k);
+        //     d3.select('svg').call(zoom.transform, new_transform);
+        // }
+
+
+
+    </script>
+    <script>
+        // 全屏设置
+        let isFullscreen = false;
+
+        function toggleFullscreen() {
+            if (isFullscreen) {
+                exitFullscreen();
+            } else {
+                fullScreen();
+            }
+
+            isFullscreen = !isFullscreen;
+        }
+
+        function fullScreen() {
+            var de = document.documentElement;
+            if (de.requestFullscreen) {
+                de.requestFullscreen();
+            } else if (de.mozRequestFullScreen) {
+                de.mozRequestFullScreen();
+            } else if (de.webkitRequestFullScreen) {
+                de.webkitRequestFullScreen();
+            }
+        }
+
+        function exitFullscreen() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            }
+        }
+
+
+        document.getElementById("btns").addEventListener("click", function () {
+            toggleFullscreen();
+        })
+        //  $("#btn").click(fullScreen()) // 注意会报错
+
+    </script>
+
+
+</body>
+
+</html>

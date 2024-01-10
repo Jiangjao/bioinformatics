@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>D3 Hover Effect Example</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <style>
+        .tooltip {
+            position: absolute;
+            background-color: #f9f9f9;
+            padding: 8px;
+            border: 1px solid #ccc;
+            pointer-events: none;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <svg id="chart" width="400" height="300"></svg>
+
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        // 创建数据
+        const data = [10, 20, 30, 40, 50];
+
+        // 创建比例尺
+        const xScale = d3.scaleBand()
+            .domain(data.map((d, i) => i))
+            .range([0, 400])
+            .padding(0.1);
+
+        const yScale = d3.scaleLinear()
+            .domain([0, d3.max(data)])
+            .range([300, 0]);
+
+        // 创建 SVG 容器
+        const svg = d3.select("#chart");
+
+        // 绘制矩形
+        svg.selectAll("rect")
+            .data(data)
+            .enter().append("rect")
+            .attr("x", (d, i) => xScale(i))
+            .attr("y", d => yScale(d))
+            .attr("width", xScale.bandwidth())
+            .attr("height", d => 300 - yScale(d))
+            .attr("fill", "steelblue")
+            .on("mouseover", handleMouseOver)
+            .on("mouseout", handleMouseOut);
+
+        // 创建悬停提示框
+        const tooltip = d3.select("#tooltip");
+
+        function handleMouseOver(d, i) {
+            // 计算矩形的位置和大小
+            const rect = this.getBoundingClientRect();
+
+            console.log("i", i);
+            // 设置悬停提示框的内容和位置
+            tooltip.html(`Value: ${i}`)
+                .style("left", `${rect.left + rect.width / 2}px`)
+                .style("top", `${rect.top - 30}px`)
+                .style("opacity", 1);
+        }
+
+        function handleMouseOut() {
+            // 隐藏悬停提示框
+            tooltip.style("opacity", 0);
+        }
+    </script>
+</body>
+</html>

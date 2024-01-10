@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Custom Vertical Scrollbar Example</title>
+    <style>
+        .scroll-container {
+            position: relative;
+            width: 200px; /* 设置滑动区域的宽度 */
+            height: 300px; /* 设置滑动区域的高度 */
+            overflow: hidden; /* 隐藏默认的滚动条 */
+            /* 可根据需要添加其他样式，例如背景颜色、边框等 */
+        }
+
+        .scroll-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            /* 添加滑动内容的高度 */
+        }
+
+        .scroll-bar {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 10px; /* 设置滑动条的宽度 */
+            background-color: gray; /* 设置滑动条的颜色 */
+            /* 可根据需要添加其他样式，例如圆角、阴影等 */
+        }
+
+        .scroll-thumb {
+            position: absolute;
+            width: 100%;
+            background-color: darkgray; /* 设置滑动块的颜色 */
+            /* 可根据需要添加其他样式，例如圆角、阴影等 */
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-container">
+        <div class="scroll-content">
+            <!-- 滑动区域的内容 -->
+            <p>这是滑动区域的内容。</p>
+            <p>这是滑动区域的内容。</p>
+            <p>这是滑动区域的内容。</p>
+            <p>这是滑动区域的内容。</p>
+            <!-- 根据需要添加更多内容 -->
+        </div>
+        <div class="scroll-bar">
+            <div class="scroll-thumb"></div>
+        </div>
+    </div>
+
+    <script src="test_vertical.js"></script>
+</body>
+</html>

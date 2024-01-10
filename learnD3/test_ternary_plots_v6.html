@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<!-- <html lang="en"> -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ternary Plot Demo</title>
+    <style>
+        .ternary-plot {
+            /* width: 500px; */
+            /* height: 500px; */
+        }
+
+        svg .container {
+            width: 100%;
+            height: 100%;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .tooltip {
+            position: absolute;
+            background-color: #f9f9f9;
+            padding: 8px;
+            border: 1px solid #ccc;
+            pointer-events: none;
+            font-size: 14px;
+        }
+
+        .basicSettings {
+            /* width: 80%; */
+            position: relative;
+            /* top: 38px; */
+            z-index: 1;
+            overflow-y: auto;
+        }
+
+        .downloadSettings {
+            width: 100%;
+            position: relative;
+            /* top: 18px; */
+            z-index: 2;
+        }
+
+        .sidebar {
+            width: 100%;
+            display: none;
+            /* 初始状态下隐藏下拉框 */
+        }
+
+        /* .sidebar {
+            width: 300px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        } */
+
+        .sidebar h2 {
+            /* margin-bottom: 10px; */
+            /* border-bottom: 1px solid #ddd; */
+            padding-bottom: 5px;
+        }
+
+        .sidebar label {
+            width: 100px;
+            text-align: left;
+            margin-right: 10px;
+        }
+
+        .sidebar input,
+        .sidebar select {
+            padding: 5px;
+            border: 1px solid #ccc;
+            width: 26%;
+            border-radius: 4px;
+        }
+
+        .sidebar button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            background: #42b983;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .sidebar button:hover {
+            opacity: 0.8;
+        }
+
+        .sidebar input[type="number"] {
+            width: 50px;
+        }
+
+        .sidebar input[type="text"] {
+            width: 36%;
+        }
+
+        .sidebar input[type="range"] {
+            width: 100%;
+            /* transform: rotate(270deg); 添加垂直滚动条 */
+        }
+
+        .sidebar input[type="button"] {
+            opacity: 1;
+        }
+
+        .sidebar input[type="button"]:hover {
+            opacity: 0.8;
+        }
+
+        /* .sidebar br {
+                display: none;
+            } */
+
+        .item {
+            display: flex;
+            align-items: center;
+            text-align: justify;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            width: 97%;
+        }
+
+        /* .item {} */
+
+        .sidebar hr {
+            overflow: hidden;
+            width: 88%;
+        }
+
+        /* 设置hr线 */
+        .item+hr {
+            margin: 10px 0;
+
+        }
+
+        .item+hr:first-child {
+            margin-top: 0;
+        }
+
+        .item+hr {
+            border: none;
+            border-top: 1px dotted #ccc;
+        }
+
+        /* hr {} */
+        /* .item label {
+                width: 120px;
+                } */
+        /* .sidebar {
+                display: flex;
+                flex-wrap: wrap;
+            } */
+
+        .sliderTooltip {
+            /* display: block; */
+            /* position: absolute; */
+            /* styles */
+            /* padding: 10px; */
+            position: absolute;
+            /* top: -30px; */
+            /* left: 134px; */
+            background-color: rgb(204 204 204 / 18%);
+            /* color: #f9f9f9; */
+            padding: 5px;
+            border-radius: 8px;
+            display: none;
+            margin-top: 14%;
+        }
+
+        .tooltip.show {
+            display: block;
+        }
+
+        .sidebar.show {
+            width: 100%;
+            height: auto;
+            position: relative;
+            /* padding: inherit; */
+            display: block;
+            padding: 10px 11px;
+            /* 点击后显示下拉框 */
+            transition: max-height 0.3s ease;
+            z-index: 1;
+            /* 添加过渡效果 */
+        }
+
+        /* 添加button的样式 */
+        .button-like {
+            display: inline-block;
+            padding: 10px 0 10px 10%;
+            background-color: #4CAF50;
+            color: white;
+            text-align: left;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 90%;
+        }
+
+        .button-like:hover {
+            background-color: #45a049;
+        }
+
+        .button-like:active {
+            background-color: #3e8e41;
+        }
+
+        /* TODO:xiaojiao, @media screen and (max-width: 700px) 如何使用2023/10/23 */
+        div.tooltip-donut {
+            position: absolute;
+            text-align: center;
+            padding: .5rem;
+            background: #FFFFFF;
+            color: #313639;
+            border: 1px solid #313639;
+            border-radius: 8px;
+            pointer-events: none;
+            font-size: 1.3rem;
+        }
+
+        icon-i {
+            text-align: center;
+        }
+
+        .dropdown {
+            /* padding: 10px 11px; */
+            position: relative;
+            /* display: inline-block; */
+        }
+
+        .dropdown-content {
+            display: none;
+            position: relative;
+            /* top: 100%; */
+            /* left: 0; */
+            width: 100%;
+            /* padding: 10px 11px; */
+            background-color: #4CAF50;
+        }
+
+
+        .settingContent {
+            display: block;
+            position: relative;
+            /* top: 100%; */
+            /* left: 0; */
+            width: 90%;
+            padding: 10px 11px;
+            /* overflow-y: scroll; */
+            height: 60vh;
+            overflow-y: scroll;
+            /* 设置垂直方向上溢出时显示滚动条 */
+            overflow-x: hidden;
+            scrollbar-width: thin;
+            /* 设置滚动条的宽度 */
+            scrollbar-color: gray lightgray;
+            /* 设置滚动条的颜色 */
+        }
+
+        /* div#settingContent {} */
+        /* .dropdown:hover .dropdown-content {
+            display: block;
+    
+        } */
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/d3-array@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-scale@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-ternary@2"></script>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <!-- <script src="ternary_data.json"></script> -->
+
+</head>
+
+<body>
+    <div style="position: absolute; width:100%; height: 100%;">
+        <div>
+            <div style="float:right;margin:8px 10px 0 0;">
+
+            </div>
+
+            <div
+                style="/*display:none; */ width: 20%;z-index: 1; position: fixed; padding-right: 1%; right:0; top:40px;">
+                <!-- add by xiaojiao 停靠右侧， x轴文本旋转 -->
+                <!-- add by xiaojiao 柱状图宽度调整 -->
+                <div class="dropdown">
+                    <div id="dropdownTest" class="downloadSettings" style="background:#F9F9F9;width: 100%;">
+                        <p class="button-like">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-cloud-arrow-down" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M7.646 10.854a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 9.293V5.5a.5.5 0 0 0-1 0v3.793L6.354 8.146a.5.5 0 1 0-.708.708l2 2z" />
+                                <path
+                                    d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z" />
+                            </svg>
+                            download
+                        </p>
+                    </div>
+                    <div id="dropdownContent" class="dropdown-content"
+                        style="background:#F9F9F9;width: 100%;display: none;">
+                        <div class="sidebar show">
+                            <h3>文本 Settings</h3>
+                            <input type="button" id="export" value="下载SVG">
+                            <!-- <br> -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <br> -->
+                <div class="dropdown" style="background:#F9F9F9;width: 100%;">
+                    <div class="basicSettings">
+                        <!-- <button type="button" id="exitBtn" class="btn" onClick="exitFullscreen()">退出全屏</button> -->
+                        <p type="button" id="btn" class="btn button-like" title="fullscreen">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-gear" viewBox="0 0 16 16">
+                                <path title="修改参数"
+                                    d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+                                <path title="修改参数"
+                                    d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z" />
+                            </svg>
+                            <path title="fullscreen" fill-rule="evenodd"
+                                d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z" />
+                            </svg>
+                            setting
+                        </p>
+                    </div>
+                    <div class="settingContent" id="settingContent">
+                        <div class="sidebar show" id="mainsetting">
+                            <!-- <h2>文本 Settings</h2> -->
+                            <div class="item">
+                                <label for="fontSelect">字体选择:</label>
+                                <!-- https://www.runoob.com/w3cnote/web-font-family.html -->
+                                <select class="form-select" id="fontSelect">
+                                    <option value="">Select</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">Serif Fonts
+                                    </option>
+                                    <option value="Georgia,serif" style="font-family: Georgia,serif">Georgia</option>
+                                    <option value="Palatino Linotype,Book Antiqua,Palatino,serif"
+                                        style="font-family: Palatino Linotype,Book Antiqua,Palatino,serif">Palatino
+                                        Linotype</option>
+                                    <option value="Times New Roman,Times,serif"
+                                        style="font-family: Times New Roman,Times,serif">Times New Roman</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">Sans-Serif
+                                        Fonts</option>
+                                    <option value="Arial,Helvetica,sans-serif"
+                                        style="font-family: Arial,Helvetica,sans-serif">Arial</option>
+                                    <option value="Arial Black,Gadget,sans-serif"
+                                        style="font-family: Arial Black,Gadget,sans-serif">Arial Black</option>
+                                    <option value="Comic Sans MS,cursive,sans-serif"
+                                        style="font-family: Comic Sans MS,cursive,sans-serif">Comic Sans MS</option>
+                                    <option value="Impact,Charcoal,sans-serif"
+                                        style="font-family: Impact,Charcoal,sans-serif">Impact</option>
+                                    <option value="Lucida Sans Unicode,Lucida Grande,sans-serif"
+                                        style="font-family: Lucida Sans Unicode,Lucida Grande,sans-serif">Lucida Sans
+                                        Unicode</option>
+                                    <option selected="selected" value="Tahoma,Geneva,sans-serif"
+                                        style="font-family: Tahoma,Geneva,sans-serif">Tahoma</option>
+                                    <option value="Trebuchet MS,Helvetica,sans-serif"
+                                        style="font-family: Trebuchet MS,Helvetica,sans-serif">Helvetica</option>
+                                    <option value="Verdana,Geneva,sans-serif"
+                                        style="font-family: Verdana,Geneva,sans-serif">Verdana</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">Monospace
+                                        Fonts</option>
+                                    <option value="Courier New,Courier,monospace"
+                                        style="font-family: Courier New,Courier,monospace">Courier New</option>
+                                    <option value="Lucida Console,Monaco,monospace"
+                                        style="font-family: Lucida Console,Monaco,monospace">Lucida Console</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">中文</option>
+                                    <option value="华文细黑,sans-serif" style="font-family: 华文细黑,sans-serif">华文细黑</option>
+                                    <option value="微软雅黑,sans-serif" style="font-family: 微软雅黑,sans-serif">微软雅黑</option>
+                                    <option value="中易宋体,sans-serif" style="font-family: 中易宋体,sans-serif">中易宋体</option>
+                                    <option value="WenQuanYi Micro Hei,sans-serif"
+                                        style="font-family: WenQuanYi Micro Hei,sans-serif">WenQuanYi Micro Hei</option>
+                                    <option value="楷体,serif" style="font-family: 楷体, serif">楷体</option>
+                                    <option value="隶书,sans-serif" style="font-family: 隶书, sans-serif">隶书</option>
+                                    <option value="custom">自定义</option>
+                                </select>
+                                <input type="text" id="fontInput" style="display: none;">
+                            </div>
+
+                            <div class="item">
+                                <label for="fontSizeRange">字体大小: </label>
+                                <input type="range" id="fontSizeRange" min="6" max="36" step="1" value="16">
+                                <!-- <input type="text"> -->
+                                <div class="sliderTooltip">
+                                    <span class="value"></span>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="item">
+                                <label for="textColor">Text Color:</label>
+                                <input type="color" id="textColor">
+                            </div>
+
+                            <div class="item">
+                                <label for="xAxisColor">Axis Color:</label>
+                                <input type="color" id="xAxisColor">
+                            </div>
+
+                            <div class="item">
+                                <label for="xAxisWidth">Axis Width:</label>
+                                <input type="number" id="xAxisWidth" min="0" step="1" value="1">
+                            </div>
+
+                            <div class="item">
+                                <button id="applySettings">Apply Settings</button>
+                            </div>
+
+                            <hr>
+
+                            <!-- <div class="item">
+
+                                <label for="xAxisTextRotatation">X 轴文本角度调整:</label>
+                                <input type="range" id="xAxisTextRotatation" min="0" step="1" max="360" value="0">
+                            </div> -->
+                            
+                            <div class="item">
+                                <label for="contourBandwidth">等值图宽度调节:</label>
+                                <input type="range" id="contourBandwidth" min="0" max="50" step="1" value="2">
+                            </div>
+
+                            <div class="item">
+                                <label for="contourThresholds">等值图密度调节:</label>
+                                <input type="range" id="contourThresholds " min="0" max="50" step="1" value="10">
+                            </div>
+
+                            <div class="item">
+                                <input type="button" id="center-button" value="reset">
+                            </div>
+
+                            <hr>
+                            <div class="item">
+                                <label for="gridLineCount">Grid line count: </label>
+                                <input type="range" id="gridLineCount" min="0" max="20" step="1" value="10">
+                                <!-- <input type="text"> -->
+                                <div class="sliderTooltip">
+                                    <span class="value"></span>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <label for="tickCount">Tick count: </label>
+                                <input type="range" id="tickCount" min="0" max="25" step="1" value="10">
+                                <!-- <input type="text"> -->
+                                <div class="sliderTooltip">
+                                    <span class="value"></span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- <br> -->
+                <!-- <br> -->
+                <div class="btns" id="btns" style="background:#F9F9F9;width: 100%;">
+
+                    <!-- <button type="button" id="exitBtn" class="btn" onClick="exitFullscreen()">退出全屏</button> -->
+                    <p type="button" id="btn" class="btn button-like fullScreen" title="fullscreen">
+                        <svg title="fullscreen" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            fill="currentColor" class="bi bi-arrows-fullscreen" viewBox="0 0 16 16">
+                            <path title="fullscreen" fill-rule="evenodd"
+                                d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z" />
+                        </svg>
+                        全屏
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="basicSettings" style="margin-left: auto; position: relative;">
+
+            </div>
+            <!-- https://observablehq.com/@julesblm/introducing-d3-ternary?collection=@julesblm/ternary-plots -->
+            <!-- <div id="chart" class="ternary-plot"></div> -->
+            <div id="container" class="ternary-plot">
+                <svg id="chart"> </svg>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tools
+        function addEvent(el, type, handler) {
+            if (el.addEventListener) {
+                el.addEventListener(type, handler);
+            } else {
+                el.attachEvent('on' + type, handler);
+            }
+        }
+        // 创建悬停提示框
+        // const tooltip = d3.select(".tooltip");
+        var tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .attr("position", "absolute")
+            .style("opacity", 0);
+
+        function getArrayStats(array) {
+            const sortedArray = array.sort((a, b) => a - b);
+            // 设置保留2 位小数
+            const roundedArray = sortedArray.map(element => element.toFixed(2));
+            const length = roundedArray.length;
+            const minValue = roundedArray[0];
+            const median = roundedArray[Math.floor(length / 2)];
+            const maxValue = roundedArray[length - 1];
+            return [minValue, median, maxValue];
+        }
+
+    </script>
+
+    <script>
+        // 热图数据导入
+        // https://blog.csdn.net/abcbbbd/article/details/124138277
+        // FIXME:xiaojiao, data cannot load into correctly 2023/11/10
+        // FIXME:xiaojiao 输入文件，需要指定Focus列
+        const data = [
+            { 'Sample': 'Pseudomonadaceae', 'C1': 666, 'C2': 764, 'C3': 39, 'T1': 636, 'T2': 579, 'T3': 10, 'M1': 180, 'M2': 726, 'M3': 441, 'Focus':'other' ,'total': 1482, 'C_mean': 489.6666666666667, 'T_mean': 408.3333333333333, 'M_mean': 449.0 },
+            { 'Sample': 'Enterobacteriaceae', 'C1': 723, 'C2': 828, 'C3': 170, 'T1': 79, 'T2': 130, 'T3': 120, 'M1': 110, 'M2': 108, 'M3': 106, 'Focus':'other' ,'total': 912, 'C_mean': 573.6666666666666, 'T_mean': 109.66666666666667, 'M_mean': 108.0 },
+            { 'Sample': 'Comamonadaceae', 'C1': 780, 'C2': 892, 'C3': 330, 'T1': 180, 'T2': 190, 'T3': 170, 'M1': 187, 'M2': 183, 'M3': 90, 'Focus': 'Comamonadaceae', 'total': 1147, 'C_mean': 667.3333333333334, 'T_mean': 180.0, 'M_mean': 153.33333333333334 },
+            { 'Sample': 'Flavobacteriaceae', 'C1': 280, 'C2': 290, 'C3': 350, 'T1': 300, 'T2': 180, 'T3': 160, 'M1': 173, 'M2': 150, 'M3': 190, 'Focus': "Flavobacteriaceae", 'total': 753, 'C_mean': 306.6666666666667, 'T_mean': 213.33333333333334, 'M_mean': 171.0 },
+            { 'Sample': 'Bacteroidaceae', 'C1': 220, 'C2': 270, 'C3': 420, 'T1': 420, 'T2': 270, 'T3': 210, 'M1': 301, 'M2': 300, 'M3': 79, 'Focus': 'Bacteroidaceae', 'total': 941, 'C_mean': 303.3333333333333, 'T_mean': 300.0, 'M_mean': 226.66666666666666 },
+            { 'Sample': 'Clostridiaceae', 'C1': 438, 'C2': 290, 'C3': 330, 'T1': 183, 'T2': 420, 'T3': 50, 'M1': 380, 'M2': 190, 'M3': 120, 'Focus':'Clostridiaceae',' total': 1001, 'C_mean': 352.6666666666667, 'T_mean': 217.66666666666666, 'M_mean': 230.0 },
+        ]
+
+    </script>
+
+    <script>
+
+        // set the dimensions and margins of the graph
+        const margin = { top: 10, right: 30, bottom: 20, left: 50 };
+
+        // 网页窗口在某一大小打开时的宽高
+        var width = window.innerWidth - margin.left - margin.right;
+        var height = window.innerHeight - margin.top - margin.bottom;
+        var radius = 320;
+        var yOffset = radius / 4;
+
+        // 设置circlesize
+        var circlesize = 1.5;
+
+        // var d3Ternary = d3.ternary;
+        ternaryPlot = d3.ternaryPlot;
+        barycentric = d3.barycentric;
+
+        // 待填充字段
+        const labels = [" (A)", " (B)", " (C)"];
+
+        var tickCount = 10;
+
+        // 创建颜色比例尺
+        // TODO: xiaojiao 添加不同的颜色 2023、11、13
+        const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+
+        // 构建ternary data
+
+        const ternaryData = data.map(d => {
+            const [x, y] = basicTernaryPlot()(d);
+            return { x, y, ...d };
+        });
+
+        // <!-- https://observablehq.com/@julesblm/introducing-d3-ternary -->
+        // this function assumes the gridlines arrays have been converted to a single path command
+        grid = (g, gridLines) =>
+            g
+                .selectAll("path")
+                .data(gridLines)
+                .join(
+                    enter =>
+                        enter
+                            .append("path")
+                            .attr("d", d => d)
+                            .attr("stroke", "#e3e3e3")
+                            .attr("stroke-width", (d, i) => (i & 1 ? 1 : 2)),
+                    update => update.attr('d', d => d) // update path command
+                    // theres no exit, lines are only drawn upto 'initial' triangle bounds
+                )
+
+        ticks = (g, ticks) =>
+            g
+                .selectAll("g")
+                .data(d => d, d => d.tick)
+                .join(
+                    enter => {
+                        const tickGroups = enter
+                            .append("g")
+                            .attr("class", "tick")
+                            .attr("transform", d => `translate(${d.position})`);
+
+                        tickGroups
+                            .append("text")
+                            .attr("text-anchor", d => d.textAnchor)
+                            .attr("transform", d => `rotate(${d.angle})`)
+                            .attr("dx", d => (-d.size - 5) * (d.textAnchor === "start" ? -1 : 1))
+                            .attr("dy", ".5em")
+                            .text(d => d.tick);
+
+                        tickGroups
+                            .append("line")
+                            .attr("transform", d => `rotate(${d.angle + 90})`)
+                            .attr("y2", d => d.size * (d.textAnchor === "start" ? -1 : 1))
+                            .attr("stroke", "grey");
+
+                        return tickGroups;
+                    },
+                    update => update.attr("transform", d => `translate(${d.position})`),
+                    exit => exit.remove()
+                )
+
+
+        // add on v3 , subgroups
+        // 
+        // 获取原始数据的所有字段名(除Sample外)
+        const rawColumns = Object.keys(data[0]).slice(1);
+
+        // 得到_mean结尾的列
+        let subgroupsWithMean; // 声明subgroupsWithMean为全局变量
+        subgroupsWithMean = rawColumns.filter(col => col.endsWith('_mean'));
+
+        console.log("subgroupsWithMean >>>", subgroupsWithMean);
+        // 获取groups
+        // FIXME:xiaojiao, groups 应当是模板字符串，从输入获取, 待填充字段
+        const groups = ["Comamonadaceae", "Flavobacteriaceae", "Bacteroidaceae", "Clostridiaceae", "other"];
+
+        // 计算总和，total
+        // FIXME:xiaojiao, 待填充字段
+        const sumTotal = 49831;
+        // 初始化colorSet, 为图添加颜色
+        // const colorSet = []
+
+        // 使用对象对应groups和color
+        const groupColors = {};
+        for (var colorindex = 0; colorindex < groups.length; colorindex++) {
+            const tempGroupIndex = groups[colorindex];
+            const color = colorScale(colorindex);
+            // colorSet.push(color);
+            groupColors[tempGroupIndex] = color;
+        }
+
+        // ...其他计算
+        axisLabels = (g, labels) =>
+            g
+                .selectAll("text")
+                .data(labels, d => d.label)
+                .join(
+                    enter =>
+                        enter
+                            .append("text")
+                            // .attr("dy", (d, i) => (i === 2 ? "-0.5em" : ".5em"))
+                            .attr(
+                                "transform",
+                                (d, i) => `translate(${d.position})rotate(${d.angle})`
+                            )
+                            .attr("text-anchor", "middle")
+                            .text(d => d.label),
+                    update =>
+                        update.attr(
+                            "transform",
+                            (d, i) => `translate(${d.position})rotate(${d.angle})`
+                        ),
+                    exit => exit.remove()
+                )
+
+
+        function basicTernaryPlot() {
+            const normalTernary = barycentric()
+                .a(function (d) {
+                    // 获取字符串带"_mean"的
+                    const meanKeys = Object.keys(d).filter(key => key.endsWith("_mean"));
+                    return d[meanKeys[0]];
+                })
+                .b(function (d) {
+                    // return subgroupsWithMean[1];
+                    const meanKeys = Object.keys(d).filter(key => key.endsWith("_mean"));
+                    return d[meanKeys[1]];
+                })
+                .c(function (d) {
+                    // return subgroupsWithMean[2];
+                    const meanKeys = Object.keys(d).filter(key => key.endsWith("_mean"));
+                    return d[meanKeys[2]]
+                });
+
+            return ternaryPlot(normalTernary)
+                .tickFormat("%")
+                .radius(radius)
+                .labels(labels);
+        }
+
+        function drawBasicTernaryPlot() {
+            let basicTernaryPlot1 = basicTernaryPlot();
+            // 创建SVG元素
+            // const svg = d3.select("body")
+            // .append("svg")
+            // .attr("width", width)
+            // .attr("height", height);
+            const svg = d3.select("#chart")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .attr("class", "chart")
+            // .attr("id", "g_chart")
+
+            // 选择SVG元素
+            const node = svg.node();
+
+            const radius = basicTernaryPlot1.radius();
+
+            const chart = svg
+                .append("g")
+                .attr("transform", `translate(${width / 2} ${height / 2 + yOffset})`)
+                .attr("height", 300)
+                .attr("font-family", "sans-serif")
+                .attr("id", "g_chart")
+                .on("mousemove", handleMouseMove);
+
+            const defs = chart.append("defs");
+
+            // 添加三角形裁切路径
+            const clipPath = defs
+                .append("clipPath")
+                .attr("id", "trianglePath")
+                .append("path")
+                .attr("d", basicTernaryPlot1.triangle());
+
+            // 添加坐标轴标签
+            const axisLabelsGroup = chart
+                .append("g")
+                .attr("class", "axis-labels")
+                .call(axisLabels, basicTernaryPlot1.axisLabels());
+
+            // 添加网格线
+            const gridLinesPaths = basicTernaryPlot1
+                .gridLines(gridLineCount)
+                .map(axisGrid => axisGrid.map(d3.line()).join(" "));
+
+            const gridGroup = chart
+                .append("g")
+                .attr("class", "grid")
+                .call(grid, gridLinesPaths);
+
+            const axisTicksGroups = chart
+                .append("g")
+                .attr("class", "ternary-ticks")
+                .attr("font-size", 10)
+                .selectAll("g")
+                .data(basicTernaryPlot1.ticks(tickCount))
+                .enter()
+                .append("g")
+                .attr("class", "axis-ticks");
+
+            axisTicksGroups.call(ticks);
+
+            // initial triangle
+            // 画三角形轮廓
+            // Controlling SVG Draw Order in D3
+            // https://dev.to/cselig/controlling-svg-draw-order-in-d3-4n9l
+            const trianglePath = chart
+                .append("path")
+                .attr("d", basicTernaryPlot1.triangle())
+                .attr("id", "trianglePathEdge")
+                .attr("fill", "transparent")
+                .attr("stroke", "black")
+                .attr("stroke-width", 2);
+
+            const ternaryData = data.map(d => {
+                const [x, y] = basicTernaryPlot1(d);
+                return { x, y, ...d };
+            });
+
+            // draw contour graph here
+            // https://observablehq.com/@julesblm/ternary-plot-with-density-contours?collection=@julesblm/ternary-plots
+            const contours = d3.contourDensity()
+                .x((d) => d.x)
+                .y((d) => d.y)
+                .size([width * 2, height * 2])
+                .bandwidth(20)
+                .thresholds(20)(ternaryData);
+
+            // https://zhuanlan.zhihu.com/p/38032622
+            // D3.js 中join和 enter的区别
+            // data
+            var lengedCirclesize = [];
+            const dots = chart
+                .append("g")
+                .attr("class", "data")
+                .attr("clip-path", "url(#trianglePath)")
+                .selectAll("circle")
+                .data(ternaryData)
+                .join("circle")
+                .attr("r", function (d, i) {
+                    var average = 0;
+                    for (var j = 0; j < subgroupsWithMean.length; j++) {
+                        const key = subgroupsWithMean[j];
+                        average += d[key];
+                    }
+                    // console.log("<<< d i >>>", d, i);
+                    // FIXME:xiaojiao, 控制这里的circle的大小, 2023/11/13
+                    // 是否使用归一化，对数化控制大小
+                    // console.log("<<< average/total >>>", average / sumTotal);
+                    // filtedDate = Object.keys(d).includes('_mean');
+                    // for (var k = )
+                    // console.log("<<< filtedDate >>>", filtedDate);
+                    // return 4;
+                    relativeAbundance = average / sumTotal;
+                    lengedCirclesize.push(relativeAbundance);
+                    return -1 * Math.log2(relativeAbundance) * circlesize;
+                })
+                .attr("cx", d => d.x)
+                .attr("cy", d => d.y)
+                .attr("fill", function (d, i) {
+                    console.log("d.Fcous",d.Focus == "other");
+                    // if (d.Focus == "other") {
+                    //     // return "black";
+                    //     groupColors["other"]
+                    // }
+                    return groupColors[d.Focus];
+                })
+                .attr("opacity", 0.8);
+
+            // test
+            // 添加悬停框 version 2
+            d3.selectAll("circle").on("mouseover", handleMouseOver);
+            d3.selectAll("circle").on("mouseout", handleMouseOut);
+
+            function handleMouseOver(d, i) {
+                // 计算矩形的位置和大小
+                const rect = this.getBoundingClientRect();
+                // 调整透明度
+                d3.select(this).attr("opacity", "0.5");
+                // TODO:xiaojiao, 获取元素的大小
+                const data = d3.select(this).data();
+
+                // 设置悬停提示框的内容和位置
+                // FIXME:xiaojiao, 将这个tooltip调整下
+                // 去除这个tooltip
+                // tooltip.html(`Value: ${data[0].Sample}`)
+                //     .style("left", `${rect.left + rect.width / 2}px`)
+                //     .style("top", `${rect.top - 30}px`)
+                //     .style("opacity", 1);
+            }
+
+            function handleMouseOut() {
+                d3.select(this)
+                    .attr("opacity", "1");
+                // 隐藏悬停提示框
+                tooltip.style("opacity", 0);
+            }
+
+            dots.append("title").text(
+                function (d) {
+                    // subgroupsWithMean
+                    console.log("subgroupsWithMean >>>", subgroupsWithMean);
+                    let sample = d.Sample;
+
+                    let first_element = subgroupsWithMean[0];
+                    let second_element = subgroupsWithMean[1];
+                    let third_element = subgroupsWithMean[2];
+                    let first_mean = d[first_element];
+                    let second_mean = d[second_element];
+                    let third_mean = d[third_element];
+
+                    return `${sample}
+                    ${first_element}: ${first_mean}
+                    ${second_element}: ${second_mean}
+                    ${third_element}: ${third_mean}`;
+                }
+            );
+
+
+            // zoom v2 add here...
+            // https://observablehq.com/@julesblm/introducing-d3-ternary?collection=@julesblm/ternary-plots#zooming
+            const zoom = d3.zoom().scaleExtent([1, 100]).on("zoom", zoomed);
+
+            const [tx, ty] = basicTernaryPlot1.translate();
+            const k = basicTernaryPlot1.scale();
+
+            // We need to sync d3-zoom with the tranform of the partial domains
+            const initialTransform = d3.zoomIdentity
+                .translate(tx * radius, ty * radius)
+                .scale(k);
+
+            chart.call(zoom).call(zoom.transform, initialTransform);
+
+            function zoomed({ transform }) {
+                const { x, y, k } = transform;
+
+                const tx = x / radius,
+                    ty = y / radius;
+
+                // apply transform
+                basicTernaryPlot1.translate([tx, ty]);
+                basicTernaryPlot1.scale(k);
+
+                const zoomedDomains = basicTernaryPlot1.domainsFromVertices();
+
+                basicTernaryPlot1.setDomains(zoomedDomains);
+
+                // update data
+                dots
+                    .attr("cx", (d) => basicTernaryPlot1(d)[0])
+                    .attr("cy", (d) => basicTernaryPlot1(d)[1]);
+
+                // update gridlines and ticks
+                const gridLinesPaths = basicTernaryPlot1
+                    .gridLines()
+                    .map((axisGrid) => axisGrid.map(d3.line()).join(" "));
+
+                gridGroup.call(grid, gridLinesPaths);
+
+                axisTicksGroups.data(basicTernaryPlot1.ticks()).call(ticks, (d) => d);
+
+                console.log("contourdata >>>", contours);
+
+                // TODO:xiaojiao, 这里似乎有重复代码
+                const ternaryData = data.map(d => {
+                    var [x, y] = basicTernaryPlot1(d);
+                    // console.log([x, y])
+                    var x = x * k
+                    var y = y * k
+                    return { x, y, ...d };
+                });
+                console.log("ternaryDate>>>>", ternaryData);
+
+
+                // 更新等高线的路径和样式
+                if (false) {
+                    const contourPaths = d3.select(".data")
+                    .selectAll("path")
+                    .data(ternaryData)
+                    .enter()
+                    .append("path")
+                    // .attr("d", basicTernaryPlot1.triangle())
+                    .attr("d", d3.geoPath())
+                    .attr("fill", (_, i) => colorScale(i))
+                    .attr("stroke", "#69b3a2")
+                    .attr("stroke-linejoin", "round")
+                }
+
+
+                //   contourPaths.enter()
+                //     .append("path")
+                //     // .attr("d", basicTernaryPlot1.triangle())
+                //     // .merge(contourPaths)
+                //     .attr("d", d3.geoPath())
+                //     .attr("fill", "none")
+                //     .attr("stroke", "#69b3a2")
+                //     .attr("stroke-linejoin", "round");
+
+                // 根据缩放变换更新数据
+                // https://observablehq.com/@julesblm/introducing-d3-ternary?collection=@julesblm/ternary-plots
+
+                // const zoomedVertices = basicTernaryPlot1.vertices();
+                // const newTrianglePath = `M${zoomedVertices[0]}L${zoomedVertices[1]}L${zoomedVertices[2]}Z`;
+                // console.log("newTrianglePath", newTrianglePath);
+                // contourPaths.attr("d", newTrianglePath);
+                // contourPaths.exit().remove();
+
+            }
+
+            function handleMouseMove(d) {
+                const xy = d3.pointer(d);
+                const inverse = basicTernaryPlot1.invert(xy);
+
+                node
+                    .dispatchEvent(new CustomEvent("input"), { bubbles: true });
+                // node.dispatchEvent(new CustomEvent("mouseover"), { bubbles: true })
+                node.value = inverse;
+                // 
+
+            }
+
+
+            //  // 创建一个包含文字和按钮的组
+            // FIXME:xiaojiao, 适当移动lengend...
+            const tempLengedWidth = chart.attr("width");
+            const gChartNode = d3.select("#g_chart").node();
+            const gChartWidth = gChartNode.getBoundingClientRect().width;
+            console.log("g_chart width:", gChartWidth);
+
+            // console.log("<tempLengedWidth>", tempLengedWidth);
+            const legendGroup = svg.append("g")
+                .attr("class", "legend-group")
+                // .attr("transform", `${width / 2} , ${height / 2 + yOffset}`);
+                .attr("transform", function (_, i) {
+                    console.log(">>>>>>>>> ")
+                    console.log("_ i", _, i);
+                    // var previousHeight = i > 0 ? this.parentNode.childNodes[i - 1].getBBox().height : 0;
+                    // console.log("<<<<<<previousHeight, previousWidth >>>>>>", previousHeight, previousWidth);
+                    // return "translate(0," + (i * (previousHeight + 30)) + ")";
+                    return `translate(${-1 * (width + gChartWidth) / 2} ${height / 5})`;
+                })
+
+
+            // 添加图例
+            const legend = legendGroup.selectAll(".legend")
+                .data(groups)
+                .enter()
+                .append("g")
+                .attr("class", "legend")
+                .attr("transform", function (d, i) {
+                    return "translate(0," + i * 20 + ")";
+                });
+
+            legend.append("rect")
+                .attr("x", width - 18)
+                .attr("width", 18)
+                .attr("height", 18)
+                .style("fill", function (d, i) {
+                    // if (d.Focus == "other") {
+                    //     return "black";
+                    // }
+                    // return groupColors[d.Focus];
+                    // return "black"
+                    console.log("rect groupColors[d]", groupColors[d]);
+                    return groupColors[d];
+                });
+
+            legend.append("text")
+                .attr("x", width - 24)
+                .attr("y", 9)
+                .attr("dy", ".35em")
+                .style("text-anchor", "end")
+                .text(function (d) {
+                    return d;
+                });
+
+            legendGroup.append("text")
+                .attr("x", width - 100) // 文本的X坐标
+                .attr("y", -10) // 文本的Y坐标，负值将其放置在图例上方
+                .text("Focus") // 图例标题文本
+                .style("font-weight", "bold"); // 标题文本样式
+
+
+            // avg size
+            const legendAvgsize = svg.append("g")
+                .attr("class", "legend-avg")
+                .attr("transform", function (_, i) {
+                    // console.log(">>>>>>>>> ")
+                    // console.log("_ i", _, i);
+                    // 获取前一个lengend的位置
+                    // FIXME:xiaojiao, 修改这两个lengend的位置
+                    var previousHeight = legendGroup.node().getBBox().height;
+                    return `translate(${-1 * (width + gChartWidth) / 2}, ${height / 5})`;
+                })
+
+            // TODO:xiaojiao, modified array content here 2023/11/15
+            // var lengedCirclesize = [0.01, 0.02, 0.03];
+            // lengedCirclesize = lengedCirclesize;
+
+            // 获取最值、中位数
+            const sortedArray = lengedCirclesize.sort((a, b) => a - b);
+            const median = sortedArray[Math.floor(sortedArray.length / 2)];
+            lengedCirclesize = [sortedArray[0], median, sortedArray[sortedArray.length - 1]]
+            // 获取最值、中位数
+            lengedCirclesize = getArrayStats(lengedCirclesize);
+            // 添加图例
+            const legendAvg = legendAvgsize.selectAll(".legend")
+                .data(lengedCirclesize)
+                .enter()
+                .append("g")
+                .attr("class", "legend")
+                .attr("transform", function (d, i) {
+                    return "translate(0," + i * 20 + ")";
+                });
+
+            legendAvg.selectAll("circle")
+                .data(lengedCirclesize)
+                .enter()
+                .append("circle")
+                .attr("cx", width + 20) // 圆心的X坐标
+                .attr("cy", 10) // 圆心的Y坐标
+                .attr("r", function (d) {
+                    // return  d* 10;
+                    return - 1 * Math.log2(d) * circlesize;
+                }) // 圆的半径
+                .style("fill", "black");
+
+
+            legendAvg.append("text")
+                .attr("x", width + 60)
+                .attr("y", 9)
+                .attr("dy", ".35em")
+                .style("text-anchor", "start")
+                .text(function (d) {
+                    return d;
+                });
+
+            // 添加title
+            legendAvgsize.append("text")
+                .attr("x", width + 20) // 文本的X坐标
+                .attr("y", -10) // 文本的Y坐标，负值将其放置在图例上方
+                .text("Avg size") // 图例标题文本
+                .style("font-weight", "bold"); // 标题文本样式
+
+            // const colorScaleTemp = d3.scaleSequential(d3.interpolateTurbo)
+            //     .domain(d3.extent(data, d => d.value)) // 根据值范围设置domain
+            //     .nice();
+                // const colorScale = d3.scaleSequential(d3.interpolateViridis);
+            // Add the contour: several "path"
+            if (true) {
+                    const contourPaths = d3.select(".data")
+                    .selectAll("path")
+                    .data(contours)
+                    .enter()
+                    .selectAll("path")
+                    // .attr("d", basicTernaryPlot1.triangle())
+                    .attr("d", d3.geoPath())
+                    // .attr("fill", (_, i) => colorScale(i))
+                    .attr("fill", "none")
+                    // .attr("opacity", "0.3")
+                    .attr("stroke", "#69b3a2")
+                    .attr("stroke-linejoin", "round")
+                    // contourPaths.exit().remove();
+                }
+
+
+            return svg.node();
+        }
+
+        drawBasicTernaryPlot();
+
+    </script>
+
+
+    <script>
+
+        // 滑动条调整
+        // const gridLineCount = 10;
+        const gridLineCount = document.getElementById("gridLineCount");
+
+        addEvent(gridLineCount, "input", function () {
+            var gridLineCountSize = gridLineCount.value;
+            var gridLineCountValue = parseInt(gridLineCountSize);
+
+            const gridLinesPaths = basicTernaryPlot()
+                .gridLines(gridLineCountValue)
+                .map(axisGrid => axisGrid.map(d3.line()).join(" "));
+
+            d3.select("#chart").selectAll(".grid")
+                .call(grid, gridLinesPaths);
+        });
+
+        const tickCountInput = document.getElementById("tickCount");
+        addEvent(tickCountInput, "input", function () {
+            var tickCountSize = tickCountInput.value;
+            var tickCountValue = parseInt(tickCountSize);
+
+            const tempTicks = d3.select("#chart").select(".ternary-ticks").selectAll(".axis-ticks")
+                .data(basicTernaryPlot().ticks(tickCountValue))
+            tempTicks.call(ticks);
+
+            // 
+            // const axisTicksGroups = d3.select("#chart").selectAll(".axis-ticks")
+            // .append("g")
+            // .attr("class", "ternary-ticks")
+            // .attr("font-size", 10)
+            // .selectAll("g")
+            // .data(basicTernaryPlot().ticks(tickCountSize));
+            // .join("g")
+            // .attr("class", "axis-ticks");
+
+            // axisTicksGroups.call(ticks);
+            // tickCount = tickCountValue;
+            // drawBasicTernaryPlot();
+        });
+
+
+        const fontSelect = document.getElementById("fontSelect");
+        const fontInput = document.getElementById('fontInput');
+
+        fontSelect.addEventListener("change", function () {
+            const selectedFont = fontSelect.value;
+            if (fontSelect.value == 'custom') {
+                fontInput.style.display = 'block';
+
+                d3.selectAll("text").style("font-family", fontInput.value);
+            } else {
+                fontInput.style.display = 'none';
+            }
+            d3.selectAll("text").style("font-family", selectedFont);
+        });
+
+        const fontSizeRange = document.getElementById("fontSizeRange");
+        const sliderTooltip = document.querySelector(".sliderTooltip");
+
+        // 嵌套的子元素span中的value
+        var valueSpan = document.querySelector(".sliderTooltip .value");
+
+        fontSizeRange.addEventListener("input", function () {
+            const selectedFontSize = fontSizeRange.value;
+            d3.selectAll("text").style("font-size", selectedFontSize + "px");
+            const sliderRect = fontSizeRange.getBoundingClientRect();
+
+            const tooltipWidth = sliderTooltip.offsetWidth;
+            const tooltipHeight = sliderTooltip.offsetHeight;
+
+            // 
+            const sliderValue = parseInt(selectedFontSize);
+            const sliderMin = parseInt(fontSizeRange.min);
+            const sliderMax = parseInt(fontSizeRange.max);
+            const sliderWidth = fontSizeRange.offsetWidth;
+
+            // 
+            // TODO:xiaojiao, fix thar
+            const positionPercentage = (sliderValue - sliderMin) / (sliderMax - sliderMin);
+            const tooltipPosition = positionPercentage * (sliderWidth - tooltipWidth);
+
+            const tooltipX = tooltipWidth + tooltipPosition;
+            const tooltipY = sliderRect.top - tooltipHeight; // 自定义偏移量，避免与滑块重叠
+            // 
+
+            sliderTooltip.style.left = tooltipX + "px";
+
+            // var value = valueSpan.textContent;
+            valueSpan.textContent = selectedFontSize + 'px';
+            // 
+
+        });
+
+        // 添加slider tooltip
+        // 添加文字移动效果
+        fontSizeRange.addEventListener("mouseover", function () {
+            sliderTooltip.style.display = "block";
+            sliderTooltip.classList.add("show");
+        });
+
+        fontSizeRange.addEventListener("mouseout", function () {
+            sliderTooltip.classList.remove("show");
+            sliderTooltip.style.display = "none";
+        });
+
+
+        // 基本设置表单元素
+        const textColorInput = document.getElementById("textColor");
+        const xaxisColorInput = document.getElementById("xAxisColor");
+        const xAxisWidthInput = document.getElementById("xAxisWidth");
+        // stack Bar Width
+        const applySettingsButton = document.getElementById("applySettings");
+
+        // 默认设置
+        let textColor = "#000000";
+
+        // 应用设置按钮点击事件处理程序
+        applySettingsButton.addEventListener("click", applySettings);
+
+        function applySettings() {
+            // 获取用户选择的设置值
+            textColor = textColorInput.value;
+            xaxisColor = xaxisColorInput.value;
+            xAxisWidth = +xAxisWidthInput.value;
+
+
+            // 更新SVG图形属性
+            d3.select("#chart").selectAll("text")
+                .style("fill", textColor);
+
+            d3.selectAll("#trianglePathEdge").style("stroke", xaxisColor).style("stroke-width", xAxisWidth);
+        }
+
+        document.getElementById("center-button").addEventListener("click", function () {
+            // resizesvg();
+            // resetTransform();
+            // svg.call(zoom, d3.zoomIdentity);
+            // TODO:xiaojiao, 请支持不同浏览器的刷新, 2023/10/30
+            location.reload();
+        })
+
+        // 绘制三元图
+
+        // 添加lengend
+        // const chart_drawed = drawBasicTernaryPlot();
+
+        // 全屏设置
+        let isFullscreen = false;
+
+        // FIXME:xiaojiao, 2023/10/31 全屏有些错误
+        function toggleFullscreen() {
+            if (isFullscreen) {
+                exitFullscreen();
+            } else {
+                fullScreen();
+            }
+
+            isFullscreen = !isFullscreen;
+        }
+
+        function fullScreen() {
+            var de = document.documentElement;
+            if (de.requestFullscreen) {
+                de.requestFullscreen();
+            } else if (de.mozRequestFullScreen) {
+                de.mozRequestFullScreen();
+            } else if (de.webkitRequestFullScreen) {
+                de.webkitRequestFullScreen();
+            }
+        }
+
+        function exitFullscreen() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            }
+        }
+
+
+        document.getElementById("btns").addEventListener("click", function () {
+            toggleFullscreen();
+        })
+        //  $("#btn").click(fullScreen()) // 注意会报错
+
+
+        // 获取 "Basic Settings" 元素
+        const basicSettings = document.querySelector(".basicSettings");
+
+        // icon-i gd-icon-param
+        console.log("basicSettings", basicSettings);
+
+        // 获取下拉框元素
+        const settingContent = document.querySelector("#settingContent");
+
+        // 添加点击事件监听器
+        basicSettings.addEventListener("click", function () {
+            // 切换下拉框的显示状态
+            // 获取元素的位置信息
+            var rect = this.getBoundingClientRect();
+            var position = {
+                top: rect.top,
+                left: rect.left,
+                right: rect.right,
+                bottom: rect.bottom
+            };
+            settingContent.style.display = (settingContent.style.display === "none") ? "block" : "none";
+
+        });
+
+        // 按钮点击事件处理函数
+        function handleButtonClick(contentElement) {
+            // 隐藏所有内容元素
+            // content3.style.display = "none";
+
+            // 显示指定的内容元素
+            contentElement.style.display = "block";
+
+        }
+
+        const downloadSettings = document.querySelector(".downloadSettings");
+
+        downloadSettings.addEventListener("click", function () {
+            console.log("download");
+        });
+
+        // 构建下拉展开
+        var dropdownTest = document.getElementById("dropdownTest")
+        var dropdownContent = document.getElementById("dropdownContent");
+
+        dropdownTest.addEventListener("click", function () {
+            dropdownContent.style.display = (dropdownContent.style.display === "none") ? "block" : "none";
+        });
+
+
+        // 等值图控制
+        // 获取输入框元素
+        var contourBandwidth = document.getElementById("contourBandwidth");
+
+        // 定义共享的contours变量
+        var contours;
+        var bandwidth = 20;
+        var thresholds = 10;
+        // 当输入框的值发生变化时更新曲线的张力
+        contourBandwidth.addEventListener("input", function () {
+            var tensionValue = parseFloat(contourBandwidth.value);
+
+            // console.log("tensionValue", tensionValue)
+
+            // d3.curveBundle.beta(0.5);
+            // 更新线段生成器和区域生成器的曲线张力
+            // const line = d3.line().curve(d3.curveBundle.beta(0.5));
+            contours = d3.contourDensity()
+                .x((d) => d.x)
+                .y((d) => d.y)
+                .size([width * 2, height * 2])
+                .bandwidth(bandwidth)
+                .thresholds(tensionValue)(ternaryData);
+
+            // 更新 thresholds的值
+            thresholds = tensionValue
+            // 选择已经存在的路径元素
+            const existingPaths =  d3.select(".data")
+                .selectAll("path").data(contours);
+            const contourPaths = existingPaths
+                .enter()
+                .append("path")
+                .attr("d", d3.geoPath())
+                .attr("fill", "none")
+                // .attr("opacity", "0.3")
+                .attr("stroke", "#69b3a2")
+                .attr("stroke-linejoin", "round")
+            // 移除多余的路径元素
+            existingPaths.exit().remove();
+        });
+
+
+        // 堆叠面积图 透明度设置
+        // 获取输入框元素
+        var contourThresholds  = document.getElementById("contourThresholds ");
+
+        // 当输入框的值发生变化时更新曲线区域的透明度
+        contourThresholds .addEventListener("input", function () {
+            var opacityValue = parseFloat(contourThresholds .value);
+            // linkGoup.attr("opacity", opacityValue);
+            contours = d3.contourDensity()
+                .x((d) => d.x)
+                .y((d) => d.y)
+                .size([width * 2, height * 2])
+                .bandwidth(opacityValue)
+                .thresholds(thresholds)(ternaryData);
+
+            // 更新 bandwidth的值
+            bandwidth = opacityValue
+
+            // 选择已经存在的路径元素
+            const existingPaths =  d3.select(".data")
+                .selectAll("path").data(contours);
+            const contourPaths = existingPaths
+                .enter()
+                .append("path")
+                .attr("d", d3.geoPath())
+                .attr("fill", "none")
+                .attr("stroke", "#69b3a2")
+                .attr("stroke-linejoin", "round")
+            // 移除多余的路径元素
+            existingPaths.exit().remove();
+        });
+
+        // TODO:xiaojiao, 颜色map配置 2023/11/15
+        // 先缓存 subgroups.length
+        for (var i = 0, len = groups.length; i < len; i++) {
+            // 获取当前数据的值
+            var group = groups[i];
+
+            // 创建外部 <div> 元素
+            const outerDiv = document.createElement("div");
+            outerDiv.setAttribute("flex-wrap", "wrap")
+            outerDiv.className = "item1";
+
+            // 创建 <label> 元素
+            const labelElement = document.createElement("label");
+            labelElement.setAttribute("for", group + "yAxisColor");
+            labelElement.setAttribute("display", "block");
+            labelElement.setAttribute("margin-bottom", "10px")
+            labelElement.textContent = group + ":";
+
+            // 添加 <br> 标签
+            const br = document.createElement("br");
+
+            // 创建 <input> 元素
+            const inputElement = document.createElement("input");
+            inputElement.type = "color";
+            inputElement.id = group + "yAxisColor";
+            inputElement.value = groupColors[groups[i]];
+
+            // 添加事件监听器
+            inputElement.addEventListener("change", function () {
+                // 处理颜色值变化的逻辑
+                var newColorValue = this.value;
+                console.log("New color value:", newColorValue);
+
+                // FIXME:xiaojiao,这里每次需要遍历，两层for 可以优化的
+                // draw rect
+                d3.select(".data")
+                    .selectAll("circle")
+                    .join("circle")
+                    .attr("fill", function (d, j) {
+                        // FIXME:xiaojiao, 如果没有Focus这一列呢？
+                        if (d.Focus + "yAxisColor" == inputElement.id) {
+                            console.log("this, i, j", this, i, j, d);
+                            // 修改全局属性groupColors
+                            // console.log("group[j]", group[j], d.Focus);
+                            groupColors[d.Focus] = newColorValue;
+                            return newColorValue
+                        }
+
+                        return groupColors[d.Focus];
+                    }).attr("opacity", 0.8);
+
+                // draw lengend
+                // 假设您已经选择了包含子元素的父元素
+                var parentElement = d3.select(".legend-group");
+
+                // 选择所有子元素
+                var childElements = parentElement.selectAll(".legend");
+
+                // 遍历每个子元素
+                childElements.each(function (d, i) {
+                    var childElement = d3.select(this);
+
+                    // 获取子元素的 fill 属性值
+                    childElement.select("rect").join("rect").style("fill", groupColors[d]);;
+                    childElement.select("text").attr("fill", groupColors[d]);
+
+                    // 输出子元素及其 fill 颜色
+                    console.log("子元素:", childElement.node(), i, d);
+                });
+
+                // legendGroupDraw(subgroups);
+            });
+
+            // 将 label 和 input 元素添加到外部 div 元素中
+            outerDiv.appendChild(labelElement);
+            outerDiv.appendChild(br);
+            outerDiv.appendChild(inputElement);
+
+            // 将外部 div 元素添加到 mainSettingDiv 中
+            const mainSettingDiv = document.getElementById("mainsetting");
+            mainSettingDiv.appendChild(outerDiv);
+        }
+
+        // 下载
+        // TODO:xiaojiao, download 、export and save...
+        // see here https://www.omicshare.com/tools/Public/Home/dist/js/report.js
+        // https://d3export.housegordon.org/
+        function download_fun(id, type, name) {
+            name = name == '' || name == undefined ? 'image' : name;
+            type = type == '' || type == undefined ? 'svg' : type;
+            var svg = d3.select('#' + id).select('svg');
+            var g = svg.select('g');
+            svg.attr('version', '1.1')
+                .attr('xmlns', 'http://www.w3.org/2000/svg')
+                .attr('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+            var a = document.createElement("a");
+            a.setAttribute('target', '_self')
+            document.body.appendChild(a);
+            a.setAttribute('style', 'display:none;')
+            if (type == 'svg') {
+                var html = svg.node().outerHTML;
+                var base64Svg = window.btoa(encodeURIComponent(html).replace(/%([0-9A-F]{2})/g, function (match, p1) {
+                    return String.fromCharCode('0x' + p1);
+                }));
+                a.setAttribute('href', 'data:image/svg+xml;charset=utf-8;base64,' + base64Svg)
+                a.setAttribute('download', name + '.svg')
+                a.click();
+                a.remove()
+            }
+        }
+
+        var svgDownload = d3.select("#chart");
+        svgDownload.attr('version', '1.1')
+            .attr('xmlns', 'http://www.w3.org/2000/svg')
+            .attr('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+        // var base64Svg = window.btoa(encodeURIComponent(html).replace(/%([0-9A-F]{2})/g, function (match, p1) {
+        //     return String.fromCharCode('0x' + p1);
+        // }));
+        // console.log("html",html)
+        // console.log("svg", svgDownload)
+        const svgString = new XMLSerializer().serializeToString(svgDownload.node());
+
+        const downloadButton = document.getElementById("export");
+
+        downloadButton.addEventListener("click", () => {
+            // 创建一个临时的 SVG 元素用于操作
+            const tempSvg = svgDownload.node().cloneNode(true);
+
+            // 查找并移除所有的动画元素
+            const animateElements = tempSvg.querySelectorAll("animate, animateTransform, animateMotion");
+            animateElements.forEach((animateElement) => {
+                animateElement.remove();
+            });
+
+            // 将修改后的 SVG 元素转换为字符串
+            const modifiedSvgString = new XMLSerializer().serializeToString(tempSvg);
+
+            var img = new Image();
+            img.src = "data:image/svg+xml;base64," + btoa(modifiedSvgString);
+
+            // 在页面上显示生成的图片
+            document.body.appendChild(img);
+            // 创建下载链接
+            const link = document.createElement("a");
+            link.href = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(modifiedSvgString);
+            link.download = "svg_file.svg";
+            link.click();
+        });
+
+
+    </script>
+</body>
+
+</html>

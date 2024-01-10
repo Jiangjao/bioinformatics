@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+
+</head>
+<body>
+    <div id="my_dataviz"></div>
+    <script>
+        // 将布局变成直角的这个
+        // https://stackoverflow.com/questions/11137238/d3js-tree-square
+
+        // https://juejin.cn/post/7093010458189234189
+        // 一步一步用d3做树图（一）
+
+        // set the dimensions and margins of the graph
+        const width = 460
+        const height = 460
+        
+        // append the svg object to the body of the page
+        const svg = d3.select("#my_dataviz")
+          .append("svg")
+            .attr("width", width)
+            .attr("height", height)
+          .append("g")
+            .attr("transform", "translate(40,0)");  // bit of margin on the left = 40
+        
+        // read json data
+        d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_dendrogram.json").then( function(data) {
+        
+          // Create the cluster layout:
+          const cluster = d3.cluster()
+            .size([height, width - 100]);  // 100 is the margin I will have on the right side
+        
+          // Give the data to this cluster layout:
+          const root = d3.hierarchy(data, function(d) {
+              return d.children;
+          });
+          cluster(root);
+        
+        
+          // add cluster layout
+          // Features of the links between nodes:
+          var linksGenerator = d3.linkRadial()
+              .angle(function(d) { return d.x / 180 * Math.PI; })
+              .radius(function(d) { return d.y; });
+
+          // Add the links between nodes:
+          svg.selectAll('path')
+            .data( root.descendants().slice(1) )
+            .join('path')
+            .attr("d", function(d) {
+                // console.log(d3.hierarchy.H)
+                const parent = d.parent;
+                // return "M" + d.y + "," + d.x
+                //         + "L" + ((parent.y + d.y) / 2 )+ "," + d.x
+                //         + " " + ((parent.y + d.y) / 2.5)+ "," + d.parent.x // 50 and 150 are coordinates of inflexion, play with it to change links shape
+                //         + " " + parent.y + "," + parent.x;
+                //       })
+                return "M" + parent.y + "," + parent.x
+                        + "V" + d.x + "H" + d.y;})
+            .style("fill", 'none')
+            .attr("stroke", '#ccc')
+
+
+          // Add a circle for each node.
+          svg.selectAll("g")
+              .data(root.descendants())
+              .join("g")
+              .attr("transform", function(d) {
+                  return `translate(${d.y},${d.x})`
+              })
+              .append("circle")
+                .attr("r", 7)
+                .style("fill", "#69b3a2")
+                .attr("stroke", "black")
+                .style("stroke-width", 2)
+        })
+        </script>
+</body>
+</html>

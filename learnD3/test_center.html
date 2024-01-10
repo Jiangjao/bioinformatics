@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    #svg-container {
+      width: 400px;
+      height: 300px;
+      border: 1px solid black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="svg-container">
+    <svg id="my-svg" width="200" height="150" viewBox="0 0 200 150">
+      <!-- 在这里放置您的 SVG 图形 -->
+      <rect x="50" y="50" width="100" height="50" fill="blue"/>
+    </svg>
+  </div>
+  <button id="center-button">居中</button>
+
+  <script>
+    // 获取 SVG 元素
+    const svg = document.getElementById('my-svg');
+
+    // 获取居中按钮
+    const centerButton = document.getElementById('center-button');
+
+    // 点击按钮时触发的事件处理程序
+    centerButton.addEventListener('click', () => {
+      // 获取 SVG 视图框的宽度和高度
+      const viewBoxWidth = svg.viewBox.baseVal.width;
+      const viewBoxHeight = svg.viewBox.baseVal.height;
+
+      // 获取 SVG 容器的宽度和高度
+      const containerWidth = svg.parentNode.offsetWidth;
+      const containerHeight = svg.parentNode.offsetHeight;
+
+      // 计算水平和垂直居中的偏移量
+      const offsetX = (containerWidth - viewBoxWidth) / 2;
+      const offsetY = (containerHeight - viewBoxHeight) / 2;
+
+      // 设置 SVG 视图框的偏移量，使其居中
+      svg.setAttribute('viewBox', `${-offsetX} ${-offsetY} ${viewBoxWidth} ${viewBoxHeight}`);
+    });
+  </script>
+</body>
+</html>

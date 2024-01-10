@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<head>
+    <title>Document</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <noscript>抱歉，你的浏览器不支持 JavaScript!</noscript>
+
+    <style>
+        svg .container {
+            width: 100%;
+            height: 100%;
+            margin: auto;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .tooltip {
+            position: absolute;
+            background-color: #f9f9f9;
+            padding: 8px;
+            border: 1px solid #ccc;
+            pointer-events: none;
+            font-size: 14px;
+        }
+
+        .basicSettings {
+            /* width: 80%; */
+            position: relative;
+            /* top: 38px; */
+            z-index: 1;
+            overflow-y: auto;
+        }
+
+        .downloadSettings {
+            width: 100%;
+            position: relative;
+            /* top: 18px; */
+            z-index: 2;
+        }
+
+        .sidebar {
+            width: 100%;
+            display: none;
+            /* 初始状态下隐藏下拉框 */
+        }
+
+        /* .sidebar {
+  width: 300px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+} */
+
+        .sidebar h2 {
+            /* margin-bottom: 10px; */
+            /* border-bottom: 1px solid #ddd; */
+            padding-bottom: 5px;
+        }
+
+        .sidebar label {
+            /* width: 120px; */
+            /* text-align: right; */
+            margin-right: 10px;
+        }
+
+        .sidebar input,
+        .sidebar select {
+            padding: 5px;
+            border: 1px solid #ccc;
+            width: 25%;
+            border-radius: 4px;
+        }
+
+        .sidebar button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            background: #42b983;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .sidebar button:hover {
+            opacity: 0.8;
+        }
+
+        .sidebar input[type="number"] {
+            width: 50px;
+        }
+
+        .sidebar input[type="text"] {
+            width: 36%;
+        }
+
+        .sidebar input[type="range"] {
+            width: 100%;
+            /* transform: rotate(270deg); 添加垂直滚动条 */
+        }
+
+        /* .sidebar br {
+            display: none;
+        } */
+
+        .item {
+            display: flex;
+            align-items: center;
+            text-align: justify;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            width: 88%;
+        }
+
+        /* .item {} */
+
+        .sidebar hr {
+            overflow: hidden;
+            width: 88%;
+        }
+
+        /* 设置hr线 */
+        .item+hr {
+            margin: 10px 0;
+
+        }
+
+        .item+hr:first-child {
+            margin-top: 0;
+        }
+
+        .item+hr {
+            border: none;
+            border-top: 1px dotted #ccc;
+        }
+
+        /* hr {} */
+        /* .item label {
+            width: 120px;
+            } */
+        /* .sidebar {
+            display: flex;
+            flex-wrap: wrap;
+        } */
+
+        .sliderTooltip {
+            /* display: block; */
+            /* position: absolute; */
+            /* styles */
+            /* padding: 10px; */
+            position: absolute;
+            /* top: -30px; */
+            /* left: 134px; */
+            background-color: rgb(204 204 204 / 18%);
+            /* color: #f9f9f9; */
+            padding: 5px;
+            border-radius: 5px;
+            display: none;
+            margin-top: 14%;
+        }
+
+        .tooltip.show {
+            display: block;
+        }
+
+        .sidebar.show {
+            width: 100%;
+            height: auto;
+            position: relative;
+            /* padding: inherit; */
+            display: block;
+            padding: 10px 11px;
+            /* 点击后显示下拉框 */
+            transition: max-height 0.3s ease;
+            z-index: 1;
+            /* 添加过渡效果 */
+        }
+
+        /* 添加button的样式 */
+        .button-like {
+            display: inline-block;
+            padding: 10px 0 10px 10%;
+            background-color: #4CAF50;
+            color: white;
+            text-align: left;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 90%;
+        }
+
+        .button-like:hover {
+            background-color: #45a049;
+        }
+
+        .button-like:active {
+            background-color: #3e8e41;
+        }
+
+        /* TODO:xiaojiao, @media screen and (max-width: 700px) 如何使用2023/10/23 */
+        div.tooltip-donut {
+            position: absolute;
+            text-align: center;
+            padding: .5rem;
+            background: #FFFFFF;
+            color: #313639;
+            border: 1px solid #313639;
+            border-radius: 8px;
+            pointer-events: none;
+            font-size: 1.3rem;
+        }
+
+        icon-i {
+            text-align: center;
+        }
+
+        .dropdown {
+            /* padding: 10px 11px; */
+            position: relative;
+            /* display: inline-block; */
+        }
+
+        .dropdown-content {
+            display: none;
+            position: relative;
+            /* top: 100%; */
+            /* left: 0; */
+            width: 100%;
+            /* padding: 10px 11px; */
+            background-color: #4CAF50;
+        }
+
+
+        .settingContent {
+            display: block;
+            position: relative;
+            /* top: 100%; */
+            /* left: 0; */
+            width: 90%;
+            padding: 10px 11px;
+            /* overflow-y: scroll; */
+            height: 60vh;
+            overflow-y: scroll;
+            /* 设置垂直方向上溢出时显示滚动条 */
+            overflow-x: hidden;
+            scrollbar-width: thin;
+            /* 设置滚动条的宽度 */
+            scrollbar-color: gray lightgray;
+            /* 设置滚动条的颜色 */
+        }
+
+        /* div#settingContent {} */
+        /* .dropdown:hover .dropdown-content {
+        display: block;
+
+         } */
+
+        .filled {
+            fill: url("#mainGradient");
+        }
+
+        .ticks text {
+            font-family: sans-serif;
+            font-size: 10px;
+            text-anchor: middle;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="position: absolute; width:100%; height: 100%;">
+        <div>
+            <div style="width: 20%;z-index: 1; position: fixed; padding-right: 1%; right:0; top:40px; opacity: 0.9;">
+                <!-- add by xiaojiao 停靠右侧， x轴文本旋转 -->
+                <!-- add by xiaojiao 柱状图宽度调整 -->
+                <div class="dropdown">
+                    <div id="dropdownTest" class="downloadSettings" style="background:#F9F9F9;width: 100%;">
+                        <p class="button-like">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-cloud-arrow-down" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M7.646 10.854a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 9.293V5.5a.5.5 0 0 0-1 0v3.793L6.354 8.146a.5.5 0 1 0-.708.708l2 2z" />
+                                <path
+                                    d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z" />
+                            </svg>
+                            download
+                        </p>
+                    </div>
+                    <div id="dropdownContent" class="dropdown-content"
+                        style="background:#F9F9F9;width: 100%;display: none;">
+                        <div class="sidebar show">
+                            <h3>文本 Settings</h3>
+                            <button id="export">下载 SVG</button>
+                            <!-- <br> -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <br> -->
+                <div class="dropdown" style="background:#F9F9F9;width: 100%;">
+                    <div class="basicSettings">
+                        <!-- <button type="button" id="exitBtn" class="btn" onClick="exitFullscreen()">退出全屏</button> -->
+                        <p type="button" id="btn" class="btn button-like" title="fullscreen">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-gear" viewBox="0 0 16 16">
+                                <path title="修改参数"
+                                    d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+                                <path title="修改参数"
+                                    d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z" />
+                            </svg>
+                            <path title="fullscreen" fill-rule="evenodd"
+                                d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z" />
+                            </svg>
+                            setting
+                        </p>
+                    </div>
+                    <div class="settingContent" id="settingContent">
+                        <div class="sidebar show" id="mainsetting">
+                            <!-- <h2>文本 Settings</h2> -->
+                            <div class="item">
+                                <p>字体选择:</p>
+                                <!-- https://www.runoob.com/w3cnote/web-font-family.html -->
+                                <select class="form-select" id="fontSelect">
+                                    <option value="">Select</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">Serif Fonts
+                                    </option>
+                                    <option value="Georgia,serif" style="font-family: Georgia,serif">Georgia</option>
+                                    <option value="Palatino Linotype,Book Antiqua,Palatino,serif"
+                                        style="font-family: Palatino Linotype,Book Antiqua,Palatino,serif">Palatino
+                                        Linotype</option>
+                                    <option value="Times New Roman,Times,serif"
+                                        style="font-family: Times New Roman,Times,serif">Times New Roman</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">Sans-Serif
+                                        Fonts</option>
+                                    <option value="Arial,Helvetica,sans-serif"
+                                        style="font-family: Arial,Helvetica,sans-serif">Arial</option>
+                                    <option value="Arial Black,Gadget,sans-serif"
+                                        style="font-family: Arial Black,Gadget,sans-serif">Arial Black</option>
+                                    <option value="Comic Sans MS,cursive,sans-serif"
+                                        style="font-family: Comic Sans MS,cursive,sans-serif">Comic Sans MS</option>
+                                    <option value="Impact,Charcoal,sans-serif"
+                                        style="font-family: Impact,Charcoal,sans-serif">Impact</option>
+                                    <option value="Lucida Sans Unicode,Lucida Grande,sans-serif"
+                                        style="font-family: Lucida Sans Unicode,Lucida Grande,sans-serif">Lucida Sans
+                                        Unicode</option>
+                                    <option selected="selected" value="Tahoma,Geneva,sans-serif"
+                                        style="font-family: Tahoma,Geneva,sans-serif">Tahoma</option>
+                                    <option value="Trebuchet MS,Helvetica,sans-serif"
+                                        style="font-family: Trebuchet MS,Helvetica,sans-serif">Helvetica</option>
+                                    <option value="Verdana,Geneva,sans-serif"
+                                        style="font-family: Verdana,Geneva,sans-serif">Verdana</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">Monospace
+                                        Fonts</option>
+                                    <option value="Courier New,Courier,monospace"
+                                        style="font-family: Courier New,Courier,monospace">Courier New</option>
+                                    <option value="Lucida Console,Monaco,monospace"
+                                        style="font-family: Lucida Console,Monaco,monospace">Lucida Console</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">中文</option>
+                                    <option value="华文细黑,sans-serif" style="font-family: 华文细黑,sans-serif">华文细黑</option>
+                                    <option value="微软雅黑,sans-serif" style="font-family: 微软雅黑,sans-serif">微软雅黑</option>
+                                    <option value="中易宋体,sans-serif" style="font-family: 中易宋体,sans-serif">中易宋体</option>
+                                    <option value="WenQuanYi Micro Hei,sans-serif"
+                                        style="font-family: WenQuanYi Micro Hei,sans-serif">WenQuanYi Micro Hei</option>
+                                    <option value="楷体,serif" style="font-family: 楷体, serif">楷体</option>
+                                    <option value="隶书,sans-serif" style="font-family: 隶书, sans-serif">隶书</option>
+                                    <option value="custom">自定义</option>
+                                </select>
+                            </div>
+
+                            <div class="item">
+                                <p>字体大小: </p>
+                                <input type="range" id="fontSizeRange" min="6" max="36" step="1" value="16">
+                                <div class="sliderTooltip">
+                                    <span class="value"></span>
+                                </div>
+                            </div>
+                            <hr>
+
+                            <div class="item">
+
+                                <label for="colorPicker">边界颜色:</label>
+                                <input type="color" id="colorPicker">
+                                <input type="text" id="colorValue">
+
+                            </div>
+
+                            <div class="item">
+                                <label for="startColor">startColor:</label>
+                                <input type="color" id="startColor" value="#ff0000">
+                            </div>
+
+                            <div class="item">
+                                <label for="endColor">endColor:</label>
+                                <input type="color" id="endColor" value="#0000ff">
+                            </div>
+                            <div class="item">
+                                <button id="applySettings">Apply Settings</button>
+                            </div>
+
+                            <hr>
+
+                            <div class="item">
+                                <label for="sizeSlider">扇形宽度:</label>
+                                <input type="range" id="sizeSlider" min="100" max="500" value="360" step="1">
+                            </div>
+                            <div class="item">
+                                <label for="rotateSlider">旋转:</label>
+                                <input type="range" id="rotateSlider" min="0" max="360" step="1" value="30">
+                                <input type="text" id="rotateValue" readonly>
+                            </div>
+
+                            <div class="item">
+                                <label for="innerRadiusSlider">内部环形大小:</label>
+                                <input type="range" min="0" max="1000" value="320" id="innerRadiusSlider">
+                            </div>
+                            <div class="item">
+                                <label for="segmentHeightSlider">扇形高度:</label>
+                                <input type="range" id="segmentHeightSlider" min="0" max="1200" step="1" value="360">
+                            </div>
+                            <div class="item">
+                                <label for="treeDisplay">画树图</label>
+                                <input type="checkbox" id="treeDisplay">
+                            </div>
+
+                            <div class="item">
+                                <button id="center-button">reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <br> -->
+                <!-- <br> -->
+                <div class="btns" id="btns" style="background:#F9F9F9;width: 100%;">
+
+                    <!-- <button type="button" id="exitBtn" class="btn" onClick="exitFullscreen()">退出全屏</button> -->
+                    <p type="button" id="btn" class="btn button-like fullScreen" title="fullscreen">
+                        <svg title="fullscreen" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            fill="currentColor" class="bi bi-arrows-fullscreen" viewBox="0 0 16 16">
+                            <path title="fullscreen" fill-rule="evenodd"
+                                d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z" />
+                        </svg>
+                        全屏
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="basicSettings" style="margin-left: auto; position: relative;">
+
+            </div>
+
+
+        </div>
+        <div id="container" style="display: relative; width: 1000px;height: 100%;">
+
+
+            <svg id="chart" style="position: absolute;">
+                <!-- <defs>
+                        <linearGradient id="gradient">
+                            <stop offset="0%" stop-color="red"></stop>
+                            <stop offset="100%" stop-color="rgb(8, 48, 107)"></stop>
+                        </linearGradient>
+                    </defs>  -->
+
+                <!-- <rect height="20" width="150" style="fill: url(#gradient)"></rect> -->
+            </svg>
+
+        </div>
+
+    </div>
+
+
+    <script>
+        // function randomDecimalArray(size) {
+        //     const arr = [];
+        //     for (let i = 0; i < size; i++) {
+        //         arr.push(Math.random().toFixed(2));
+        //     }
+        //     return arr;
+        // }
+
+        // const array = randomDecimalArray(10);
+        // const array1 = randomDecimalArray(10);
+        // console.log(array);
+
+        // var dataset = [{ "group": array, "id": 1 }, { "group": array1, "id": 2 }, { "group": array }];
+
+        // TODO:xiaojiao, input dataset
+        var dataset = [{ 'group': [0.007793229095064573, 0.0023626510882539128, 1.0, 0.2957190353625393, 0.44601170877183255, 0.18220610646810895, 0.559806747998384, 0.0017631895757570862, 0.1810776651396244, 0.022603883871860603, 0.001516320091890512, 0.05088512346135611, 0.08660695423076478, 0.08653642664773449, 0.07525215102245264, 0.00204529990787822, 0.002680048155150771, 0.000811090148108842, 0.0, 0.01770223979451649], 'id': 'A1' }, { 'group': [0.016311702165409867, 0.00516760714101245, 0.8321649850718222, 0.44733529975624087, 0.3740900879891414, 0.16010604764760455, 1.0000000000000002, 0.0019322561518361453, 0.34838682752329375, 0.037116963295445504, 0.007099863292848595, 0.12114677390441805, 0.12739286959300344, 0.07441358869199628, 0.030286707807797325, 0.0031005757499617207, 0.004897999335812029, 0.0035050161211479785, 0.0, 0.07203200530708317], 'id': 'A2' }, { 'group': [0.022050171848017858, 0.008512193168146795, 0.9959703503412372, 0.47242600862824846, 0.48913343031515566, 0.31707866983916194, 1.0, 0.002263858792621757, 0.37227203014535265, 0.04337593058765843, 0.008512193168146795, 0.1431223249536779, 0.14941590123400514, 0.1453862515752424, 0.03966310992039663, 0.0033957881889326363, 0.005342750161110695, 0.003033581634743992, 0.0, 0.08349179870079086], 'id': 'A3' }, { 'group': [1.0000000000000002, 0.9146145032757055, 0.03851820520626834, 0.5981898677400539, 0.20753530766531333, 0.33417531008229356, 0.003858894835796413, 0.5531467455593798, 0.1429874340268982, 0.2617694619197795, 0.06468815145169873, 0.258261494019136, 0.05774230807666476, 0.15849301283555936, 0.18389110574520848, 0.0, 0.08770087081008346, 0.27797661571641386, 0.027783652382468535, 0.07801872694863221], 'id': 'B1' }, { 'group': [1.0, 0.8681861616606752, 0.060597906452602546, 0.6380359698401629, 0.2060056885298684, 0.28790745682614954, 0.0, 0.5409847464991074, 0.1614365366916043, 0.2965643129298793, 0.08136074714236267, 0.27072910774905173, 0.07175703931414634, 0.13986203486070797, 0.16691464547973417, 0.02840520664057526, 0.12045179019249691, 0.2927769923054385, 0.04673340900094936, 0.1324225841951769], 'id': 'B2' }, { 'group': [1.0000000000000002, 0.939732928721179, 0.040061448956707865, 0.625183510237581, 0.20387324903408693, 0.38341601231401967, 0.0031461737121726598, 0.561420658842449, 0.15346424550508755, 0.38152838380006837, 0.05565262638262046, 0.2772844421932341, 0.056631410744178975, 0.1966021172481831, 0.1821296046021604, 0.0, 0.0950149571727423, 0.28434594263502155, 0.029434322831134237, 0.11018668262704134], 'id': 'B3' }, { 'group': [0.9999999999999998, 0.627757996351265, 0.011182962919845774, 0.12077617186123776, 0.09333253807658665, 0.1870277285475982, 0.0, 0.16798646735975264, 0.011606121204787163, 0.15420414457691062, 0.4728283555111675, 0.019222587385057947, 0.07961072118426109, 0.08746901945226083, 0.1815269580548658, 0.4037961127645983, 0.2975880743655689, 0.03808252237569103, 0.26839149302497284, 0.04297890412343813], 'id': 'C1' }, { 'group': [1.0, 0.6932258903192354, 0.0006249434147338126, 0.13042115899213108, 0.11204846167961047, 0.283652074809232, 0.0, 0.17879017190785426, 0.0037494668275987984, 0.18022742556525956, 0.514310710362354, 0.004624426340386945, 0.07049117705584257, 0.12248464875013737, 0.13948254801456522, 0.35776780747404824, 0.2807149182243047, 0.030933633894901256, 0.25646790774192957, 0.031496024869920466], 'id': 'C2' }, { 'group': [1.0, 0.6556826984134635, 0.0, 0.08835616352763768, 0.12756934525355645, 0.15856046149893965, 0.022705675709305227, 0.1569160126985759, 0.0018341276637830126, 0.17114665826902553, 0.38119024781074884, 0.009550263827678408, 0.06628289946413267, 0.06704188269973453, 0.13199667307736596, 0.32521659540989645, 0.27607361360817756, 0.030168847214880536, 0.2553917444260746, 0.03560812293261197], 'id': 'C3' }]
+        // TODO:xiaojiao 当他不是百分比的时候确定长度
+        //         const data = [{ 'group': 'Bacteroidetes', 'T1': 3.75, 'T2': 10.0, 'T3': 20.0, 'T4': 32.5, 'T5': 16.5, 'T6': 11.0, 'T7': 2.5, 'T8': 3.75 },
+        // { 'group': 'Firmicutes', 'T1': 14.354066985645932, 'T2': 13.157894736842104, 'T3': 9.210526315789473, 'T4': 10.76555023923445, 'T5': 9.449760765550238, 'T6': 15.550239234449762, 'T7': 14.354066985645932, 'T8': 13.157894736842104 },
+        // { 'group': 'Proteobacteria', 'T1': 8.38709677419355, 'T2': 14.838709677419354, 'T3': 21.29032258064516, 'T4': 12.258064516129032, 'T5': 11.612903225806452, 'T6': 12.258064516129032, 'T7': 10.967741935483872, 'T8': 8.38709677419355 },
+        // { 'group': 'Thermotogae', 'T1': 16.3075131042516, 'T2': 16.8899242865463, 'T3': 20.3843913803145, 'T4': 11.648223645894001, 'T5': 11.0658124635993, 'T6': 10.483401281304602, 'T7': 7.454863133372161, 'T8': 5.765870704717531 },
+        // { 'group': 'Coprothermobacterota', 'T1': 8.88888888888889, 'T2': 12.0, 'T3': 18.666666666666668, 'T4': 14.666666666666666, 'T5': 18.666666666666668, 'T6': 12.0, 'T7': 9.333333333333334, 'T8': 5.777777777777778 }]
+
+        const subgroups = dataset.map(function (d) {
+            return d.id;
+        });
+        // console.log("subgroups >>>", subgroups);
+
+    </script>
+    <script>
+
+        nwk = "(((EELA:0.150276,CONGERA:0.213019):0.230956,(EELB:0.263487,CONGERB:0.202633):0.246917):0.094785,((CAVEFISH:0.451027,(GOLDFISH:0.340495,ZEBRAFISH:0.390163):0.220565):0.067778,((((((NSAM:0.008113,NARG:0.014065):0.052991,SPUN:0.061003,(SMIC:0.027806,SDIA:0.015298,SXAN:0.046873):0.046977):0.009822,(NAUR:0.081298,(SSPI:0.023876,STIE:0.013652):0.058179):0.091775):0.073346,(MVIO:0.012271,MBER:0.039798):0.178835):0.147992,((BFNKILLIFISH:0.317455,(ONIL:0.029217,XCAU:0.084388):0.201166):0.055908,THORNYHEAD:0.252481):0.061905):0.157214,LAMPFISH:0.717196,((SCABBARDA:0.189684,SCABBARDB:0.362015):0.282263,((VIPERFISH:0.318217,BLACKDRAGON:0.109912):0.123642,LOOSEJAW:0.3971):0.287152):0.140663):0.206729):0.222485,(COELACANTH:0.558103,((CLAWEDFROG:0.441842,SALAMANDER:0.299607):0.135307,((CHAMELEON:0.771665,((PIGEON:0.150909,CHICKEN:0.172733):0.082163,ZEBRAFINCH:0.099172):0.272338):0.014055,((BOVINE:0.167569,DOLPHIN:0.15745):0.104783,ELEPHANT:0.166557):0.367205):0.050892):0.114731):0.295021)"
+
+        // Tools
+        // let ncov2019 = "(((EELA:0.150276,CONGERA:0.213019):0.230956,(EELB:0.263487,CONGERB:0.202633):0.246917):0.094785,((CAVEFISH:0.451027,(GOLDFISH:0.340495,ZEBRAFISH:0.390163):0.220565):0.067778,((((((NSAM:0.008113,NARG:0.014065):0.052991,SPUN:0.061003,(SMIC:0.027806,SDIA:0.015298,SXAN:0.046873):0.046977):0.009822,(NAUR:0.081298,(SSPI:0.023876,STIE:0.013652):0.058179):0.091775):0.073346,(MVIO:0.012271,MBER:0.039798):0.178835):0.147992,((BFNKILLIFISH:0.317455,(ONIL:0.029217,XCAU:0.084388):0.201166):0.055908,THORNYHEAD:0.252481):0.061905):0.157214,LAMPFISH:0.717196,((SCABBARDA:0.189684,SCABBARDB:0.362015):0.282263,((VIPERFISH:0.318217,BLACKDRAGON:0.109912):0.123642,LOOSEJAW:0.3971):0.287152):0.140663):0.206729):0.222485,(COELACANTH:0.558103,((CLAWEDFROG:0.441842,SALAMANDER:0.299607):0.135307,((CHAMELEON:0.771665,((PIGEON:0.150909,CHICKEN:0.172733):0.082163,ZEBRAFINCH:0.099172):0.272338):0.014055,((BOVINE:0.167569,DOLPHIN:0.15745):0.104783,ELEPHANT:0.166557):0.367205):0.050892):0.114731):0.295021)";       // https://github.com/jasondavies/newick.js
+
+        // ncov2019 = '(((((b:1.4933428258506058,a:1.4933428258506058):0.7680867725836196,d:2.2614295984342254):0.22625259477372683,((i:0.6909506384345234,c:0.6909506384345234):0.7527738955234908,f:1.4437245339580143):1.043957659249938):0.5378290788876594,((g:1.3194839206290894,e:1.3194839206290894):0.5976128408576096,h:1.917096761486699):1.1084145106089127):1.5784862028041697,j:4.603997474899781);'
+
+        ncov2019 = "(((((Otu000008:2.5912911936568217,Otu000004:2.5912911936568217):0.21822474927038238,(((((Otu000018:0.6843121229183067,Otu000012:0.6843121229183067):0.46467873667615445,Otu000010:1.1489908595944611):0.13888397145715992,((Otu000015:0.6277070720709177,Otu000014:0.6277070720709177):0.23067585426260895,(Otu000020:0.5618915164390141,Otu000013:0.5618915164390141):0.2964914098945125):0.4294919047180944):0.4200381880898494,Otu000006:1.7079130191414704):0.3215883122582681,(Otu000009:1.4043970011769311,Otu000005:1.4043970011769311):0.6251043302228074):0.7800146115274655):0.7493726191417283,(((Otu000019:0.44941061459503645,Otu000017:0.44941061459503645):0.3318409736020334,Otu000016:0.7812515881970699):0.2973997183114765,Otu000011:1.0786513065085463):2.480237255560386):2.1504644771746966,(Otu000007:1.8970033499145673,Otu000003:1.8970033499145673):3.8123496893290616):2.473085459789859,(Otu000002:2.491242990343004,Otu000001:2.491242990343004):5.691195508690484);"
+        function parseNewick(a) { for (var e = [], r = {}, s = a.split(/\s*(;|\(|\)|,|:)\s*/), t = 0; t < s.length; t++) { var n = s[t]; switch (n) { case "(": var c = {}; r.branchset = [c], e.push(r), r = c; break; case ",": var c = {}; e[e.length - 1].branchset.push(c), r = c; break; case ")": r = e.pop(); break; case ":": break; default: var h = s[t - 1]; ")" == h || "(" == h || "," == h ? r.name = n : ":" == h && (r.length = parseFloat(n)) } } return r }
+    </script>
+
+    <script>
+
+        // 环状热图
+        // https://gist.github.com/arpitnarechania/b0bdc4f9a377ea9d8612677e12f65b82
+        // https://stackoverflow.com/questions/43314115/d3-circular-heat-chart-increase-segment-height-on-mouseover
+
+        // step in step draw circlar tree
+        // https://observablehq.com/@lacunae/mep-schematics-tree-of-life
+
+        // 思路：先画矩形热图 + dendrogram
+        // 再转变坐标系
+        // https://juejin.cn/post/6844903630978416654
+        // 极坐标转换成直角坐标
+
+        // https://observablehq.com/d/48948ce1016cda1d
+        // circle tree map
+
+        // 前端 · 深入理解 SVG - d 属性的作用原理
+        // https://juejin.cn/post/7071892793114755103#heading-14
+
+
+        // source code:https://observablehq.com/d/48948ce1016cda1d
+
+        // TODO:xiaojiao, 1. 将这个图形变小一些, 似乎调节innerRadius就可以了
+        // 2. 添加热图
+        // 3. 自适应热图
+        // 4. TODO:颜色选择
+
+        var width = 954;
+        // set the dimensions and margins of the graph
+        const margin = { top: 10, right: 30, bottom: 20, left: 50 };
+
+        // TODO:xiaojiao, 监听窗口resize 时的变化
+        let flag = true
+
+        // 全屏设置
+        let isFullscreen = false;
+
+        window.onresize = function () {
+
+            // 全屏时放弃改变窗口大小
+            // added by xiaojiao 2023/12/04
+            if (isFullscreen) {
+                return;
+            }
+
+            if (flag) {
+                // console.log(new Date(), '窗口改变了')
+                flag = false
+                location.reload();
+            }
+            let timeId = setTimeout(() => {
+                flag = true
+                timeId = null // 清除延时定时器
+            }, 1000)
+            width = document.body.clientWidth;
+        }
+
+        // 网页窗口在某一大小打开时的宽高
+        width = window.innerWidth - margin.left - margin.right;
+        var height = window.innerHeight - margin.top - margin.bottom;
+
+        // area
+        const outerRadius = width / 2;
+        let innerRadius = outerRadius - 320;
+        data = parseNewick(ncov2019);
+        // let width = 954;
+
+        // 设置弧度
+        // innerRadius = 20,
+        // TODO:xiaojiao,需要指定输入 childrenleaves()
+        segmentHeight = 59,
+            numSegments = 20;
+
+        let newSize = 360;
+        let cluster = d3.cluster()
+            .size([360, innerRadius])
+            .separation((a, b) => 1)
+
+
+        function name(d) {
+            if (d.height === 0) {
+                const parts = d.data.name.split("_");
+                for (let i = 0; i < parts.length; ++i) {
+                    if (/^\d{4}(?:-\d{2}(?:-\d{2})?)?$/.test(parts[i])) {
+                        return parts[i + 1]
+                            .replace(/-.*/, "")
+                            .replace(/([a-z])([A-Z])/, (_, a, b) => [a, b].join(" "));
+                    }
+                }
+            }
+        }
+
+        color = d3.scaleOrdinal()
+            .domain(["Otu000015", "Otu000019"])
+            .range(d3.schemeTableau10)
+            .unknown(null)
+
+        colortemp2 = d3.scaleSequential(d3.interpolateRdYlBu);
+
+        // Compute the maximum cumulative length of any node in the tree.
+        function maxLength(d) {
+            return d.data.length + (d.children ? d3.max(d.children, maxLength) : 0);
+        }
+
+
+        // Set the radius of each node by recursively summing and scaling the distance from the root.
+        // find the max radius
+        let maxRadius = 0;
+        // let minRadius = 0;
+        let minRadius = Infinity;
+        function setRadius(d, y0, k) {
+            d.radius = (y0 += d.data.length) * k;
+            if (d.children) d.children.forEach(d => setRadius(d, y0, k));
+            if (d.radius > maxRadius) {
+                maxRadius = d.radius;
+            }
+            if (d.radius < minRadius) {
+                minRadius = d.radius;
+            }
+            // if (d.radius > maxRadius) {
+            //     maxRadius = node.radius;
+            // }
+        }
+
+        function linkVariable(d) {
+            return linkStep(d.source.x, d.source.radius, d.target.x, d.target.radius);
+        }
+
+        function linkConstant(d) {
+            return linkStep(d.source.x, d.source.y, d.target.x, d.target.y);
+        }
+
+        function linkExtensionVariable(d) {
+            return linkStep(d.target.x, d.target.radius, d.target.x, innerRadius);
+        }
+
+        function linkExtensionConstant(d) {
+            return linkStep(d.target.x, d.target.y, d.target.x, innerRadius);
+        }
+
+        function linkStep(startAngle, startRadius, endAngle, endRadius) {
+            const c0 = Math.cos(startAngle = (startAngle - 90) / 180 * Math.PI);
+            const s0 = Math.sin(startAngle);
+            const c1 = Math.cos(endAngle = (endAngle - 90) / 180 * Math.PI);
+            const s1 = Math.sin(endAngle);
+            return "M" + startRadius * c0 + "," + startRadius * s0
+                + (endAngle === startAngle ? "" : "A" + startRadius + "," + startRadius + " 0 0 " + (endAngle > startAngle ? 1 : 0) + " " + startRadius * c1 + "," + startRadius * s1)
+                + "L" + endRadius * c1 + "," + endRadius * s1;
+        }
+
+        // Generation Arc Diagram： https://observablehq.com/d/37dcdf8246ad1fca
+        // 这里只是为了取得arcStart的值
+        const arcRange = g => Math.PI * 2 * newSize / 360
+        const arcStart = (g, x) => -arcRange(g) / 2 + x * arcRange(g)
+        const arcEnd = (g, x) => arcStart(g, x + 1)
+
+        const POS = (g) => d3.arc()
+            .startAngle(-arcStart(g, 0))
+            .endAngle(-arcStart(g, 0))
+            .outerRadius(1 * (g + 1))
+            .innerRadius(1 * g)
+            .centroid()
+
+
+        const chart = function (cluster, newSize, segmentHeight) {
+            const root = d3.hierarchy(data, d => d.branchset)
+                .sum(d => d.branchset ? 0 : 1)
+                .sort((a, b) => (a.value - b.value) || d3.ascending(a.data.length, b.data.length));
+
+            // console.log("root >>>", root);
+            // root.transform = `rotate(30)`;
+
+            cluster(root);
+            setRadius(root, root.data.length = 0, innerRadius / maxLength(root));
+
+            // console.log("emm start here...", root);
+            // console.log("emm max(length) >>>", maxLength(root));
+            // 创建SVG元素
+            const svg = d3.select("#container")
+                .select("#chart")
+                .attr("viewBox", [-outerRadius, -outerRadius, width, width])
+                .attr("font-family", "sans-serif")
+                .attr("font-size", 10)
+                .attr("id", "chart")
+                .attr("transform","translate("+ -(1)  + "," + -(height) / 2 + ")")
+                .append("g")
+                .attr("id", "heatmap")
+                // .attr("transform","translate("+ -(width) / 2 + "," + -(height) / 2 + ")")
+                .attr("transform", "scale(0.4)");
+            // .attr("transform", "rotate(30)");
+
+            svg.append("style").text(`
+.link--active {
+  stroke: #000 !important;
+  stroke-width: 1.5px;
+}
+
+.link-extension--active {
+  stroke-opacity: .6;
+}
+
+.label--active {
+  font-weight: bold;
+}
+`);
+
+            // const linkExtension = svg.append("g")
+            //     .attr("fill", "none")
+            //     .attr("stroke", "currentColor")
+            //     .attr("stroke-opacity", 0.25)
+            //     .selectAll("path")
+            //     .data(root.links().filter(d => !d.target.children))
+            //     .join("path")
+            //     .each(function (d) { d.target.linkExtensionNode = this; })
+            //     .attr("d", linkExtensionConstant);
+
+            const link = svg.append("g")
+                .attr("fill", "none")
+                .attr("stroke", "currentColor")
+                .attr("id", "tree")
+                .selectAll("path")
+                .data(root.links())
+                .join("path")
+                .each(function (d) { d.target.linkNode = this; })
+                .attr("d", linkConstant)
+                .attr("stroke", d => color(name(d.target)));
+
+
+            // console.log("root.leaves()>>>", root.leaves());
+
+
+            const rect_attr_temp = 8;
+            // 计算节点旋转角度和偏移
+            function getTranslate(d, offset) {
+                // offset = 4;
+                // TODO:xiaojiao, offset 应该和这个的width 和 height有关...
+                // 2023/11/21
+
+                // let temp = d.node().getAttribute("width");
+                // console.log("d.data.name >>>", d);
+                // console.log("d.width", d.width);
+                const x = d.x;
+
+                let rotate = x - 90;
+                let translateX = innerRadius + offset;
+                // let translateY = 0;
+                // 他高度的一半
+                let translateY = -2;
+
+                if (x >= 180) {
+                    rotate += 180;
+                    translateX = -translateX - rect_attr_temp;
+                }
+
+                return `rotate(${rotate}) translate(${translateX},${translateY})`;
+            }
+
+
+            //Segment labels
+            // var segmentLabelOffset = 5;
+            // var r = innerRadius + Math.ceil(data.length / numSegments) * segmentHeight + segmentLabelOffset;
+
+            // 函数接收额外参数innerRadius
+            // function ir(d, i, r) {
+            //     return r + Math.floor(i/numSegments) * segmentHeight; 
+            // }
+            // add circle heatmap here
+            const singleCircleHeatmap= svg.append("g").attr("id", "singleCircleHeatmap")
+
+            function drawArchRects(svg, data, size) {
+                const group = singleCircleHeatmap.append("g").attr("id", data.id);
+                // console.log("data >>> draw", data);
+                group
+                    // .data(data)
+                    // .join("g")
+                    .selectAll("path")
+                    .data(data.group)
+                    .join("path")
+                    .attr("d", d3.arc().innerRadius(
+                        function ir(d, i) {
+                            // console.log("<<< d.id >>>", d);
+                            return size + Math.floor(i / numSegments) * segmentHeight;
+                        }
+                    ).outerRadius(
+                        function or(d, i) {
+                            return size + Math.floor(i / numSegments) * segmentHeight + segmentHeight;
+                        }
+                    ).startAngle(
+                        function (d, i) {
+                            // (newSize / 360) 即是新扇形的角度
+                            return (i * 2 * Math.PI * (newSize / 360)) / numSegments;
+                        }
+                    ).endAngle(
+                        function (d, i) {
+                            return ((i + 1) * 2 * Math.PI * (newSize / 360)) / numSegments;
+                        }
+                    ))
+                    .attr("fill", function (d, i) {
+
+                        // 除以角度值
+                        return colortemp2((d) / 0.315);
+                    })
+                    // .attr("stroke", "red")
+                    // .on("mouseover", mouseovered(true))
+                    // .on("mouseout", mouseovered(false))
+                    .append("title")
+                    .text(d => d)
+                    .on("mouseover", mouseovered(true))
+                    .on("mouseout", mouseovered(false))
+                // .attr("transform", d => getTranslate(d, size));
+                return group;
+            }
+
+            let group = null;
+            // 调用
+            for (let k = 0; k < dataset.length; ++k) {
+                // drawArchRects(svg, dataset[1], innerRadius + segmentHeight);
+                // console.log("k >>>", k, dataset.length);
+                group = drawArchRects(svg, dataset[k], innerRadius + segmentHeight * k);
+            }
+            // drawArchRects(svg, root.leaves(), innerRadius + segmentHeight * 3);
+            // drawRects(svg, root.leaves(), 64);
+
+            group.append("g")
+                .attr("class", "labels")
+                .selectAll("text")
+                .data(root.leaves())
+                .enter().append("text")
+                .attr("dy", ".31em")
+                .attr("transform", function (d, i) { return "rotate(" + (d.x - 90) + ")translate(" + (innerRadius + 4 + segmentHeight * dataset.length) + ",0)" + (d.x < 180 ? "" : "rotate(180)"); })
+                .attr("text-anchor", function (d) { return d.x < 180 ? "start" : "end"; })
+                .text(function (d) { return d.data.name.replace(/_/g, " "); })
+                .on("mouseover", mouseovered(true))
+                .on("mouseout", mouseovered(false));
+
+            // 添加分组文字
+            // if (true)
+            // 添加分组
+            // https://observablehq.com/d/37dcdf8246ad1fca
+
+            // TODO:xiaojiao, 无法添加带字母的字符串.... 2023/12/01
+            group.append("g")
+                .selectAll("text")
+                .data(subgroups)
+                // .filter(d => d > 0)
+                .enter()
+                .append('text')
+                .text(d => d)
+                .attr('x', function (d, i) {
+                    // group.startAngle();
+                    // console.log("test here >>>", POS(i + 1), i, d);
+                    return -POS(i + 1)[0];
+                })
+                .attr('y', function (d, i) {
+                    // console.log("I >>", i);
+                    return -POS(i + 1)[1] - segmentHeight * i - innerRadius - segmentHeight * 0.6;
+                })
+                .attr('text-anchor', "end")
+                .attr('dominant-baseline', "middle")
+                .style('font-size', 20)
+
+            function update(checked) {
+                const t = d3.transition().duration(750);
+                linkExtension.transition(t).attr("d", checked ? linkExtensionVariable : linkExtensionConstant);
+                link.transition(t).attr("d", checked ? linkVariable : linkConstant);
+            }
+
+            function mouseovered(active) {
+                return function (d) {
+                    d3.select(this).classed("label--active", active);
+                    d3.select(d.linkExtensionNode).classed("link-extension--active", active).raise();
+                    do d3.select(d.linkNode).classed("link--active", active).raise();
+                    while (d = d.parent);
+                };
+            }
+
+
+            // 添加渐变条带
+            // 使用d3.js绘制渐变条
+            // https://juejin.cn/post/6844904037486166023
+            const nTicks = 5; // 0, 20, 40, 60, 80, 100;
+            const textHeight = 12;
+
+            const padding = 20;
+            const barHeight = 20;
+            const tickFormat = d3.format(".0%");
+
+            const defs = d3.select("#chart")
+                .append("g")
+                .append("defs");
+
+            const linearGradient = defs
+                .append("linearGradient")
+                .attr("id", "gradient")
+
+                for (let k = 0; k <= 10; k++) {
+                    const offset = k * 10;
+                    const stopColor = colortemp2(k / 10);
+
+                    linearGradient
+                        .append("stop")
+                        .attr("offset", `${offset}%`)
+                        .attr("stop-color", stopColor);
+                }
+
+            const gradientRectHeight = 20
+            const gradientRectWidth = 150;
+            // https://stackoverflow.com/questions/62950517/d3-gradient-rectangle-add-points-with-text-on-stops
+            const gradientRect = d3.select("#chart")
+                .append("g")
+                .attr("id", "gradientBar")
+                .append("rect")
+                .attr("height", gradientRectHeight)
+                .attr("width", gradientRectWidth)
+                .style("fill", "url('#gradient')")
+                .style('transform', 'translate(' + 10 + 'px, ' + barHeight + 'px)');
+
+
+            const ticks = new Array(nTicks)
+                .fill()
+                .map(function (e, i) { return i / (nTicks - 1) });
+
+            const ticksContainer = d3.select("#gradientBar").append('g')
+                .classed('ticks', true)
+                .style('transform', 'translate(' + 10 + 'px, ' + barHeight + 'px)');
+
+            ticksContainer
+                .selectAll('text')
+                .data(ticks)
+                .enter()
+                .append('text')
+                .text(tickFormat)
+                .attr('y', textHeight + barHeight)
+                .attr('x', function (d) {
+                    // console.log("<d>", d);
+                    return gradientRectWidth * d
+                });
+
+            // 移动渐变色条到左上角
+            const bb = d3.select("#chart").node().getBoundingClientRect();
+
+            // TODO:xiaojiao fix that position 2023/12/04
+            const tx = -bb.width / 2 + 3 * padding;
+            const ty = -bb.height / 4 + 2 * padding;
+
+            // console.log("chart here >>>", bb);
+            d3.select("#gradientBar")
+                .attr("transform", `translate(${tx},${ty})`);
+
+            return Object.assign(svg.node(), { update });
+
+        }
+
+        /* Arc functions */
+
+        // first initlized...
+        // chart(cluster, 360, segmentHeight);
+    </script>
+
+    <script>
+
+        // 参数控制
+        // 依据滑动条更新图形
+        const sizeSlider = document.getElementById('sizeSlider');
+        const clusterSvg = d3.select('#chart');
+
+        sizeSlider.addEventListener('input', updateClusterSize);
+
+
+        function updateClusterSize() {
+            newSize = sizeSlider.value;
+
+            // cluster.size([newSize, innerRadius]);
+            cluster = d3.cluster()
+                .size([newSize, innerRadius])
+                .separation((a, b) => 1)
+            // 根据新的cluster大小重新计算并更新图形
+
+            // console.log("innnerRadius >>>", newSize, innerRadius);
+            // 清空现有的图形并重新绘制cluster
+            clusterSvg.selectAll('*').remove();
+
+            // 根据新的cluster设置重新绘制图形的代码
+            chart(cluster, newSize, segmentHeight);
+        }
+
+        const rotateSlider = document.getElementById("rotateSlider");
+        const rotateValue = document.getElementById("rotateValue");
+
+        rotateSlider.addEventListener("input", function () {
+            const rotate = rotateSlider.value;
+
+            // 清空现有的图形并重新绘制cluster
+            rotateValue.value = rotate;
+ 
+            // 获取当前的缩放变换
+            var transform = d3.zoomTransform(d3.select("#heatmap").node());
+            // const transform = d3.select("#heatmap").attr("transform");
+
+            // 获取当前的缩放比例
+            const scale = transform.k;
+            // x轴平移量
+            var translateX = transform.x;
+            // y轴平移量
+            var translateY = transform.y;
+
+            // const
+            console.log("<<< rotateSlider 中的transform>>", transform);
+            d3.select("#heatmap").attr("transform", `rotate(${rotate}) scale(${scale}) translate(${translateX},${translateY}) `);
+
+            console.log("rotateValue", rotateValue);
+        });
+
+        // 监听滑动条变化事件
+        document.getElementById("innerRadiusSlider").addEventListener("input", function (e) {
+            innerRadius = outerRadius - parseInt(e.target.value); // 更新 innerRadius 值
+
+            // 清空现有的图形并重新绘制cluster
+            clusterSvg.selectAll('*').remove();
+
+
+            cluster = d3.cluster()
+                .size([newSize, innerRadius])
+                .separation((a, b) => 1)
+
+            // 调用更新图表的函数
+            chart(cluster, newSize, segmentHeight);
+
+            // 旋转
+            // d3.select("#heatmap").attr("transform", `rotate(${rotateValue.value})`);
+
+            console.log("innerRadius >>>", innerRadius);
+        });
+
+        const fontSelect = document.getElementById("fontSelect");
+        const textElement = d3.select("#container");
+
+        fontSelect.addEventListener("change", function () {
+            const selectedFont = fontSelect.value;
+            d3.selectAll("text").style("font-family", selectedFont);
+            // svg.style("font-family", selectedFont);
+        });
+
+
+        const fontSizeRange = document.getElementById("fontSizeRange");
+        const sliderTooltip = document.querySelector(".sliderTooltip");
+
+        // 嵌套的子元素span中的value
+        var valueSpan = document.querySelector(".sliderTooltip .value");
+
+        fontSizeRange.addEventListener("input", function () {
+            const selectedFontSize = fontSizeRange.value;
+            d3.selectAll("text").style("font-size", selectedFontSize + "px");
+            // svg.style("font-size", selectedFontSize + "px");
+            const sliderRect = fontSizeRange.getBoundingClientRect();
+
+            const tooltipWidth = sliderTooltip.offsetWidth;
+            const tooltipHeight = sliderTooltip.offsetHeight;
+
+            console.log("sliderTooltip", sliderTooltip);
+            const sliderValue = parseInt(selectedFontSize);
+            const sliderMin = parseInt(fontSizeRange.min);
+            const sliderMax = parseInt(fontSizeRange.max);
+            const sliderWidth = fontSizeRange.offsetWidth;
+
+            console.log("sliderRect, tooltipWidth, tooltipHeight", sliderRect, tooltipWidth, tooltipHeight);
+
+            // TODO:xiaojiao, fix thar
+            // const tooltipX = 1;
+            const positionPercentage = (sliderValue - sliderMin) / (sliderMax - sliderMin);
+            const tooltipPosition = positionPercentage * (sliderWidth - tooltipWidth);
+
+            const tooltipX = tooltipWidth + tooltipPosition;
+            const tooltipY = sliderRect.top - tooltipHeight; // 自定义偏移量，避免与滑块重叠
+            console.log("tooltipX", tooltipPosition);
+
+            sliderTooltip.style.left = tooltipX + "px";
+            // sliderTooltip.style.top = -0.1 + "px";
+
+            valueSpan.textContent = selectedFontSize + 'px';
+        });
+
+        // 添加slider tooltip
+        fontSizeRange.addEventListener("mouseover", function () {
+            console.log("sliderTooltip", sliderTooltip);
+            // tooltip.classList.add()
+            sliderTooltip.style.display = "block";
+
+            sliderTooltip.classList.add("show");
+        });
+
+        fontSizeRange.addEventListener("mouseout", function () {
+
+            sliderTooltip.classList.remove("show");
+            sliderTooltip.style.display = "none";
+        });
+
+
+        // 获取滑动条元素
+        // 扇形高度
+        var segmentHeightSlider = document.getElementById("segmentHeightSlider");
+
+        // 添加事件监听器
+        segmentHeightSlider.addEventListener("input", function () {
+            var segmentHeight = segmentHeightSlider.value;
+            console.log("Segment Height: " + segmentHeight);
+            // 去除全图
+            clusterSvg.selectAll('*').remove();
+
+            // 必须使用整数
+            chart(cluster, newSize, parseInt(segmentHeight));
+        });
+
+        // let previousTransform = null;
+        // 创建一个缩放行为，并设置缩放事件处理程序
+        const zoom = d3.zoom().on('zoom', (e) => {
+            d3.select("#heatmap").attr('transform', e.transform);
+        });
+
+
+        // 下载
+        // 构建下拉展开
+        var dropdownTest = document.getElementById("dropdownTest")
+        var dropdownContent = document.getElementById("dropdownContent");
+
+        dropdownTest.addEventListener("click", function () {
+            dropdownContent.style.display = (dropdownContent.style.display === "none") ? "block" : "none";
+
+        });
+
+
+        var svgDownload = d3.select("#chart");
+        svgDownload.attr('version', '1.1')
+            .attr('xmlns', 'http://www.w3.org/2000/svg')
+            .attr('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+        // var base64Svg = window.btoa(encodeURIComponent(html).replace(/%([0-9A-F]{2})/g, function (match, p1) {
+        //     return String.fromCharCode('0x' + p1);
+        // }));
+        // console.log("html",html)
+        // console.log("svg", svgDownload)
+        const svgString = new XMLSerializer().serializeToString(svgDownload.node());
+
+        const downloadButton = document.getElementById("export");
+
+        downloadButton.addEventListener("click", () => {
+            // 创建一个临时的 SVG 元素用于操作
+            const tempSvg = svgDownload.node().cloneNode(true);
+
+            // 查找并移除所有的动画元素
+            const animateElements = tempSvg.querySelectorAll("animate, animateTransform, animateMotion");
+            animateElements.forEach((animateElement) => {
+                animateElement.remove();
+            });
+
+            // 将修改后的 SVG 元素转换为字符串
+            const modifiedSvgString = new XMLSerializer().serializeToString(tempSvg);
+
+            // 创建下载链接
+            const link = document.createElement("a");
+            link.href = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(modifiedSvgString);
+            link.download = "svg_file.svg";
+            link.click();
+        });
+
+        // 获取 "Basic Settings" 元素
+        const basicSettings = document.querySelector(".basicSettings");
+
+        // icon-i gd-icon-param
+        console.log("basicSettings", basicSettings);
+
+        // 获取下拉框元素
+        const settingContent = document.querySelector("#settingContent");
+
+        // 添加点击事件监听器
+        basicSettings.addEventListener("click", function () {
+            // 切换下拉框的显示状态
+            // 获取元素的位置信息
+            var rect = this.getBoundingClientRect();
+            var position = {
+                top: rect.top,
+                left: rect.left,
+                right: rect.right,
+                bottom: rect.bottom
+            };
+            settingContent.style.display = (settingContent.style.display === "none") ? "block" : "none";
+
+        });
+
+        // 按钮点击事件处理函数
+        function handleButtonClick(contentElement) {
+            // 隐藏所有内容元素
+            // downloadDropdown.style.display = "none";
+            // settingsDropdown.style.display = "none";
+            // content3.style.display = "none";
+
+            // 显示指定的内容元素
+            contentElement.style.display = "block";
+
+        }
+
+        const downloadSettings = document.querySelector(".downloadSettings");
+
+        downloadSettings.addEventListener("click", function () {
+
+            console.log("download");
+        });
+
+
+        // FIXME:xiaojiao, 2023/10/31 全屏有些错误
+        function toggleFullscreen() {
+            if (isFullscreen) {
+                exitFullscreen();
+            } else {
+                fullScreen();
+            }
+
+            isFullscreen = !isFullscreen;
+        }
+
+        function fullScreen() {
+            var de = document.documentElement;
+            if (de.requestFullscreen) {
+                de.requestFullscreen();
+            } else if (de.mozRequestFullScreen) {
+                de.mozRequestFullScreen();
+            } else if (de.webkitRequestFullScreen) {
+                de.webkitRequestFullScreen();
+            }
+        }
+
+        function exitFullscreen() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            }
+        }
+
+        document.getElementById("btns").addEventListener("click", function () {
+            toggleFullscreen();
+        })
+        //  $("#btn").click(fullScreen()) // 注意会报错
+
+
+        // 线性颜色调整
+        var compute;
+
+        var linear = d3.scaleLinear()
+            .domain([0, 1])
+            .range([0, 1]);
+
+        function setColor(digit) {
+            // get the rgb of color
+            // 获取HSL颜色的插值
+            var hslColor = d3.interpolateRgb(startColorInput.value, endColorInput.value);
+            console.log("hslColor", hslColor);
+            // 根据线性比例获取颜色
+            return hslColor(linear(digit));
+        }
+
+        // 获取输入颜色的元素
+        const startColorInput = document.getElementById('startColor');
+        const endColorInput = document.getElementById('endColor');
+
+        // 环状热图外边框
+        const colorPicker = document.getElementById('colorPicker');
+        const colorValue = document.getElementById('colorValue');
+        colorPicker.addEventListener('change', function(){
+            colorValue.value = colorPicker.value;
+        });
+        const applySettingsButton = document.getElementById("applySettings");
+
+        // 应用设置按钮点击事件处理程序
+        applySettingsButton.addEventListener("click", applySettings);
+
+        function applySettings() {
+            // var compute = d3.interpolate(a, b);
+            // 获取HSL颜色的插值
+            compute = d3.interpolateHsl(startColorInput.value, endColorInput.value);
+
+            // compute(linear(digit))
+            // 获取用户选择的设置值
+            // textColor = textColorInput.value;
+            // yaxisColor = yaxisColorInput.value;
+            // xaxisColor = xaxisColorInput.value;
+            // xAxisWidth = +xAxisWidthInput.value;
+            // yAxisWidth = +yAxisWidthInput.value;
+            // 更新SVG图形属性
+            colortemp2 = setColor;
+            // 清除图形
+            clusterSvg.selectAll('*').remove();
+
+            chart(cluster, newSize, parseInt(segmentHeight));
+
+            // 设置环状热图外边框颜色
+            d3.select("#singleCircleHeatmap").selectAll("path").attr("stroke",colorValue.value);
+        }
+
+        chart(cluster, newSize, parseInt(segmentHeight));
+        // 将缩放行为应用到 SVG 元素上
+        // https://stackoverflow.com/questions/16178366/d3-js-set-initial-zoom-level
+        // set  initial-zoom state of svg
+        d3.select("#chart").call(zoom)
+            .call(zoom.transform, d3.zoomIdentity.scale(0.4));
+
+        const treeDisplay = document.getElementById("treeDisplay");
+
+        treeDisplay.addEventListener("change", function() {
+            const body = document.body;
+            if (this.checked) {
+                d3.select("#tree").attr("stroke","");
+            } else {
+                d3.select("#tree").attr("stroke","black");
+            }
+        });
+        document.getElementById("center-button").addEventListener("click", function () {
+            // resizesvg();
+            // resetTransform();
+            // svg.call(zoom, d3.zoomIdentity);
+            // TODO:xiaojiao, 请支持不同浏览器的刷新, 2023/10/30
+            location.reload();
+            window.addEventListener("load", (event) => {
+                moveSvgAfterload();
+            });
+            resizesvg();
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,2498 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ternary Plot Demo</title>
+    <style>
+        .ternary-plot {
+            width: 500px;
+            height: 500px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/d3-array@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-scale@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-ternary@2"></script>
+    <!-- <script src="ternary_data.json"></script> -->
+
+</head>
+
+<body>
+    <!-- https://observablehq.com/@julesblm/introducing-d3-ternary?collection=@julesblm/ternary-plots -->
+    <!-- <div id="chart" class="ternary-plot"></div> -->
+    <div id="container" class="ternary-plot"></div>
+
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script>
+        const data = [
+            {
+                "country": "Djibouti",
+                "agriculture": "2.8",
+                "industry": "21",
+                "service": "76.1",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Burundi",
+                "agriculture": "40",
+                "industry": "16",
+                "service": "44.1",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Comoros",
+                "agriculture": "49.5",
+                "industry": "11.8",
+                "service": "38.7",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Eritrea",
+                "agriculture": "11.7",
+                "industry": "29.6",
+                "service": "58.7",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Ethiopia",
+                "agriculture": "35.8",
+                "industry": "22.2",
+                "service": "42",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Kenya",
+                "agriculture": "35.3",
+                "industry": "17.2",
+                "service": "47.9",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Madagascar",
+                "agriculture": "23.7",
+                "industry": "16",
+                "service": "60.3",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Malawi",
+                "agriculture": "28.1",
+                "industry": "15.8",
+                "service": "56.1",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Mauritius",
+                "agriculture": "4",
+                "industry": "21.8",
+                "service": "74.2",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Mozambique",
+                "agriculture": "22.3",
+                "industry": "23",
+                "service": "54.7",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Rwanda",
+                "agriculture": "30.9",
+                "industry": "17.6",
+                "service": "51.5",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Seychelles",
+                "agriculture": "2.5",
+                "industry": "13.8",
+                "service": "83.7",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Somalia",
+                "agriculture": "60.2",
+                "industry": "7.4",
+                "service": "32.5",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Tanzania",
+                "agriculture": "23.4",
+                "industry": "28.6",
+                "service": "47.6",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Uganda",
+                "agriculture": "25.8",
+                "industry": "23.2",
+                "service": "51",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Zambia",
+                "agriculture": "5.4",
+                "industry": "35.6",
+                "service": "59",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Zimbabwe",
+                "agriculture": "12.5",
+                "industry": "26.9",
+                "service": "60.6",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Angola",
+                "agriculture": "10.2",
+                "industry": "61.4",
+                "service": "28.4",
+                "region": "Africa",
+                "subregion": "Middle Africa"
+            },
+            {
+                "country": "Cameroon",
+                "agriculture": "23.1",
+                "industry": "28",
+                "service": "48.9",
+                "region": "Africa",
+                "subregion": "Middle Africa"
+            },
+            {
+                "country": "Central African Republic",
+                "agriculture": "42.9",
+                "industry": "15.9",
+                "service": "41.2",
+                "region": "Africa",
+                "subregion": "Middle Africa"
+            },
+            {
+                "country": "Chad",
+                "agriculture": "59",
+                "industry": "14.1",
+                "service": "27",
+                "region": "Africa",
+                "subregion": "Middle Africa"
+            },
+            {
+                "country": "Congo, Democratic Republic of the",
+                "agriculture": "21.1",
+                "industry": "33",
+                "service": "45.9",
+                "region": "Africa",
+                "subregion": "Middle Africa"
+            },
+            {
+                "country": "Congo, Republic of the",
+                "agriculture": "8.9",
+                "industry": "50.8",
+                "service": "40.3",
+                "region": "Africa",
+                "subregion": "Middle Africa"
+            },
+            {
+                "country": "Equatorial Guinea",
+                "agriculture": "2.5",
+                "industry": "56.5",
+                "service": "41",
+                "region": "Africa",
+                "subregion": "Middle Africa"
+            },
+            {
+                "country": "Gabon",
+                "agriculture": "4.5",
+                "industry": "44",
+                "service": "51.5",
+                "region": "Africa",
+                "subregion": "Middle Africa"
+            },
+            {
+                "country": "Sao Tome and Principe",
+                "agriculture": "11.8",
+                "industry": "14.8",
+                "service": "73.4",
+                "region": "Africa",
+                "subregion": "Middle Africa"
+            },
+            {
+                "country": "Algeria",
+                "agriculture": "13.2",
+                "industry": "36.1",
+                "service": "50.7",
+                "region": "Africa",
+                "subregion": "Northern Africa"
+            },
+            {
+                "country": "Egypt",
+                "agriculture": "11.9",
+                "industry": "33.1",
+                "service": "55.7",
+                "region": "Africa",
+                "subregion": "Northern Africa"
+            },
+            {
+                "country": "Libya",
+                "agriculture": "1.3",
+                "industry": "63.8",
+                "service": "34.9",
+                "region": "Africa",
+                "subregion": "Northern Africa"
+            },
+            {
+                "country": "Morocco",
+                "agriculture": "14.8",
+                "industry": "29.1",
+                "service": "56",
+                "region": "Africa",
+                "subregion": "Northern Africa"
+            },
+            {
+                "country": "Tunisia",
+                "agriculture": "9.9",
+                "industry": "25.6",
+                "service": "64",
+                "region": "Africa",
+                "subregion": "Northern Africa"
+            },
+            {
+                "country": "Sudan",
+                "agriculture": "39.6",
+                "industry": "2.6",
+                "service": "57.8",
+                "region": "Africa",
+                "subregion": "Northern Africa"
+            },
+            {
+                "country": "Botswana",
+                "agriculture": "1.7",
+                "industry": "29.2",
+                "service": "69.1",
+                "region": "Africa",
+                "subregion": "Southern Africa"
+            },
+            {
+                "country": "Eswatini",
+                "agriculture": "6.5",
+                "industry": "45",
+                "service": "48.6",
+                "region": "Africa",
+                "subregion": "Southern Africa"
+            },
+            {
+                "country": "Lesotho",
+                "agriculture": "5.3",
+                "industry": "34.6",
+                "service": "60.1",
+                "region": "Africa",
+                "subregion": "Southern Africa"
+            },
+            {
+                "country": "Namibia",
+                "agriculture": "6.6",
+                "industry": "25.8",
+                "service": "67.6",
+                "region": "Africa",
+                "subregion": "Southern Africa"
+            },
+            {
+                "country": "South Africa",
+                "agriculture": "2.8",
+                "industry": "29.7",
+                "service": "67.5",
+                "region": "Africa",
+                "subregion": "Southern Africa"
+            },
+            {
+                "country": "Benin",
+                "agriculture": "25.6",
+                "industry": "23.1",
+                "service": "51.3",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Burkina Faso",
+                "agriculture": "31.9",
+                "industry": "22",
+                "service": "46.1",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Cabo Verde",
+                "agriculture": "7.9",
+                "industry": "17.9",
+                "service": "74.2",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Gambia, The",
+                "agriculture": "20.4",
+                "industry": "14.2",
+                "service": "65.4",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Ghana",
+                "agriculture": "18.3",
+                "industry": "24.5",
+                "service": "57.2",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Guinea",
+                "agriculture": "19.5",
+                "industry": "38.4",
+                "service": "42.1",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Guinea-Bissau",
+                "agriculture": "44.1",
+                "industry": "12.9",
+                "service": "43",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Cote d'Ivoire",
+                "agriculture": "17.4",
+                "industry": "28.8",
+                "service": "53.8",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Liberia",
+                "agriculture": "36.1",
+                "industry": "10.5",
+                "service": "53.4",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Mali",
+                "agriculture": "40.9",
+                "industry": "18.9",
+                "service": "40.2",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Mauritania",
+                "agriculture": "22.5",
+                "industry": "37.8",
+                "service": "39.7",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Niger",
+                "agriculture": "41.5",
+                "industry": "18.1",
+                "service": "40.4",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Nigeria",
+                "agriculture": "21.6",
+                "industry": "18.3",
+                "service": "60.1",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Senegal",
+                "agriculture": "16.9",
+                "industry": "24.3",
+                "service": "58.8",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Sierra Leone",
+                "agriculture": "60.7",
+                "industry": "6.5",
+                "service": "32.9",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Togo",
+                "agriculture": "28.1",
+                "industry": "21.6",
+                "service": "50.3",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Anguilla",
+                "agriculture": "2.4",
+                "industry": "21.3",
+                "service": "76.3",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Antigua and Barbuda",
+                "agriculture": "2.3",
+                "industry": "20.2",
+                "service": "77.5",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Aruba",
+                "agriculture": "0.4",
+                "industry": "33.3",
+                "service": "66.3",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Bahamas, The",
+                "agriculture": "2.3",
+                "industry": "7.7",
+                "service": "90",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Barbados",
+                "agriculture": "1.4",
+                "industry": "4.8",
+                "service": "93.8",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "British Virgin Islands",
+                "agriculture": "1",
+                "industry": "11.2",
+                "service": "87.8",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Cayman Islands",
+                "agriculture": "0.3",
+                "industry": "7.5",
+                "service": "91.3",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Cuba",
+                "agriculture": "3.9",
+                "industry": "21.5",
+                "service": "74.2",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Curacao",
+                "agriculture": "0.7",
+                "industry": "15.5",
+                "service": "83.8",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Dominica",
+                "agriculture": "15.3",
+                "industry": "13.6",
+                "service": "71.1",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Dominican Republic",
+                "agriculture": "5.5",
+                "industry": "33.8",
+                "service": "60.8",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Grenada",
+                "agriculture": "9.1",
+                "industry": "14.2",
+                "service": "76.7",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Haiti",
+                "agriculture": "21.9",
+                "industry": "20.8",
+                "service": "57.3",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Jamaica",
+                "agriculture": "7.6",
+                "industry": "23.2",
+                "service": "69.2",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Montserrat",
+                "agriculture": "1.6",
+                "industry": "21.8",
+                "service": "76.6",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Puerto Rico",
+                "agriculture": "0.8",
+                "industry": "50.1",
+                "service": "49.1",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Saint Kitts and Nevis",
+                "agriculture": "1.1",
+                "industry": "30",
+                "service": "68.9",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Saint Lucia",
+                "agriculture": "2.9",
+                "industry": "14.2",
+                "service": "82.8",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Saint Martin",
+                "agriculture": "1",
+                "industry": "15",
+                "service": "84",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Saint Vincent and the Grenadines",
+                "agriculture": "7.1",
+                "industry": "17.4",
+                "service": "75.5",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Sint Maarten",
+                "agriculture": "0.4",
+                "industry": "18.3",
+                "service": "81.3",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Trinidad and Tobago",
+                "agriculture": "0.4",
+                "industry": "48.8",
+                "service": "50.8",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Turks and Caicos Islands",
+                "agriculture": "0.5",
+                "industry": "8.9",
+                "service": "90.6",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Virgin Islands",
+                "agriculture": "2",
+                "industry": "20",
+                "service": "78",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Belize",
+                "agriculture": "9.7",
+                "industry": "13.8",
+                "service": "62.2",
+                "region": "Americas",
+                "subregion": "Central America"
+            },
+            {
+                "country": "Costa Rica",
+                "agriculture": "5.5",
+                "industry": "21",
+                "service": "73.5",
+                "region": "Americas",
+                "subregion": "Central America"
+            },
+            {
+                "country": "El Salvador",
+                "agriculture": "10.6",
+                "industry": "24.6",
+                "service": "64.9",
+                "region": "Americas",
+                "subregion": "Central America"
+            },
+            {
+                "country": "Guatemala",
+                "agriculture": "13.2",
+                "industry": "23.6",
+                "service": "63.2",
+                "region": "Americas",
+                "subregion": "Central America"
+            },
+            {
+                "country": "Honduras",
+                "agriculture": "13.8",
+                "industry": "28.4",
+                "service": "57.8",
+                "region": "Americas",
+                "subregion": "Central America"
+            },
+            {
+                "country": "Mexico",
+                "agriculture": "3.9",
+                "industry": "31.6",
+                "service": "64",
+                "region": "Americas",
+                "subregion": "Central America"
+            },
+            {
+                "country": "Nicaragua",
+                "agriculture": "15.5",
+                "industry": "24.4",
+                "service": "50.8",
+                "region": "Americas",
+                "subregion": "Central America"
+            },
+            {
+                "country": "Panama",
+                "agriculture": "2.4",
+                "industry": "15.7",
+                "service": "82",
+                "region": "Americas",
+                "subregion": "Central America"
+            },
+            {
+                "country": "Greenland",
+                "agriculture": "15.9",
+                "industry": "10.1",
+                "service": "73.9",
+                "region": "Americas",
+                "subregion": "Northern America"
+            },
+            {
+                "country": "Bermuda",
+                "agriculture": "0.8",
+                "industry": "5.8",
+                "service": "93.3",
+                "region": "Americas",
+                "subregion": "Northern America"
+            },
+            {
+                "country": "Canada",
+                "agriculture": "1.7",
+                "industry": "28.1",
+                "service": "70.2",
+                "region": "Americas",
+                "subregion": "Northern America"
+            },
+            {
+                "country": "Saint Pierre and Miquelon",
+                "agriculture": "2",
+                "industry": "15",
+                "service": "83",
+                "region": "Americas",
+                "subregion": "Northern America"
+            },
+            {
+                "country": "United States",
+                "agriculture": "0.9",
+                "industry": "18.9",
+                "service": "80.2",
+                "region": "Americas",
+                "subregion": "Northern America"
+            },
+            {
+                "country": "Argentina",
+                "agriculture": "10.9",
+                "industry": "28.2",
+                "service": "60.9",
+                "region": "Americas",
+                "subregion": "South America"
+            },
+            {
+                "country": "Bolivia",
+                "agriculture": "13",
+                "industry": "37.4",
+                "service": "50",
+                "region": "Americas",
+                "subregion": "South America"
+            },
+            {
+                "country": "Brazil",
+                "agriculture": "6.2",
+                "industry": "21",
+                "service": "72.8",
+                "region": "Americas",
+                "subregion": "South America"
+            },
+            {
+                "country": "Chile",
+                "agriculture": "4.4",
+                "industry": "31.4",
+                "service": "64.3",
+                "region": "Americas",
+                "subregion": "South America"
+            },
+            {
+                "country": "Colombia",
+                "agriculture": "7.4",
+                "industry": "31.3",
+                "service": "61.4",
+                "region": "Americas",
+                "subregion": "South America"
+            },
+            {
+                "country": "Ecuador",
+                "agriculture": "7.7",
+                "industry": "35.2",
+                "service": "56.9",
+                "region": "Americas",
+                "subregion": "South America"
+            },
+            {
+                "country": "Guyana",
+                "agriculture": "17.5",
+                "industry": "37.8",
+                "service": "44.7",
+                "region": "Americas",
+                "subregion": "South America"
+            },
+            {
+                "country": "Paraguay",
+                "agriculture": "17.9",
+                "industry": "27.7",
+                "service": "54.5",
+                "region": "Americas",
+                "subregion": "South America"
+            },
+            {
+                "country": "Peru",
+                "agriculture": "7.5",
+                "industry": "36.3",
+                "service": "56.1",
+                "region": "Americas",
+                "subregion": "South America"
+            },
+            {
+                "country": "Suriname",
+                "agriculture": "11.6",
+                "industry": "31.1",
+                "service": "57.4",
+                "region": "Americas",
+                "subregion": "South America"
+            },
+            {
+                "country": "Uruguay",
+                "agriculture": "6.2",
+                "industry": "25",
+                "service": "68.8",
+                "region": "Americas",
+                "subregion": "South America"
+            },
+            {
+                "country": "Venezuela",
+                "agriculture": "4.4",
+                "industry": "38.2",
+                "service": "57.4",
+                "region": "Americas",
+                "subregion": "South America"
+            },
+            {
+                "country": "Kazakhstan",
+                "agriculture": "4.8",
+                "industry": "34.4",
+                "service": "60.8",
+                "region": "Asia",
+                "subregion": "Central Asia"
+            },
+            {
+                "country": "Kyrgyzstan",
+                "agriculture": "14.3",
+                "industry": "32.5",
+                "service": "53.2",
+                "region": "Asia",
+                "subregion": "Central Asia"
+            },
+            {
+                "country": "Tajikistan",
+                "agriculture": "28.6",
+                "industry": "25.5",
+                "service": "45.9",
+                "region": "Asia",
+                "subregion": "Central Asia"
+            },
+            {
+                "country": "Turkmenistan",
+                "agriculture": "7.5",
+                "industry": "44.9",
+                "service": "47.7",
+                "region": "Asia",
+                "subregion": "Central Asia"
+            },
+            {
+                "country": "Uzbekistan",
+                "agriculture": "18.5",
+                "industry": "34.4",
+                "service": "47",
+                "region": "Asia",
+                "subregion": "Central Asia"
+            },
+            {
+                "country": "China",
+                "agriculture": "8.3",
+                "industry": "39.5",
+                "service": "52.2",
+                "region": "Asia",
+                "subregion": "Eastern Asia"
+            },
+            {
+                "country": "Hong Kong",
+                "agriculture": "0.1",
+                "industry": "7.2",
+                "service": "92.7",
+                "region": "Asia",
+                "subregion": "Eastern Asia"
+            },
+            {
+                "country": "Japan",
+                "agriculture": "1",
+                "industry": "29.7",
+                "service": "69.3",
+                "region": "Asia",
+                "subregion": "Eastern Asia"
+            },
+            {
+                "country": "Korea, North",
+                "agriculture": "25.4",
+                "industry": "41",
+                "service": "33.5",
+                "region": "Asia",
+                "subregion": "Eastern Asia"
+            },
+            {
+                "country": "Korea, South",
+                "agriculture": "2.2",
+                "industry": "39.3",
+                "service": "58.3",
+                "region": "Asia",
+                "subregion": "Eastern Asia"
+            },
+            {
+                "country": "Macau",
+                "agriculture": "0",
+                "industry": "11.3",
+                "service": "88.7",
+                "region": "Asia",
+                "subregion": "Eastern Asia"
+            },
+            {
+                "country": "Mongolia",
+                "agriculture": "13.2",
+                "industry": "36.1",
+                "service": "50.7",
+                "region": "Asia",
+                "subregion": "Eastern Asia"
+            },
+            {
+                "country": "Taiwan",
+                "agriculture": "1.8",
+                "industry": "36",
+                "service": "62.1",
+                "region": "Asia",
+                "subregion": "Eastern Asia"
+            },
+            {
+                "country": "Brunei",
+                "agriculture": "1.2",
+                "industry": "56.5",
+                "service": "42.3",
+                "region": "Asia",
+                "subregion": "South-Eastern Asia"
+            },
+            {
+                "country": "Cambodia",
+                "agriculture": "25.3",
+                "industry": "32.8",
+                "service": "41.9",
+                "region": "Asia",
+                "subregion": "South-Eastern Asia"
+            },
+            {
+                "country": "Indonesia",
+                "agriculture": "13.9",
+                "industry": "40.3",
+                "service": "45.9",
+                "region": "Asia",
+                "subregion": "South-Eastern Asia"
+            },
+            {
+                "country": "Laos",
+                "agriculture": "20.9",
+                "industry": "33.2",
+                "service": "45.9",
+                "region": "Asia",
+                "subregion": "South-Eastern Asia"
+            },
+            {
+                "country": "Malaysia",
+                "agriculture": "8.4",
+                "industry": "36.9",
+                "service": "54.7",
+                "region": "Asia",
+                "subregion": "South-Eastern Asia"
+            },
+            {
+                "country": "Myanmar",
+                "agriculture": "24.8",
+                "industry": "35.4",
+                "service": "39.9",
+                "region": "Asia",
+                "subregion": "South-Eastern Asia"
+            },
+            {
+                "country": "Philippines",
+                "agriculture": "9.6",
+                "industry": "30.6",
+                "service": "59.8",
+                "region": "Asia",
+                "subregion": "South-Eastern Asia"
+            },
+            {
+                "country": "Singapore",
+                "agriculture": "0",
+                "industry": "24.8",
+                "service": "75.2",
+                "region": "Asia",
+                "subregion": "South-Eastern Asia"
+            },
+            {
+                "country": "Thailand",
+                "agriculture": "8.2",
+                "industry": "36.2",
+                "service": "55.6",
+                "region": "Asia",
+                "subregion": "South-Eastern Asia"
+            },
+            {
+                "country": "Timor-Leste",
+                "agriculture": "9.4",
+                "industry": "57.8",
+                "service": "32.8",
+                "region": "Asia",
+                "subregion": "South-Eastern Asia"
+            },
+            {
+                "country": "Vietnam",
+                "agriculture": "15.3",
+                "industry": "33.3",
+                "service": "41.3",
+                "region": "Asia",
+                "subregion": "South-Eastern Asia"
+            },
+            {
+                "country": "Iran",
+                "agriculture": "9.8",
+                "industry": "35.9",
+                "service": "54.3",
+                "region": "Asia",
+                "subregion": "Southern Asia"
+            },
+            {
+                "country": "Afghanistan",
+                "agriculture": "23",
+                "industry": "21.1",
+                "service": "55.9",
+                "region": "Asia",
+                "subregion": "Southern Asia"
+            },
+            {
+                "country": "Bangladesh",
+                "agriculture": "14.2",
+                "industry": "29.2",
+                "service": "56.5",
+                "region": "Asia",
+                "subregion": "Southern Asia"
+            },
+            {
+                "country": "Bhutan",
+                "agriculture": "15.7",
+                "industry": "42.6",
+                "service": "41.7",
+                "region": "Asia",
+                "subregion": "Southern Asia"
+            },
+            {
+                "country": "India",
+                "agriculture": "15.4",
+                "industry": "23",
+                "service": "61.5",
+                "region": "Asia",
+                "subregion": "Southern Asia"
+            },
+            {
+                "country": "Maldives",
+                "agriculture": "3",
+                "industry": "16",
+                "service": "81",
+                "region": "Asia",
+                "subregion": "Southern Asia"
+            },
+            {
+                "country": "Nepal",
+                "agriculture": "27",
+                "industry": "13.5",
+                "service": "51.5",
+                "region": "Asia",
+                "subregion": "Southern Asia"
+            },
+            {
+                "country": "Pakistan",
+                "agriculture": "24.7",
+                "industry": "19.1",
+                "service": "56.3",
+                "region": "Asia",
+                "subregion": "Southern Asia"
+            },
+            {
+                "country": "Sri Lanka",
+                "agriculture": "7.8",
+                "industry": "30.5",
+                "service": "61.7",
+                "region": "Asia",
+                "subregion": "Southern Asia"
+            },
+            {
+                "country": "Armenia",
+                "agriculture": "17.7",
+                "industry": "27.8",
+                "service": "54.5",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Azerbaijan",
+                "agriculture": "6.2",
+                "industry": "49.1",
+                "service": "44.7",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Cyprus",
+                "agriculture": "2.3",
+                "industry": "11",
+                "service": "86.8",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Georgia",
+                "agriculture": "9.6",
+                "industry": "23.4",
+                "service": "66.2",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Turkey",
+                "agriculture": "6.7",
+                "industry": "31.8",
+                "service": "61.4",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Bahrain",
+                "agriculture": "0.3",
+                "industry": "38.2",
+                "service": "61.5",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Gaza Strip",
+                "agriculture": "3",
+                "industry": "21.1",
+                "service": "75",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Iraq",
+                "agriculture": "4.8",
+                "industry": "40.6",
+                "service": "54.6",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Israel",
+                "agriculture": "2.3",
+                "industry": "26.6",
+                "service": "69.5",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Jordan",
+                "agriculture": "4.3",
+                "industry": "28.9",
+                "service": "66.8",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Kuwait",
+                "agriculture": "0.4",
+                "industry": "58.7",
+                "service": "40.9",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Lebanon",
+                "agriculture": "5.7",
+                "industry": "21",
+                "service": "73.3",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Oman",
+                "agriculture": "1.7",
+                "industry": "45.2",
+                "service": "53",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Qatar",
+                "agriculture": "0.2",
+                "industry": "50.3",
+                "service": "49.5",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Saudi Arabia",
+                "agriculture": "2.6",
+                "industry": "44.2",
+                "service": "53.2",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Syria",
+                "agriculture": "20",
+                "industry": "19.6",
+                "service": "60.4",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "United Arab Emirates",
+                "agriculture": "0.9",
+                "industry": "49.8",
+                "service": "49.2",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "West Bank",
+                "agriculture": "3",
+                "industry": "21.1",
+                "service": "75",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Yemen",
+                "agriculture": "24.1",
+                "industry": "14.3",
+                "service": "61.6",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Belarus",
+                "agriculture": "8.3",
+                "industry": "40.6",
+                "service": "51.1",
+                "region": "Europe",
+                "subregion": "Eastern Europe"
+            },
+            {
+                "country": "Bulgaria",
+                "agriculture": "4.3",
+                "industry": "28",
+                "service": "67.7",
+                "region": "Europe",
+                "subregion": "Eastern Europe"
+            },
+            {
+                "country": "Czechia",
+                "agriculture": "2.5",
+                "industry": "37.8",
+                "service": "59.7",
+                "region": "Europe",
+                "subregion": "Eastern Europe"
+            },
+            {
+                "country": "Hungary",
+                "agriculture": "4.4",
+                "industry": "30.9",
+                "service": "64.7",
+                "region": "Europe",
+                "subregion": "Eastern Europe"
+            },
+            {
+                "country": "Moldova",
+                "agriculture": "12.2",
+                "industry": "14.6",
+                "service": "73.2",
+                "region": "Europe",
+                "subregion": "Eastern Europe"
+            },
+            {
+                "country": "Poland",
+                "agriculture": "2.4",
+                "industry": "40.2",
+                "service": "57.4",
+                "region": "Europe",
+                "subregion": "Eastern Europe"
+            },
+            {
+                "country": "Romania",
+                "agriculture": "4.2",
+                "industry": "33.2",
+                "service": "62.6",
+                "region": "Europe",
+                "subregion": "Eastern Europe"
+            },
+            {
+                "country": "Russia",
+                "agriculture": "4.7",
+                "industry": "32.4",
+                "service": "62.3",
+                "region": "Europe",
+                "subregion": "Eastern Europe"
+            },
+            {
+                "country": "Slovakia",
+                "agriculture": "3.8",
+                "industry": "35",
+                "service": "61.2",
+                "region": "Europe",
+                "subregion": "Eastern Europe"
+            },
+            {
+                "country": "Ukraine",
+                "agriculture": "14",
+                "industry": "27.8",
+                "service": "58.2",
+                "region": "Europe",
+                "subregion": "Eastern Europe"
+            },
+            {
+                "country": "Denmark",
+                "agriculture": "1.1",
+                "industry": "23.7",
+                "service": "75.2",
+                "region": "Europe",
+                "subregion": "Northern Europe"
+            },
+            {
+                "country": "Estonia",
+                "agriculture": "3.4",
+                "industry": "27.8",
+                "service": "68.8",
+                "region": "Europe",
+                "subregion": "Northern Europe"
+            },
+            {
+                "country": "Faroe Islands",
+                "agriculture": "18",
+                "industry": "39",
+                "service": "43",
+                "region": "Europe",
+                "subregion": "Northern Europe"
+            },
+            {
+                "country": "Finland",
+                "agriculture": "2.7",
+                "industry": "27.8",
+                "service": "69.5",
+                "region": "Europe",
+                "subregion": "Northern Europe"
+            },
+            {
+                "country": "Guernsey",
+                "agriculture": "3",
+                "industry": "10",
+                "service": "87",
+                "region": "Europe",
+                "subregion": "Northern Europe"
+            },
+            {
+                "country": "Iceland",
+                "agriculture": "5.8",
+                "industry": "19.8",
+                "service": "74.4",
+                "region": "Europe",
+                "subregion": "Northern Europe"
+            },
+            {
+                "country": "Ireland",
+                "agriculture": "1",
+                "industry": "38.2",
+                "service": "60.7",
+                "region": "Europe",
+                "subregion": "Northern Europe"
+            },
+            {
+                "country": "Isle of Man",
+                "agriculture": "1",
+                "industry": "13",
+                "service": "86",
+                "region": "Europe",
+                "subregion": "Northern Europe"
+            },
+            {
+                "country": "Jersey",
+                "agriculture": "2",
+                "industry": "2",
+                "service": "96",
+                "region": "Europe",
+                "subregion": "Northern Europe"
+            },
+            {
+                "country": "Latvia",
+                "agriculture": "3.2",
+                "industry": "21.6",
+                "service": "75.2",
+                "region": "Europe",
+                "subregion": "Northern Europe"
+            },
+            {
+                "country": "Lithuania",
+                "agriculture": "3.3",
+                "industry": "28.5",
+                "service": "68.3",
+                "region": "Europe",
+                "subregion": "Northern Europe"
+            },
+            {
+                "country": "Norway",
+                "agriculture": "2.4",
+                "industry": "31.1",
+                "service": "66.5",
+                "region": "Europe",
+                "subregion": "Northern Europe"
+            },
+            {
+                "country": "Sweden",
+                "agriculture": "1.6",
+                "industry": "33",
+                "service": "65.4",
+                "region": "Europe",
+                "subregion": "Northern Europe"
+            },
+            {
+                "country": "United Kingdom",
+                "agriculture": "0.6",
+                "industry": "19",
+                "service": "80.4",
+                "region": "Europe",
+                "subregion": "Northern Europe"
+            },
+            {
+                "country": "Albania",
+                "agriculture": "22.6",
+                "industry": "23.8",
+                "service": "53.7",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "Andorra",
+                "agriculture": "11.9",
+                "industry": "33.6",
+                "service": "54.5",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "Bosnia and Herzegovina",
+                "agriculture": "7.8",
+                "industry": "26.8",
+                "service": "65.4",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "Croatia",
+                "agriculture": "3.3",
+                "industry": "34.3",
+                "service": "62.9",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "Greece",
+                "agriculture": "4",
+                "industry": "16",
+                "service": "80",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "Italy",
+                "agriculture": "2.1",
+                "industry": "24",
+                "service": "73.9",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "Kosovo",
+                "agriculture": "11.9",
+                "industry": "17.7",
+                "service": "70.4",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "Macedonia",
+                "agriculture": "10",
+                "industry": "30",
+                "service": "60",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "Montenegro",
+                "agriculture": "7.5",
+                "industry": "15.9",
+                "service": "76.6",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "Portugal",
+                "agriculture": "2.2",
+                "industry": "22.1",
+                "service": "75.7",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "San Marino",
+                "agriculture": "0.1",
+                "industry": "39.2",
+                "service": "60.7",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "Serbia",
+                "agriculture": "9.8",
+                "industry": "41.1",
+                "service": "49.1",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "Slovenia",
+                "agriculture": "1.8",
+                "industry": "32.2",
+                "service": "65.9",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "Spain",
+                "agriculture": "2.6",
+                "industry": "23.2",
+                "service": "74.2",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "Malta",
+                "agriculture": "1.3",
+                "industry": "10.6",
+                "service": "88.1",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "Austria",
+                "agriculture": "1.2",
+                "industry": "28.4",
+                "service": "70.4",
+                "region": "Europe",
+                "subregion": "Western Europe"
+            },
+            {
+                "country": "Belgium",
+                "agriculture": "0.7",
+                "industry": "21.8",
+                "service": "77.5",
+                "region": "Europe",
+                "subregion": "Western Europe"
+            },
+            {
+                "country": "France",
+                "agriculture": "2",
+                "industry": "20.1",
+                "service": "77.9",
+                "region": "Europe",
+                "subregion": "Western Europe"
+            },
+            {
+                "country": "Germany",
+                "agriculture": "0.6",
+                "industry": "30.1",
+                "service": "69.3",
+                "region": "Europe",
+                "subregion": "Western Europe"
+            },
+            {
+                "country": "Gibraltar",
+                "agriculture": "0",
+                "industry": "0",
+                "service": "100",
+                "region": "Europe",
+                "subregion": "Western Europe"
+            },
+            {
+                "country": "Liechtenstein",
+                "agriculture": "7",
+                "industry": "41",
+                "service": "52",
+                "region": "Europe",
+                "subregion": "Western Europe"
+            },
+            {
+                "country": "Luxembourg",
+                "agriculture": "0.2",
+                "industry": "11.9",
+                "service": "87.9",
+                "region": "Europe",
+                "subregion": "Western Europe"
+            },
+            {
+                "country": "Monaco",
+                "agriculture": "0",
+                "industry": "14",
+                "service": "86",
+                "region": "Europe",
+                "subregion": "Western Europe"
+            },
+            {
+                "country": "Netherlands",
+                "agriculture": "1.6",
+                "industry": "17.9",
+                "service": "70.2",
+                "region": "Europe",
+                "subregion": "Western Europe"
+            },
+            {
+                "country": "Switzerland",
+                "agriculture": "0.7",
+                "industry": "25.6",
+                "service": "73.7",
+                "region": "Europe",
+                "subregion": "Western Europe"
+            },
+            {
+                "country": "Australia",
+                "agriculture": "3.6",
+                "industry": "26.1",
+                "service": "70.3",
+                "region": "Oceania",
+                "subregion": "Australia and New Zealand"
+            },
+            {
+                "country": "New Zealand",
+                "agriculture": "3.9",
+                "industry": "26.2",
+                "service": "69.9",
+                "region": "Oceania",
+                "subregion": "Australia and New Zealand"
+            },
+            {
+                "country": "Fiji",
+                "agriculture": "10.6",
+                "industry": "17.9",
+                "service": "71.5",
+                "region": "Oceania",
+                "subregion": "Melanesia"
+            },
+            {
+                "country": "New Caledonia",
+                "agriculture": "1.4",
+                "industry": "26.5",
+                "service": "72",
+                "region": "Oceania",
+                "subregion": "Melanesia"
+            },
+            {
+                "country": "Papua New Guinea",
+                "agriculture": "22.1",
+                "industry": "42.9",
+                "service": "35",
+                "region": "Oceania",
+                "subregion": "Melanesia"
+            },
+            {
+                "country": "Solomon Islands",
+                "agriculture": "34.3",
+                "industry": "7.6",
+                "service": "58.1",
+                "region": "Oceania",
+                "subregion": "Melanesia"
+            },
+            {
+                "country": "Tuvalu",
+                "agriculture": "24.5",
+                "industry": "5.6",
+                "service": "70",
+                "region": "Oceania",
+                "subregion": "Melanesia"
+            },
+            {
+                "country": "Vanuatu",
+                "agriculture": "27",
+                "industry": "9.1",
+                "service": "63.9",
+                "region": "Oceania",
+                "subregion": "Melanesia"
+            },
+            {
+                "country": "Kiribati",
+                "agriculture": "23",
+                "industry": "7",
+                "service": "70",
+                "region": "Oceania",
+                "subregion": "Micronesia"
+            },
+            {
+                "country": "Marshall Islands",
+                "agriculture": "4.4",
+                "industry": "9.9",
+                "service": "85.7",
+                "region": "Oceania",
+                "subregion": "Micronesia"
+            },
+            {
+                "country": "Micronesia, Federated States of",
+                "agriculture": "26.3",
+                "industry": "18.9",
+                "service": "54.8",
+                "region": "Oceania",
+                "subregion": "Micronesia"
+            },
+            {
+                "country": "Nauru",
+                "agriculture": "6.1",
+                "industry": "33",
+                "service": "60.8",
+                "region": "Oceania",
+                "subregion": "Micronesia"
+            },
+            {
+                "country": "Northern Mariana Islands",
+                "agriculture": "1.7",
+                "industry": "58.1",
+                "service": "40.2",
+                "region": "Oceania",
+                "subregion": "Micronesia"
+            },
+            {
+                "country": "Palau",
+                "agriculture": "3",
+                "industry": "19",
+                "service": "78",
+                "region": "Oceania",
+                "subregion": "Micronesia"
+            },
+            {
+                "country": "American Samoa",
+                "agriculture": "27.4",
+                "industry": "12.4",
+                "service": "60.2",
+                "region": "Oceania",
+                "subregion": "Polynesia"
+            },
+            {
+                "country": "Cook Islands",
+                "agriculture": "5.1",
+                "industry": "12.7",
+                "service": "82.1",
+                "region": "Oceania",
+                "subregion": "Polynesia"
+            },
+            {
+                "country": "French Polynesia",
+                "agriculture": "2.5",
+                "industry": "13",
+                "service": "84.5",
+                "region": "Oceania",
+                "subregion": "Polynesia"
+            },
+            {
+                "country": "Niue",
+                "agriculture": "23.5",
+                "industry": "26.9",
+                "service": "49.5",
+                "region": "Oceania",
+                "subregion": "Polynesia"
+            },
+            {
+                "country": "Samoa",
+                "agriculture": "10.4",
+                "industry": "23.6",
+                "service": "66",
+                "region": "Oceania",
+                "subregion": "Polynesia"
+            },
+            {
+                "country": "Tonga",
+                "agriculture": "19.5",
+                "industry": "20.8",
+                "service": "59.8",
+                "region": "Oceania",
+                "subregion": "Polynesia"
+            }
+        ];
+    </script>
+    <script>
+
+        const b = d3.barycentric();
+        const t = d3.ternaryPlot(b)
+        // fetch('ternary_data.json')
+        //   .then(response => response.json())
+        //   .then(data => {
+        //     // 处理 JSON 数据
+        //     console.log(data);
+        //   })
+        //   .catch(error => {
+        //     // 处理错误
+        //     console.error(error);
+        //   });
+    </script>
+
+    <script>
+      lineBetween = ([x1, y1], [x2, y2]) => t => [
+  x1 + t * (x2 - x1),
+  y1 + t * (y2 - y1)
+]
+
+getDomainLengths = domains =>
+  new Set(
+    domains.map(domain => {
+      // round differences
+      // https://stackoverflow.com/questions/11832914/round-to-at-most-2-decimal-places-only-if-necessary
+      const d0 = Math.round((domain[0] + Number.EPSILON) * 100) / 100;
+      const d1 = Math.round((domain[1] + Number.EPSILON) * 100) / 100;
+
+      return Math.abs(d1 - d0);
+    })
+  )
+    </script>
+    <script>
+
+        // set the dimensions and margins of the graph
+        const margin = { top: 10, right: 30, bottom: 20, left: 50 };
+
+        // 网页窗口在某一大小打开时的宽高
+        var width = window.innerWidth - margin.left - margin.right;
+        var height = window.innerHeight - margin.top - margin.bottom;
+        var radius = 320;
+        var yOffset = radius / 4;
+        // const plot = d3.ternaryPlot(data)
+        //   .domains([0, 0.8])
+        //   .label(["Orange", "Banana", "Pineapple"])
+        //   .labelAngles([0, 0, 0]);
+
+        // const ternaryData = data.map((data) => {
+        //   const [x, y] = ternaryPlot(d);
+
+        //   return { ...d, x, y };
+        // });
+
+        // const radius = 320;
+        ternaryPlot = function ternaryPlot(barycentric) {
+            let radius = 300,
+                k = 1, // scale
+                tx = 0, // translate
+                ty = 0,
+                tickFormat = "%",
+                reverse = false;
+
+            let unscaledVertices = barycentric.vertices(); // original unscaled vertices
+
+            // return this function, has access to all closed over variables in the parent 'ternaryPlot' function
+            function ternaryPlot(_) {
+                const [x, y] = barycentric(_);
+
+                return [x * radius, y * radius];
+            }
+
+            let [svA, svB, svC] = scaleVertices();
+
+            // axes configurations
+            // domain from vC (angle: 30°) to vA (angle: -90°)
+            let A = {
+                label: "A",
+                labelAngle: 0,
+                labelOffset: 45, // 🤔💭 or relative to radius? labelOffset: radius / 10
+                gridLine: lineBetween(svC, svA),
+                scale: d3.scaleLinear().domain([0, 1]),
+                tickAngle: 0,
+                tickSize: 6,
+                tickTextAnchor: "start"
+            };
+
+            // domain from svA (angle: -90°) to svB (angle: 150°)
+            let B = {
+                label: "B",
+                labelAngle: 60,
+                labelOffset: 45,
+                gridLine: lineBetween(svA, svB),
+                scale: d3.scaleLinear().domain([0, 1]),
+                tickAngle: 60,
+                tickSize: 6,
+                tickTextAnchor: "end"
+            };
+
+            // domain from vB (angle: 150°) to vC (angle: 30°)
+            let C = {
+                label: "C",
+                labelAngle: -60,
+                labelOffset: 45,
+                gridLine: lineBetween(svB, svC),
+                scale: d3.scaleLinear().domain([0, 1]),
+                tickAngle: -60,
+                tickSize: 6,
+                tickTextAnchor: "end"
+            };
+
+            // just a nicety for the gridlines function
+            A.conjugate = B;
+            B.conjugate = C;
+            C.conjugate = A;
+
+            ternaryPlot.vertices = scaleVertices;
+
+            function scaleVertices(newScaledVertices) {
+                if (newScaledVertices) {
+                    const newUnscaledVertices = newScaledVertices.map(([x, y]) => [
+                        x / radius,
+                        y / radius
+                    ]);
+
+                    barycentric.vertices(newUnscaledVertices);
+
+                    return ternaryPlot;
+                }
+
+                const scaledVertices = barycentric
+                    .vertices()
+                    .map(([x, y]) => [x * radius, y * radius]);
+
+                return scaledVertices;
+            }
+
+            // returns array of objects with coords, rotation and label text for plot
+            ternaryPlot.axisLabels = function ({ center = false } = {}) {
+                return [A, B, C].map(d => {
+                    const { label, labelAngle } = d;
+                    const [x, y] = d.gridLine(center ? 0.5 : 1);
+                    const position = [
+                        (x / radius) * (radius + d.labelOffset),
+                        (y / radius) * (radius + d.labelOffset)
+                    ];
+
+                    return {
+                        position,
+                        label,
+                        angle: labelAngle
+                    };
+                });
+            };
+
+            // set domains without applying matching transform
+            ternaryPlot.setDomains = function (_) {
+                const [domainA, domainB, domainC] = _;
+
+                A.scale.domain(domainA.map(Number));
+                B.scale.domain(domainB.map(Number));
+                C.scale.domain(domainC.map(Number));
+
+                return ternaryPlot;
+            };
+
+            ternaryPlot.reverseVertices = function () {
+                // 'swap' vertices clockwise
+                reverse = true;
+                const swappedVertices = [svC, svA, svB];
+                const [vA, vB, vC] = unscaledVertices;
+                // [vC, vA, vB]
+                unscaledVertices = [vC, vA, vB]; // needed for .transform() and transformFromDomains() & .domainsFromVertices() to work
+                ternaryPlot.vertices(swappedVertices);
+
+                // swap gridLines
+                A.gridLine = lineBetween(svA, svC);
+                B.gridLine = lineBetween(svB, svA);
+                C.gridLine = lineBetween(svC, svB);
+
+                return ternaryPlot;
+            };
+
+            // set domains checks if domains are reversed and applies appropriate transform
+            ternaryPlot.domains = function (_) {
+                if (!arguments.length)
+                    return [A.scale.domain(), B.scale.domain(), C.scale.domain()];
+
+                const domainLengths = getDomainLengths(_);
+
+                if (domainLengths.size !== 1) {
+                    throw new Error("Length of domains must be all be equal");
+                }
+
+                const isReverseDomain = _.every(d => d[0] > d[1]);
+
+                if (isReverseDomain) {
+                    ternaryPlot.reverseVertices(_);
+                } else {
+                    reverse = false; // in case domains switch from reverse to normal
+                }
+
+                ternaryPlot.setDomains(_);
+
+                // Get transform corresponding to this domain
+                const { x, y, k } = ternaryPlot.transformFromDomains(_);
+
+                // Set and apply transform ie update barycentric coord system
+                ternaryPlot.translate([x, y]);
+                ternaryPlot.scale(k);
+
+                return ternaryPlot;
+            };
+
+            ternaryPlot.gridLines = function (counts = 20) {
+                return [A, B, C].map((axis, i) => {
+                    const gridCount = Array.isArray(counts) ? +counts[i] : +counts;
+                    const gridValues = axis.scale.ticks(gridCount - 1); // I forgot what the -1 was for
+
+                    return gridValues.map(d => [
+                        axis.gridLine(axis.scale(d)),
+                        axis.conjugate.gridLine(1 - axis.scale(d))
+                    ]);
+                });
+            };
+
+            ternaryPlot.ticks = function (counts = 10) {
+                return [A, B, C].map((axis, i) => {
+                    const tickCount = Array.isArray(counts) ? +counts[i] : +counts;
+                    const tickValues = axis.scale.ticks(tickCount); //
+
+                    const format =
+                        typeof tickFormat === "function"
+                            ? tickFormat
+                            : axis.scale.tickFormat(tickCount, tickFormat);
+
+                    return tickValues.map(tick => {
+                        const tickPos = reverse ? 1 - axis.scale(tick) : axis.scale(tick); // not a fan of this
+                        return {
+                            tick: format(tick),
+                            position: axis.gridLine(tickPos),
+                            angle: axis.tickAngle,
+                            size: axis.tickSize,
+                            textAnchor: axis.tickTextAnchor
+                        };
+                    });
+                });
+            };
+
+            ternaryPlot.tickAngles = function (_) {
+                return arguments.length
+                    ? ((A.tickAngle = _[0]),
+                        (B.tickAngle = _[1]),
+                        (C.tickAngle = _[2]),
+                        ternaryPlot)
+                    : [A.tickAngle, B.tickAngle, C.tickAngle];
+            };
+
+            ternaryPlot.tickSizes = function (_) {
+                return arguments.length
+                    ? !Array.isArray(_)
+                        ? ((A.tickSize = B.tickSize = C.tickSize = +_), ternaryPlot)
+                        : ((A.tickSize = _[0]),
+                            (B.tickSize = _[1]),
+                            (C.tickSize = _[2]),
+                            ternaryPlot)
+                    : [A.tickSize, B.tickSize, C.tickSize];
+            };
+
+            ternaryPlot.tickFormat = function (_) {
+                return arguments.length ? ((tickFormat = _), ternaryPlot) : tickFormat;
+            };
+
+            ternaryPlot.tickTextAnchors = function (_) {
+                return arguments.length
+                    ? ((A.tickTextAnchor = _[0]),
+                        (B.tickTextAnchor = _[1]),
+                        (C.tickTextAnchor = _[2]),
+                        ternaryPlot)
+                    : [A.tickTextAnchor, B.tickTextAnchor, C.tickTextAnchor];
+            };
+
+            ternaryPlot.labels = function (_) {
+                return arguments.length
+                    ? ((A.label = _[0]), (B.label = _[1]), (C.label = _[2]), ternaryPlot)
+                    : [A.label, B.label, C.label];
+            };
+
+            ternaryPlot.labelAngles = function (_) {
+                return arguments.length
+                    ? ((A.labelAngle = _[0]),
+                        (B.labelAngle = _[1]),
+                        (C.labelAngle = _[2]),
+                        ternaryPlot)
+                    : [A.labelAngle, B.labelAngle, C.labelAngle];
+            };
+
+            ternaryPlot.labelOffsets = function (_) {
+                return arguments.length
+                    ? ((A.labelOffset = _[0]),
+                        (B.labelOffset = _[1]),
+                        (C.labelOffset = _[2]),
+                        ternaryPlot)
+                    : [A.labelOffset, B.labelOffset, C.labelOffset];
+            };
+
+            ternaryPlot.triangle = function () {
+                // 🚨 todo: use d3-path or d3-line for canvas support
+                return `M${svA}L${svB}L${svC}Z`;
+            };
+
+            ternaryPlot.radius = function (_) {
+                if (!arguments.length) return radius;
+
+                radius = +_;
+
+                [svA, svB, svC] = ternaryPlot.vertices(); // scaled vertices for drawing gridlines and axis labels
+
+                // 🤔💭 Make a function for setting gridlines?
+                A.gridLine = lineBetween(svC, svA);
+                B.gridLine = lineBetween(svA, svB);
+                C.gridLine = lineBetween(svB, svC);
+
+                return ternaryPlot;
+            };
+
+            // sets the scale
+            ternaryPlot.scale = function (_) {
+                return arguments.length
+                    ? ((k = +_), ternaryPlot.transform(), ternaryPlot)
+                    : k;
+            };
+
+            // sets x and y translation
+            ternaryPlot.translate = function (_) {
+                return arguments.length
+                    ? ((tx = _[0]), (ty = _[1]), ternaryPlot.transform(), ternaryPlot)
+                    : [tx, ty];
+            };
+
+            ternaryPlot.invert = function (_) {
+                const xy = [_[0] / radius, _[1] / radius];
+                const inverted = barycentric.invert(xy);
+
+                return inverted;
+            };
+
+            // apply scale and translate to vertices
+            ternaryPlot.transform = function () {
+                if (k === 1) {
+                    tx = 0;
+                    ty = 0;
+                    return ternaryPlot;
+                }
+
+                const [vA, vB, vC] = unscaledVertices;
+                const [newvA, newvB, newvC] = unscaledVertices.map(([vx, vy]) => [
+                    vx * k + tx,
+                    vy * k + ty
+                ]); // these are the newly transformed vertices BEFORE checking if they within bounds of original triangle
+
+                const mAB = getSlope(vA, vB),
+                    mAC = getSlope(vA, vC),
+                    mBC = getSlope(vB, vC);
+
+                // y-intercepts of zoomed triangle sides
+                const bAB = newvA[1] - mAB * newvA[0],
+                    bAC = newvA[1] - mAC * newvA[0],
+                    bBC = newvB[1] - mBC * newvB[0]; // or newvC[0]
+
+                const lineDistanceAC = parallelLinesDistance(vA[1], bAC, mAC),
+                    lineDistanceAB = reverse // don't like this solution
+                        ? parallelLinesDistance(vB[1], bAB, mAB)
+                        : parallelLinesDistance(vA[1], bAB, mAB),
+                    lineDistanceBC = parallelLinesDistance(vB[1], bBC, mBC);
+
+                if (lineDistanceAB < -epsilon) {
+                    const [correctionX, correctionY] = getTranslateCorrections(
+                        mAB,
+                        lineDistanceAB
+                    );
+                    tx += correctionX;
+                    ty += correctionY;
+                }
+
+                if (lineDistanceAC < -epsilon) {
+                    const [correctionX, correctionY] = getTranslateCorrections(
+                        mAC,
+                        lineDistanceAC
+                    );
+
+                    tx += correctionX;
+                    ty += correctionY;
+                }
+
+                if (lineDistanceBC < -epsilon) {
+                    const [correctionX, correctionY] = getTranslateCorrections(
+                        mBC,
+                        lineDistanceBC
+                    );
+
+                    tx += correctionX;
+                    ty += correctionY;
+                }
+
+                // apply scale & adjusted translations
+                const transformedVertices = unscaledVertices.map(([vx, vy]) => [
+                    vx * k + tx,
+                    vy * k + ty
+                ]);
+
+                barycentric.vertices(transformedVertices); // update barycentic coordinates
+
+                return ternaryPlot;
+            };
+
+            // something like a static method
+            // or call transform from this function?
+            ternaryPlot.transformFromDomains = function (domains) {
+                const [domainA, domainB, domainC] = domains;
+                const domainLengths = getDomainLengths(domains);
+
+                const domainLength = [...domainLengths][0];
+
+                const [uvA, uvB, uvC] = unscaledVertices;
+
+                const k = 1 / domainLength;
+                const domainFromScale = k => (k - 1) / (k * 3); // find start value of centered, untranslated domain for this scale
+
+                const untranslatedDomainStart = domainFromScale(k);
+                // const untranslatedDomain = [domainFromScale(k), 1 - 2 * domainFromScale(k)]
+
+                const shiftA = untranslatedDomainStart - domainA[0],
+                    shiftB = untranslatedDomainStart - domainB[0],
+                    shiftC = untranslatedDomainStart - domainC[0];
+
+                const [tx, ty] = [
+                    uvA[0] * shiftA + uvB[0] * shiftB + uvC[0] * shiftC,
+                    uvA[1] * shiftA + uvB[1] * shiftB + uvC[1] * shiftC
+                ].map(d => d * k);
+
+                return { k, x: tx, y: ty };
+            };
+
+            // get barycentric value of initial vertices to updated vertices
+            ternaryPlot.domainsFromVertices = function () {
+                // 'vertices' is an array the original unscaled, untranslated vertices here
+                // find their barycentric values in the transformed barycentric coordinate system
+                // assumes barycentic coord system is already transformed
+                const [bA, bB, bC] = unscaledVertices.map(barycentric.invert);
+
+                const newADomain = [bB[0], bA[0]].map(insideDomain),
+                    newBDomain = [bC[1], bB[1]].map(insideDomain),
+                    newCDomain = [bA[2], bC[2]].map(insideDomain);
+
+                return [newADomain, newBDomain, newCDomain];
+            };
+
+            return ternaryPlot;
+        }
+    
+
+        function reverseTernaryPlot() {
+            const radius = 320;
+            const labels = ["Agriculture (A)", "Industry (B)", "Service (C)"];
+            const reverseTernary = d3.barycentric()
+                .a((d) => d.agriculture)
+                .b((d) => d.industry)
+                .c((d) => d.service);
+
+            return ternaryPlot(reverseTernary)
+                .radius(radius)
+                .domains([
+                    [1, 0],
+                    [1, 0],
+                    [1, 0]
+                ])
+                .labels(labels)
+                .labelAngles([-60, 0, 60])
+                .tickAngles([-60, 0, 60])
+                .tickTextAnchors(["start", "end", "start"]);
+        }
+        // basicTernaryPlot();
+
+        basicTernaryPlot = reverseTernaryPlot();
+
+
+        axisLabels = (g, labels) =>
+            g
+                .selectAll("text")
+                .data(labels, (d) => d.label)
+                .join(
+                    (enter) =>
+                        enter
+                            .append("text")
+                            .attr("dy", (d, i) => (i === 2 ? "-0.5em" : ".5em"))
+                            .attr(
+                                "transform",
+                                (label, i) => `translate(${label.position})rotate(${label.angle})`
+                            )
+                            .attr("alignment-baseline", "middle")
+                            .attr("text-anchor", "middle")
+                            .text((label) => label.label),
+                    (update) =>
+                        update.attr(
+                            "transform",
+                            (label, i) => `translate(${label.position})rotate(${label.angle})`
+                        )
+                )
+
+        const svg = d3.select("#container")
+            .append("svg").attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .attr("class", "chart")
+            .attr("id", "chart")
+        // const svg = d3.select(node);
+
+        // const radius = reverseTernaryPlot.radius();
+
+        // const chart = svg
+        //     .append("g")
+        //     .attr("transform", `translate(${width / 2} ${height / 2 + yOffset})`)
+        //     .attr("height", 300)
+        //     .attr("font-family", "sans-serif")
+        //     .attr("id", "chart")
+        //     .on("mousemove", handleMouseMove);
+
+        //   https://observablehq.com/d/292b02c89a1c523a
+        drawTernaryPlot = (someTernaryPlot, data) => {
+            const svg = d3.select("#container")
+                .append("svg").attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .attr("class", "chart")
+                .attr("id", "chart")
+            // const svg = d3.select(node);
+
+            // const radius = reverseTernaryPlot.radius();
+
+            const chart = svg
+                .append("g")
+                .attr("transform", `translate(${width / 2} ${height / 2 + yOffset})`)
+                .attr("height", 300)
+                .attr("font-family", "sans-serif")
+                .attr("id", "chart")
+
+            const radius = 320;
+
+
+
+            const defs = chart.append("defs");
+
+            const clipPath = defs
+                .append("clipPath")
+                .attr("id", "trianglePath")
+                .append("path")
+                .attr("d", someTernaryPlot.triangle());
+
+            const axisLabelsGroups = chart
+                .append("g")
+                .attr("class", "axis-labels")
+                .append("g")
+                .attr("class", "labels")
+                .attr("font-size", 16);
+
+            axisLabelsGroups.call(axisLabels, someTernaryPlot.axisLabels());
+
+            const gridLinesPaths = someTernaryPlot
+                .gridLines()
+                .map((axisGrid) => axisGrid.map(d3.line()).join(" "));
+
+            const gridGroup = chart
+                .append("g")
+                .attr("class", "grid")
+                .call(grid, gridLinesPaths);
+
+            const axisTicksGroups = chart
+                .append("g")
+                .attr("class", "ternary-ticks")
+                .attr("font-size", 10)
+                .selectAll("g")
+                .data(someTernaryPlot.ticks())
+                .join("g")
+                .attr("class", "axis-ticks")
+                .call(ticks);
+
+            const ternaryData = data.map((d) => {
+                const [x, y] = someTernaryPlot(d);
+                return { x, y, ...d };
+            });
+
+            // data
+            const dots = chart
+                .append("g")
+                .attr("class", "data")
+                .attr("clip-path", "url(#trianglePath)")
+                .selectAll("circle")
+                .data(ternaryData)
+                .join("circle")
+                .attr("r", 4)
+                .attr("cx", (d) => d.x)
+                .attr("cy", (d) => d.y)
+                .attr("fill", "#444")
+                .attr("stroke", "#ddd");
+
+            dots.append("title").text(
+                (d) => `${d.country}
+Agriculture: ${d.agriculture}
+Industry: ${d.industry}
+Service: ${d.service}`
+            );
+
+            // initial triangle
+            const trianglePath = chart
+                .append("path")
+                .attr("d", someTernaryPlot.triangle())
+                .attr("fill", "transparent")
+                .attr("stroke", "black")
+                .attr("title", "Initial untransformed triangle")
+                .attr("stroke-width", 2);
+
+            const zoom = d3.zoom().scaleExtent([1, 100]).on("zoom", zoomed);
+
+            const [tx, ty] = someTernaryPlot.translate();
+            const k = someTernaryPlot.scale();
+
+            // We need to sync d3-zoom with the tranform of the partial domains
+            const initialTransform = d3.zoomIdentity
+                .translate(tx * radius, ty * radius)
+                .scale(k);
+
+            chart.call(zoom).call(zoom.transform, initialTransform);
+
+            function zoomed({ transform }) {
+                const { x, y, k } = transform;
+
+                const tx = x / radius,
+                    ty = y / radius;
+
+                // apply transform
+                someTernaryPlot.translate([tx, ty]);
+                someTernaryPlot.scale(k);
+
+                const zoomedDomains = someTernaryPlot.domainsFromVertices();
+
+                someTernaryPlot.setDomains(zoomedDomains);
+
+                // update data
+                dots
+                    .attr("cx", (d) => someTernaryPlot(d)[0])
+                    .attr("cy", (d) => someTernaryPlot(d)[1]);
+
+                // update gridlines and ticks
+                const gridLinesPaths = someTernaryPlot
+                    .gridLines()
+                    .map((axisGrid) => axisGrid.map(d3.line()).join(" "));
+
+                gridGroup.call(grid, gridLinesPaths);
+
+                axisTicksGroups.data(someTernaryPlot.ticks()).call(ticks, (d) => d);
+
+                // const zoomedVertices = someTernaryPlot.vertices();
+                // const newTrianglePath = `M${zoomedVertices[0]}L${zoomedVertices[1]}L${zoomedVertices[2]}Z`;
+            }
+
+            function handleMouseMove(d) {
+                const xy = d3.pointer(d);
+                const inverse = someTernaryPlot.invert(xy);
+
+                node.dispatchEvent(new CustomEvent("input"), { bubbles: true });
+                node.value = inverse;
+            }
+
+            node.value = 0;
+
+            return svg.node();
+        }
+
+        drawTernaryPlot(data, reverseTernaryPlot)
+
+</script>
+</body>
+
+</html>

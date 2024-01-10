@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Curve Adjustment</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+  <label for="curveRange">Curve Adjustment:</label>
+  <input type="range" id="curveRange" min="0" max="1" step="0.1" value="0.5">
+
+  <svg id="chart"></svg>
+
+  <script>
+    // 创建一个线段生成器
+    var line = d3.line();
+
+    // 创建一个区域生成器
+    var area = d3.area();
+
+    // 获取输入框元素
+    var curveRange = document.getElementById("curveRange");
+
+    // 当输入框的值发生变化时更新曲线的张力
+    curveRange.addEventListener("input", function() {
+      var tensionValue = parseFloat(curveRange.value);
+
+      // 更新线段生成器和区域生成器的曲线张力
+      line.curve(d3.curveCardinal.tension(tensionValue));
+      area.curve(d3.curveCardinal.tension(tensionValue));
+
+      // 更新路径数据
+      linkArea.attr("d", area);
+    });
+
+    // 示例数据
+    var data = [
+      [0, 10],
+      [20, 40],
+      [40, 15],
+      [60, 30],
+      [80, 20],
+      [100, 50]
+    ];
+
+    // 创建 SVG 容器
+    var svg = d3.select("#chart")
+      .attr("width", 400)
+      .attr("height", 200);
+
+    // 创建路径元素并设置路径数据
+    var linkArea = svg.append("path")
+      .datum(data)
+      .attr("fill", "steelblue")
+      .attr("opacity", 0.2)
+      .attr("d", area);
+
+  </script>
+</body>
+</html>

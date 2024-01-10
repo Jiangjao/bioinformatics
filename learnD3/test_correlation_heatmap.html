@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<head>
+    <title>Document</title>
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <noscript>抱歉，你的浏览器不支持 JavaScript!</noscript>
+
+    <style>
+        svg .container {
+            width: 100%;
+            height: 100%;
+            margin: auto;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .tooltip {
+            position: absolute;
+            background-color: #f9f9f9;
+            padding: 8px;
+            border: 1px solid #ccc;
+            pointer-events: none;
+            font-size: 14px;
+        }
+
+        .basicSettings {
+            /* width: 80%; */
+            position: relative;
+            /* top: 38px; */
+            z-index: 1;
+            overflow-y: auto;
+        }
+
+        .downloadSettings {
+            width: 100%;
+            position: relative;
+            /* top: 18px; */
+            z-index: 2;
+        }
+
+        .sidebar {
+            width: 100%;
+            display: none;
+            /* 初始状态下隐藏下拉框 */
+        }
+
+        /* .sidebar {
+  width: 300px;
+  padding: 20px;    
+  border: 1px so    lid #ddd;
+  border-radius: 4px;
+} */
+
+        .sidebar h2 {
+            /* margin-bottom: 10px; */
+            /* border-bottom: 1px solid #ddd; */
+            padding-bottom: 5px;
+        }
+
+        .sidebar label {
+            /* width: 120px; */
+            /* text-align: right; */
+            margin-right: 10px;
+        }
+
+        .sidebar input,
+        .sidebar select {
+            padding: 5px;
+            border: 1px solid #ccc;
+            width: 25%;
+            border-radius: 4px;
+        }
+
+        .sidebar button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            background: #42b983;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .sidebar button:hover {
+            opacity: 0.8;
+        }
+
+        .sidebar input[type="number"] {
+            width: 50px;
+        }
+
+        .sidebar input[type="text"] {
+            width: 36%;
+        }
+
+        .sidebar input[type="range"] {
+            width: 100%;
+            /* transform: rotate(270deg); 添加垂直滚动条 */
+        }
+
+        /* .sidebar br {
+            display: none;
+        } */
+
+        .item {
+            display: flex;
+            align-items: center;
+            text-align: justify;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            width: 88%;
+        }
+
+        /* .item {} */
+
+        .sidebar hr {
+            overflow: hidden;
+            width: 88%;
+        }
+
+        /* 设置hr线 */
+        .item+hr {
+            margin: 10px 0;
+
+        }
+
+        .item+hr:first-child {
+            margin-top: 0;
+        }
+
+        .item+hr {
+            border: none;
+            border-top: 1px dotted #ccc;
+        }
+
+        /* hr {} */
+        /* .item label {
+            width: 120px;
+            } */
+        /* .sidebar {
+            display: flex;
+            flex-wrap: wrap;
+        } */
+
+        .sliderTooltip {
+            /* display: block; */
+            /* position: absolute; */
+            /* styles */
+            /* padding: 10px; */
+            position: absolute;
+            /* top: -30px; */
+            /* left: 134px; */
+            background-color: rgb(204 204 204 / 18%);
+            /* color: #f9f9f9; */
+            padding: 5px;
+            border-radius: 5px;
+            display: none;
+            margin-top: 14%;
+        }
+
+        .tooltip.show {
+            display: block;
+        }
+
+        .sidebar.show {
+            width: 100%;
+            height: auto;
+            position: relative;
+            /* padding: inherit; */
+            display: block;
+            padding: 10px 11px;
+            /* 点击后显示下拉框 */
+            transition: max-height 0.3s ease;
+            z-index: 1;
+            /* 添加过渡效果 */
+        }
+
+        /* 添加button的样式 */
+        .button-like {
+            display: inline-block;
+            padding: 10px 0 10px 10%;
+            background-color: #4CAF50;
+            color: white;
+            text-align: left;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 90%;
+        }
+
+        .button-like:hover {
+            background-color: #45a049;
+        }
+
+        .button-like:active {
+            background-color: #3e8e41;
+        }
+
+        /* TODO:xiaojiao, @media screen and (max-width: 700px) 如何使用2023/10/23 */
+        div.tooltip-donut {
+            position: absolute;
+            text-align: center;
+            padding: .5rem;
+            background: #FFFFFF;
+            color: #313639;
+            border: 1px solid #313639;
+            border-radius: 8px;
+            pointer-events: none;
+            font-size: 1.3rem;
+        }
+
+        icon-i {
+            text-align: center;
+        }
+
+        .dropdown {
+            /* padding: 10px 11px; */
+            position: relative;
+            /* display: inline-block; */
+        }
+
+        .dropdown-content {
+            display: none;
+            position: relative;
+            /* top: 100%; */
+            /* left: 0; */
+            width: 100%;
+            /* padding: 10px 11px; */
+            background-color: #4CAF50;
+        }
+
+
+        .settingContent {
+            display: block;
+            position: relative;
+            /* top: 100%; */
+            /* left: 0; */
+            width: 90%;
+            padding: 10px 11px;
+            /* overflow-y: scroll; */
+            height: 60vh;
+            overflow-y: scroll;
+            /* 设置垂直方向上溢出时显示滚动条 */
+            overflow-x: hidden;
+            scrollbar-width: thin;
+            /* 设置滚动条的宽度 */
+            scrollbar-color: gray lightgray;
+            /* 设置滚动条的颜色 */
+        }
+
+        /* div#settingContent {} */
+        /* .dropdown:hover .dropdown-content {
+        display: block;
+
+         } */
+
+        .filled {
+            fill: url("#mainGradient");
+        }
+
+        .ticks text {
+            font-family: sans-serif;
+            font-size: 17px;
+            text-anchor: middle;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Create a div where the graph will take place -->
+    <div id="container">
+        <svg id="chart">
+            <defs xmlns="http://www.w3.org/2000/svg">
+                <linearGradient id="linearColorheat" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color: rgb(255, 255, 255);" />
+                    <stop offset="50%" style="stop-color: rgb(156, 187, 216);" />
+                    <stop offset="100%" style="stop-color: rgb(57, 118, 176);" />
+                </linearGradient>
+            </defs>
+            <rect xmlns="http://www.w3.org/2000/svg" y="1" width="15" height="100" class="linearGradient"
+                fill="url(#linearColorheat)" />
+        </svg>
+    </div>
+
+    <!-- particle source code:https://d3-graph-gallery.com/graph/heatmap_tooltip.html -->
+    <!-- file:///C:/Users/Cherry/Desktop/OmicShare%20Tools%20-%20%E5%9F%BA%E8%BF%AA%E5%A5%A5%E7%94%9F%E4%BF%A1%E4%BA%91%E5%B7%A5%E5%85%B7.html -->
+    <script>
+
+        tableData = {
+            "colnames": ["pH", "OM", "TN", "NO3", "NH4"],
+            "rownames": ["pH", "OM", "TN", "NO3", "NH4"],
+            "data": [
+                ["1", "0.764124802", "0.069331823", "-0.5473771", "0.479551105"],
+                ["0.764124802", "1", "-0.498710581", "-0.909469736", "0.90704531"],
+                ["0.069331823", "-0.498710581", "1", "0.557329022", "-0.628039343"],
+                ["-0.5473771", "-0.909469736", "0.557329022", "1", "-0.977679213"],
+                ["0.479551105", "0.90704531", "-0.628039343", "-0.977679213", "1"]],
+            // Mantel P > 0; math.abs(Mantel R )  <= 1
+            "linkData": [
+                ["16S_OTU", "pH", "-0.153782448", "0.925"],
+                ["16S_OTU", "OM", "0.778571708", "0.008"],
+                ["16S_OTU", "TN", "0.903846242", "0.002"],
+                ["16S_OTU", "NO3", "0.070578852", "0.259"],
+                ["16S_OTU", "NH4", "0.825685672", "0.002"],
+                ["ITS_OTU", "pH", "-0.077247182", "0.906"],
+                ["ITS_OTU", "OM", "0.754905973", "0.015"],
+                ["ITS_OTU", "TN", "0.494300749", "0.027"],
+                ["ITS_OTU", "NO3", "0.168785182", "0.124"],
+                ["ITS_OTU", "NH4", "0.455300777", "0.032"]]
+        }
+
+        const linkData = [
+                ["16S_OTU", "v1", "-0.153782448", "0.925"],
+                ["16S_OTU", "v2", "0.778571708", "0.008"],
+                ["16S_OTU", "v3", "0.903846242", "0.002"],
+                ["16S_OTU", "v4", "0.070578852", "0.259"],
+                ["ITS_OTU", "v1", "-0.077247182", "0.906"],
+                ["ITS_OTU", "v2", "0.754905973", "0.015"],
+                ["ITS_OTU", "v3", "0.494300749", "0.027"],
+                ["ITS_OTU", "v4", "0.168785182", "0.124"]];
+
+
+        // 网页窗口在某一大小打开时的宽高
+        // https://stackoverflow.com/questions/16265123/resize-svg-when-window-is-resized-in-d3-js
+        var width = window.innerWidth || document.clientWidth || document.body.clientWidth;
+        var height = window.innerHeight || document.clientHeight || document.body.clientHeight;
+
+        // set the dimensions and margins of the graph
+        const margin = { top: 30, right: 30, bottom: 30, left: 130 };
+        width = width - margin.left - margin.right;
+        height = height - margin.top - margin.bottom;
+
+        // FIXME:xiapjiao 2023/12/11
+        if (width > height) {
+            width = height;
+        } else {
+            height = width;
+        }
+        // append the svg object to the body of the page
+        const svg = d3.select("#chart")
+            // .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom);
+        // .attr("viewBox", [-1, -1, width, height])
+
+
+        const svgViewbox = svg.append("g")
+            .attr("id", "svgViewbox")
+            // .attr("width", width + margin.left + margin.right)
+            // .attr("height", height + margin.top + margin.bottom)
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+
+        // Labels of row and columns
+        // TODO:xiaojiao, 注意x label 和 y 轴方向的 label
+        const myGroups = ["v1", "v2", "v3", "v4"]
+        const myVars = ["A", "B", "C", "D"]
+
+        // Build X scales and axis:
+        const x = d3.scaleBand()
+            .range([0, width])
+            .domain(myGroups)
+            .padding(0.01);
+
+        svgViewbox.append("g")
+            // .attr("transform", `translate(${width}, 0)`)
+            .call(d3.axisTop(x))
+
+        // Build X scales and axis:
+        const y = d3.scaleBand()
+            .range([height, 0])
+            .domain(myVars)
+            .padding(0.01);
+        svgViewbox.append("g")
+            .attr("transform", `translate(${width}, 0)`)
+            .call(d3.axisRight(y));
+
+        // Build color scale
+        const myColor = d3.scaleLinear()
+            .range(["white", "#69b3a2"])
+            .domain([1, 100])
+
+        const myColor2 = d3.scaleLinear()
+            .range(["red", "#69b3a2"])
+            .domain([1, 100])
+
+        const data = [
+            {
+                "group": "A",
+                "variable": "v1",
+                "value": "30",
+                "visiablity": "0",
+                "posibility": "0.764124802"
+            },
+            {
+                "group": "A",
+                "variable": "v2",
+                "value": "95",
+                "visiablity": "0",
+                "posibility": "0.764124802",
+
+            },
+            {
+                "group": "A",
+                "variable": "v3",
+                "value": "22",
+                "visiablity": "0",
+                "posibility": "0.764124802",
+
+            },
+            {
+                "group": "A",
+                "variable": "v4",
+                "value": "14",
+                "visiablity": "0",
+                "posibility": "0.764124802",
+
+            },
+            {
+                "group": "B",
+                "variable": "v1",
+                "value": "37",
+                "visiablity": "0",
+                "posibility": "0.764124802",
+
+            },
+            {
+                "group": "B",
+                "variable": "v2",
+                "value": "50",
+                "visiablity": "0",
+                "posibility": "0.764124802",
+
+            },
+            {
+                "group": "B",
+                "variable": "v3",
+                "value": "81",
+                "visiablity": "0",
+                "posibility": "0.764124802",
+
+            },
+            {
+                "group": "B",
+                "variable": "v4",
+                "value": "79",
+                "visiablity": "1",
+                "posibility": "0.069331823",
+            },
+            {
+                "group": "C",
+                "variable": "v1",
+                "value": "96",
+                "visiablity": "0",
+                "posibility": "0.764124802",
+
+            },
+            {
+                "group": "C",
+                "variable": "v2",
+                "value": "13",
+                "visiablity": "0",
+                "posibility": "0.764124802",
+
+            },
+            {
+                "group": "C",
+                "variable": "v3",
+                "value": "98",
+                "visiablity": "1",
+                "posibility": "0.557329022",
+
+            },
+            {
+                "group": "C",
+                "variable": "v4",
+                "value": "10",
+                "visiablity": "1",
+                "posibility": "0.764124802",
+
+            },
+            {
+                "group": "D",
+                "variable": "v1",
+                "value": "75",
+                "visiablity": "0",
+                "posibility": "0.764124802",
+
+            },
+            {
+                "group": "D",
+                "variable": "v2",
+                "value": "18",
+                "visiablity": "1",
+                "posibility": "0.628039343",
+            },
+            {
+                "group": "D",
+                "variable": "v3",
+                "value": "92",
+                "visiablity": "1",
+                "posibility": "0.764124802",
+
+            },
+            {
+                "group": "D",
+                "variable": "v4",
+                "value": "43",
+                "visiablity": "1",
+                "posibility": "0.977679213",
+
+            }
+        ]
+        //Read the data
+
+        // TODO:xiaojiao, 需要更改这个每组的大小
+        const groupSize = 4; // 每组的大小
+
+        const groupedData = [];
+        for (let i = 0; i < data.length; i += groupSize) {
+            groupedData.push(data.slice(i, i + groupSize));
+        }
+        // console.log("data input", data)
+        // create a tooltip
+        const tooltip = d3.select("#container")
+            .append("div")
+            .style("opacity", 0)
+            .attr("class", "tooltip")
+            .style("background-color", "white")
+            .style("border", "solid")
+            .style("border-width", "2px")
+            .style("border-radius", "5px")
+            .style("padding", "5px")
+
+        // Three function that change the tooltip when user hover / move / leave a cell
+        const mouseover = function (event, d) {
+            tooltip.style("opacity", 1)
+        }
+        const mousemove = function (event, d) {
+            // console.log("d >>>>>>", d);
+            tooltip
+                .html("The exact value of<br>this cell is: " + d.value + "  " + d.group + d.variable + d.visiablity)
+                .style("left", (event.x) / 2 + "px")
+                .style("top", (event.y) / 2 + "px")
+        }
+        const mouseleave = function (d) {
+            tooltip.style("opacity", 0)
+        }
+
+        // TODO:xiaojiao, adjust the stroke-width of rect
+        var stroke_width = 1;
+        // add the squares
+        const heatmapOverview = svgViewbox.append("g")
+            .attr("id", "heatmap")
+
+        const viewbox = heatmapOverview.append("g")
+            .attr("id", "table")
+
+
+        viewbox
+            .selectAll("g")
+            .data(groupedData)
+            .attr("id", "test")
+            .join("g")
+            .selectAll("rect")
+            .data(d => d, function (d) { return d.group + ':' + d.variable; })
+            .enter()
+            .append("rect")
+            .attr("x", function (d) { return x(d.variable) })
+            .attr("y", function (d) { return y(d.group) })
+            .attr("width", function (d, i) {
+                if (d.visiablity == "0") {
+                    return 0;
+                }
+                console.log("d, i", d, i)
+                return x.bandwidth() - stroke_width;
+                // return y(d.variable) 
+            })
+            .attr("height", function (d, i) {
+                if (d.visiablity == "0") {
+                    return 0;
+                }
+                // console.log("d, i", d, i)
+                return y.bandwidth() - stroke_width;
+                // return y(d.variable) 
+            })
+            .style("fill", function (d) { return myColor(d.value) })
+            .attr("stroke", "black")
+            .attr("stroke-width", 1)
+            .on("mouseover", mouseover)
+            .on("mousemove", mousemove)
+            .on("mouseleave", mouseleave)
+
+
+        heatmapOverview
+            .append("g")
+            .attr("id", "row")
+            .selectAll("g")
+            .data(groupedData)
+            .attr("id", "test")
+            .join("g")
+            .selectAll("rect")
+            .data(d => d, function (d) { return d.group + ':' + d.variable; })
+            .enter()
+            .append("rect")
+            .attr("x", function (d) { return x(d.variable) + (x.bandwidth() - x.bandwidth() * d.posibility + stroke_width) / 2; })
+            .attr("y", function (d) { return y(d.group) + (y.bandwidth() - y.bandwidth() * d.posibility + stroke_width) / 2; })
+            .attr("width", function (d, i) {
+                console.log("d, i >>", d, i)
+                if (d.visiablity == "0") {
+                    return 0;
+                }
+                // console.log("d, i", d, i)
+                return d.posibility * x.bandwidth() - stroke_width;
+                // return y(d.variable) 
+            })
+            .attr("height", function (d, i) {
+                if (d.visiablity == "0") {
+                    return 0;
+                }
+                // console.log("d, i", d, i)
+                return d.posibility * y.bandwidth() - stroke_width;
+                // return y(d.variable) 
+            })
+            .style("fill", function (d) { return myColor2(d.value - 10) })
+            .attr("stroke", "black")
+            .attr("stroke-width", 1)
+            .on("mouseover", mouseover)
+            .on("mousemove", mousemove)
+            .on("mouseleave", mouseleave)
+
+        tempX = parseFloat(heatmapOverview.attr("x"));
+        tempY = parseFloat(heatmapOverview.attr("y"));
+        console.log("heatmapView >>>", parseFloat(heatmapOverview.attr("x")), parseFloat(heatmapOverview.attr("y")))
+
+        console.log(d3.select("#heatmap").node().getBBox())
+
+        tempX = d3.select("#chart").node().getBBox().x + x.bandwidth() / 2;
+        tempY = d3.select("#chart").node().getBBox().y + y.bandwidth() / 2;
+
+
+        const numCircles = 4;
+        // const tempX = 50;
+        // const tempY = 50;
+
+        // for (let i = 0; i < numCircles; i++) {
+        //   svg.append("circle")
+        //     .attr("cx", tempX + x.bandwidth() * i) // 圆心 x 坐标
+        //     .attr("cy", tempY + y.bandwidth() * i) // 圆心 y 坐标
+        //     .attr("r", 18) // 半径
+        //     .attr("fill", "red"); // 填充颜色
+        // }
+
+        adjustment = 0.9;
+        tempRectWidth = x.bandwidth() * adjustment;
+        tempRectCenter = 0;
+
+        // svg.append("rect")
+        //     .attr("x", tempX - tempRectWidth / 2 + x.bandwidth() + stroke_width )
+        //     .attr("y", tempY - tempRectWidth / 2)
+        //     .attr("width", tempRectWidth)
+        //     .attr("height", tempRectWidth )
+        //     .style("fill", "red")
+
+
+        // svg.append("rect")
+        //     .attr("x", tempX - tempRectWidth / 2 + x.bandwidth() * 2)
+        //     .attr("y", tempY - tempRectWidth / 2)
+        //     .attr("width", tempRectWidth)
+        //     .attr("height", tempRectWidth )
+        //     .style("fill", "blue")
+
+
+        // svg.append("rect")
+        //     .attr("x", tempX - tempRectWidth / 2 + x.bandwidth())
+        //     .attr("y", tempY - tempRectWidth / 2)
+        //     .attr("width", tempRectWidth)
+        //     .attr("height", tempRectWidth )
+        //     .style("fill", "red")
+        // 添加文字
+        heatmapOverview.selectAll("text")
+            .data(data, function (d) { return d.group + ':' + d.variable; })
+            .enter()
+            .append("text")
+            .attr("x", function (d) { return x(d.variable) + x.bandwidth() / 2; })
+            .attr("y", function (d) { return y(d.group) + y.bandwidth() / 2; })
+            .attr("dy", "0.35em")
+            .text(function (d) { return d.group + " " + " " + d.variable; })
+            .style("text-anchor", "middle")
+            .style("fill", "black");
+
+        // TODO:xiaojiao, 获取对角线元素
+        const reverseDiagonalElements = [];
+
+        for (let i = 0; i < groupedData.length; i++) {
+            reverseDiagonalElements.push(groupedData[i][groupedData.length - 1 - i]);
+        }
+
+        console.log(reverseDiagonalElements);
+
+        // TODO:获取对角线元素坐标
+        const getDiagonalCoordinates = () => {
+            const coords = []
+
+            reverseDiagonalElements.forEach((d, i) => {
+                // x坐标
+                const x_pos = x(d.variable)
+
+                // y坐标
+                const y_pos = y(d.group)
+
+                coords.push({
+                    x_pos,
+                    y_pos
+                })
+            })
+            return coords;
+        }
+
+        const coordinates = getDiagonalCoordinates();
+
+        console.log(coordinates)
+
+
+        // TODO:xiaojiao, 添加dots
+        svgViewbox
+            .append("g")
+            .attr("id", "dots")
+            .selectAll("circle")
+            .data(coordinates)
+            .enter()
+            .append("circle")
+            .attr("cx", function (d) {
+                console.log(" <<< d >>>", d);
+                return d.x_pos + x.bandwidth() / 2;
+            }) // 圆心 x 坐标
+            .attr("cy", function (d) {
+                return d.y_pos + y.bandwidth() / 2;
+            })
+            .attr("r", 10) // 半径
+            .attr("fill", "black"); // 填充颜色
+
+        const dots = [];
+        for (let k = 0; k < coordinates.length; k++) {
+            // TODO:xiaojiao, 重新绘制这个dots 2023/12/11
+            // dots.push([coordinates[k] + x.bandwidth() * 4, coordinates[k][1]]);
+            const item = { ...coordinates[k] };
+            item.x_pos -= x.bandwidth() * 4;
+
+            dots.push(item);
+        }
+
+        // TODO:xiaojiao, 添加leftlegend
+        svgViewbox
+            .append("g")
+            .attr("id", "leftlegend")
+            .selectAll("circle")
+            .data(dots)
+            .enter()
+            .append("circle")
+            .attr("cx", function (d) {
+                console.log(" <<< d >>>", d);
+                return d.x_pos + x.bandwidth() / 2;
+            }) // 圆心 x 坐标
+            .attr("cy", function (d) {
+                return d.y_pos + y.bandwidth() / 2;
+            })
+            .attr("r", 10) // 半径
+            .attr("fill", "black"); // 填充颜色
+
+        //   svg.append("circle")
+        //     .attr("cx", tempX + x.bandwidth() * i) // 圆心 x 坐标
+        //     .attr("cy", tempY + y.bandwidth() * i) // 圆心 y 坐标
+        //     .attr("r", 18) // 半径
+        //     .attr("fill", "red"); // 填充颜色
+
+        // const line = d3.line()
+        //     .x(d => d.x_pos)
+        //     .y(d => d.y_pos);
+
+        // svg.append("g")
+        //     .selectAll("path")
+        //     .data(dots)
+        //     .enter()
+        //     .append("path")
+        //     .attr("d", function (d){
+        //         return line(dots);
+        //     })
+        //     .attr("stroke", "steelblue");
+        // var points = [
+        //     { x: 100, y: 100 },
+        //     { x: 200, y: 200 }
+        // ];
+
+        // var line = d3.line()
+        //     .x(function (d) { return d.x; })
+        //     .y(function (d) { return d.y; })
+        //     (points);
+
+        // svg.append("path")
+        //     .attr("d", line)
+        //     .attr("stroke", "#000");
+
+
+        // https://zhuanlan.zhihu.com/p/50238441
+        // D3.js线段生成器详解
+
+        // const radiusLines = [];
+        // for (let k = 0; k < coordinates.length; k++) {
+        //     // TODO:xiaojiao, 重新绘制这个dots 2023/12/11
+        //     // dots.push([coordinates[k] + x.bandwidth() * 4, coordinates[k][1]]);
+        //     const item = { ...coordinates[k] };
+        //     // start
+        //     // radiusLines.push(coordinates[k]);
+        //     // end
+        //     item.x_pos -= x.bandwidth() * 4;
+        //     items = {
+        //         "x1": coordinates[k].x_pos,
+        //         "y1": coordinates[k].y_pos,
+        //         "x2": item.x_pos,
+        //         "y2": item.y_pos
+        //     }
+        //     radiusLines.push(items);
+        // }
+        // svgViewbox.append("g").selectAll("line")
+        //         .data(radiusLines)
+        //         .enter()
+        //         .append("line")
+        //         .attr("x1", function (d) { return d.x1 + x.bandwidth() / 2;})
+        //         .attr("y1", function (d) { return d.y1 + y.bandwidth() / 2;})
+        //         .attr("x2", function (d) { return d.x2 + x.bandwidth() / 2;})
+        //         .attr("y2", function (d) { return d.y2 + y.bandwidth() / 2;})
+        //         .attr("stroke", "red")
+        //         .attr("stroke-width", "2px")
+
+        const crossLines = [];
+        // 双重循环，构建坐标数组
+        for (let n = 0; n < coordinates.length; n++) {
+            // TODO:xiaojiao, 重新绘制这个dots 2023/12/11
+            // dots.push([coordinates[k] + x.bandwidth() * 4, coordinates[k][1]]);
+            const item_left = { ...coordinates[n] };
+            item_left.x_pos -= x.bandwidth() * 4;
+
+            // start
+            for (let m = 0; m < coordinates.length; m++) {
+                const element = { ...coordinates[m] };
+                // end
+                // element.x_pos -= x.bandwidth() * 4;
+                elementsCoordinates = {
+                    "x1": element.x_pos,
+                    "y1": element.y_pos,
+                    "x2": item_left.x_pos,
+                    "y2": item_left.y_pos
+                }
+                crossLines.push(elementsCoordinates);
+            }
+        }
+
+        svgViewbox.append("g").selectAll("line")
+                .data(crossLines.slice(0, 8))
+                .enter()
+                .append("line")
+                .attr("x1", function (d) { return d.x1 + x.bandwidth() / 2;})
+                .attr("y1", function (d) { return d.y1 + y.bandwidth() / 2;})
+                .attr("x2", function (d) { return d.x2 + x.bandwidth() / 2;})
+                .attr("y2", function (d) { return d.y2 + y.bandwidth() / 2;})
+                .attr("stroke", "blue")
+                .attr("stroke-width", "2px")
+    </script>
+
+    <script>
+        // 创建一个缩放行为，并设置缩放事件处理程序
+        const zoom = d3.zoom().on('zoom', (e) => {
+            svgViewbox.attr('transform', e.transform);
+        });
+        d3.select("#chart").call(zoom)
+            .call(zoom.transform, d3.zoomIdentity.scale(0.8));
+
+        svgViewbox.attr("transform", `translate(${margin.left},${margin.top}) scale(0.8)`);
+
+    </script>
+</body>
+
+</html>

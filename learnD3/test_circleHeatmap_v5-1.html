@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<style>
+    .filled {
+        fill: url("#mainGradient");
+    }
+
+    .ticks text {
+        font-family: sans-serif;
+        font-size: 10px;
+        text-anchor: middle;
+    }
+</style>
+
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.7.0/d3.min.js"></script>
+    <div id="id"></div>
+    <!-- <script src="http://d3js.org/d3.v3.min.js"></script> -->
+    <script>
+        const width = 200;
+        const svgHeight = 40;
+        const barHeight = 10;
+        const textHeight = 12;
+
+        const padding = 20;
+        const nTicks = 6; // 0, 20, 40, 60, 80, 100;
+
+        const colors = [
+            { r: 80, g: 0, b: 0 },
+            { r: 229, g: 80, b: 57 },
+            { r: 250, g: 211, b: 144 },
+            { r: 184, g: 233, b: 148 },
+            { r: 130, g: 204, b: 221 },
+            { r: 106, g: 137, b: 204 },
+        ];
+        // Add gradient line
+        let svgGradient = d3
+            .select("[id=id]")
+            .append("svg")
+            .attr("width", width + 2 * padding)
+            .attr("height", svgHeight)
+        let defs = svgGradient.append("defs");
+        let mainGradient = defs.append('linearGradient')
+            .attr('id', 'mainGradient');
+        mainGradient.selectAll("stop")
+            .data(colors)
+            .enter().append("stop")
+            .attr("offset", function (d, x) { return `${x * 20}%`; })
+            .attr("stop-color", function (d) { return `rgb(${d.r}, ${d.g}, ${d.b})`; });
+        svgGradient.append('rect')
+            .classed('filled', true)
+            .attr('x', padding)
+            .attr('width', width)
+            .attr('height', barHeight);
+
+        const tickFormat = d3.format(".0%");
+        const ticks = new Array(nTicks)
+            .fill()
+            .map(function (e, i) { return i / (nTicks - 1) });
+
+        const ticksContainer = svgGradient.append('g')
+            .classed('ticks', true)
+            .style('transform', 'translate(' + padding + 'px, ' + barHeight + 'px)');
+        ticksContainer
+            .selectAll('text')
+            .data(ticks)
+            .enter()
+            .append('text')
+            .text(tickFormat)
+            .attr('y', textHeight)
+            .attr('x', function (d) { return width * d });
+
+    </script>
+</body>
+
+</html>

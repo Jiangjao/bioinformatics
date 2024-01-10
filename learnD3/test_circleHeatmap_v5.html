@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<head>
+    <title>Document</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <style>
+        svg .container {
+            width: 100%;
+            height: 100%;
+            margin: auto;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .tooltip {
+            position: absolute;
+            background-color: #f9f9f9;
+            padding: 8px;
+            border: 1px solid #ccc;
+            pointer-events: none;
+            font-size: 14px;
+        }
+
+        .basicSettings {
+            /* width: 80%; */
+            position: relative;
+            /* top: 38px; */
+            z-index: 1;
+            overflow-y: auto;
+        }
+
+        .downloadSettings {
+            width: 100%;
+            position: relative;
+            /* top: 18px; */
+            z-index: 2;
+        }
+
+        .sidebar {
+            width: 100%;
+            display: none;
+            /* 初始状态下隐藏下拉框 */
+        }
+
+        /* .sidebar {
+  width: 300px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+} */
+
+        .sidebar h2 {
+            /* margin-bottom: 10px; */
+            /* border-bottom: 1px solid #ddd; */
+            padding-bottom: 5px;
+        }
+
+        .sidebar label {
+            width: 120px;
+            text-align: right;
+            margin-right: 10px;
+        }
+
+        .sidebar input,
+        .sidebar select {
+            padding: 5px;
+            border: 1px solid #ccc;
+            width: 25%;
+            border-radius: 4px;
+        }
+
+        .sidebar button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            background: #42b983;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .sidebar button:hover {
+            opacity: 0.8;
+        }
+
+        .sidebar input[type="number"] {
+            width: 50px;
+        }
+
+        .sidebar input[type="text"] {
+            width: 36%;
+        }
+
+        .sidebar input[type="range"] {
+            width: 100%;
+            /* transform: rotate(270deg); 添加垂直滚动条 */
+        }
+
+        /* .sidebar br {
+            display: none;
+        } */
+
+        .item {
+            display: flex;
+            align-items: center;
+            text-align: justify;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            width: 88%;
+        }
+
+        /* .item {} */
+
+        .sidebar hr {
+            overflow: hidden;
+            width: 88%;
+        }
+
+        /* 设置hr线 */
+        .item+hr {
+            margin: 10px 0;
+
+        }
+
+        .item+hr:first-child {
+            margin-top: 0;
+        }
+
+        .item+hr {
+            border: none;
+            border-top: 1px dotted #ccc;
+        }
+
+        /* hr {} */
+        /* .item label {
+            width: 120px;
+            } */
+        /* .sidebar {
+            display: flex;
+            flex-wrap: wrap;
+        } */
+
+        .sliderTooltip {
+            /* display: block; */
+            /* position: absolute; */
+            /* styles */
+            /* padding: 10px; */
+            position: absolute;
+            /* top: -30px; */
+            /* left: 134px; */
+            background-color: rgb(204 204 204 / 18%);
+            /* color: #f9f9f9; */
+            padding: 5px;
+            border-radius: 5px;
+            display: none;
+            margin-top: 14%;
+        }
+
+        .tooltip.show {
+            display: block;
+        }
+
+        .sidebar.show {
+            width: 100%;
+            height: auto;
+            position: relative;
+            /* padding: inherit; */
+            display: block;
+            padding: 10px 11px;
+            /* 点击后显示下拉框 */
+            transition: max-height 0.3s ease;
+            z-index: 1;
+            /* 添加过渡效果 */
+        }
+
+        /* 添加button的样式 */
+        .button-like {
+            display: inline-block;
+            padding: 10px 0 10px 10%;
+            background-color: #4CAF50;
+            color: white;
+            text-align: left;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 90%;
+        }
+
+        .button-like:hover {
+            background-color: #45a049;
+        }
+
+        .button-like:active {
+            background-color: #3e8e41;
+        }
+
+        /* TODO:xiaojiao, @media screen and (max-width: 700px) 如何使用2023/10/23 */
+        div.tooltip-donut {
+            position: absolute;
+            text-align: center;
+            padding: .5rem;
+            background: #FFFFFF;
+            color: #313639;
+            border: 1px solid #313639;
+            border-radius: 8px;
+            pointer-events: none;
+            font-size: 1.3rem;
+        }
+
+        icon-i {
+            text-align: center;
+        }
+
+        .dropdown {
+            /* padding: 10px 11px; */
+            position: relative;
+            /* display: inline-block; */
+        }
+
+        .dropdown-content {
+            display: none;
+            position: relative;
+            /* top: 100%; */
+            /* left: 0; */
+            width: 100%;
+            /* padding: 10px 11px; */
+            background-color: #4CAF50;
+        }
+
+
+        .settingContent {
+            display: block;
+            position: relative;
+            /* top: 100%; */
+            /* left: 0; */
+            width: 90%;
+            padding: 10px 11px;
+            /* overflow-y: scroll; */
+            height: 60vh;
+            overflow-y: scroll;
+            /* 设置垂直方向上溢出时显示滚动条 */
+            overflow-x: hidden;
+            scrollbar-width: thin;
+            /* 设置滚动条的宽度 */
+            scrollbar-color: gray lightgray;
+            /* 设置滚动条的颜色 */
+        }
+
+        /* div#settingContent {} */
+        /* .dropdown:hover .dropdown-content {
+        display: block;
+
+         } */
+         
+        .filled {
+            fill: url("#mainGradient");
+        }
+
+        .ticks text {
+            font-family: sans-serif;
+            font-size: 10px;
+            text-anchor: middle;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <input type="range" id="sizeSlider" min="100" max="500" value="360" step="1">
+    </div>
+    <div>
+        <input type="range" id="rotateSlider" min="0" max="360" step="1" value="30">
+        <label for="rotateSlider">Rotate:</label>
+        <input type="text" id="rotateValue" readonly>
+    </div>
+
+    <div>
+        <label for="innerRadiusSlider">innerRadiusSlider:</label>
+
+        <input type="range" min="0" max="1000" value="320" id="innerRadiusSlider">
+    </div>
+    <div id="container">
+        <!-- <svg id="test" width="100%" height="500px"> -->
+
+        <svg id="chart" style="position: absolute;">
+            <!-- <defs>
+                <linearGradient id="gradient">
+                    <stop offset="0%" stop-color="red"></stop>
+                    <stop offset="100%" stop-color="rgb(8, 48, 107)"></stop>
+                </linearGradient>
+            </defs>  -->
+
+            <!-- <rect height="20" width="150" style="fill: url(#gradient)"></rect> -->
+        </svg>
+        <!-- </svg> -->
+
+    </div>
+
+    <script>
+        function randomDecimalArray(size) {
+            const arr = [];
+            for (let i = 0; i < size; i++) {
+                arr.push(Math.random().toFixed(2));
+            }
+            return arr;
+        }
+
+        const array = randomDecimalArray(38);
+        const array1 = randomDecimalArray(38);
+        console.log(array);
+
+        var dataset = [{ "group": array, "id": 1 }, { "group": array1, "id": 2 }, { "group": array }];
+
+        // TODO:xiaojiao 当他不是百分比的时候确定长度
+        //         const data = [{ 'group': 'Bacteroidetes', 'T1': 3.75, 'T2': 10.0, 'T3': 20.0, 'T4': 32.5, 'T5': 16.5, 'T6': 11.0, 'T7': 2.5, 'T8': 3.75 },
+        // { 'group': 'Firmicutes', 'T1': 14.354066985645932, 'T2': 13.157894736842104, 'T3': 9.210526315789473, 'T4': 10.76555023923445, 'T5': 9.449760765550238, 'T6': 15.550239234449762, 'T7': 14.354066985645932, 'T8': 13.157894736842104 },
+        // { 'group': 'Proteobacteria', 'T1': 8.38709677419355, 'T2': 14.838709677419354, 'T3': 21.29032258064516, 'T4': 12.258064516129032, 'T5': 11.612903225806452, 'T6': 12.258064516129032, 'T7': 10.967741935483872, 'T8': 8.38709677419355 },
+        // { 'group': 'Thermotogae', 'T1': 16.3075131042516, 'T2': 16.8899242865463, 'T3': 20.3843913803145, 'T4': 11.648223645894001, 'T5': 11.0658124635993, 'T6': 10.483401281304602, 'T7': 7.454863133372161, 'T8': 5.765870704717531 },
+        // { 'group': 'Coprothermobacterota', 'T1': 8.88888888888889, 'T2': 12.0, 'T3': 18.666666666666668, 'T4': 14.666666666666666, 'T5': 18.666666666666668, 'T6': 12.0, 'T7': 9.333333333333334, 'T8': 5.777777777777778 }]
+        const subgroups = Object.keys(dataset[0]).slice(1);
+        console.log("subgroups >>>", subgroups);
+
+        //stack the data? --> stack per subgroup
+        // const stackedData = d3.stack()
+        //     .keys(subgroups)
+        //     (dataset)
+    </script>
+    <script>
+
+        nwk = "(((EELA:0.150276,CONGERA:0.213019):0.230956,(EELB:0.263487,CONGERB:0.202633):0.246917):0.094785,((CAVEFISH:0.451027,(GOLDFISH:0.340495,ZEBRAFISH:0.390163):0.220565):0.067778,((((((NSAM:0.008113,NARG:0.014065):0.052991,SPUN:0.061003,(SMIC:0.027806,SDIA:0.015298,SXAN:0.046873):0.046977):0.009822,(NAUR:0.081298,(SSPI:0.023876,STIE:0.013652):0.058179):0.091775):0.073346,(MVIO:0.012271,MBER:0.039798):0.178835):0.147992,((BFNKILLIFISH:0.317455,(ONIL:0.029217,XCAU:0.084388):0.201166):0.055908,THORNYHEAD:0.252481):0.061905):0.157214,LAMPFISH:0.717196,((SCABBARDA:0.189684,SCABBARDB:0.362015):0.282263,((VIPERFISH:0.318217,BLACKDRAGON:0.109912):0.123642,LOOSEJAW:0.3971):0.287152):0.140663):0.206729):0.222485,(COELACANTH:0.558103,((CLAWEDFROG:0.441842,SALAMANDER:0.299607):0.135307,((CHAMELEON:0.771665,((PIGEON:0.150909,CHICKEN:0.172733):0.082163,ZEBRAFINCH:0.099172):0.272338):0.014055,((BOVINE:0.167569,DOLPHIN:0.15745):0.104783,ELEPHANT:0.166557):0.367205):0.050892):0.114731):0.295021)"
+
+        // Tools
+        const ncov2019 = "(((EELA:0.150276,CONGERA:0.213019):0.230956,(EELB:0.263487,CONGERB:0.202633):0.246917):0.094785,((CAVEFISH:0.451027,(GOLDFISH:0.340495,ZEBRAFISH:0.390163):0.220565):0.067778,((((((NSAM:0.008113,NARG:0.014065):0.052991,SPUN:0.061003,(SMIC:0.027806,SDIA:0.015298,SXAN:0.046873):0.046977):0.009822,(NAUR:0.081298,(SSPI:0.023876,STIE:0.013652):0.058179):0.091775):0.073346,(MVIO:0.012271,MBER:0.039798):0.178835):0.147992,((BFNKILLIFISH:0.317455,(ONIL:0.029217,XCAU:0.084388):0.201166):0.055908,THORNYHEAD:0.252481):0.061905):0.157214,LAMPFISH:0.717196,((SCABBARDA:0.189684,SCABBARDB:0.362015):0.282263,((VIPERFISH:0.318217,BLACKDRAGON:0.109912):0.123642,LOOSEJAW:0.3971):0.287152):0.140663):0.206729):0.222485,(COELACANTH:0.558103,((CLAWEDFROG:0.441842,SALAMANDER:0.299607):0.135307,((CHAMELEON:0.771665,((PIGEON:0.150909,CHICKEN:0.172733):0.082163,ZEBRAFINCH:0.099172):0.272338):0.014055,((BOVINE:0.167569,DOLPHIN:0.15745):0.104783,ELEPHANT:0.166557):0.367205):0.050892):0.114731):0.295021)";       // https://github.com/jasondavies/newick.js
+        function parseNewick(a) { for (var e = [], r = {}, s = a.split(/\s*(;|\(|\)|,|:)\s*/), t = 0; t < s.length; t++) { var n = s[t]; switch (n) { case "(": var c = {}; r.branchset = [c], e.push(r), r = c; break; case ",": var c = {}; e[e.length - 1].branchset.push(c), r = c; break; case ")": r = e.pop(); break; case ":": break; default: var h = s[t - 1]; ")" == h || "(" == h || "," == h ? r.name = n : ":" == h && (r.length = parseFloat(n)) } } return r }
+    </script>
+
+    <script>
+
+        // 环状热图
+        // https://gist.github.com/arpitnarechania/b0bdc4f9a377ea9d8612677e12f65b82
+        // https://stackoverflow.com/questions/43314115/d3-circular-heat-chart-increase-segment-height-on-mouseover
+
+        // step in step draw circlar tree
+        // https://observablehq.com/@lacunae/mep-schematics-tree-of-life
+
+        // 思路：先画矩形热图 + dendrogram
+        // 再转变坐标系
+        // https://juejin.cn/post/6844903630978416654
+        // 极坐标转换成直角坐标
+
+        // https://observablehq.com/d/48948ce1016cda1d
+        // circle tree map
+
+        // 前端 · 深入理解 SVG - d 属性的作用原理
+        // https://juejin.cn/post/7071892793114755103#heading-14
+
+
+        // source code:https://observablehq.com/d/48948ce1016cda1d
+
+        // TODO:xiaojiao, 1. 将这个图形变小一些, 似乎调节innerRadius就可以了
+        // 2. 添加热图
+
+
+        var width = 954;
+        // set the dimensions and margins of the graph
+        const margin = { top: 10, right: 30, bottom: 20, left: 50 };
+
+        // TODO:xiaojiao, 监听窗口resize 时的变化
+        let flag = true
+        window.onresize = function () {
+            if (flag) {
+                // console.log(new Date(), '窗口改变了')
+                flag = false
+                location.reload();
+            }
+            let timeId = setTimeout(() => {
+                flag = true
+                timeId = null // 清除延时定时器
+            }, 1000)
+            width = document.body.clientWidth;
+        }
+        // 网页窗口在某一大小打开时的宽高
+        width = window.innerWidth - margin.left - margin.right;
+        var height = window.innerHeight - margin.top - margin.bottom;
+
+        // area
+        const outerRadius = width / 2;
+        let innerRadius = outerRadius - 220;
+        data = parseNewick(ncov2019);
+        // let width = 954;
+
+        // 设置弧度
+        // innerRadius = 20,
+        segmentHeight = 80,
+            numSegments = 38;
+
+        let cluster = d3.cluster()
+            .size([360, innerRadius])
+            .separation((a, b) => 1)
+
+
+        function name(d) {
+            if (d.height === 0) {
+                const parts = d.data.name.split("_");
+                for (let i = 0; i < parts.length; ++i) {
+                    if (/^\d{4}(?:-\d{2}(?:-\d{2})?)?$/.test(parts[i])) {
+                        return parts[i + 1]
+                            .replace(/-.*/, "")
+                            .replace(/([a-z])([A-Z])/, (_, a, b) => [a, b].join(" "));
+                    }
+                }
+            }
+        }
+
+        color = d3.scaleOrdinal()
+            .domain(["United States", "China"])
+            .range(d3.schemeTableau10)
+            .unknown(null)
+
+        colortemp2 = d3.scaleSequential(d3.interpolateRdBu);
+
+        // Compute the maximum cumulative length of any node in the tree.
+        function maxLength(d) {
+            return d.data.length + (d.children ? d3.max(d.children, maxLength) : 0);
+        }
+
+
+        // Set the radius of each node by recursively summing and scaling the distance from the root.
+        // find the max radius
+        let maxRadius = 0;
+        // let minRadius = 0;
+        let minRadius = Infinity;
+        function setRadius(d, y0, k) {
+            d.radius = (y0 += d.data.length) * k;
+            if (d.children) d.children.forEach(d => setRadius(d, y0, k));
+            if (d.radius > maxRadius) {
+                maxRadius = d.radius;
+            }
+            if (d.radius < minRadius) {
+                minRadius = d.radius;
+            }
+            // if (d.radius > maxRadius) {
+            //     maxRadius = node.radius;
+            // }
+        }
+
+        function linkVariable(d) {
+            return linkStep(d.source.x, d.source.radius, d.target.x, d.target.radius);
+        }
+
+        function linkConstant(d) {
+            return linkStep(d.source.x, d.source.y, d.target.x, d.target.y);
+        }
+
+        function linkExtensionVariable(d) {
+            return linkStep(d.target.x, d.target.radius, d.target.x, innerRadius);
+        }
+
+        function linkExtensionConstant(d) {
+            return linkStep(d.target.x, d.target.y, d.target.x, innerRadius);
+        }
+
+        function linkStep(startAngle, startRadius, endAngle, endRadius) {
+            const c0 = Math.cos(startAngle = (startAngle - 90) / 180 * Math.PI);
+            const s0 = Math.sin(startAngle);
+            const c1 = Math.cos(endAngle = (endAngle - 90) / 180 * Math.PI);
+            const s1 = Math.sin(endAngle);
+            return "M" + startRadius * c0 + "," + startRadius * s0
+                + (endAngle === startAngle ? "" : "A" + startRadius + "," + startRadius + " 0 0 " + (endAngle > startAngle ? 1 : 0) + " " + startRadius * c1 + "," + startRadius * s1)
+                + "L" + endRadius * c1 + "," + endRadius * s1;
+        }
+
+        const chart = function (cluster, newSize) {
+            const root = d3.hierarchy(data, d => d.branchset)
+                .sum(d => d.branchset ? 0 : 1)
+                .sort((a, b) => (a.value - b.value) || d3.ascending(a.data.length, b.data.length));
+
+            // console.log("root >>>", root);
+            root.transform = `rotate(30)`;
+
+            // cluster(root);
+            cluster(root);
+            setRadius(root, root.data.length = 0, innerRadius / maxLength(root));
+
+            console.log("emm start here...", root);
+            console.log("emm max(length) >>>", maxLength(root));
+            // 创建SVG元素
+            const svg = d3.select("#container")
+                .select("#chart")
+                .attr("viewBox", [-outerRadius, -outerRadius, width, width])
+                .attr("font-family", "sans-serif")
+                .attr("font-size", 10)
+                .attr("id", "chart")
+                .append("g")
+                .attr("id", "heatmap")
+            // .attr("transform", "rotate(30)");
+
+            svg.append("style").text(`
+.link--active {
+  stroke: #000 !important;
+  stroke-width: 1.5px;
+}
+
+.link-extension--active {
+  stroke-opacity: .6;
+}
+
+.label--active {
+  font-weight: bold;
+}
+`);
+
+            const linkExtension = svg.append("g")
+                .attr("fill", "none")
+                .attr("stroke", "currentColor")
+                .attr("stroke-opacity", 0.25)
+                .selectAll("path")
+                .data(root.links().filter(d => !d.target.children))
+                .join("path")
+                .each(function (d) { d.target.linkExtensionNode = this; })
+                .attr("d", linkExtensionConstant);
+
+            const link = svg.append("g")
+                .attr("fill", "none")
+                .attr("stroke", "currentColor")
+                .selectAll("path")
+                .data(root.links())
+                .join("path")
+                .each(function (d) { d.target.linkNode = this; })
+                .attr("d", linkConstant)
+                .attr("stroke", d => color(name(d.target)));
+
+            // svg.append("g")
+            //     .selectAll("text")
+            //     .data(root.leaves())
+            //     .join("text")
+            //     .attr("dy", "0.31em")
+            //     .attr("transform", d => `rotate(${d.x - 90}) translate(${innerRadius + 4},0)${d.x < 180 ? "" : " rotate(180)"}`)
+            //     .attr("text-anchor", d => d.x < 180 ? "start" : "end")
+            //     .attr("fill", d => color(name(d)))
+            //     .text(d => name(d) || "N/A")
+            // .on("mouseover", mouseovered(true))
+            // .on("mouseout", mouseovered(false))
+            // .append("title")
+            //     .text(d => d.data.name.replace(/_/g, " "));
+
+            console.log("root.leaves()>>>", root.leaves());
+
+
+            const rect_attr_temp = 8;
+            // 计算节点旋转角度和偏移
+            function getTranslate(d, offset) {
+                // offset = 4;
+                // TODO:xiaojiao, offset 应该和这个的width 和 height有关...
+                // 2023/11/21
+
+                // let temp = d.node().getAttribute("width");
+                // console.log("d.data.name >>>", d);
+                // console.log("d.width", d.width);
+                const x = d.x;
+
+                let rotate = x - 90;
+                let translateX = innerRadius + offset;
+                // let translateY = 0;
+                // 他高度的一半
+                let translateY = -2;
+
+                if (x >= 180) {
+                    rotate += 180;
+                    translateX = -translateX - rect_attr_temp;
+                }
+
+                return `rotate(${rotate}) translate(${translateX},${translateY})`;
+            }
+
+
+            //Segment labels
+            // var segmentLabelOffset = 5;
+            // var r = innerRadius + Math.ceil(data.length / numSegments) * segmentHeight + segmentLabelOffset;
+
+            // 函数接收额外参数innerRadius
+            // function ir(d, i, r) {
+            //     return r + Math.floor(i/numSegments) * segmentHeight; 
+            // }
+
+
+            function drawArchRects(svg, data, size) {
+                const group = svg.append("g");
+
+                // group.selectAll("rect")
+                // .data(data)
+                // .join("rect")
+                // .attr("width", rect_attr_temp)
+                // .attr("height", rect_attr_temp)
+                // .attr("fill", function (d) {
+
+                //     if (d.data.name == "EPI_ISL_414435_2020-03-03_Netherlands_hCoV-19/Netherlands/Utrecht_1/2020") {
+                //         return "red";
+                //     }
+                //     // return colortemp2(d.radius / 500);
+                //     if (d.radius > 180) {
+                //         console.log("d.radius 大于 200", d.radius);
+                //     }
+
+                //     // console.log("")
+                //     // 除以角度值
+                //     return colortemp2((d.radius - minRadius) / maxRadius);
+                // })
+                // .attr("opacity", 0.3)
+                // .attr("transform", d => getTranslate(d, size));
+
+                // innerRadius = innerRadius + segmentHeight;
+
+                console.log("data >>> draw", data);
+                group
+                    // .data(data)
+                    // .join("g")
+                    .selectAll("path")
+                    .data(data.group)
+                    .join("path")
+                    .attr("d", d3.arc().innerRadius(
+                        function ir(d, i) {
+                            console.log("<<< d.id >>>", d);
+                            return size + Math.floor(i / numSegments) * segmentHeight;
+                        }
+                    ).outerRadius(
+                        function or(d, i) {
+                            return size + Math.floor(i / numSegments) * segmentHeight + segmentHeight;
+                        }
+                    ).startAngle(
+                        function (d, i) {
+                            // (newSize / 360) 即是新扇形的角度
+                            return (i * 2 * Math.PI * (newSize / 360)) / numSegments;
+                        }
+                    ).endAngle(
+                        function (d, i) {
+                            return ((i + 1) * 2 * Math.PI * (newSize / 360)) / numSegments;
+                        }
+                    ))
+                    .attr("fill", function (d, i) {
+                        // if (d.data.name == "EPI_ISL_414435_2020-03-03_Netherlands_hCoV-19/Netherlands/Utrecht_1/2020") {
+                        //     return "red";
+                        // }
+                        // return colortemp2(d.radius / 500);
+                        // if (d.radius > 180) {
+                        //     console.log("d.radius 大于 200", d.radius);
+                        // }
+
+                        // console.log("ddddd >>>", d, i);
+                        // 除以角度值
+                        return colortemp2((d) / 1);
+                    })
+                    .attr("stroke", "red")
+                    .on("mouseover", mouseovered(true))
+                    .on("mouseout", mouseovered(false))
+                    .append("title")
+                    .text(d => "test")
+                // .attr("transform", d => getTranslate(d, size));
+            }
+
+            // 调用
+            for (let k = 0; k < dataset.length; k++) {
+                // drawArchRects(svg, dataset[1], innerRadius + segmentHeight);
+                drawArchRects(svg, dataset[k], innerRadius + segmentHeight * k);
+            }
+            // drawArchRects(svg, root.leaves(), innerRadius + segmentHeight * 3);
+            // drawRects(svg, root.leaves(), 64);
+
+            // svg.append("g")
+            //     .selectAll("rect")
+            //     .data(root.leaves())
+            //     .join("rect")
+            //     // .attr("x", d => d.x)
+            //     // .attr("y", d => d.y)
+            //     .attr("width", 14)
+            //     .attr("height", 14)
+            //     .attr("fill", d => color(name(d)))
+            //     .attr("opacity", 0.3)
+            //     .attr("transform", d => getTranslate(d, 10))
+
+
+            // .append("text")
+            // .attr("x", d => (d.x0 + d.x1) / 2)
+            // .attr("y", d => (d.y0 + d.y1) / 2)
+            // .attr("dy", "0.35em")
+            // .attr("text-anchor", "middle")
+            // .attr("fill", "black")
+            // .text(d => name(d) || "N/A");
+
+            function update(checked) {
+                const t = d3.transition().duration(750);
+                linkExtension.transition(t).attr("d", checked ? linkExtensionVariable : linkExtensionConstant);
+                link.transition(t).attr("d", checked ? linkVariable : linkConstant);
+            }
+
+            function mouseovered(active) {
+                return function (d) {
+                    d3.select(this).classed("label--active", active);
+                    d3.select(d.linkExtensionNode).classed("link-extension--active", active).raise();
+                    do d3.select(d.linkNode).classed("link--active", active).raise();
+                    while (d = d.parent);
+                };
+            }
+
+
+            // 添加渐变条带
+            // 使用d3.js绘制渐变条
+            // https://juejin.cn/post/6844904037486166023
+            const nTicks = 5; // 0, 20, 40, 60, 80, 100;
+            const textHeight = 12;
+
+            const padding = 20;
+            const barHeight = 20;
+            const tickFormat = d3.format(".0%");
+
+            const defs = d3.select("#chart")
+                .append("g")
+                .append("defs");
+
+            const linearGradient = defs
+                .append("linearGradient")
+                .attr("id", "gradient")
+
+            linearGradient
+                .append("stop")
+                .attr("offset", "0%")
+                .attr("stop-color", d3.interpolateRdBu(0));
+
+            linearGradient
+                .append("stop")
+                .attr("offset", "100%")
+                .attr("stop-color", d3.interpolateRdBu(1));
+
+            const gradientRectHeight = 20
+            const gradientRectWidth = 150;
+            // https://stackoverflow.com/questions/62950517/d3-gradient-rectangle-add-points-with-text-on-stops
+            const gradientRect = d3.select("#chart")
+                .append("g")
+                .attr("id", "gradientBar")
+                .append("rect")
+                .attr("height", gradientRectHeight)
+                .attr("width", gradientRectWidth)
+                .style("fill", "url('#gradient')")
+                .style('transform', 'translate(' + 10 + 'px, ' + barHeight + 'px)');
+
+
+            const ticks = new Array(nTicks)
+                .fill()
+                .map(function (e, i) { return i / (nTicks - 1) });
+
+            const ticksContainer = d3.select("#gradientBar").append('g')
+                .classed('ticks', true)
+                .style('transform', 'translate(' + 10 + 'px, ' + barHeight + 'px)');
+
+            ticksContainer
+                .selectAll('text')
+                .data(ticks)
+                .enter()
+                .append('text')
+                .text(tickFormat)
+                .attr('y', textHeight + barHeight)
+                .attr('x', function (d) {
+                    // console.log("<d>", d);
+                    return gradientRectWidth * d
+                });
+
+            // 移动渐变色条到左上角
+            const bb = d3.select("#heatmap").node().getBoundingClientRect();
+
+            const tx = -bb.width / 2 + 3 * padding;
+            const ty = -bb.height / 2 + 2 * padding;
+
+            console.log("chart here >>>", bb);
+            d3.select("#gradientBar")
+                .attr("transform", `translate(${tx},${ty})`);
+
+            return Object.assign(svg.node(), { update });
+
+        }
+
+        /* Arc functions */
+
+        sa = function (d, i) {
+            return (i * 2 * Math.PI) / numSegments;
+        }
+        ea = function (d, i) {
+            return ((i + 1) * 2 * Math.PI) / numSegments;
+        }
+
+        chart(cluster, 360);
+    </script>
+
+    <script>
+
+        // 参数控制
+        // 依据滑动条更新图形
+        const sizeSlider = document.getElementById('sizeSlider');
+        const clusterSvg = d3.select('#chart');
+
+        sizeSlider.addEventListener('input', updateClusterSize);
+
+        function updateClusterSize() {
+            const newSize = +sizeSlider.value;
+
+            cluster.size([newSize, innerRadius]);
+            // 根据新的cluster大小重新计算并更新图形
+
+            console.log("innnerRadius >>>", newSize, innerRadius);
+            // 清空现有的图形并重新绘制cluster
+            clusterSvg.selectAll('*').remove();
+
+            // 根据新的cluster设置重新绘制图形的代码
+            chart(cluster, newSize);
+        }
+
+        const rotateSlider = document.getElementById("rotateSlider");
+        const rotateValue = document.getElementById("rotateValue");
+
+        rotateSlider.addEventListener("input", function () {
+            const rotate = rotateSlider.value;
+
+            // 清空现有的图形并重新绘制cluster
+            // clusterSvg.selectAll('*').remove();
+            rotateValue.value = rotate;
+            // chart(cluster, 360);
+            d3.select("#heatmap").attr("transform", `rotate(${rotate})`);
+
+            console.log("rotateValue", rotateValue);
+        });
+
+        // 监听滑动条变化事件
+        document.getElementById("innerRadiusSlider").addEventListener("input", function (e) {
+            innerRadius = outerRadius - parseInt(e.target.value); // 更新 innerRadius 值
+
+            // 清空现有的图形并重新绘制cluster
+            clusterSvg.selectAll('*').remove();
+
+
+            let cluster = d3.cluster()
+                .size([360, innerRadius])
+                .separation((a, b) => 1)
+
+            // 调用更新图表的函数
+            chart(cluster, 360);
+
+            console.log("innerRadius >>>", innerRadius);
+        });
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        #bar-chart {
+            height: 500px;
+            width: 100%;
+        }
+    </style>
+
+    <title>Document</title>
+    <script src="https://unpkg.com/d3@5.2.0/dist/d3.min.js"></script>
+
+</head>
+
+<body>
+    <div id="bar-chart"></div>
+    <script>
+        const BarChart = () => {
+            // set data
+            const data = [
+                {
+                    value: 48,
+                    label: 'One Rect'
+                },
+                {
+                    value: 32,
+                    label: 'Two Rect'
+                },
+                {
+                    value: 40,
+                    label: 'Three Rect'
+                }
+            ];
+            // set selector of container div
+            const selector = '#bar-chart';
+            // set margin
+            const margin = { top: 60, right: 0, bottom: 90, left: 30 };
+            // width and height of chart
+            let width;
+            let height;
+            // skeleton of the chart
+            let svg;
+            // scales
+            let xScale;
+            let yScale;
+            // axes
+            let xAxis;
+            let yAxis;
+            // bars
+            let rect;
+            // area
+            let areas = [];
+
+            function init() {
+
+                // get size of container
+                width = parseInt(d3.select(selector).style('width')) - margin.left - margin.right;
+                height = parseInt(d3.select(selector).style('height')) - margin.top - margin.bottom;
+                // create the skeleton of the chart
+                svg = d3.select(selector)
+                    .append('svg')
+                    .attr('width', '100%')
+                    .attr('height', height + margin.top + margin.bottom)
+                    .append('g')
+                    .attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
+
+                xScale = d3.scaleBand().padding(0.15);
+                xAxis = d3.axisBottom(xScale);
+                yScale = d3.scaleLinear();
+                yAxis = d3.axisLeft(yScale);
+
+                svg.append('g')
+                    .attr('class', 'x axis')
+                    .attr('transform', `translate(0, ${height})`);
+
+                svg.append('g')
+                    .attr('class', 'y axis');
+
+                svg.append('g')
+                    .attr('class', 'x label')
+                    .attr('transform', `translate(10, 20)`)
+                    .append('text')
+                    .text('Value');
+
+                xScale
+                    .domain(data.map(d => d.label))
+                    .range([0, width])
+                    .padding(0.3);
+
+                yScale
+                    .domain([0, 75])
+                    .range([height, 0]);
+
+                xAxis
+                    .scale(xScale);
+
+                yAxis
+                    .scale(yScale);
+
+                rect = svg.selectAll('rect')
+                    .data(data);
+
+                rect
+                    .enter()
+                    .append('rect')
+                    .style('fill', d => '#00BCD4')
+                    .attr('y', d => yScale(d.value))
+                    .attr('height', d => height - yScale(d.value))
+                    .attr('x', d => xScale(d.label))
+                    .attr('width', xScale.bandwidth());
+
+                // call the axes
+                svg.select('.x.axis')
+                    .call(xAxis);
+
+                svg.select('.y.axis')
+                    .call(yAxis);
+
+                // rotate axis text
+                svg.select('.x.axis')
+                    .selectAll('text')
+                    .attr('transform', 'rotate(45)')
+                    .style('text-anchor', 'start');
+
+                if (parseInt(width) >= 600) {
+                    // level axis text
+                    svg.select('.x.axis')
+                        .selectAll('text')
+                        .attr('transform', 'rotate(0)')
+                        .style('text-anchor', 'middle');
+                }
+
+                data.forEach(
+                    (d, i) => {
+                        if (data[i + 1]) {
+                            areas.push([
+                                {
+                                    x: d.label,
+                                    y: d.value
+                                },
+                                {
+                                    x: data[i + 1].label,
+                                    y: data[i + 1].value
+                                }
+                            ]);
+                        }
+                    }
+                );
+                
+                console.log("areas", areas);
+                areas = areas.filter(
+                    d => Object.keys(d).length !== 0
+                );
+
+                areas.forEach(
+                    a => {
+                        const area = d3.area()
+                            .x((d, i) => {
+                                console.log("d, i", d, i);
+                                console.log("xScale(d.x)", xScale(d.x))
+                                return i === 0 ?
+                                    xScale(d.x) + xScale.bandwidth() :
+                                    xScale(d.x);
+                            })
+                            .y0(height)
+                            .y1(d => yScale(d.y));
+
+                        console.log("area handle", area)
+                        svg.append('path')
+                            .datum(a)
+                            .attr('class', 'area')
+                            .style('fill', d => '#B2EBF2')
+                            .attr('d', area)
+                            .on('click', d => {
+                                console.log('hello click!');
+                            });
+                    }
+                )
+            }
+            console.log(areas);
+            return { init };
+        };
+
+        const myChart = BarChart();
+        myChart.init();
+    </script>
+</body>
+
+</html>

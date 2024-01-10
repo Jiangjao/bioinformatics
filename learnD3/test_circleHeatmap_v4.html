@@ -1,0 +1,1593 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+
+</head>
+
+<body>
+    
+    <div style="position: absolute; width:100%; height: 100%;">
+        <div>
+            <div style="float:right;margin:8px 10px 0 0;">
+
+            </div>
+
+            <div style="width: 20%;z-index: 1; position: fixed; padding-right: 1%; right:0; top:40px;">
+                <!-- add by xiaojiao 停靠右侧， x轴文本旋转 -->
+                <!-- add by xiaojiao 柱状图宽度调整 -->
+                <div class="dropdown">
+                    <div id="dropdownTest" class="downloadSettings" style="background:#F9F9F9;width: 100%;">
+                        <p class="button-like">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-cloud-arrow-down" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M7.646 10.854a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 9.293V5.5a.5.5 0 0 0-1 0v3.793L6.354 8.146a.5.5 0 1 0-.708.708l2 2z" />
+                                <path
+                                    d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z" />
+                            </svg>
+                            download
+                        </p>
+                    </div>
+                    <div id="dropdownContent" class="dropdown-content"
+                        style="background:#F9F9F9;width: 100%;display: none;">
+                        <div class="sidebar show">
+                            <h3>文本 Settings</h3>
+                            <button id="export">下载 SVG</button>
+                            <!-- <br> -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <br> -->
+                <div class="dropdown" style="background:#F9F9F9;width: 100%;">
+                    <div class="basicSettings">
+                        <!-- <button type="button" id="exitBtn" class="btn" onClick="exitFullscreen()">退出全屏</button> -->
+                        <p type="button" id="btn" class="btn button-like" title="fullscreen">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-gear" viewBox="0 0 16 16">
+                                <path title="修改参数"
+                                    d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+                                <path title="修改参数"
+                                    d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z" />
+                            </svg>
+                            <path title="fullscreen" fill-rule="evenodd"
+                                d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z" />
+                            </svg>
+                            setting
+                        </p>
+                    </div>
+                    <div class="settingContent" id="settingContent">
+                        <div class="sidebar show" id="mainsetting">
+                            <!-- <h2>文本 Settings</h2> -->
+                            <div class="item">
+                                <p>字体选择:</p>
+                                <!-- https://www.runoob.com/w3cnote/web-font-family.html -->
+                                <select class="form-select" id="fontSelect">
+                                    <option value="">Select</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">Serif Fonts
+                                    </option>
+                                    <option value="Georgia,serif" style="font-family: Georgia,serif">Georgia</option>
+                                    <option value="Palatino Linotype,Book Antiqua,Palatino,serif"
+                                        style="font-family: Palatino Linotype,Book Antiqua,Palatino,serif">Palatino
+                                        Linotype</option>
+                                    <option value="Times New Roman,Times,serif"
+                                        style="font-family: Times New Roman,Times,serif">Times New Roman</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">Sans-Serif
+                                        Fonts</option>
+                                    <option value="Arial,Helvetica,sans-serif"
+                                        style="font-family: Arial,Helvetica,sans-serif">Arial</option>
+                                    <option value="Arial Black,Gadget,sans-serif"
+                                        style="font-family: Arial Black,Gadget,sans-serif">Arial Black</option>
+                                    <option value="Comic Sans MS,cursive,sans-serif"
+                                        style="font-family: Comic Sans MS,cursive,sans-serif">Comic Sans MS</option>
+                                    <option value="Impact,Charcoal,sans-serif"
+                                        style="font-family: Impact,Charcoal,sans-serif">Impact</option>
+                                    <option value="Lucida Sans Unicode,Lucida Grande,sans-serif"
+                                        style="font-family: Lucida Sans Unicode,Lucida Grande,sans-serif">Lucida Sans
+                                        Unicode</option>
+                                    <option selected="selected" value="Tahoma,Geneva,sans-serif"
+                                        style="font-family: Tahoma,Geneva,sans-serif">Tahoma</option>
+                                    <option value="Trebuchet MS,Helvetica,sans-serif"
+                                        style="font-family: Trebuchet MS,Helvetica,sans-serif">Helvetica</option>
+                                    <option value="Verdana,Geneva,sans-serif"
+                                        style="font-family: Verdana,Geneva,sans-serif">Verdana</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">Monospace
+                                        Fonts</option>
+                                    <option value="Courier New,Courier,monospace"
+                                        style="font-family: Courier New,Courier,monospace">Courier New</option>
+                                    <option value="Lucida Console,Monaco,monospace"
+                                        style="font-family: Lucida Console,Monaco,monospace">Lucida Console</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">中文</option>
+                                    <option value="华文细黑,sans-serif" style="font-family: 华文细黑,sans-serif">华文细黑</option>
+                                    <option value="微软雅黑,sans-serif" style="font-family: 微软雅黑,sans-serif">微软雅黑</option>
+                                    <option value="中易宋体,sans-serif" style="font-family: 中易宋体,sans-serif">中易宋体</option>
+                                    <option value="WenQuanYi Micro Hei,sans-serif"
+                                        style="font-family: WenQuanYi Micro Hei,sans-serif">WenQuanYi Micro Hei</option>
+                                    <option value="楷体,serif" style="font-family: 楷体, serif">楷体</option>
+                                    <option value="隶书,sans-serif" style="font-family: 隶书, sans-serif">隶书</option>
+                                    <option value="custom">自定义</option>
+                                </select>
+                            </div>
+
+                            <div class="item">
+                                <p>字体大小: </p>
+                                <input type="range" id="fontSizeRange" min="12" max="36" step="1" value="16">
+                                <!-- <input type="text"> -->
+                                <div class="sliderTooltip">
+                                    <span class="value"></span>
+                                </div>
+                                <script>
+
+                                    console.log("hello sliderTooltip");
+                                </script>
+                            </div>
+                            <hr>
+                            <div class="item">
+                                <label for="textColor">Text Color:</label>
+                                <input type="color" id="textColor">
+                            </div>
+
+                            <div class="item">
+                                <label for="yAxisColor">Y Axis Color:</label>
+                                <input type="color" id="yAxisColor">
+                            </div>
+
+                            <div class="item">
+
+                                <label for="xAxisColor">X Axis Color:</label>
+                                <input type="color" id="xAxisColor">
+                            </div>
+
+                            <div class="item">
+
+                                <label for="xAxisWidth">X Axis Width:</label>
+                                <input type="number" id="xAxisWidth" min="0" step="1" value="1">
+                            </div>
+
+                            <div class="item">
+
+                                <label for="yAxisWidth">X Axis Width:</label>
+                                <input type="number" id="yAxisWidth" min="0" step="1" value="1">
+                            </div>
+
+                            <div class="item">
+                                <label for="stackBarWidth">柱状图宽度调整:</label>
+                                <input type="range" id="stackBarWidth" min="0" max="1000" step="0.1" value="2">
+                            </div>
+
+                            <div class="item">
+                                <button id="applySettings">Apply Settings</button>
+                            </div>
+
+                            <hr>
+                            <div class="item">
+                                <input type="text" id="xAxisTitleInput" placeholder="输入x轴标题">
+                                <br>
+                                <button id="xAxisTitleButton" style="width: auto;">更新x轴标题</button>
+                            </div>
+
+                            <div class="item">
+                                <input type="text" id="yAxisTitleInput" placeholder="输入y轴标题">
+                                <br>
+                                <button id="yAxisTitleButton" style="width: auto;">更新y轴标题</button>
+                            </div>
+                            <div class="item">
+
+                                <label for="xAxisTextRotatation">X 轴文本角度调整:</label>
+                                <input type="range" id="xAxisTextRotatation" min="0" step="1" max="360" value="0">
+                            </div>
+
+                            <div class="item">
+                                <button id="center-button">reset</button>
+                            </div>
+
+                            <hr>
+                            <div class="item">
+                                <label for="curveRange">条带曲率:</label>
+                                <input type="range" id="curveRange" min="0" max="1" step="0.1" value="0.5">
+                            </div>
+
+                            <div class="item">
+                                <label for="curveOpacityRange">条带透明度:</label>
+                                <input type="range" id="curveOpacityRange" min="0" max="1" step="0.1" value="0.5">
+                            </div>
+
+
+                            <div class="item">
+                                <button id="removeButton">去除区域</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- <br> -->
+                <!-- <br> -->
+                <div class="btns" id="btns" style="background:#F9F9F9;width: 100%;">
+
+                    <!-- <button type="button" id="exitBtn" class="btn" onClick="exitFullscreen()">退出全屏</button> -->
+                    <p type="button" id="btn" class="btn button-like fullScreen" title="fullscreen">
+                        <svg title="fullscreen" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            fill="currentColor" class="bi bi-arrows-fullscreen" viewBox="0 0 16 16">
+                            <path title="fullscreen" fill-rule="evenodd"
+                                d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z" />
+                        </svg>
+                        全屏
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="basicSettings" style="margin-left: auto; position: relative;">
+
+            </div>
+
+
+        </div>
+        <div id="container" style="display: relative; width: 1000px;height: 100%;">
+            <div>
+                <input type="range" id="sizeSlider" min="100" max="500" value="360" step="1">
+            </div>
+            <div>
+                <input type="range" id="rotateSlider" min="0" max="360" step="1" value="30">
+                <label for="rotateSlider">Rotate:</label>
+                <input type="text" id="rotateValue" readonly>
+            </div>
+        
+            <div>
+                <label for="innerRadiusSlider">innerRadiusSlider:</label>
+        
+                <input type="range" min="0" max="1000" value="320" id="innerRadiusSlider">
+            </div>
+            <div id="container">
+                <svg id="chart"></svg>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script>
+                var dataset =
+
+[{
+    "Day": "2016-10-22",
+    "Time": "0:00:00",
+    "Average": 0.969891134
+}, {
+    "Day": "2016-10-22",
+    "Time": "1:00:00",
+    "Average": 0.916218024
+}, {
+    "Day": "2016-10-22",
+    "Time": "2:00:00",
+    "Average": 0.933776322
+}, {
+    "Day": "2016-10-22",
+    "Time": "3:00:00",
+    "Average": 0.935375822
+}, {
+    "Day": "2016-10-22",
+    "Time": "4:00:00",
+    "Average": 0.851685935
+}, {
+    "Day": "2016-10-22",
+    "Time": "5:00:00",
+    "Average": 0.708158118
+}, {
+    "Day": "2016-10-22",
+    "Time": "6:00:00",
+    "Average": 0.79328731
+}, {
+    "Day": "2016-10-22",
+    "Time": "7:00:00",
+    "Average": 0.988681914
+}, {
+    "Day": "2016-10-22",
+    "Time": "8:00:00",
+    "Average": 0.653469207
+}, {
+    "Day": "2016-10-22",
+    "Time": "9:00:00",
+    "Average": 0.171116158
+}, {
+    "Day": "2016-10-22",
+    "Time": "10:00:00",
+    "Average": 0.185425746
+}, {
+    "Day": "2016-10-22",
+    "Time": "11:00:00",
+    "Average": 0.724184058
+}, {
+    "Day": "2016-10-22",
+    "Time": "12:00:00",
+    "Average": 0.281778782
+}, {
+    "Day": "2016-10-22",
+    "Time": "13:00:00",
+    "Average": 0.810961995
+}, {
+    "Day": "2016-10-22",
+    "Time": "14:00:00",
+    "Average": 0.182562288
+}, {
+    "Day": "2016-10-22",
+    "Time": "15:00:00",
+    "Average": 0.306659218
+}, {
+    "Day": "2016-10-22",
+    "Time": "16:00:00",
+    "Average": 0.262867786
+}, {
+    "Day": "2016-10-22",
+    "Time": "17:00:00",
+    "Average": 0.651224997
+}, {
+    "Day": "2016-10-22",
+    "Time": "18:00:00",
+    "Average": 0.053924618
+}, {
+    "Day": "2016-10-22",
+    "Time": "19:00:00",
+    "Average": 0.804157436
+}, {
+    "Day": "2016-10-22",
+    "Time": "20:00:00",
+    "Average": 0.996288161
+}, {
+    "Day": "2016-10-22",
+    "Time": "21:00:00",
+    "Average": 0.999157842
+}, {
+    "Day": "2016-10-22",
+    "Time": "22:00:00",
+    "Average": 0.999360726
+}, {
+    "Day": "2016-10-22",
+    "Time": "23:00:00",
+    "Average": 0.999424465
+}, {
+    "Day": "2016-10-23",
+    "Time": "0:00:00",
+    "Average": 0.999536399
+}, {
+    "Day": "2016-10-23",
+    "Time": "1:00:00",
+    "Average": 0.999532678
+}, {
+    "Day": "2016-10-23",
+    "Time": "2:00:00",
+    "Average": 0.881898221
+}, {
+    "Day": "2016-10-23",
+    "Time": "3:00:00",
+    "Average": 0.932024524
+}, {
+    "Day": "2016-10-23",
+    "Time": "4:00:00",
+    "Average": 0.821856126
+}, {
+    "Day": "2016-10-23",
+    "Time": "5:00:00",
+    "Average": 0.69971704
+}, {
+    "Day": "2016-10-23",
+    "Time": "6:00:00",
+    "Average": 0.584832441
+}, {
+    "Day": "2016-10-23",
+    "Time": "7:00:00",
+    "Average": 0.791939352
+}, {
+    "Day": "2016-10-23",
+    "Time": "8:00:00",
+    "Average": 0.191602097
+}, {
+    "Day": "2016-10-23",
+    "Time": "9:00:00",
+    "Average": 0.443749611
+}, {
+    "Day": "2016-10-23",
+    "Time": "10:00:00",
+    "Average": 0.112807988
+}, {
+    "Day": "2016-10-23",
+    "Time": "11:00:00",
+    "Average": 0.862970288
+}, {
+    "Day": "2016-10-23",
+    "Time": "12:00:00",
+    "Average": -0.159894786
+}, {
+    "Day": "2016-10-23",
+    "Time": "13:00:00",
+    "Average": 0.27077585
+}, {
+    "Day": "2016-10-23",
+    "Time": "14:00:00",
+    "Average": 0.41846599
+}, {
+    "Day": "2016-10-23",
+    "Time": "15:00:00",
+    "Average": 0.245919838
+}, {
+    "Day": "2016-10-23",
+    "Time": "16:00:00",
+    "Average": 0.639089128
+}, {
+    "Day": "2016-10-23",
+    "Time": "17:00:00",
+    "Average": 0.908434064
+}, {
+    "Day": "2016-10-23",
+    "Time": "18:00:00",
+    "Average": -0.308801718
+}, {
+    "Day": "2016-10-23",
+    "Time": "19:00:00",
+    "Average": 0.638730315
+}, {
+    "Day": "2016-10-23",
+    "Time": "20:00:00",
+    "Average": 0.99329318
+}, {
+    "Day": "2016-10-23",
+    "Time": "21:00:00",
+    "Average": 0.999333149
+}, {
+    "Day": "2016-10-23",
+    "Time": "22:00:00",
+    "Average": 0.999169182
+}, {
+    "Day": "2016-10-23",
+    "Time": "23:00:00",
+    "Average": 0.999429383
+}, {
+    "Day": "2016-10-24",
+    "Time": "0:00:00",
+    "Average": 0.999175267
+}, {
+    "Day": "2016-10-24",
+    "Time": "1:00:00",
+    "Average": 0.998963684
+}, {
+    "Day": "2016-10-24",
+    "Time": "2:00:00",
+    "Average": 0.999478702
+}, {
+    "Day": "2016-10-24",
+    "Time": "3:00:00",
+    "Average": 0.960087267
+}, {
+    "Day": "2016-10-24",
+    "Time": "4:00:00",
+    "Average": 0.949187905
+}, {
+    "Day": "2016-10-24",
+    "Time": "5:00:00",
+    "Average": -0.339041285
+}, {
+    "Day": "2016-10-24",
+    "Time": "6:00:00",
+    "Average": 0.295181291
+}, {
+    "Day": "2016-10-24",
+    "Time": "7:00:00",
+    "Average": 0.128635277
+}, {
+    "Day": "2016-10-24",
+    "Time": "8:00:00",
+    "Average": 0.982508364
+}, {
+    "Day": "2016-10-24",
+    "Time": "9:00:00",
+    "Average": 0.977814752
+}, {
+    "Day": "2016-10-24",
+    "Time": "10:00:00",
+    "Average": 0.809665585
+}, {
+    "Day": "2016-10-24",
+    "Time": "11:00:00",
+    "Average": 0.648068162
+}, {
+    "Day": "2016-10-24",
+    "Time": "12:00:00",
+    "Average": 0.812559532
+}, {
+    "Day": "2016-10-24",
+    "Time": "13:00:00",
+    "Average": 0.954865661
+}, {
+    "Day": "2016-10-24",
+    "Time": "14:00:00",
+    "Average": 0.8971414
+}, {
+    "Day": "2016-10-24",
+    "Time": "15:00:00",
+    "Average": 0.808797442
+}, {
+    "Day": "2016-10-24",
+    "Time": "16:00:00",
+    "Average": 0.399305729
+}, {
+    "Day": "2016-10-24",
+    "Time": "17:00:00",
+    "Average": -0.896724755
+}, {
+    "Day": "2016-10-24",
+    "Time": "18:00:00",
+    "Average": -0.530474392
+}, {
+    "Day": "2016-10-24",
+    "Time": "19:00:00",
+    "Average": 0.825396025
+}, {
+    "Day": "2016-10-24",
+    "Time": "20:00:00",
+    "Average": 0.999483386
+}, {
+    "Day": "2016-10-24",
+    "Time": "21:00:00",
+    "Average": 0.998930358
+}, {
+    "Day": "2016-10-24",
+    "Time": "22:00:00",
+    "Average": 0.998902723
+}, {
+    "Day": "2016-10-24",
+    "Time": "23:00:00",
+    "Average": 0.998718033
+}, {
+    "Day": "2016-10-25",
+    "Time": "0:00:00",
+    "Average": 0.34896482
+}, {
+    "Day": "2016-10-25",
+    "Time": "1:00:00",
+    "Average": 0.996568297
+}, {
+    "Day": "2016-10-25",
+    "Time": "2:00:00",
+    "Average": 0.894943299
+}, {
+    "Day": "2016-10-25",
+    "Time": "3:00:00",
+    "Average": 0.63441929
+}, {
+    "Day": "2016-10-25",
+    "Time": "4:00:00",
+    "Average": 0.773203792
+}, {
+    "Day": "2016-10-25",
+    "Time": "5:00:00",
+    "Average": 0.674335006
+}, {
+    "Day": "2016-10-25",
+    "Time": "6:00:00",
+    "Average": 0.799208912
+}, {
+    "Day": "2016-10-25",
+    "Time": "7:00:00",
+    "Average": 0.38407372
+}, {
+    "Day": "2016-10-25",
+    "Time": "8:00:00",
+    "Average": 0.990159471
+}, {
+    "Day": "2016-10-25",
+    "Time": "9:00:00",
+    "Average": 0.951533012
+}, {
+    "Day": "2016-10-25",
+    "Time": "10:00:00",
+    "Average": 0.807654436
+}, {
+    "Day": "2016-10-25",
+    "Time": "11:00:00",
+    "Average": 0.275606308
+}, {
+    "Day": "2016-10-25",
+    "Time": "12:00:00",
+    "Average": 0.54954288
+}, {
+    "Day": "2016-10-25",
+    "Time": "13:00:00",
+    "Average": -0.140555408
+}, {
+    "Day": "2016-10-25",
+    "Time": "14:00:00",
+    "Average": 0.379065392
+}, {
+    "Day": "2016-10-25",
+    "Time": "15:00:00",
+    "Average": -0.592452679
+}, {
+    "Day": "2016-10-25",
+    "Time": "16:00:00",
+    "Average": 0.721017485
+}, {
+    "Day": "2016-10-25",
+    "Time": "17:00:00",
+    "Average": -0.120732899
+}, {
+    "Day": "2016-10-25",
+    "Time": "18:00:00",
+    "Average": 0.375226216
+}, {
+    "Day": "2016-10-25",
+    "Time": "19:00:00",
+    "Average": 0.43537517
+}, {
+    "Day": "2016-10-25",
+    "Time": "20:00:00",
+    "Average": 0.978913563
+}, {
+    "Day": "2016-10-25",
+    "Time": "21:00:00",
+    "Average": 0.999487121
+}, {
+    "Day": "2016-10-25",
+    "Time": "22:00:00",
+    "Average": 0.998796699
+}, {
+    "Day": "2016-10-25",
+    "Time": "23:00:00",
+    "Average": 0.999035806
+}, {
+    "Day": "2016-10-26",
+    "Time": "0:00:00",
+    "Average": 0.999002226
+}, {
+    "Day": "2016-10-26",
+    "Time": "1:00:00",
+    "Average": 0.998962362
+}, {
+    "Day": "2016-10-26",
+    "Time": "2:00:00",
+    "Average": 0.999508864
+}, {
+    "Day": "2016-10-26",
+    "Time": "3:00:00",
+    "Average": 0.999430909
+}, {
+    "Day": "2016-10-26",
+    "Time": "4:00:00",
+    "Average": 0.872319823
+}, {
+    "Day": "2016-10-26",
+    "Time": "5:00:00",
+    "Average": -0.500098865
+}, {
+    "Day": "2016-10-26",
+    "Time": "6:00:00",
+    "Average": 0.884718182
+}, {
+    "Day": "2016-10-26",
+    "Time": "7:00:00",
+    "Average": 0.187257841
+}, {
+    "Day": "2016-10-26",
+    "Time": "8:00:00",
+    "Average": 0.748722821
+}, {
+    "Day": "2016-10-26",
+    "Time": "9:00:00",
+    "Average": -0.314047537
+}, {
+    "Day": "2016-10-26",
+    "Time": "10:00:00",
+    "Average": 0.38328468
+}, {
+    "Day": "2016-10-26",
+    "Time": "11:00:00",
+    "Average": 0.338633768
+}, {
+    "Day": "2016-10-26",
+    "Time": "12:00:00",
+    "Average": 0.742048733
+}, {
+    "Day": "2016-10-26",
+    "Time": "13:00:00",
+    "Average": 0.914171247
+}, {
+    "Day": "2016-10-26",
+    "Time": "14:00:00",
+    "Average": 0.945862628
+}, {
+    "Day": "2016-10-26",
+    "Time": "15:00:00",
+    "Average": 0.338013086
+}, {
+    "Day": "2016-10-26",
+    "Time": "16:00:00",
+    "Average": 0.149687275
+}, {
+    "Day": "2016-10-26",
+    "Time": "17:00:00",
+    "Average": 0.352206289
+}, {
+    "Day": "2016-10-26",
+    "Time": "18:00:00",
+    "Average": 0.341103795
+}, {
+    "Day": "2016-10-26",
+    "Time": "19:00:00",
+    "Average": 0.466675985
+}, {
+    "Day": "2016-10-26",
+    "Time": "20:00:00",
+    "Average": 0.669826054
+}, {
+    "Day": "2016-10-26",
+    "Time": "21:00:00",
+    "Average": 0.99943469
+}, {
+    "Day": "2016-10-26",
+    "Time": "22:00:00",
+    "Average": 0.999406276
+}, {
+    "Day": "2016-10-26",
+    "Time": "23:00:00",
+    "Average": 0.999106811
+}, {
+    "Day": "2016-10-27",
+    "Time": "0:00:00",
+    "Average": 0.999241057
+}, {
+    "Day": "2016-10-27",
+    "Time": "1:00:00",
+    "Average": 0.999192176
+}, {
+    "Day": "2016-10-27",
+    "Time": "2:00:00",
+    "Average": 0.999320245
+}, {
+    "Day": "2016-10-27",
+    "Time": "3:00:00",
+    "Average": 0.999419671
+}, {
+    "Day": "2016-10-27",
+    "Time": "4:00:00",
+    "Average": 0.897699972
+}, {
+    "Day": "2016-10-27",
+    "Time": "5:00:00",
+    "Average": 0.840491494
+}, {
+    "Day": "2016-10-27",
+    "Time": "6:00:00",
+    "Average": 0.859329098
+}, {
+    "Day": "2016-10-27",
+    "Time": "7:00:00",
+    "Average": 0.90962599
+}, {
+    "Day": "2016-10-27",
+    "Time": "8:00:00",
+    "Average": 0.930740485
+}, {
+    "Day": "2016-10-27",
+    "Time": "9:00:00",
+    "Average": 0.719432854
+}, {
+    "Day": "2016-10-27",
+    "Time": "10:00:00",
+    "Average": -0.281915894
+}, {
+    "Day": "2016-10-27",
+    "Time": "11:00:00",
+    "Average": -0.045717954
+}, {
+    "Day": "2016-10-27",
+    "Time": "12:00:00",
+    "Average": -0.040819929
+}, {
+    "Day": "2016-10-27",
+    "Time": "13:00:00",
+    "Average": 0.767412491
+}, {
+    "Day": "2016-10-27",
+    "Time": "14:00:00",
+    "Average": 0.56852041
+}, {
+    "Day": "2016-10-27",
+    "Time": "15:00:00",
+    "Average": 0.87944526
+}, {
+    "Day": "2016-10-27",
+    "Time": "16:00:00",
+    "Average": 0.635073303
+}, {
+    "Day": "2016-10-27",
+    "Time": "17:00:00",
+    "Average": 0.159631593
+}, {
+    "Day": "2016-10-27",
+    "Time": "18:00:00",
+    "Average": -0.36532701
+}, {
+    "Day": "2016-10-27",
+    "Time": "19:00:00",
+    "Average": 0.902577964
+}, {
+    "Day": "2016-10-27",
+    "Time": "20:00:00",
+    "Average": 0.892289366
+}, {
+    "Day": "2016-10-27",
+    "Time": "21:00:00",
+    "Average": 0.998451361
+}, {
+    "Day": "2016-10-27",
+    "Time": "22:00:00",
+    "Average": 0.999516821
+}, {
+    "Day": "2016-10-27",
+    "Time": "23:00:00",
+    "Average": 0.999223124
+}, {
+    "Day": "2016-10-28",
+    "Time": "0:00:00",
+    "Average": 0.999196202
+}, {
+    "Day": "2016-10-28",
+    "Time": "1:00:00",
+    "Average": 0.99943517
+}, {
+    "Day": "2016-10-28",
+    "Time": "2:00:00",
+    "Average": 0.998540252
+}, {
+    "Day": "2016-10-28",
+    "Time": "3:00:00",
+    "Average": 0.999532268
+}, {
+    "Day": "2016-10-28",
+    "Time": "4:00:00",
+    "Average": 0.999371504
+}, {
+    "Day": "2016-10-28",
+    "Time": "5:00:00",
+    "Average": 0.845982571
+}, {
+    "Day": "2016-10-28",
+    "Time": "6:00:00",
+    "Average": 0.855708622
+}, {
+    "Day": "2016-10-28",
+    "Time": "7:00:00",
+    "Average": 0.427117949
+}, {
+    "Day": "2016-10-28",
+    "Time": "8:00:00",
+    "Average": 0.947572789
+}, {
+    "Day": "2016-10-28",
+    "Time": "9:00:00",
+    "Average": 0.710845328
+}, {
+    "Day": "2016-10-28",
+    "Time": "10:00:00",
+    "Average": 0.979177891
+}, {
+    "Day": "2016-10-28",
+    "Time": "11:00:00",
+    "Average": 0.767125493
+}, {
+    "Day": "2016-10-28",
+    "Time": "12:00:00",
+    "Average": 0.22070972
+}, {
+    "Day": "2016-10-28",
+    "Time": "13:00:00",
+    "Average": 0.955964611
+}, {
+    "Day": "2016-10-28",
+    "Time": "14:00:00",
+    "Average": 0.437379032
+}, {
+    "Day": "2016-10-28",
+    "Time": "15:00:00",
+    "Average": 0.572119279
+}, {
+    "Day": "2016-10-28",
+    "Time": "16:00:00",
+    "Average": 0.023635303
+}, {
+    "Day": "2016-10-28",
+    "Time": "17:00:00",
+    "Average": 0.77801158
+}, {
+    "Day": "2016-10-28",
+    "Time": "18:00:00",
+    "Average": 0.026233949
+}, {
+    "Day": "2016-10-28",
+    "Time": "19:00:00",
+    "Average": 0.893743871
+}, {
+    "Day": "2016-10-28",
+    "Time": "20:00:00",
+    "Average": 0.931683898
+}, {
+    "Day": "2016-10-28",
+    "Time": "21:00:00",
+    "Average": 0.995607403
+}, {
+    "Day": "2016-10-28",
+    "Time": "22:00:00",
+    "Average": 0.999411436
+}, {
+    "Day": "2016-10-28",
+    "Time": "23:00:00",
+    "Average": 0.999244343
+}, {
+    "Day": "2016-10-29",
+    "Time": "0:00:00",
+    "Average": 0.999144193
+}, {
+    "Day": "2016-10-29",
+    "Time": "1:00:00",
+    "Average": 0.999175064
+}, {
+    "Day": "2016-10-29",
+    "Time": "2:00:00",
+    "Average": 0.999358134
+}, {
+    "Day": "2016-10-29",
+    "Time": "3:00:00",
+    "Average": 0.999324622
+}, {
+    "Day": "2016-10-29",
+    "Time": "4:00:00",
+    "Average": 0.999183361
+}, {
+    "Day": "2016-10-29",
+    "Time": "5:00:00",
+    "Average": 0.997701265
+}, {
+    "Day": "2016-10-29",
+    "Time": "6:00:00",
+    "Average": 0.193188314
+}, {
+    "Day": "2016-10-29",
+    "Time": "7:00:00",
+    "Average": 0.362023129
+}, {
+    "Day": "2016-10-29",
+    "Time": "8:00:00",
+    "Average": 0.710273557
+}, {
+    "Day": "2016-10-29",
+    "Time": "9:00:00",
+    "Average": 0.218587407
+}, {
+    "Day": "2016-10-29",
+    "Time": "10:00:00",
+    "Average": 0.254116699
+}, {
+    "Day": "2016-10-29",
+    "Time": "11:00:00",
+    "Average": 0.360555619
+}, {
+    "Day": "2016-10-29",
+    "Time": "12:00:00",
+    "Average": 0.82039974
+}, {
+    "Day": "2016-10-29",
+    "Time": "13:00:00",
+    "Average": 0.709718351
+}, {
+    "Day": "2016-10-29",
+    "Time": "14:00:00",
+    "Average": 0.329563071
+}, {
+    "Day": "2016-10-29",
+    "Time": "15:00:00",
+    "Average": 0.324728648
+}, {
+    "Day": "2016-10-29",
+    "Time": "16:00:00",
+    "Average": 0.104471717
+}, {
+    "Day": "2016-10-29",
+    "Time": "17:00:00",
+    "Average": -0.225612728
+}, {
+    "Day": "2016-10-29",
+    "Time": "18:00:00",
+    "Average": -0.254633332
+}, {
+    "Day": "2016-10-29",
+    "Time": "19:00:00",
+    "Average": 0.691683787
+}, {
+    "Day": "2016-10-29",
+    "Time": "20:00:00",
+    "Average": 0.856442446
+}, {
+    "Day": "2016-10-29",
+    "Time": "21:00:00",
+    "Average": 0.657394008
+}, {
+    "Day": "2016-10-29",
+    "Time": "22:00:00",
+    "Average": 0.999113376
+}, {
+    "Day": "2016-10-29",
+    "Time": "23:00:00",
+    "Average": 0.999317588
+}, {
+    "Day": "2016-10-30",
+    "Time": "0:00:00",
+    "Average": 0.999054977
+}, {
+    "Day": "2016-10-30",
+    "Time": "1:00:00",
+    "Average": 0.999005736
+}, {
+    "Day": "2016-10-30",
+    "Time": "2:00:00",
+    "Average": 0.999268194
+}, {
+    "Day": "2016-10-30",
+    "Time": "3:00:00",
+    "Average": 0.999477157
+}, {
+    "Day": "2016-10-30",
+    "Time": "4:00:00",
+    "Average": 0.999500666
+}, {
+    "Day": "2016-10-30",
+    "Time": "5:00:00",
+    "Average": 0.841335892
+}, {
+    "Day": "2016-10-30",
+    "Time": "6:00:00",
+    "Average": 0.849157868
+}, {
+    "Day": "2016-10-30",
+    "Time": "7:00:00",
+    "Average": 0.903315232
+}, {
+    "Day": "2016-10-30",
+    "Time": "8:00:00",
+    "Average": 0.628510543
+}, {
+    "Day": "2016-10-30",
+    "Time": "9:00:00",
+    "Average": 0.692835887
+}, {
+    "Day": "2016-10-30",
+    "Time": "10:00:00",
+    "Average": 0.879148233
+}, {
+    "Day": "2016-10-30",
+    "Time": "11:00:00",
+    "Average": 0.656550851
+}, {
+    "Day": "2016-10-30",
+    "Time": "12:00:00",
+    "Average": 0.666586143
+}, {
+    "Day": "2016-10-30",
+    "Time": "13:00:00",
+    "Average": 0.871021005
+}, {
+    "Day": "2016-10-30",
+    "Time": "14:00:00",
+    "Average": 0.810344826
+}, {
+    "Day": "2016-10-30",
+    "Time": "15:00:00",
+    "Average": 0.895859232
+}, {
+    "Day": "2016-10-30",
+    "Time": "16:00:00",
+    "Average": -0.442800707
+}, {
+    "Day": "2016-10-30",
+    "Time": "17:00:00",
+    "Average": 0.276780281
+}, {
+    "Day": "2016-10-30",
+    "Time": "18:00:00",
+    "Average": 0.711015244
+}, {
+    "Day": "2016-10-30",
+    "Time": "19:00:00",
+    "Average": 0.8673588
+}, {
+    "Day": "2016-10-30",
+    "Time": "20:00:00",
+    "Average": 0.35743309
+}, {
+    "Day": "2016-10-30",
+    "Time": "21:00:00",
+    "Average": 0.842565318
+}, {
+    "Day": "2016-10-30",
+    "Time": "22:00:00",
+    "Average": 0.992020246
+}, {
+    "Day": "2016-10-30",
+    "Time": "23:00:00",
+    "Average": 0.999205778
+}];
+
+    </script>
+    <script>
+
+nwk = "(((EELA:0.150276,CONGERA:0.213019):0.230956,(EELB:0.263487,CONGERB:0.202633):0.246917):0.094785,((CAVEFISH:0.451027,(GOLDFISH:0.340495,ZEBRAFISH:0.390163):0.220565):0.067778,((((((NSAM:0.008113,NARG:0.014065):0.052991,SPUN:0.061003,(SMIC:0.027806,SDIA:0.015298,SXAN:0.046873):0.046977):0.009822,(NAUR:0.081298,(SSPI:0.023876,STIE:0.013652):0.058179):0.091775):0.073346,(MVIO:0.012271,MBER:0.039798):0.178835):0.147992,((BFNKILLIFISH:0.317455,(ONIL:0.029217,XCAU:0.084388):0.201166):0.055908,THORNYHEAD:0.252481):0.061905):0.157214,LAMPFISH:0.717196,((SCABBARDA:0.189684,SCABBARDB:0.362015):0.282263,((VIPERFISH:0.318217,BLACKDRAGON:0.109912):0.123642,LOOSEJAW:0.3971):0.287152):0.140663):0.206729):0.222485,(COELACANTH:0.558103,((CLAWEDFROG:0.441842,SALAMANDER:0.299607):0.135307,((CHAMELEON:0.771665,((PIGEON:0.150909,CHICKEN:0.172733):0.082163,ZEBRAFINCH:0.099172):0.272338):0.014055,((BOVINE:0.167569,DOLPHIN:0.15745):0.104783,ELEPHANT:0.166557):0.367205):0.050892):0.114731):0.295021)"
+
+        // Tools
+        const ncov2019 = "(((EELA:0.150276,CONGERA:0.213019):0.230956,(EELB:0.263487,CONGERB:0.202633):0.246917):0.094785,((CAVEFISH:0.451027,(GOLDFISH:0.340495,ZEBRAFISH:0.390163):0.220565):0.067778,((((((NSAM:0.008113,NARG:0.014065):0.052991,SPUN:0.061003,(SMIC:0.027806,SDIA:0.015298,SXAN:0.046873):0.046977):0.009822,(NAUR:0.081298,(SSPI:0.023876,STIE:0.013652):0.058179):0.091775):0.073346,(MVIO:0.012271,MBER:0.039798):0.178835):0.147992,((BFNKILLIFISH:0.317455,(ONIL:0.029217,XCAU:0.084388):0.201166):0.055908,THORNYHEAD:0.252481):0.061905):0.157214,LAMPFISH:0.717196,((SCABBARDA:0.189684,SCABBARDB:0.362015):0.282263,((VIPERFISH:0.318217,BLACKDRAGON:0.109912):0.123642,LOOSEJAW:0.3971):0.287152):0.140663):0.206729):0.222485,(COELACANTH:0.558103,((CLAWEDFROG:0.441842,SALAMANDER:0.299607):0.135307,((CHAMELEON:0.771665,((PIGEON:0.150909,CHICKEN:0.172733):0.082163,ZEBRAFINCH:0.099172):0.272338):0.014055,((BOVINE:0.167569,DOLPHIN:0.15745):0.104783,ELEPHANT:0.166557):0.367205):0.050892):0.114731):0.295021)";       // https://github.com/jasondavies/newick.js
+        function parseNewick(a) { for (var e = [], r = {}, s = a.split(/\s*(;|\(|\)|,|:)\s*/), t = 0; t < s.length; t++) { var n = s[t]; switch (n) { case "(": var c = {}; r.branchset = [c], e.push(r), r = c; break; case ",": var c = {}; e[e.length - 1].branchset.push(c), r = c; break; case ")": r = e.pop(); break; case ":": break; default: var h = s[t - 1]; ")" == h || "(" == h || "," == h ? r.name = n : ":" == h && (r.length = parseFloat(n)) } } return r }
+    </script>
+
+    <script>
+
+        // 环状热图
+        // https://gist.github.com/arpitnarechania/b0bdc4f9a377ea9d8612677e12f65b82
+        // https://stackoverflow.com/questions/43314115/d3-circular-heat-chart-increase-segment-height-on-mouseover
+
+        // step in step draw circlar tree
+        // https://observablehq.com/@lacunae/mep-schematics-tree-of-life
+
+        // 思路：先画矩形热图 + dendrogram
+        // 再转变坐标系
+        // https://juejin.cn/post/6844903630978416654
+        // 极坐标转换成直角坐标
+
+        // https://observablehq.com/d/48948ce1016cda1d
+        // circle tree map
+
+        // 前端 · 深入理解 SVG - d 属性的作用原理
+        // https://juejin.cn/post/7071892793114755103#heading-14
+
+
+        // source code:https://observablehq.com/d/48948ce1016cda1d
+
+        // TODO:xiaojiao, 1. 将这个图形变小一些, 似乎调节innerRadius就可以了
+        // 2. 添加热图
+
+
+        let width = 954;
+        const outerRadius = width / 2;
+        let innerRadius = outerRadius - 120;
+        data = parseNewick(ncov2019);
+        // let width = 954;
+
+        // 设置弧度
+        // innerRadius = 20,
+        segmentHeight = 20,
+        numSegments = 38;
+
+        let cluster = d3.cluster()
+            .size([360, innerRadius])
+            .separation((a, b) => 1)
+
+
+        function name(d) {
+            if (d.height === 0) {
+                const parts = d.data.name.split("_");
+                for (let i = 0; i < parts.length; ++i) {
+                    if (/^\d{4}(?:-\d{2}(?:-\d{2})?)?$/.test(parts[i])) {
+                        return parts[i + 1]
+                        .replace(/-.*/, "")
+                    .replace(/([a-z])([A-Z])/, (_, a, b) => [a, b].join(" "));
+                    }
+                }
+            }
+        }
+
+        color = d3.scaleOrdinal()
+            .domain(["United States", "China"])
+            .range(d3.schemeTableau10)
+            .unknown(null)
+
+        colortemp2 = d3.scaleSequential(d3.interpolateRdBu);
+
+        // Compute the maximum cumulative length of any node in the tree.
+        function maxLength(d) {
+            return d.data.length + (d.children ? d3.max(d.children, maxLength) : 0);
+        }
+
+
+        // Set the radius of each node by recursively summing and scaling the distance from the root.
+        // find the max radius
+        let maxRadius = 0;
+        // let minRadius = 0;
+        let minRadius = Infinity;
+        function setRadius(d, y0, k) {
+            d.radius = (y0 += d.data.length) * k;
+            if (d.children) d.children.forEach(d => setRadius(d, y0, k));
+            if (d.radius > maxRadius) {
+                maxRadius = d.radius;
+            }
+            if (d.radius < minRadius) {
+                minRadius = d.radius;
+            }
+            // if (d.radius > maxRadius) {
+            //     maxRadius = node.radius;
+            // }
+        }
+
+        function linkVariable(d) {
+            return linkStep(d.source.x, d.source.radius, d.target.x, d.target.radius);
+        }
+
+        function linkConstant(d) {
+            return linkStep(d.source.x, d.source.y, d.target.x, d.target.y);
+        }
+
+        function linkExtensionVariable(d) {
+            return linkStep(d.target.x, d.target.radius, d.target.x, innerRadius);
+        }
+
+        function linkExtensionConstant(d) {
+            return linkStep(d.target.x, d.target.y, d.target.x, innerRadius);
+        }
+
+        function linkStep(startAngle, startRadius, endAngle, endRadius) {
+            const c0 = Math.cos(startAngle = (startAngle - 90) / 180 * Math.PI);
+            const s0 = Math.sin(startAngle);
+            const c1 = Math.cos(endAngle = (endAngle - 90) / 180 * Math.PI);
+            const s1 = Math.sin(endAngle);
+            return "M" + startRadius * c0 + "," + startRadius * s0
+                + (endAngle === startAngle ? "" : "A" + startRadius + "," + startRadius + " 0 0 " + (endAngle > startAngle ? 1 : 0) + " " + startRadius * c1 + "," + startRadius * s1)
+                + "L" + endRadius * c1 + "," + endRadius * s1;
+        }
+
+        function rectPath(x, y, w, h, radius) {
+
+const paths = [];
+
+// 上左边角  
+paths.push(linkStep(0, radius, 90, radius, x, y));  
+
+// 上边  
+paths.push(`L${x+w-radius},${y}`);
+
+// 上右边角
+paths.push(linkStep(90, radius, 180, radius, x+w, y)); 
+
+// 右边
+paths.push(`L${x+w},${y+h-radius}`);
+
+// 下右边角
+paths.push(linkStep(180, radius, 270, radius, x+w, y+h));
+
+// 下边 
+paths.push(`L${x+radius},${y+h}`);
+
+// 下左边角
+paths.push(linkStep(270, radius, 360, radius, x, y+h));
+
+// 左边  
+paths.push(`L${x},${y+radius}`);
+
+// 闭合
+paths.push("Z");
+
+return paths.join("");
+
+}
+
+
+        const chart = function (cluster, newSize) {
+            const root = d3.hierarchy(data, d => d.branchset)
+                .sum(d => d.branchset ? 0 : 1)
+                .sort((a, b) => (a.value - b.value) || d3.ascending(a.data.length, b.data.length));
+
+            console.log("root >>>", root);
+            root.transform = `rotate(30)`;
+
+            // cluster(root);
+            cluster(root);
+            setRadius(root, root.data.length = 0, innerRadius / maxLength(root));
+
+            console.log("emm start here...", root);
+            console.log("emm max(length) >>>", maxLength(root));
+            // 创建SVG元素
+            const svg = d3.select("#container")
+                .select("#chart")
+                .attr("viewBox", [-outerRadius, -outerRadius, width, width])
+                .attr("font-family", "sans-serif")
+                .attr("font-size", 10)
+                .attr("id", "chart")
+                .attr("transform", "rotate(30)");
+
+            svg.append("style").text(`
+.link--active {
+  stroke: #000 !important;
+  stroke-width: 1.5px;
+}
+
+.link-extension--active {
+  stroke-opacity: .6;
+}
+
+.label--active {
+  font-weight: bold;
+}
+`);
+
+            const linkExtension = svg.append("g")
+                .attr("fill", "none")
+                .attr("stroke", "currentColor")
+                .attr("stroke-opacity", 0.25)
+                .selectAll("path")
+                .data(root.links().filter(d => !d.target.children))
+                .join("path")
+                .each(function (d) { d.target.linkExtensionNode = this; })
+                .attr("d", linkExtensionConstant);
+
+            const link = svg.append("g")
+                .attr("fill", "none")
+                .attr("stroke", "currentColor")
+                .selectAll("path")
+                .data(root.links())
+                .join("path")
+                .each(function (d) { d.target.linkNode = this; })
+                .attr("d", linkConstant)
+                .attr("stroke", d => color(name(d.target)));
+
+            // svg.append("g")
+            //     .selectAll("text")
+            //     .data(root.leaves())
+            //     .join("text")
+            //     .attr("dy", "0.31em")
+            //     .attr("transform", d => `rotate(${d.x - 90}) translate(${innerRadius + 4},0)${d.x < 180 ? "" : " rotate(180)"}`)
+            //     .attr("text-anchor", d => d.x < 180 ? "start" : "end")
+            //     .attr("fill", d => color(name(d)))
+            //     .text(d => name(d) || "N/A")
+            //     .on("mouseover", mouseovered(true))
+            //     .on("mouseout", mouseovered(false))
+            //     .append("title")
+            //     .text(d => d.data.name.replace(/_/g, " "));
+
+                console.log("root.leaves()>>>", root.leaves());
+
+                const rect_attr_temp = 8;
+                // 计算节点旋转角度和偏移
+                function getTranslate(d, offset) {
+                    // offset = 4;
+                    // TODO:xiaojiao, offset 应该和这个的width 和 height有关...
+                    // 2023/11/21
+
+                    // let temp = d.node().getAttribute("width");
+                    // console.log("d.data.name >>>", d);
+                    // console.log("d.width", d.width);
+                    const x = d.x;
+
+                    let rotate = x - 90;
+                    let translateX = innerRadius + offset;
+                    // let translateY = 0;
+                    // 他高度的一半
+                    let translateY = -2;
+
+                    if(x >= 180) {
+                        rotate += 180;
+                        translateX = -translateX - rect_attr_temp;
+                    }
+
+                    return `rotate(${rotate}) translate(${translateX},${translateY})`;
+                }
+
+
+                //Segment labels
+                // var segmentLabelOffset = 5;
+                // var r = innerRadius + Math.ceil(data.length / numSegments) * segmentHeight + segmentLabelOffset;
+
+                  // 函数接收额外参数innerRadius
+                // function ir(d, i, r) {
+                //     return r + Math.floor(i/numSegments) * segmentHeight; 
+                // }
+
+                // 函数接收额外参数innerRadius
+                function or(d, i) {
+                    return ir(d, i) + segmentHeight;
+                }
+
+                function drawArchRects(svg, data, size) {
+                    const group = svg.append("g");
+
+                    // group.selectAll("rect")
+                    // .data(data)
+                    // .join("rect")
+                    // .attr("width", rect_attr_temp)
+                    // .attr("height", rect_attr_temp)
+                    // .attr("fill", function (d) {
+                        
+                    //     if (d.data.name == "EPI_ISL_414435_2020-03-03_Netherlands_hCoV-19/Netherlands/Utrecht_1/2020") {
+                    //         return "red";
+                    //     }
+                    //     // return colortemp2(d.radius / 500);
+                    //     if (d.radius > 180) {
+                    //         console.log("d.radius 大于 200", d.radius);
+                    //     }
+
+                    //     // console.log("")
+                    //     // 除以角度值
+                    //     return colortemp2((d.radius - minRadius) / maxRadius);
+                    // })
+                    // .attr("opacity", 0.3)
+                    // .attr("transform", d => getTranslate(d, size));
+
+                    // innerRadius = innerRadius + segmentHeight;
+                    group.selectAll("path")
+                        .data(dataset)
+                        .join("path")
+                        .attr("fill", function (d) {
+                            // if (d.data.name == "EPI_ISL_414435_2020-03-03_Netherlands_hCoV-19/Netherlands/Utrecht_1/2020") {
+                            //     return "red";
+                            // }
+                            // return colortemp2(d.radius / 500);
+                            // if (d.radius > 180) {
+                            //     console.log("d.radius 大于 200", d.radius);
+                            // }
+
+                            console.log("ddddd >>>", d);
+                            // 除以角度值
+                            return colortemp2((d.Average ) / 1);
+                        })
+                        .attr("stroke", "red")
+
+                        // .attr("d", d => {
+                        //     const x = d.x;
+                        //     const y = d.y;
+                        //     const width = rect_attr_temp;
+                        //     const height = rect_attr_temp;
+                        //     return `M${x} ${y}
+                        //         L${x + width} ${y}
+                        //         L${x + width} ${y + height}
+                        //         L${x} ${y + height}
+                        //         z`;
+                        // }).attr("transform", d => getTranslate(d, size));
+                    .attr("d", d3.arc().innerRadius(
+                        function ir(d, i) {
+                            return  size + Math.floor(i / numSegments) * segmentHeight; 
+                        }
+                    ).outerRadius(
+                        function or(d, i) {
+                            return  size + Math.floor(i / numSegments) * segmentHeight + segmentHeight; 
+                        }
+                    ).startAngle(
+                        function (d, i) {
+                            // (newSize / 360) 即是新扇形的角度
+                            return (i * 2 * Math.PI * (newSize / 360)) / numSegments;
+                        }
+                    ).endAngle(
+                        function (d, i) {
+                            console.log("")
+                            return ((i + 1) * 2 * Math.PI * (newSize / 360)) / numSegments;
+                        }
+                    ))
+                    // .attr("transform", d => getTranslate(d, size));
+                }
+
+                // 调用
+                drawArchRects(svg, root.leaves(), innerRadius);
+                drawArchRects(svg, root.leaves(), innerRadius + segmentHeight);
+                drawArchRects(svg, root.leaves(), innerRadius + segmentHeight * 2);
+                // drawRects(svg, root.leaves(), 64);
+
+                // svg.append("g")
+                //     .selectAll("rect")
+                //     .data(root.leaves())
+                //     .join("rect")
+                //     // .attr("x", d => d.x)
+                //     // .attr("y", d => d.y)
+                //     .attr("width", 14)
+                //     .attr("height", 14)
+                //     .attr("fill", d => color(name(d)))
+                //     .attr("opacity", 0.3)
+                //     .attr("transform", d => getTranslate(d, 10))
+
+
+                    // .append("text")
+                    // .attr("x", d => (d.x0 + d.x1) / 2)
+                    // .attr("y", d => (d.y0 + d.y1) / 2)
+                    // .attr("dy", "0.35em")
+                    // .attr("text-anchor", "middle")
+                    // .attr("fill", "black")
+                    // .text(d => name(d) || "N/A");
+
+            function update(checked) {
+                const t = d3.transition().duration(750);
+                linkExtension.transition(t).attr("d", checked ? linkExtensionVariable : linkExtensionConstant);
+                link.transition(t).attr("d", checked ? linkVariable : linkConstant);
+            }
+
+            function mouseovered(active) {
+                return function (d) {
+                    d3.select(this).classed("label--active", active);
+                    d3.select(d.linkExtensionNode).classed("link-extension--active", active).raise();
+                    do d3.select(d.linkNode).classed("link--active", active).raise();
+                    while (d = d.parent);
+                };
+            }
+
+            return Object.assign(svg.node(), { update });
+        }
+
+            /* Arc functions */
+            // ir = function (d, i, innerRadius) {
+            //     return innerRadius + Math.floor(i / numSegments) * segmentHeight;
+            // }
+            // or = function (d, i, innerRadius) {
+            //     console.log("or function >>>", innerRadius);
+            //     return innerRadius + segmentHeight + Math.floor(i / numSegments) * segmentHeight;
+            // }
+            
+            sa = function (d, i) {
+                return (i * 2 * Math.PI) / numSegments;
+            }
+            ea = function (d, i) {
+                return ((i + 1) * 2 * Math.PI) / numSegments;
+            }
+
+        chart(cluster, 360);
+    </script>
+
+    <script>
+
+    // 参数控制
+    // 依据滑动条更新图形
+    const sizeSlider = document.getElementById('sizeSlider');
+    const clusterSvg = d3.select('#chart');
+
+    sizeSlider.addEventListener('input', updateClusterSize);
+
+    function updateClusterSize() {
+        const newSize = +sizeSlider.value;
+
+        cluster.size([newSize, innerRadius]);
+        // 根据新的cluster大小重新计算并更新图形
+
+        console.log("innnerRadius >>>", newSize, innerRadius);
+        // 清空现有的图形并重新绘制cluster
+        clusterSvg.selectAll('*').remove();
+
+        // 根据新的cluster设置重新绘制图形的代码
+        chart(cluster, newSize);
+    }
+
+    const rotateSlider = document.getElementById("rotateSlider");
+    const rotateValue = document.getElementById("rotateValue");
+
+    rotateSlider.addEventListener("input", function() {
+    const rotate = rotateSlider.value;
+        d3.select("#chart").attr("transform", `rotate(${rotate})`);
+        rotateValue.value = rotate;
+    });
+
+    // 监听滑动条变化事件
+    document.getElementById("innerRadiusSlider").addEventListener("input", function(e) {
+        innerRadius = outerRadius - parseInt(e.target.value); // 更新 innerRadius 值
+
+        // 清空现有的图形并重新绘制cluster
+        clusterSvg.selectAll('*').remove();
+
+
+        
+        let cluster = d3.cluster()
+            .size([360, innerRadius])
+            .separation((a, b) => 1)
+
+        // 调用更新图表的函数
+        chart(cluster, 360); 
+
+        console.log("innerRadius >>>", innerRadius);
+    });
+
+    </script>
+</body>
+
+</html>

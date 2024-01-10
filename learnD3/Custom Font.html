@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <select id="fontSelect">
+          <option value="Arial">Arial</option>
+          <option value="Verdana">Verdana</option>
+          <option value="Helvetica">Helvetica</option>
+          <option value="custom">自定义</option>
+        </select>
+      
+        <input type="text" id="fontInput" style="display: none;">
+      </div>
+      
+      <p id="demo">这个文字会根据选择改变样式</p>
+      
+      <script>
+      const fontSelect = document.getElementById('fontSelect');
+      const fontInput = document.getElementById('fontInput');
+      
+      fontSelect.addEventListener('change', () => {
+        if(fontSelect.value == 'custom') {
+          fontInput.style.display = 'block';
+        } else {
+          fontInput.style.display = 'none'; 
+        }
+      });
+      
+      fontInput.addEventListener('input', () => {
+        document.getElementById('demo').style.fontFamily = fontInput.value; 
+      });
+      </script>
+</body>
+</html>

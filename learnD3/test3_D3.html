@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>D3 Hover Effect Example</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <style>
+        .tooltip {
+            position: absolute;
+            background-color: #f9f9f9;
+            padding: 8px;
+            border: 1px solid #ccc;
+            pointer-events: none;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <svg id="chart" class="chart" width="400" height="300"></svg>
+    <!-- <button id="button"></button> -->
+    <button>Update</button>
+    <!-- https://www.d3indepth.com/enterexit/ -->
+    <div class="tooltip" id="tooltip"></div>
+<script>
+function getData() {
+  let data = [];
+  let numItems = Math.ceil(Math.random() * 5);
+
+  for(let i=0; i<numItems; i++) {
+    data.push(40);
+  }
+
+  return data;
+}
+
+function update(data) {
+  d3.select('.chart')
+    .selectAll('circle')
+    .data(data)
+    .join(
+      function(enter) {
+        return enter.append('circle')
+          .style('opacity', 0.25);
+      },
+      function(update) {
+        return update.style('opacity', 1);
+      }
+    )
+    .attr('cx', function(d, i) {
+      return i * 100;
+    })
+    .attr('cy', 50)
+    .attr('r', function(d) {
+      return 0.5 * d;
+    })
+    .style('fill', 'orange');
+}
+
+function updateAll() {
+	let myData = getData();
+	update(myData);
+}
+
+updateAll();
+
+d3.select("button")
+	.on("click", updateAll);
+</script>
+    </body>
+</body>
+</html>

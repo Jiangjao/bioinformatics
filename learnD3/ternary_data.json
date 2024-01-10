@@ -1,0 +1,1786 @@
+[
+    {
+        "country": "Djibouti",
+        "agriculture": "2.8",
+        "industry": "21",
+        "service": "76.1",
+        "region": "Africa",
+        "subregion": "Eastern Africa"
+    },
+    {
+        "country": "Burundi",
+        "agriculture": "40",
+        "industry": "16",
+        "service": "44.1",
+        "region": "Africa",
+        "subregion": "Eastern Africa"
+    },
+    {
+        "country": "Comoros",
+        "agriculture": "49.5",
+        "industry": "11.8",
+        "service": "38.7",
+        "region": "Africa",
+        "subregion": "Eastern Africa"
+    },
+    {
+        "country": "Eritrea",
+        "agriculture": "11.7",
+        "industry": "29.6",
+        "service": "58.7",
+        "region": "Africa",
+        "subregion": "Eastern Africa"
+    },
+    {
+        "country": "Ethiopia",
+        "agriculture": "35.8",
+        "industry": "22.2",
+        "service": "42",
+        "region": "Africa",
+        "subregion": "Eastern Africa"
+    },
+    {
+        "country": "Kenya",
+        "agriculture": "35.3",
+        "industry": "17.2",
+        "service": "47.9",
+        "region": "Africa",
+        "subregion": "Eastern Africa"
+    },
+    {
+        "country": "Madagascar",
+        "agriculture": "23.7",
+        "industry": "16",
+        "service": "60.3",
+        "region": "Africa",
+        "subregion": "Eastern Africa"
+    },
+    {
+        "country": "Malawi",
+        "agriculture": "28.1",
+        "industry": "15.8",
+        "service": "56.1",
+        "region": "Africa",
+        "subregion": "Eastern Africa"
+    },
+    {
+        "country": "Mauritius",
+        "agriculture": "4",
+        "industry": "21.8",
+        "service": "74.2",
+        "region": "Africa",
+        "subregion": "Eastern Africa"
+    },
+    {
+        "country": "Mozambique",
+        "agriculture": "22.3",
+        "industry": "23",
+        "service": "54.7",
+        "region": "Africa",
+        "subregion": "Eastern Africa"
+    },
+    {
+        "country": "Rwanda",
+        "agriculture": "30.9",
+        "industry": "17.6",
+        "service": "51.5",
+        "region": "Africa",
+        "subregion": "Eastern Africa"
+    },
+    {
+        "country": "Seychelles",
+        "agriculture": "2.5",
+        "industry": "13.8",
+        "service": "83.7",
+        "region": "Africa",
+        "subregion": "Eastern Africa"
+    },
+    {
+        "country": "Somalia",
+        "agriculture": "60.2",
+        "industry": "7.4",
+        "service": "32.5",
+        "region": "Africa",
+        "subregion": "Eastern Africa"
+    },
+    {
+        "country": "Tanzania",
+        "agriculture": "23.4",
+        "industry": "28.6",
+        "service": "47.6",
+        "region": "Africa",
+        "subregion": "Eastern Africa"
+    },
+    {
+        "country": "Uganda",
+        "agriculture": "25.8",
+        "industry": "23.2",
+        "service": "51",
+        "region": "Africa",
+        "subregion": "Eastern Africa"
+    },
+    {
+        "country": "Zambia",
+        "agriculture": "5.4",
+        "industry": "35.6",
+        "service": "59",
+        "region": "Africa",
+        "subregion": "Eastern Africa"
+    },
+    {
+        "country": "Zimbabwe",
+        "agriculture": "12.5",
+        "industry": "26.9",
+        "service": "60.6",
+        "region": "Africa",
+        "subregion": "Eastern Africa"
+    },
+    {
+        "country": "Angola",
+        "agriculture": "10.2",
+        "industry": "61.4",
+        "service": "28.4",
+        "region": "Africa",
+        "subregion": "Middle Africa"
+    },
+    {
+        "country": "Cameroon",
+        "agriculture": "23.1",
+        "industry": "28",
+        "service": "48.9",
+        "region": "Africa",
+        "subregion": "Middle Africa"
+    },
+    {
+        "country": "Central African Republic",
+        "agriculture": "42.9",
+        "industry": "15.9",
+        "service": "41.2",
+        "region": "Africa",
+        "subregion": "Middle Africa"
+    },
+    {
+        "country": "Chad",
+        "agriculture": "59",
+        "industry": "14.1",
+        "service": "27",
+        "region": "Africa",
+        "subregion": "Middle Africa"
+    },
+    {
+        "country": "Congo, Democratic Republic of the",
+        "agriculture": "21.1",
+        "industry": "33",
+        "service": "45.9",
+        "region": "Africa",
+        "subregion": "Middle Africa"
+    },
+    {
+        "country": "Congo, Republic of the",
+        "agriculture": "8.9",
+        "industry": "50.8",
+        "service": "40.3",
+        "region": "Africa",
+        "subregion": "Middle Africa"
+    },
+    {
+        "country": "Equatorial Guinea",
+        "agriculture": "2.5",
+        "industry": "56.5",
+        "service": "41",
+        "region": "Africa",
+        "subregion": "Middle Africa"
+    },
+    {
+        "country": "Gabon",
+        "agriculture": "4.5",
+        "industry": "44",
+        "service": "51.5",
+        "region": "Africa",
+        "subregion": "Middle Africa"
+    },
+    {
+        "country": "Sao Tome and Principe",
+        "agriculture": "11.8",
+        "industry": "14.8",
+        "service": "73.4",
+        "region": "Africa",
+        "subregion": "Middle Africa"
+    },
+    {
+        "country": "Algeria",
+        "agriculture": "13.2",
+        "industry": "36.1",
+        "service": "50.7",
+        "region": "Africa",
+        "subregion": "Northern Africa"
+    },
+    {
+        "country": "Egypt",
+        "agriculture": "11.9",
+        "industry": "33.1",
+        "service": "55.7",
+        "region": "Africa",
+        "subregion": "Northern Africa"
+    },
+    {
+        "country": "Libya",
+        "agriculture": "1.3",
+        "industry": "63.8",
+        "service": "34.9",
+        "region": "Africa",
+        "subregion": "Northern Africa"
+    },
+    {
+        "country": "Morocco",
+        "agriculture": "14.8",
+        "industry": "29.1",
+        "service": "56",
+        "region": "Africa",
+        "subregion": "Northern Africa"
+    },
+    {
+        "country": "Tunisia",
+        "agriculture": "9.9",
+        "industry": "25.6",
+        "service": "64",
+        "region": "Africa",
+        "subregion": "Northern Africa"
+    },
+    {
+        "country": "Sudan",
+        "agriculture": "39.6",
+        "industry": "2.6",
+        "service": "57.8",
+        "region": "Africa",
+        "subregion": "Northern Africa"
+    },
+    {
+        "country": "Botswana",
+        "agriculture": "1.7",
+        "industry": "29.2",
+        "service": "69.1",
+        "region": "Africa",
+        "subregion": "Southern Africa"
+    },
+    {
+        "country": "Eswatini",
+        "agriculture": "6.5",
+        "industry": "45",
+        "service": "48.6",
+        "region": "Africa",
+        "subregion": "Southern Africa"
+    },
+    {
+        "country": "Lesotho",
+        "agriculture": "5.3",
+        "industry": "34.6",
+        "service": "60.1",
+        "region": "Africa",
+        "subregion": "Southern Africa"
+    },
+    {
+        "country": "Namibia",
+        "agriculture": "6.6",
+        "industry": "25.8",
+        "service": "67.6",
+        "region": "Africa",
+        "subregion": "Southern Africa"
+    },
+    {
+        "country": "South Africa",
+        "agriculture": "2.8",
+        "industry": "29.7",
+        "service": "67.5",
+        "region": "Africa",
+        "subregion": "Southern Africa"
+    },
+    {
+        "country": "Benin",
+        "agriculture": "25.6",
+        "industry": "23.1",
+        "service": "51.3",
+        "region": "Africa",
+        "subregion": "Western Africa"
+    },
+    {
+        "country": "Burkina Faso",
+        "agriculture": "31.9",
+        "industry": "22",
+        "service": "46.1",
+        "region": "Africa",
+        "subregion": "Western Africa"
+    },
+    {
+        "country": "Cabo Verde",
+        "agriculture": "7.9",
+        "industry": "17.9",
+        "service": "74.2",
+        "region": "Africa",
+        "subregion": "Western Africa"
+    },
+    {
+        "country": "Gambia, The",
+        "agriculture": "20.4",
+        "industry": "14.2",
+        "service": "65.4",
+        "region": "Africa",
+        "subregion": "Western Africa"
+    },
+    {
+        "country": "Ghana",
+        "agriculture": "18.3",
+        "industry": "24.5",
+        "service": "57.2",
+        "region": "Africa",
+        "subregion": "Western Africa"
+    },
+    {
+        "country": "Guinea",
+        "agriculture": "19.5",
+        "industry": "38.4",
+        "service": "42.1",
+        "region": "Africa",
+        "subregion": "Western Africa"
+    },
+    {
+        "country": "Guinea-Bissau",
+        "agriculture": "44.1",
+        "industry": "12.9",
+        "service": "43",
+        "region": "Africa",
+        "subregion": "Western Africa"
+    },
+    {
+        "country": "Cote d'Ivoire",
+        "agriculture": "17.4",
+        "industry": "28.8",
+        "service": "53.8",
+        "region": "Africa",
+        "subregion": "Western Africa"
+    },
+    {
+        "country": "Liberia",
+        "agriculture": "36.1",
+        "industry": "10.5",
+        "service": "53.4",
+        "region": "Africa",
+        "subregion": "Western Africa"
+    },
+    {
+        "country": "Mali",
+        "agriculture": "40.9",
+        "industry": "18.9",
+        "service": "40.2",
+        "region": "Africa",
+        "subregion": "Western Africa"
+    },
+    {
+        "country": "Mauritania",
+        "agriculture": "22.5",
+        "industry": "37.8",
+        "service": "39.7",
+        "region": "Africa",
+        "subregion": "Western Africa"
+    },
+    {
+        "country": "Niger",
+        "agriculture": "41.5",
+        "industry": "18.1",
+        "service": "40.4",
+        "region": "Africa",
+        "subregion": "Western Africa"
+    },
+    {
+        "country": "Nigeria",
+        "agriculture": "21.6",
+        "industry": "18.3",
+        "service": "60.1",
+        "region": "Africa",
+        "subregion": "Western Africa"
+    },
+    {
+        "country": "Senegal",
+        "agriculture": "16.9",
+        "industry": "24.3",
+        "service": "58.8",
+        "region": "Africa",
+        "subregion": "Western Africa"
+    },
+    {
+        "country": "Sierra Leone",
+        "agriculture": "60.7",
+        "industry": "6.5",
+        "service": "32.9",
+        "region": "Africa",
+        "subregion": "Western Africa"
+    },
+    {
+        "country": "Togo",
+        "agriculture": "28.1",
+        "industry": "21.6",
+        "service": "50.3",
+        "region": "Africa",
+        "subregion": "Western Africa"
+    },
+    {
+        "country": "Anguilla",
+        "agriculture": "2.4",
+        "industry": "21.3",
+        "service": "76.3",
+        "region": "Americas",
+        "subregion": "Caribbean"
+    },
+    {
+        "country": "Antigua and Barbuda",
+        "agriculture": "2.3",
+        "industry": "20.2",
+        "service": "77.5",
+        "region": "Americas",
+        "subregion": "Caribbean"
+    },
+    {
+        "country": "Aruba",
+        "agriculture": "0.4",
+        "industry": "33.3",
+        "service": "66.3",
+        "region": "Americas",
+        "subregion": "Caribbean"
+    },
+    {
+        "country": "Bahamas, The",
+        "agriculture": "2.3",
+        "industry": "7.7",
+        "service": "90",
+        "region": "Americas",
+        "subregion": "Caribbean"
+    },
+    {
+        "country": "Barbados",
+        "agriculture": "1.4",
+        "industry": "4.8",
+        "service": "93.8",
+        "region": "Americas",
+        "subregion": "Caribbean"
+    },
+    {
+        "country": "British Virgin Islands",
+        "agriculture": "1",
+        "industry": "11.2",
+        "service": "87.8",
+        "region": "Americas",
+        "subregion": "Caribbean"
+    },
+    {
+        "country": "Cayman Islands",
+        "agriculture": "0.3",
+        "industry": "7.5",
+        "service": "91.3",
+        "region": "Americas",
+        "subregion": "Caribbean"
+    },
+    {
+        "country": "Cuba",
+        "agriculture": "3.9",
+        "industry": "21.5",
+        "service": "74.2",
+        "region": "Americas",
+        "subregion": "Caribbean"
+    },
+    {
+        "country": "Curacao",
+        "agriculture": "0.7",
+        "industry": "15.5",
+        "service": "83.8",
+        "region": "Americas",
+        "subregion": "Caribbean"
+    },
+    {
+        "country": "Dominica",
+        "agriculture": "15.3",
+        "industry": "13.6",
+        "service": "71.1",
+        "region": "Americas",
+        "subregion": "Caribbean"
+    },
+    {
+        "country": "Dominican Republic",
+        "agriculture": "5.5",
+        "industry": "33.8",
+        "service": "60.8",
+        "region": "Americas",
+        "subregion": "Caribbean"
+    },
+    {
+        "country": "Grenada",
+        "agriculture": "9.1",
+        "industry": "14.2",
+        "service": "76.7",
+        "region": "Americas",
+        "subregion": "Caribbean"
+    },
+    {
+        "country": "Haiti",
+        "agriculture": "21.9",
+        "industry": "20.8",
+        "service": "57.3",
+        "region": "Americas",
+        "subregion": "Caribbean"
+    },
+    {
+        "country": "Jamaica",
+        "agriculture": "7.6",
+        "industry": "23.2",
+        "service": "69.2",
+        "region": "Americas",
+        "subregion": "Caribbean"
+    },
+    {
+        "country": "Montserrat",
+        "agriculture": "1.6",
+        "industry": "21.8",
+        "service": "76.6",
+        "region": "Americas",
+        "subregion": "Caribbean"
+    },
+    {
+        "country": "Puerto Rico",
+        "agriculture": "0.8",
+        "industry": "50.1",
+        "service": "49.1",
+        "region": "Americas",
+        "subregion": "Caribbean"
+    },
+    {
+        "country": "Saint Kitts and Nevis",
+        "agriculture": "1.1",
+        "industry": "30",
+        "service": "68.9",
+        "region": "Americas",
+        "subregion": "Caribbean"
+    },
+    {
+        "country": "Saint Lucia",
+        "agriculture": "2.9",
+        "industry": "14.2",
+        "service": "82.8",
+        "region": "Americas",
+        "subregion": "Caribbean"
+    },
+    {
+        "country": "Saint Martin",
+        "agriculture": "1",
+        "industry": "15",
+        "service": "84",
+        "region": "Americas",
+        "subregion": "Caribbean"
+    },
+    {
+        "country": "Saint Vincent and the Grenadines",
+        "agriculture": "7.1",
+        "industry": "17.4",
+        "service": "75.5",
+        "region": "Americas",
+        "subregion": "Caribbean"
+    },
+    {
+        "country": "Sint Maarten",
+        "agriculture": "0.4",
+        "industry": "18.3",
+        "service": "81.3",
+        "region": "Americas",
+        "subregion": "Caribbean"
+    },
+    {
+        "country": "Trinidad and Tobago",
+        "agriculture": "0.4",
+        "industry": "48.8",
+        "service": "50.8",
+        "region": "Americas",
+        "subregion": "Caribbean"
+    },
+    {
+        "country": "Turks and Caicos Islands",
+        "agriculture": "0.5",
+        "industry": "8.9",
+        "service": "90.6",
+        "region": "Americas",
+        "subregion": "Caribbean"
+    },
+    {
+        "country": "Virgin Islands",
+        "agriculture": "2",
+        "industry": "20",
+        "service": "78",
+        "region": "Americas",
+        "subregion": "Caribbean"
+    },
+    {
+        "country": "Belize",
+        "agriculture": "9.7",
+        "industry": "13.8",
+        "service": "62.2",
+        "region": "Americas",
+        "subregion": "Central America"
+    },
+    {
+        "country": "Costa Rica",
+        "agriculture": "5.5",
+        "industry": "21",
+        "service": "73.5",
+        "region": "Americas",
+        "subregion": "Central America"
+    },
+    {
+        "country": "El Salvador",
+        "agriculture": "10.6",
+        "industry": "24.6",
+        "service": "64.9",
+        "region": "Americas",
+        "subregion": "Central America"
+    },
+    {
+        "country": "Guatemala",
+        "agriculture": "13.2",
+        "industry": "23.6",
+        "service": "63.2",
+        "region": "Americas",
+        "subregion": "Central America"
+    },
+    {
+        "country": "Honduras",
+        "agriculture": "13.8",
+        "industry": "28.4",
+        "service": "57.8",
+        "region": "Americas",
+        "subregion": "Central America"
+    },
+    {
+        "country": "Mexico",
+        "agriculture": "3.9",
+        "industry": "31.6",
+        "service": "64",
+        "region": "Americas",
+        "subregion": "Central America"
+    },
+    {
+        "country": "Nicaragua",
+        "agriculture": "15.5",
+        "industry": "24.4",
+        "service": "50.8",
+        "region": "Americas",
+        "subregion": "Central America"
+    },
+    {
+        "country": "Panama",
+        "agriculture": "2.4",
+        "industry": "15.7",
+        "service": "82",
+        "region": "Americas",
+        "subregion": "Central America"
+    },
+    {
+        "country": "Greenland",
+        "agriculture": "15.9",
+        "industry": "10.1",
+        "service": "73.9",
+        "region": "Americas",
+        "subregion": "Northern America"
+    },
+    {
+        "country": "Bermuda",
+        "agriculture": "0.8",
+        "industry": "5.8",
+        "service": "93.3",
+        "region": "Americas",
+        "subregion": "Northern America"
+    },
+    {
+        "country": "Canada",
+        "agriculture": "1.7",
+        "industry": "28.1",
+        "service": "70.2",
+        "region": "Americas",
+        "subregion": "Northern America"
+    },
+    {
+        "country": "Saint Pierre and Miquelon",
+        "agriculture": "2",
+        "industry": "15",
+        "service": "83",
+        "region": "Americas",
+        "subregion": "Northern America"
+    },
+    {
+        "country": "United States",
+        "agriculture": "0.9",
+        "industry": "18.9",
+        "service": "80.2",
+        "region": "Americas",
+        "subregion": "Northern America"
+    },
+    {
+        "country": "Argentina",
+        "agriculture": "10.9",
+        "industry": "28.2",
+        "service": "60.9",
+        "region": "Americas",
+        "subregion": "South America"
+    },
+    {
+        "country": "Bolivia",
+        "agriculture": "13",
+        "industry": "37.4",
+        "service": "50",
+        "region": "Americas",
+        "subregion": "South America"
+    },
+    {
+        "country": "Brazil",
+        "agriculture": "6.2",
+        "industry": "21",
+        "service": "72.8",
+        "region": "Americas",
+        "subregion": "South America"
+    },
+    {
+        "country": "Chile",
+        "agriculture": "4.4",
+        "industry": "31.4",
+        "service": "64.3",
+        "region": "Americas",
+        "subregion": "South America"
+    },
+    {
+        "country": "Colombia",
+        "agriculture": "7.4",
+        "industry": "31.3",
+        "service": "61.4",
+        "region": "Americas",
+        "subregion": "South America"
+    },
+    {
+        "country": "Ecuador",
+        "agriculture": "7.7",
+        "industry": "35.2",
+        "service": "56.9",
+        "region": "Americas",
+        "subregion": "South America"
+    },
+    {
+        "country": "Guyana",
+        "agriculture": "17.5",
+        "industry": "37.8",
+        "service": "44.7",
+        "region": "Americas",
+        "subregion": "South America"
+    },
+    {
+        "country": "Paraguay",
+        "agriculture": "17.9",
+        "industry": "27.7",
+        "service": "54.5",
+        "region": "Americas",
+        "subregion": "South America"
+    },
+    {
+        "country": "Peru",
+        "agriculture": "7.5",
+        "industry": "36.3",
+        "service": "56.1",
+        "region": "Americas",
+        "subregion": "South America"
+    },
+    {
+        "country": "Suriname",
+        "agriculture": "11.6",
+        "industry": "31.1",
+        "service": "57.4",
+        "region": "Americas",
+        "subregion": "South America"
+    },
+    {
+        "country": "Uruguay",
+        "agriculture": "6.2",
+        "industry": "25",
+        "service": "68.8",
+        "region": "Americas",
+        "subregion": "South America"
+    },
+    {
+        "country": "Venezuela",
+        "agriculture": "4.4",
+        "industry": "38.2",
+        "service": "57.4",
+        "region": "Americas",
+        "subregion": "South America"
+    },
+    {
+        "country": "Kazakhstan",
+        "agriculture": "4.8",
+        "industry": "34.4",
+        "service": "60.8",
+        "region": "Asia",
+        "subregion": "Central Asia"
+    },
+    {
+        "country": "Kyrgyzstan",
+        "agriculture": "14.3",
+        "industry": "32.5",
+        "service": "53.2",
+        "region": "Asia",
+        "subregion": "Central Asia"
+    },
+    {
+        "country": "Tajikistan",
+        "agriculture": "28.6",
+        "industry": "25.5",
+        "service": "45.9",
+        "region": "Asia",
+        "subregion": "Central Asia"
+    },
+    {
+        "country": "Turkmenistan",
+        "agriculture": "7.5",
+        "industry": "44.9",
+        "service": "47.7",
+        "region": "Asia",
+        "subregion": "Central Asia"
+    },
+    {
+        "country": "Uzbekistan",
+        "agriculture": "18.5",
+        "industry": "34.4",
+        "service": "47",
+        "region": "Asia",
+        "subregion": "Central Asia"
+    },
+    {
+        "country": "China",
+        "agriculture": "8.3",
+        "industry": "39.5",
+        "service": "52.2",
+        "region": "Asia",
+        "subregion": "Eastern Asia"
+    },
+    {
+        "country": "Hong Kong",
+        "agriculture": "0.1",
+        "industry": "7.2",
+        "service": "92.7",
+        "region": "Asia",
+        "subregion": "Eastern Asia"
+    },
+    {
+        "country": "Japan",
+        "agriculture": "1",
+        "industry": "29.7",
+        "service": "69.3",
+        "region": "Asia",
+        "subregion": "Eastern Asia"
+    },
+    {
+        "country": "Korea, North",
+        "agriculture": "25.4",
+        "industry": "41",
+        "service": "33.5",
+        "region": "Asia",
+        "subregion": "Eastern Asia"
+    },
+    {
+        "country": "Korea, South",
+        "agriculture": "2.2",
+        "industry": "39.3",
+        "service": "58.3",
+        "region": "Asia",
+        "subregion": "Eastern Asia"
+    },
+    {
+        "country": "Macau",
+        "agriculture": "0",
+        "industry": "11.3",
+        "service": "88.7",
+        "region": "Asia",
+        "subregion": "Eastern Asia"
+    },
+    {
+        "country": "Mongolia",
+        "agriculture": "13.2",
+        "industry": "36.1",
+        "service": "50.7",
+        "region": "Asia",
+        "subregion": "Eastern Asia"
+    },
+    {
+        "country": "Taiwan",
+        "agriculture": "1.8",
+        "industry": "36",
+        "service": "62.1",
+        "region": "Asia",
+        "subregion": "Eastern Asia"
+    },
+    {
+        "country": "Brunei",
+        "agriculture": "1.2",
+        "industry": "56.5",
+        "service": "42.3",
+        "region": "Asia",
+        "subregion": "South-Eastern Asia"
+    },
+    {
+        "country": "Cambodia",
+        "agriculture": "25.3",
+        "industry": "32.8",
+        "service": "41.9",
+        "region": "Asia",
+        "subregion": "South-Eastern Asia"
+    },
+    {
+        "country": "Indonesia",
+        "agriculture": "13.9",
+        "industry": "40.3",
+        "service": "45.9",
+        "region": "Asia",
+        "subregion": "South-Eastern Asia"
+    },
+    {
+        "country": "Laos",
+        "agriculture": "20.9",
+        "industry": "33.2",
+        "service": "45.9",
+        "region": "Asia",
+        "subregion": "South-Eastern Asia"
+    },
+    {
+        "country": "Malaysia",
+        "agriculture": "8.4",
+        "industry": "36.9",
+        "service": "54.7",
+        "region": "Asia",
+        "subregion": "South-Eastern Asia"
+    },
+    {
+        "country": "Myanmar",
+        "agriculture": "24.8",
+        "industry": "35.4",
+        "service": "39.9",
+        "region": "Asia",
+        "subregion": "South-Eastern Asia"
+    },
+    {
+        "country": "Philippines",
+        "agriculture": "9.6",
+        "industry": "30.6",
+        "service": "59.8",
+        "region": "Asia",
+        "subregion": "South-Eastern Asia"
+    },
+    {
+        "country": "Singapore",
+        "agriculture": "0",
+        "industry": "24.8",
+        "service": "75.2",
+        "region": "Asia",
+        "subregion": "South-Eastern Asia"
+    },
+    {
+        "country": "Thailand",
+        "agriculture": "8.2",
+        "industry": "36.2",
+        "service": "55.6",
+        "region": "Asia",
+        "subregion": "South-Eastern Asia"
+    },
+    {
+        "country": "Timor-Leste",
+        "agriculture": "9.4",
+        "industry": "57.8",
+        "service": "32.8",
+        "region": "Asia",
+        "subregion": "South-Eastern Asia"
+    },
+    {
+        "country": "Vietnam",
+        "agriculture": "15.3",
+        "industry": "33.3",
+        "service": "41.3",
+        "region": "Asia",
+        "subregion": "South-Eastern Asia"
+    },
+    {
+        "country": "Iran",
+        "agriculture": "9.8",
+        "industry": "35.9",
+        "service": "54.3",
+        "region": "Asia",
+        "subregion": "Southern Asia"
+    },
+    {
+        "country": "Afghanistan",
+        "agriculture": "23",
+        "industry": "21.1",
+        "service": "55.9",
+        "region": "Asia",
+        "subregion": "Southern Asia"
+    },
+    {
+        "country": "Bangladesh",
+        "agriculture": "14.2",
+        "industry": "29.2",
+        "service": "56.5",
+        "region": "Asia",
+        "subregion": "Southern Asia"
+    },
+    {
+        "country": "Bhutan",
+        "agriculture": "15.7",
+        "industry": "42.6",
+        "service": "41.7",
+        "region": "Asia",
+        "subregion": "Southern Asia"
+    },
+    {
+        "country": "India",
+        "agriculture": "15.4",
+        "industry": "23",
+        "service": "61.5",
+        "region": "Asia",
+        "subregion": "Southern Asia"
+    },
+    {
+        "country": "Maldives",
+        "agriculture": "3",
+        "industry": "16",
+        "service": "81",
+        "region": "Asia",
+        "subregion": "Southern Asia"
+    },
+    {
+        "country": "Nepal",
+        "agriculture": "27",
+        "industry": "13.5",
+        "service": "51.5",
+        "region": "Asia",
+        "subregion": "Southern Asia"
+    },
+    {
+        "country": "Pakistan",
+        "agriculture": "24.7",
+        "industry": "19.1",
+        "service": "56.3",
+        "region": "Asia",
+        "subregion": "Southern Asia"
+    },
+    {
+        "country": "Sri Lanka",
+        "agriculture": "7.8",
+        "industry": "30.5",
+        "service": "61.7",
+        "region": "Asia",
+        "subregion": "Southern Asia"
+    },
+    {
+        "country": "Armenia",
+        "agriculture": "17.7",
+        "industry": "27.8",
+        "service": "54.5",
+        "region": "Asia",
+        "subregion": "Western Asia"
+    },
+    {
+        "country": "Azerbaijan",
+        "agriculture": "6.2",
+        "industry": "49.1",
+        "service": "44.7",
+        "region": "Asia",
+        "subregion": "Western Asia"
+    },
+    {
+        "country": "Cyprus",
+        "agriculture": "2.3",
+        "industry": "11",
+        "service": "86.8",
+        "region": "Asia",
+        "subregion": "Western Asia"
+    },
+    {
+        "country": "Georgia",
+        "agriculture": "9.6",
+        "industry": "23.4",
+        "service": "66.2",
+        "region": "Asia",
+        "subregion": "Western Asia"
+    },
+    {
+        "country": "Turkey",
+        "agriculture": "6.7",
+        "industry": "31.8",
+        "service": "61.4",
+        "region": "Asia",
+        "subregion": "Western Asia"
+    },
+    {
+        "country": "Bahrain",
+        "agriculture": "0.3",
+        "industry": "38.2",
+        "service": "61.5",
+        "region": "Asia",
+        "subregion": "Western Asia"
+    },
+    {
+        "country": "Gaza Strip",
+        "agriculture": "3",
+        "industry": "21.1",
+        "service": "75",
+        "region": "Asia",
+        "subregion": "Western Asia"
+    },
+    {
+        "country": "Iraq",
+        "agriculture": "4.8",
+        "industry": "40.6",
+        "service": "54.6",
+        "region": "Asia",
+        "subregion": "Western Asia"
+    },
+    {
+        "country": "Israel",
+        "agriculture": "2.3",
+        "industry": "26.6",
+        "service": "69.5",
+        "region": "Asia",
+        "subregion": "Western Asia"
+    },
+    {
+        "country": "Jordan",
+        "agriculture": "4.3",
+        "industry": "28.9",
+        "service": "66.8",
+        "region": "Asia",
+        "subregion": "Western Asia"
+    },
+    {
+        "country": "Kuwait",
+        "agriculture": "0.4",
+        "industry": "58.7",
+        "service": "40.9",
+        "region": "Asia",
+        "subregion": "Western Asia"
+    },
+    {
+        "country": "Lebanon",
+        "agriculture": "5.7",
+        "industry": "21",
+        "service": "73.3",
+        "region": "Asia",
+        "subregion": "Western Asia"
+    },
+    {
+        "country": "Oman",
+        "agriculture": "1.7",
+        "industry": "45.2",
+        "service": "53",
+        "region": "Asia",
+        "subregion": "Western Asia"
+    },
+    {
+        "country": "Qatar",
+        "agriculture": "0.2",
+        "industry": "50.3",
+        "service": "49.5",
+        "region": "Asia",
+        "subregion": "Western Asia"
+    },
+    {
+        "country": "Saudi Arabia",
+        "agriculture": "2.6",
+        "industry": "44.2",
+        "service": "53.2",
+        "region": "Asia",
+        "subregion": "Western Asia"
+    },
+    {
+        "country": "Syria",
+        "agriculture": "20",
+        "industry": "19.6",
+        "service": "60.4",
+        "region": "Asia",
+        "subregion": "Western Asia"
+    },
+    {
+        "country": "United Arab Emirates",
+        "agriculture": "0.9",
+        "industry": "49.8",
+        "service": "49.2",
+        "region": "Asia",
+        "subregion": "Western Asia"
+    },
+    {
+        "country": "West Bank",
+        "agriculture": "3",
+        "industry": "21.1",
+        "service": "75",
+        "region": "Asia",
+        "subregion": "Western Asia"
+    },
+    {
+        "country": "Yemen",
+        "agriculture": "24.1",
+        "industry": "14.3",
+        "service": "61.6",
+        "region": "Asia",
+        "subregion": "Western Asia"
+    },
+    {
+        "country": "Belarus",
+        "agriculture": "8.3",
+        "industry": "40.6",
+        "service": "51.1",
+        "region": "Europe",
+        "subregion": "Eastern Europe"
+    },
+    {
+        "country": "Bulgaria",
+        "agriculture": "4.3",
+        "industry": "28",
+        "service": "67.7",
+        "region": "Europe",
+        "subregion": "Eastern Europe"
+    },
+    {
+        "country": "Czechia",
+        "agriculture": "2.5",
+        "industry": "37.8",
+        "service": "59.7",
+        "region": "Europe",
+        "subregion": "Eastern Europe"
+    },
+    {
+        "country": "Hungary",
+        "agriculture": "4.4",
+        "industry": "30.9",
+        "service": "64.7",
+        "region": "Europe",
+        "subregion": "Eastern Europe"
+    },
+    {
+        "country": "Moldova",
+        "agriculture": "12.2",
+        "industry": "14.6",
+        "service": "73.2",
+        "region": "Europe",
+        "subregion": "Eastern Europe"
+    },
+    {
+        "country": "Poland",
+        "agriculture": "2.4",
+        "industry": "40.2",
+        "service": "57.4",
+        "region": "Europe",
+        "subregion": "Eastern Europe"
+    },
+    {
+        "country": "Romania",
+        "agriculture": "4.2",
+        "industry": "33.2",
+        "service": "62.6",
+        "region": "Europe",
+        "subregion": "Eastern Europe"
+    },
+    {
+        "country": "Russia",
+        "agriculture": "4.7",
+        "industry": "32.4",
+        "service": "62.3",
+        "region": "Europe",
+        "subregion": "Eastern Europe"
+    },
+    {
+        "country": "Slovakia",
+        "agriculture": "3.8",
+        "industry": "35",
+        "service": "61.2",
+        "region": "Europe",
+        "subregion": "Eastern Europe"
+    },
+    {
+        "country": "Ukraine",
+        "agriculture": "14",
+        "industry": "27.8",
+        "service": "58.2",
+        "region": "Europe",
+        "subregion": "Eastern Europe"
+    },
+    {
+        "country": "Denmark",
+        "agriculture": "1.1",
+        "industry": "23.7",
+        "service": "75.2",
+        "region": "Europe",
+        "subregion": "Northern Europe"
+    },
+    {
+        "country": "Estonia",
+        "agriculture": "3.4",
+        "industry": "27.8",
+        "service": "68.8",
+        "region": "Europe",
+        "subregion": "Northern Europe"
+    },
+    {
+        "country": "Faroe Islands",
+        "agriculture": "18",
+        "industry": "39",
+        "service": "43",
+        "region": "Europe",
+        "subregion": "Northern Europe"
+    },
+    {
+        "country": "Finland",
+        "agriculture": "2.7",
+        "industry": "27.8",
+        "service": "69.5",
+        "region": "Europe",
+        "subregion": "Northern Europe"
+    },
+    {
+        "country": "Guernsey",
+        "agriculture": "3",
+        "industry": "10",
+        "service": "87",
+        "region": "Europe",
+        "subregion": "Northern Europe"
+    },
+    {
+        "country": "Iceland",
+        "agriculture": "5.8",
+        "industry": "19.8",
+        "service": "74.4",
+        "region": "Europe",
+        "subregion": "Northern Europe"
+    },
+    {
+        "country": "Ireland",
+        "agriculture": "1",
+        "industry": "38.2",
+        "service": "60.7",
+        "region": "Europe",
+        "subregion": "Northern Europe"
+    },
+    {
+        "country": "Isle of Man",
+        "agriculture": "1",
+        "industry": "13",
+        "service": "86",
+        "region": "Europe",
+        "subregion": "Northern Europe"
+    },
+    {
+        "country": "Jersey",
+        "agriculture": "2",
+        "industry": "2",
+        "service": "96",
+        "region": "Europe",
+        "subregion": "Northern Europe"
+    },
+    {
+        "country": "Latvia",
+        "agriculture": "3.2",
+        "industry": "21.6",
+        "service": "75.2",
+        "region": "Europe",
+        "subregion": "Northern Europe"
+    },
+    {
+        "country": "Lithuania",
+        "agriculture": "3.3",
+        "industry": "28.5",
+        "service": "68.3",
+        "region": "Europe",
+        "subregion": "Northern Europe"
+    },
+    {
+        "country": "Norway",
+        "agriculture": "2.4",
+        "industry": "31.1",
+        "service": "66.5",
+        "region": "Europe",
+        "subregion": "Northern Europe"
+    },
+    {
+        "country": "Sweden",
+        "agriculture": "1.6",
+        "industry": "33",
+        "service": "65.4",
+        "region": "Europe",
+        "subregion": "Northern Europe"
+    },
+    {
+        "country": "United Kingdom",
+        "agriculture": "0.6",
+        "industry": "19",
+        "service": "80.4",
+        "region": "Europe",
+        "subregion": "Northern Europe"
+    },
+    {
+        "country": "Albania",
+        "agriculture": "22.6",
+        "industry": "23.8",
+        "service": "53.7",
+        "region": "Europe",
+        "subregion": "Southern Europe"
+    },
+    {
+        "country": "Andorra",
+        "agriculture": "11.9",
+        "industry": "33.6",
+        "service": "54.5",
+        "region": "Europe",
+        "subregion": "Southern Europe"
+    },
+    {
+        "country": "Bosnia and Herzegovina",
+        "agriculture": "7.8",
+        "industry": "26.8",
+        "service": "65.4",
+        "region": "Europe",
+        "subregion": "Southern Europe"
+    },
+    {
+        "country": "Croatia",
+        "agriculture": "3.3",
+        "industry": "34.3",
+        "service": "62.9",
+        "region": "Europe",
+        "subregion": "Southern Europe"
+    },
+    {
+        "country": "Greece",
+        "agriculture": "4",
+        "industry": "16",
+        "service": "80",
+        "region": "Europe",
+        "subregion": "Southern Europe"
+    },
+    {
+        "country": "Italy",
+        "agriculture": "2.1",
+        "industry": "24",
+        "service": "73.9",
+        "region": "Europe",
+        "subregion": "Southern Europe"
+    },
+    {
+        "country": "Kosovo",
+        "agriculture": "11.9",
+        "industry": "17.7",
+        "service": "70.4",
+        "region": "Europe",
+        "subregion": "Southern Europe"
+    },
+    {
+        "country": "Macedonia",
+        "agriculture": "10",
+        "industry": "30",
+        "service": "60",
+        "region": "Europe",
+        "subregion": "Southern Europe"
+    },
+    {
+        "country": "Montenegro",
+        "agriculture": "7.5",
+        "industry": "15.9",
+        "service": "76.6",
+        "region": "Europe",
+        "subregion": "Southern Europe"
+    },
+    {
+        "country": "Portugal",
+        "agriculture": "2.2",
+        "industry": "22.1",
+        "service": "75.7",
+        "region": "Europe",
+        "subregion": "Southern Europe"
+    },
+    {
+        "country": "San Marino",
+        "agriculture": "0.1",
+        "industry": "39.2",
+        "service": "60.7",
+        "region": "Europe",
+        "subregion": "Southern Europe"
+    },
+    {
+        "country": "Serbia",
+        "agriculture": "9.8",
+        "industry": "41.1",
+        "service": "49.1",
+        "region": "Europe",
+        "subregion": "Southern Europe"
+    },
+    {
+        "country": "Slovenia",
+        "agriculture": "1.8",
+        "industry": "32.2",
+        "service": "65.9",
+        "region": "Europe",
+        "subregion": "Southern Europe"
+    },
+    {
+        "country": "Spain",
+        "agriculture": "2.6",
+        "industry": "23.2",
+        "service": "74.2",
+        "region": "Europe",
+        "subregion": "Southern Europe"
+    },
+    {
+        "country": "Malta",
+        "agriculture": "1.3",
+        "industry": "10.6",
+        "service": "88.1",
+        "region": "Europe",
+        "subregion": "Southern Europe"
+    },
+    {
+        "country": "Austria",
+        "agriculture": "1.2",
+        "industry": "28.4",
+        "service": "70.4",
+        "region": "Europe",
+        "subregion": "Western Europe"
+    },
+    {
+        "country": "Belgium",
+        "agriculture": "0.7",
+        "industry": "21.8",
+        "service": "77.5",
+        "region": "Europe",
+        "subregion": "Western Europe"
+    },
+    {
+        "country": "France",
+        "agriculture": "2",
+        "industry": "20.1",
+        "service": "77.9",
+        "region": "Europe",
+        "subregion": "Western Europe"
+    },
+    {
+        "country": "Germany",
+        "agriculture": "0.6",
+        "industry": "30.1",
+        "service": "69.3",
+        "region": "Europe",
+        "subregion": "Western Europe"
+    },
+    {
+        "country": "Gibraltar",
+        "agriculture": "0",
+        "industry": "0",
+        "service": "100",
+        "region": "Europe",
+        "subregion": "Western Europe"
+    },
+    {
+        "country": "Liechtenstein",
+        "agriculture": "7",
+        "industry": "41",
+        "service": "52",
+        "region": "Europe",
+        "subregion": "Western Europe"
+    },
+    {
+        "country": "Luxembourg",
+        "agriculture": "0.2",
+        "industry": "11.9",
+        "service": "87.9",
+        "region": "Europe",
+        "subregion": "Western Europe"
+    },
+    {
+        "country": "Monaco",
+        "agriculture": "0",
+        "industry": "14",
+        "service": "86",
+        "region": "Europe",
+        "subregion": "Western Europe"
+    },
+    {
+        "country": "Netherlands",
+        "agriculture": "1.6",
+        "industry": "17.9",
+        "service": "70.2",
+        "region": "Europe",
+        "subregion": "Western Europe"
+    },
+    {
+        "country": "Switzerland",
+        "agriculture": "0.7",
+        "industry": "25.6",
+        "service": "73.7",
+        "region": "Europe",
+        "subregion": "Western Europe"
+    },
+    {
+        "country": "Australia",
+        "agriculture": "3.6",
+        "industry": "26.1",
+        "service": "70.3",
+        "region": "Oceania",
+        "subregion": "Australia and New Zealand"
+    },
+    {
+        "country": "New Zealand",
+        "agriculture": "3.9",
+        "industry": "26.2",
+        "service": "69.9",
+        "region": "Oceania",
+        "subregion": "Australia and New Zealand"
+    },
+    {
+        "country": "Fiji",
+        "agriculture": "10.6",
+        "industry": "17.9",
+        "service": "71.5",
+        "region": "Oceania",
+        "subregion": "Melanesia"
+    },
+    {
+        "country": "New Caledonia",
+        "agriculture": "1.4",
+        "industry": "26.5",
+        "service": "72",
+        "region": "Oceania",
+        "subregion": "Melanesia"
+    },
+    {
+        "country": "Papua New Guinea",
+        "agriculture": "22.1",
+        "industry": "42.9",
+        "service": "35",
+        "region": "Oceania",
+        "subregion": "Melanesia"
+    },
+    {
+        "country": "Solomon Islands",
+        "agriculture": "34.3",
+        "industry": "7.6",
+        "service": "58.1",
+        "region": "Oceania",
+        "subregion": "Melanesia"
+    },
+    {
+        "country": "Tuvalu",
+        "agriculture": "24.5",
+        "industry": "5.6",
+        "service": "70",
+        "region": "Oceania",
+        "subregion": "Melanesia"
+    },
+    {
+        "country": "Vanuatu",
+        "agriculture": "27",
+        "industry": "9.1",
+        "service": "63.9",
+        "region": "Oceania",
+        "subregion": "Melanesia"
+    },
+    {
+        "country": "Kiribati",
+        "agriculture": "23",
+        "industry": "7",
+        "service": "70",
+        "region": "Oceania",
+        "subregion": "Micronesia"
+    },
+    {
+        "country": "Marshall Islands",
+        "agriculture": "4.4",
+        "industry": "9.9",
+        "service": "85.7",
+        "region": "Oceania",
+        "subregion": "Micronesia"
+    },
+    {
+        "country": "Micronesia, Federated States of",
+        "agriculture": "26.3",
+        "industry": "18.9",
+        "service": "54.8",
+        "region": "Oceania",
+        "subregion": "Micronesia"
+    },
+    {
+        "country": "Nauru",
+        "agriculture": "6.1",
+        "industry": "33",
+        "service": "60.8",
+        "region": "Oceania",
+        "subregion": "Micronesia"
+    },
+    {
+        "country": "Northern Mariana Islands",
+        "agriculture": "1.7",
+        "industry": "58.1",
+        "service": "40.2",
+        "region": "Oceania",
+        "subregion": "Micronesia"
+    },
+    {
+        "country": "Palau",
+        "agriculture": "3",
+        "industry": "19",
+        "service": "78",
+        "region": "Oceania",
+        "subregion": "Micronesia"
+    },
+    {
+        "country": "American Samoa",
+        "agriculture": "27.4",
+        "industry": "12.4",
+        "service": "60.2",
+        "region": "Oceania",
+        "subregion": "Polynesia"
+    },
+    {
+        "country": "Cook Islands",
+        "agriculture": "5.1",
+        "industry": "12.7",
+        "service": "82.1",
+        "region": "Oceania",
+        "subregion": "Polynesia"
+    },
+    {
+        "country": "French Polynesia",
+        "agriculture": "2.5",
+        "industry": "13",
+        "service": "84.5",
+        "region": "Oceania",
+        "subregion": "Polynesia"
+    },
+    {
+        "country": "Niue",
+        "agriculture": "23.5",
+        "industry": "26.9",
+        "service": "49.5",
+        "region": "Oceania",
+        "subregion": "Polynesia"
+    },
+    {
+        "country": "Samoa",
+        "agriculture": "10.4",
+        "industry": "23.6",
+        "service": "66",
+        "region": "Oceania",
+        "subregion": "Polynesia"
+    },
+    {
+        "country": "Tonga",
+        "agriculture": "19.5",
+        "industry": "20.8",
+        "service": "59.8",
+        "region": "Oceania",
+        "subregion": "Polynesia"
+    }
+]

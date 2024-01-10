@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>D3.js Basic Settings</title>
+    <style>
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 100%;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <h2>Basic Settings</h2>
+        <label for="textColor">Text Color:</label>
+        <input type="color" id="textColor">
+        <br>
+        <label for="axisColor">Axis Color:</label>
+        <input type="color" id="axisColor">
+        <br>
+        <label for="axisWidth">Axis Width:</label>
+        <input type="number" id="axisWidth" min="0" step="1" value="1">
+        <br>
+        <button id="applySettings">Apply Settings</button>
+    </div>
+
+    <svg id="visualization" width="800" height="400"></svg>
+
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+
+    <script>
+        // SVG容器
+        const svg = d3.select("#visualization");
+
+        // 基本设置表单元素
+        const textColorInput = document.getElementById("textColor");
+        const axisColorInput = document.getElementById("axisColor");
+        const axisWidthInput = document.getElementById("axisWidth");
+        const applySettingsButton = document.getElementById("applySettings");
+
+        // 默认设置
+        let textColor = "#000000";
+        let axisColor = "#000000";
+        let axisWidth = 1;
+
+        // 应用设置按钮点击事件处理程序
+        applySettingsButton.addEventListener("click", applySettings);
+
+        function applySettings() {
+            // 获取用户选择的设置值
+            textColor = textColorInput.value;
+            axisColor = axisColorInput.value;
+            axisWidth = +axisWidthInput.value;
+
+            // 更新SVG图形属性
+            svg.selectAll("text")
+                .style("fill", textColor);
+
+            svg.selectAll(".axis path, .axis line")
+                .style("stroke", axisColor)
+                .style("stroke-width", axisWidth);
+        }
+
+        // 示例：创建一个矩形和坐标轴
+        const rect = svg.append("rect")
+            .attr("x", 50)
+            .attr("y", 50)
+            .attr("width", 200)
+            .attr("height", 100)
+            .style("fill", "steelblue");
+
+        const xScale = d3.scaleLinear()
+            .domain([0, 10])
+            .range([0, 200]);
+
+        const yScale = d3.scaleLinear()
+            .domain([0, 100])
+            .range([100, 0]);
+
+        const xAxis = d3.axisBottom(xScale);
+        const yAxis = d3.axisLeft(yScale);
+
+        const gX = svg.append("g")
+            .attr("class", "axis")
+            .call(xAxis);
+
+        const gY = svg.append("g")
+            .attr("class", "axis")
+            .call(yAxis);
+
+        // 默认应用设置
+        applySettings();
+
+    </script>
+    <script>
+        // 创建SVG容器
+        // var svg = d3.select("body")
+        //     .append("svg")
+        //     .attr("width", 500) // 设置SVG的初始宽度
+        //     .attr("height", 300); // 设置SVG的初始高度
+
+        // 添加其他元素和图形到SVG中
+        // ...
+
+        // 创建预览框
+        var preview = d3.select("body")
+            .append("div")
+            .attr("class", "preview")
+            .style("width", "200px") // 设置预览框的初始宽度
+            .style("height", "150px"); // 设置预览框的初始高度
+
+        // 将SVG嵌入到预览框中
+        preview.node().appendChild(svg.node());
+
+        // 创建调整大小按钮
+        d3.select("body")
+            .append("button")
+            .text("调整大小")
+            .on("click", startResize); // 绑定按钮点击事件
+
+        // 开始调整大小
+        function startResize() {
+            var event = d3.event; // 存储事件对象
+  if (event) {
+    event.preventDefault();
+    d3.select(window)
+      .on("mousemove", resizing)
+      .on("mouseup", stopResize);
+  }
+        }
+
+        // 调整大小
+        function resizing() {
+            var width = d3.event.clientX - preview.node().getBoundingClientRect().left;
+            var height = d3.event.clientY - preview.node().getBoundingClientRect().top;
+
+            preview.style("width", width + "px");
+            preview.style("height", height + "px");
+        }
+
+        // 停止调整大小
+        function stopResize() {
+            d3.select(window)
+                .on("mousemove", null)
+                .on("mouseup", null);
+        }
+    </script>
+</body>
+
+</html>

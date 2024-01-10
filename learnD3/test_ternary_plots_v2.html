@@ -1,0 +1,2760 @@
+<!DOCTYPE html>
+<!-- <html lang="en"> -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ternary Plot Demo</title>
+    <style>
+        .ternary-plot {
+            width: 500px;
+            height: 500px;
+        }
+
+        svg .container {
+            width: 100%;
+            height: 100%;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .tooltip {
+            position: absolute;
+            background-color: #f9f9f9;
+            padding: 8px;
+            border: 1px solid #ccc;
+            pointer-events: none;
+            font-size: 14px;
+        }
+
+        .basicSettings {
+            /* width: 80%; */
+            position: relative;
+            /* top: 38px; */
+            z-index: 1;
+            overflow-y: auto;
+        }
+
+        .downloadSettings {
+            width: 100%;
+            position: relative;
+            /* top: 18px; */
+            z-index: 2;
+        }
+
+        .sidebar {
+            width: 100%;
+            display: none;
+            /* 初始状态下隐藏下拉框 */
+        }
+
+        /* .sidebar {
+      width: 300px;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    } */
+
+        .sidebar h2 {
+            /* margin-bottom: 10px; */
+            /* border-bottom: 1px solid #ddd; */
+            padding-bottom: 5px;
+        }
+
+        .sidebar label {
+            width: 120px;
+            /* text-align: right; */
+            /* margin-right: 10px; */
+        }
+
+        .sidebar input,
+        .sidebar select {
+            padding: 5px;
+            border: 1px solid #ccc;
+            width: 25%;
+            border-radius: 4px;
+        }
+
+        .sidebar button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            background: #42b983;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .sidebar button:hover {
+            opacity: 0.8;
+        }
+
+        .sidebar input[type="number"] {
+            width: 50px;
+        }
+
+        .sidebar input[type="text"] {
+            width: 36%;
+        }
+
+        .sidebar input[type="range"] {
+            width: 100%;
+            /* transform: rotate(270deg); 添加垂直滚动条 */
+        }
+
+        .sidebar input[type="button"] {
+            opacity: 1;
+        }
+
+        .sidebar input[type="button"]:hover {
+            opacity: 0.8;
+        }
+
+        /* .sidebar br {
+                display: none;
+            } */
+
+        .item {
+            display: flex;
+            align-items: center;
+            text-align: justify;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            width: 97%;
+        }
+
+        /* .item {} */
+
+        .sidebar hr {
+            overflow: hidden;
+            width: 88%;
+        }
+
+        /* 设置hr线 */
+        .item+hr {
+            margin: 10px 0;
+
+        }
+
+        .item+hr:first-child {
+            margin-top: 0;
+        }
+
+        .item+hr {
+            border: none;
+            border-top: 1px dotted #ccc;
+        }
+
+        /* hr {} */
+        /* .item label {
+                width: 120px;
+                } */
+        /* .sidebar {
+                display: flex;
+                flex-wrap: wrap;
+            } */
+
+        .sliderTooltip {
+            /* display: block; */
+            /* position: absolute; */
+            /* styles */
+            /* padding: 10px; */
+            position: absolute;
+            /* top: -30px; */
+            /* left: 134px; */
+            background-color: rgb(204 204 204 / 18%);
+            /* color: #f9f9f9; */
+            padding: 5px;
+            border-radius: 8px;
+            display: none;
+            margin-top: 14%;
+        }
+
+        .tooltip.show {
+            display: block;
+        }
+
+        .sidebar.show {
+            width: 100%;
+            height: auto;
+            position: relative;
+            /* padding: inherit; */
+            display: block;
+            padding: 10px 11px;
+            /* 点击后显示下拉框 */
+            transition: max-height 0.3s ease;
+            z-index: 1;
+            /* 添加过渡效果 */
+        }
+
+        /* 添加button的样式 */
+        .button-like {
+            display: inline-block;
+            padding: 10px 0 10px 10%;
+            background-color: #4CAF50;
+            color: white;
+            text-align: left;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 90%;
+        }
+
+        .button-like:hover {
+            background-color: #45a049;
+        }
+
+        .button-like:active {
+            background-color: #3e8e41;
+        }
+
+        /* TODO:xiaojiao, @media screen and (max-width: 700px) 如何使用2023/10/23 */
+        div.tooltip-donut {
+            position: absolute;
+            text-align: center;
+            padding: .5rem;
+            background: #FFFFFF;
+            color: #313639;
+            border: 1px solid #313639;
+            border-radius: 8px;
+            pointer-events: none;
+            font-size: 1.3rem;
+        }
+
+        icon-i {
+            text-align: center;
+        }
+
+        .dropdown {
+            /* padding: 10px 11px; */
+            position: relative;
+            /* display: inline-block; */
+        }
+
+        .dropdown-content {
+            display: none;
+            position: relative;
+            /* top: 100%; */
+            /* left: 0; */
+            width: 100%;
+            /* padding: 10px 11px; */
+            background-color: #4CAF50;
+        }
+
+
+        .settingContent {
+            display: block;
+            position: relative;
+            /* top: 100%; */
+            /* left: 0; */
+            width: 90%;
+            padding: 10px 11px;
+            /* overflow-y: scroll; */
+            height: 60vh;
+            overflow-y: scroll;
+            /* 设置垂直方向上溢出时显示滚动条 */
+            overflow-x: hidden;
+            scrollbar-width: thin;
+            /* 设置滚动条的宽度 */
+            scrollbar-color: gray lightgray;
+            /* 设置滚动条的颜色 */
+        }
+
+        /* div#settingContent {} */
+        /* .dropdown:hover .dropdown-content {
+            display: block;
+    
+        } */
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/d3-array@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-scale@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-ternary@2"></script>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <!-- <script src="ternary_data.json"></script> -->
+
+</head>
+
+<body>
+    <div style="position: absolute; width:100%; height: 100%;">
+        <div>
+            <div style="float:right;margin:8px 10px 0 0;">
+
+            </div>
+
+            <div style="width: 20%;z-index: 1; position: fixed; padding-right: 1%; right:0; top:40px;">
+                <!-- add by xiaojiao 停靠右侧， x轴文本旋转 -->
+                <!-- add by xiaojiao 柱状图宽度调整 -->
+                <div class="dropdown">
+                    <div id="dropdownTest" class="downloadSettings" style="background:#F9F9F9;width: 100%;">
+                        <p class="button-like">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-cloud-arrow-down" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M7.646 10.854a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 9.293V5.5a.5.5 0 0 0-1 0v3.793L6.354 8.146a.5.5 0 1 0-.708.708l2 2z" />
+                                <path
+                                    d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z" />
+                            </svg>
+                            download
+                        </p>
+                    </div>
+                    <div id="dropdownContent" class="dropdown-content"
+                        style="background:#F9F9F9;width: 100%;display: none;">
+                        <div class="sidebar show">
+                            <h3>文本 Settings</h3>
+                            <input type="button" id="export" value="下载 SVG">
+                            <!-- <br> -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <br> -->
+                <div class="dropdown" style="background:#F9F9F9;width: 100%;">
+                    <div class="basicSettings">
+                        <!-- <button type="button" id="exitBtn" class="btn" onClick="exitFullscreen()">退出全屏</button> -->
+                        <p type="button" id="btn" class="btn button-like" title="fullscreen">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-gear" viewBox="0 0 16 16">
+                                <path title="修改参数"
+                                    d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+                                <path title="修改参数"
+                                    d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z" />
+                            </svg>
+                            <path title="fullscreen" fill-rule="evenodd"
+                                d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z" />
+                            </svg>
+                            setting
+                        </p>
+                    </div>
+                    <div class="settingContent" id="settingContent">
+                        <div class="sidebar show" id="mainsetting">
+                            <!-- <h2>文本 Settings</h2> -->
+                            <div class="item">
+                                <label for="fontSelect">字体选择:</label>
+                                <!-- https://www.runoob.com/w3cnote/web-font-family.html -->
+                                <select class="form-select" id="fontSelect">
+                                    <option value="">Select</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">Serif Fonts
+                                    </option>
+                                    <option value="Georgia,serif" style="font-family: Georgia,serif">Georgia</option>
+                                    <option value="Palatino Linotype,Book Antiqua,Palatino,serif"
+                                        style="font-family: Palatino Linotype,Book Antiqua,Palatino,serif">Palatino
+                                        Linotype</option>
+                                    <option value="Times New Roman,Times,serif"
+                                        style="font-family: Times New Roman,Times,serif">Times New Roman</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">Sans-Serif
+                                        Fonts</option>
+                                    <option value="Arial,Helvetica,sans-serif"
+                                        style="font-family: Arial,Helvetica,sans-serif">Arial</option>
+                                    <option value="Arial Black,Gadget,sans-serif"
+                                        style="font-family: Arial Black,Gadget,sans-serif">Arial Black</option>
+                                    <option value="Comic Sans MS,cursive,sans-serif"
+                                        style="font-family: Comic Sans MS,cursive,sans-serif">Comic Sans MS</option>
+                                    <option value="Impact,Charcoal,sans-serif"
+                                        style="font-family: Impact,Charcoal,sans-serif">Impact</option>
+                                    <option value="Lucida Sans Unicode,Lucida Grande,sans-serif"
+                                        style="font-family: Lucida Sans Unicode,Lucida Grande,sans-serif">Lucida Sans
+                                        Unicode</option>
+                                    <option selected="selected" value="Tahoma,Geneva,sans-serif"
+                                        style="font-family: Tahoma,Geneva,sans-serif">Tahoma</option>
+                                    <option value="Trebuchet MS,Helvetica,sans-serif"
+                                        style="font-family: Trebuchet MS,Helvetica,sans-serif">Helvetica</option>
+                                    <option value="Verdana,Geneva,sans-serif"
+                                        style="font-family: Verdana,Geneva,sans-serif">Verdana</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">Monospace
+                                        Fonts</option>
+                                    <option value="Courier New,Courier,monospace"
+                                        style="font-family: Courier New,Courier,monospace">Courier New</option>
+                                    <option value="Lucida Console,Monaco,monospace"
+                                        style="font-family: Lucida Console,Monaco,monospace">Lucida Console</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">中文</option>
+                                    <option value="华文细黑,sans-serif" style="font-family: 华文细黑,sans-serif">华文细黑</option>
+                                    <option value="微软雅黑,sans-serif" style="font-family: 微软雅黑,sans-serif">微软雅黑</option>
+                                    <option value="中易宋体,sans-serif" style="font-family: 中易宋体,sans-serif">中易宋体</option>
+                                    <option value="WenQuanYi Micro Hei,sans-serif"
+                                        style="font-family: WenQuanYi Micro Hei,sans-serif">WenQuanYi Micro Hei</option>
+                                        <option value="楷体,serif" style="font-family: 楷体, serif">楷体</option> 
+                                    <option value="隶书,sans-serif" style="font-family: 隶书, sans-serif">隶书</option>
+                                        <option value="custom">自定义</option>
+                                </select>
+                                <input type="text" id="fontInput" style="display: none;">
+                            </div>
+
+                            <div class="item">
+                                <label for="fontSizeRange">字体大小: </label>
+                                <input type="range" id="fontSizeRange" min="6" max="36" step="1" value="16">
+                                <!-- <input type="text"> -->
+                                <div class="sliderTooltip">
+                                    <span class="value"></span>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="item">
+                                <label for="textColor">Text Color:</label>
+                                <input type="color" id="textColor">
+                            </div>
+
+                            <div class="item">
+                                <label for="yAxisColor">Y Axis Color:</label>
+                                <input type="color" id="yAxisColor">
+                            </div>
+
+                            <div class="item">
+                                <label for="xAxisColor">X Axis Color:</label>
+                                <input type="color" id="xAxisColor">
+                            </div>
+
+                            <div class="item">
+                                <label for="xAxisWidth">X Axis Width:</label>
+                                <input type="number" id="xAxisWidth" min="0" step="1" value="1">
+                            </div>
+
+                            <div class="item">
+                                <label for="yAxisWidth">X Axis Width:</label>
+                                <input type="number" id="yAxisWidth" min="0" step="1" value="1">
+                            </div>
+
+                            <div class="item">
+                                <label for="stackBarWidth">柱状图宽度调整:</label>
+                                <input type="range" id="stackBarWidth" min="0" max="1000" step="0.1" value="2">
+                            </div>
+
+                            <div class="item">
+                                <button id="applySettings">Apply Settings</button>
+                            </div>
+
+                            <hr>
+                            <div class="item">
+                                <input type="text" id="xAxisTitleInput" placeholder="输入x轴标题">
+                                <br>
+                                <input type="button" id="xAxisTitleButton" style="width: auto;" value="更新x轴标题">
+                            </div>
+
+                            <div class="item">
+                                <input type="text" id="yAxisTitleInput" placeholder="输入y轴标题">
+                                <br>
+                                <input type="button" id="yAxisTitleButton" style="width: auto;" value="更新y轴标题">
+                            </div>
+                            <div class="item">
+
+                                <label for="xAxisTextRotatation">X 轴文本角度调整:</label>
+                                <input type="range" id="xAxisTextRotatation" min="0" step="1" max="360" value="0">
+                            </div>
+
+                            <div class="item">
+                                <input type="button" id="center-button" value="reset">
+                            </div>
+
+                            <hr>
+                            <div class="item">
+                                <label for="gridLineCount">Grid line count: </label>
+                                <input type="range" id="gridLineCount" min="0" max="20" step="1" value="10">
+                                <!-- <input type="text"> -->
+                                <div class="sliderTooltip">
+                                    <span class="value"></span>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <label for="tickCount">Tick count: </label>
+                                <input type="range" id="tickCount" min="0" max="25" step="1" value="10">
+                                <!-- <input type="text"> -->
+                                <div class="sliderTooltip">
+                                    <span class="value"></span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- <br> -->
+                <!-- <br> -->
+                <div class="btns" id="btns" style="background:#F9F9F9;width: 100%;">
+
+                    <!-- <button type="button" id="exitBtn" class="btn" onClick="exitFullscreen()">退出全屏</button> -->
+                    <p type="button" id="btn" class="btn button-like fullScreen" title="fullscreen">
+                        <svg title="fullscreen" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            fill="currentColor" class="bi bi-arrows-fullscreen" viewBox="0 0 16 16">
+                            <path title="fullscreen" fill-rule="evenodd"
+                                d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z" />
+                        </svg>
+                        全屏
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="basicSettings" style="margin-left: auto; position: relative;">
+
+            </div>
+            <!-- https://observablehq.com/@julesblm/introducing-d3-ternary?collection=@julesblm/ternary-plots -->
+            <!-- <div id="chart" class="ternary-plot"></div> -->
+            <div id="container" class="ternary-plot">
+                <svg id="chart"> </svg>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 热图数据导入
+        // https://blog.csdn.net/abcbbbd/article/details/124138277
+        const data = [
+            {
+                "country": "Djibouti",
+                "agriculture": "2.8",
+                "industry": "21",
+                "service": "76.1",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Burundi",
+                "agriculture": "40",
+                "industry": "16",
+                "service": "44.1",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Comoros",
+                "agriculture": "49.5",
+                "industry": "11.8",
+                "service": "38.7",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Eritrea",
+                "agriculture": "11.7",
+                "industry": "29.6",
+                "service": "58.7",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Ethiopia",
+                "agriculture": "35.8",
+                "industry": "22.2",
+                "service": "42",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Kenya",
+                "agriculture": "35.3",
+                "industry": "17.2",
+                "service": "47.9",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Madagascar",
+                "agriculture": "23.7",
+                "industry": "16",
+                "service": "60.3",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Malawi",
+                "agriculture": "28.1",
+                "industry": "15.8",
+                "service": "56.1",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Mauritius",
+                "agriculture": "4",
+                "industry": "21.8",
+                "service": "74.2",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Mozambique",
+                "agriculture": "22.3",
+                "industry": "23",
+                "service": "54.7",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Rwanda",
+                "agriculture": "30.9",
+                "industry": "17.6",
+                "service": "51.5",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Seychelles",
+                "agriculture": "2.5",
+                "industry": "13.8",
+                "service": "83.7",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Somalia",
+                "agriculture": "60.2",
+                "industry": "7.4",
+                "service": "32.5",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Tanzania",
+                "agriculture": "23.4",
+                "industry": "28.6",
+                "service": "47.6",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Uganda",
+                "agriculture": "25.8",
+                "industry": "23.2",
+                "service": "51",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Zambia",
+                "agriculture": "5.4",
+                "industry": "35.6",
+                "service": "59",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Zimbabwe",
+                "agriculture": "12.5",
+                "industry": "26.9",
+                "service": "60.6",
+                "region": "Africa",
+                "subregion": "Eastern Africa"
+            },
+            {
+                "country": "Angola",
+                "agriculture": "10.2",
+                "industry": "61.4",
+                "service": "28.4",
+                "region": "Africa",
+                "subregion": "Middle Africa"
+            },
+            {
+                "country": "Cameroon",
+                "agriculture": "23.1",
+                "industry": "28",
+                "service": "48.9",
+                "region": "Africa",
+                "subregion": "Middle Africa"
+            },
+            {
+                "country": "Central African Republic",
+                "agriculture": "42.9",
+                "industry": "15.9",
+                "service": "41.2",
+                "region": "Africa",
+                "subregion": "Middle Africa"
+            },
+            {
+                "country": "Chad",
+                "agriculture": "59",
+                "industry": "14.1",
+                "service": "27",
+                "region": "Africa",
+                "subregion": "Middle Africa"
+            },
+            {
+                "country": "Congo, Democratic Republic of the",
+                "agriculture": "21.1",
+                "industry": "33",
+                "service": "45.9",
+                "region": "Africa",
+                "subregion": "Middle Africa"
+            },
+            {
+                "country": "Congo, Republic of the",
+                "agriculture": "8.9",
+                "industry": "50.8",
+                "service": "40.3",
+                "region": "Africa",
+                "subregion": "Middle Africa"
+            },
+            {
+                "country": "Equatorial Guinea",
+                "agriculture": "2.5",
+                "industry": "56.5",
+                "service": "41",
+                "region": "Africa",
+                "subregion": "Middle Africa"
+            },
+            {
+                "country": "Gabon",
+                "agriculture": "4.5",
+                "industry": "44",
+                "service": "51.5",
+                "region": "Africa",
+                "subregion": "Middle Africa"
+            },
+            {
+                "country": "Sao Tome and Principe",
+                "agriculture": "11.8",
+                "industry": "14.8",
+                "service": "73.4",
+                "region": "Africa",
+                "subregion": "Middle Africa"
+            },
+            {
+                "country": "Algeria",
+                "agriculture": "13.2",
+                "industry": "36.1",
+                "service": "50.7",
+                "region": "Africa",
+                "subregion": "Northern Africa"
+            },
+            {
+                "country": "Egypt",
+                "agriculture": "11.9",
+                "industry": "33.1",
+                "service": "55.7",
+                "region": "Africa",
+                "subregion": "Northern Africa"
+            },
+            {
+                "country": "Libya",
+                "agriculture": "1.3",
+                "industry": "63.8",
+                "service": "34.9",
+                "region": "Africa",
+                "subregion": "Northern Africa"
+            },
+            {
+                "country": "Morocco",
+                "agriculture": "14.8",
+                "industry": "29.1",
+                "service": "56",
+                "region": "Africa",
+                "subregion": "Northern Africa"
+            },
+            {
+                "country": "Tunisia",
+                "agriculture": "9.9",
+                "industry": "25.6",
+                "service": "64",
+                "region": "Africa",
+                "subregion": "Northern Africa"
+            },
+            {
+                "country": "Sudan",
+                "agriculture": "39.6",
+                "industry": "2.6",
+                "service": "57.8",
+                "region": "Africa",
+                "subregion": "Northern Africa"
+            },
+            {
+                "country": "Botswana",
+                "agriculture": "1.7",
+                "industry": "29.2",
+                "service": "69.1",
+                "region": "Africa",
+                "subregion": "Southern Africa"
+            },
+            {
+                "country": "Eswatini",
+                "agriculture": "6.5",
+                "industry": "45",
+                "service": "48.6",
+                "region": "Africa",
+                "subregion": "Southern Africa"
+            },
+            {
+                "country": "Lesotho",
+                "agriculture": "5.3",
+                "industry": "34.6",
+                "service": "60.1",
+                "region": "Africa",
+                "subregion": "Southern Africa"
+            },
+            {
+                "country": "Namibia",
+                "agriculture": "6.6",
+                "industry": "25.8",
+                "service": "67.6",
+                "region": "Africa",
+                "subregion": "Southern Africa"
+            },
+            {
+                "country": "South Africa",
+                "agriculture": "2.8",
+                "industry": "29.7",
+                "service": "67.5",
+                "region": "Africa",
+                "subregion": "Southern Africa"
+            },
+            {
+                "country": "Benin",
+                "agriculture": "25.6",
+                "industry": "23.1",
+                "service": "51.3",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Burkina Faso",
+                "agriculture": "31.9",
+                "industry": "22",
+                "service": "46.1",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Cabo Verde",
+                "agriculture": "7.9",
+                "industry": "17.9",
+                "service": "74.2",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Gambia, The",
+                "agriculture": "20.4",
+                "industry": "14.2",
+                "service": "65.4",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Ghana",
+                "agriculture": "18.3",
+                "industry": "24.5",
+                "service": "57.2",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Guinea",
+                "agriculture": "19.5",
+                "industry": "38.4",
+                "service": "42.1",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Guinea-Bissau",
+                "agriculture": "44.1",
+                "industry": "12.9",
+                "service": "43",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Cote d'Ivoire",
+                "agriculture": "17.4",
+                "industry": "28.8",
+                "service": "53.8",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Liberia",
+                "agriculture": "36.1",
+                "industry": "10.5",
+                "service": "53.4",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Mali",
+                "agriculture": "40.9",
+                "industry": "18.9",
+                "service": "40.2",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Mauritania",
+                "agriculture": "22.5",
+                "industry": "37.8",
+                "service": "39.7",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Niger",
+                "agriculture": "41.5",
+                "industry": "18.1",
+                "service": "40.4",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Nigeria",
+                "agriculture": "21.6",
+                "industry": "18.3",
+                "service": "60.1",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Senegal",
+                "agriculture": "16.9",
+                "industry": "24.3",
+                "service": "58.8",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Sierra Leone",
+                "agriculture": "60.7",
+                "industry": "6.5",
+                "service": "32.9",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Togo",
+                "agriculture": "28.1",
+                "industry": "21.6",
+                "service": "50.3",
+                "region": "Africa",
+                "subregion": "Western Africa"
+            },
+            {
+                "country": "Anguilla",
+                "agriculture": "2.4",
+                "industry": "21.3",
+                "service": "76.3",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Antigua and Barbuda",
+                "agriculture": "2.3",
+                "industry": "20.2",
+                "service": "77.5",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Aruba",
+                "agriculture": "0.4",
+                "industry": "33.3",
+                "service": "66.3",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Bahamas, The",
+                "agriculture": "2.3",
+                "industry": "7.7",
+                "service": "90",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Barbados",
+                "agriculture": "1.4",
+                "industry": "4.8",
+                "service": "93.8",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "British Virgin Islands",
+                "agriculture": "1",
+                "industry": "11.2",
+                "service": "87.8",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Cayman Islands",
+                "agriculture": "0.3",
+                "industry": "7.5",
+                "service": "91.3",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Cuba",
+                "agriculture": "3.9",
+                "industry": "21.5",
+                "service": "74.2",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Curacao",
+                "agriculture": "0.7",
+                "industry": "15.5",
+                "service": "83.8",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Dominica",
+                "agriculture": "15.3",
+                "industry": "13.6",
+                "service": "71.1",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Dominican Republic",
+                "agriculture": "5.5",
+                "industry": "33.8",
+                "service": "60.8",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Grenada",
+                "agriculture": "9.1",
+                "industry": "14.2",
+                "service": "76.7",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Haiti",
+                "agriculture": "21.9",
+                "industry": "20.8",
+                "service": "57.3",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Jamaica",
+                "agriculture": "7.6",
+                "industry": "23.2",
+                "service": "69.2",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Montserrat",
+                "agriculture": "1.6",
+                "industry": "21.8",
+                "service": "76.6",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Puerto Rico",
+                "agriculture": "0.8",
+                "industry": "50.1",
+                "service": "49.1",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Saint Kitts and Nevis",
+                "agriculture": "1.1",
+                "industry": "30",
+                "service": "68.9",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Saint Lucia",
+                "agriculture": "2.9",
+                "industry": "14.2",
+                "service": "82.8",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Saint Martin",
+                "agriculture": "1",
+                "industry": "15",
+                "service": "84",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Saint Vincent and the Grenadines",
+                "agriculture": "7.1",
+                "industry": "17.4",
+                "service": "75.5",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Sint Maarten",
+                "agriculture": "0.4",
+                "industry": "18.3",
+                "service": "81.3",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Trinidad and Tobago",
+                "agriculture": "0.4",
+                "industry": "48.8",
+                "service": "50.8",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Turks and Caicos Islands",
+                "agriculture": "0.5",
+                "industry": "8.9",
+                "service": "90.6",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Virgin Islands",
+                "agriculture": "2",
+                "industry": "20",
+                "service": "78",
+                "region": "Americas",
+                "subregion": "Caribbean"
+            },
+            {
+                "country": "Belize",
+                "agriculture": "9.7",
+                "industry": "13.8",
+                "service": "62.2",
+                "region": "Americas",
+                "subregion": "Central America"
+            },
+            {
+                "country": "Costa Rica",
+                "agriculture": "5.5",
+                "industry": "21",
+                "service": "73.5",
+                "region": "Americas",
+                "subregion": "Central America"
+            },
+            {
+                "country": "El Salvador",
+                "agriculture": "10.6",
+                "industry": "24.6",
+                "service": "64.9",
+                "region": "Americas",
+                "subregion": "Central America"
+            },
+            {
+                "country": "Guatemala",
+                "agriculture": "13.2",
+                "industry": "23.6",
+                "service": "63.2",
+                "region": "Americas",
+                "subregion": "Central America"
+            },
+            {
+                "country": "Honduras",
+                "agriculture": "13.8",
+                "industry": "28.4",
+                "service": "57.8",
+                "region": "Americas",
+                "subregion": "Central America"
+            },
+            {
+                "country": "Mexico",
+                "agriculture": "3.9",
+                "industry": "31.6",
+                "service": "64",
+                "region": "Americas",
+                "subregion": "Central America"
+            },
+            {
+                "country": "Nicaragua",
+                "agriculture": "15.5",
+                "industry": "24.4",
+                "service": "50.8",
+                "region": "Americas",
+                "subregion": "Central America"
+            },
+            {
+                "country": "Panama",
+                "agriculture": "2.4",
+                "industry": "15.7",
+                "service": "82",
+                "region": "Americas",
+                "subregion": "Central America"
+            },
+            {
+                "country": "Greenland",
+                "agriculture": "15.9",
+                "industry": "10.1",
+                "service": "73.9",
+                "region": "Americas",
+                "subregion": "Northern America"
+            },
+            {
+                "country": "Bermuda",
+                "agriculture": "0.8",
+                "industry": "5.8",
+                "service": "93.3",
+                "region": "Americas",
+                "subregion": "Northern America"
+            },
+            {
+                "country": "Canada",
+                "agriculture": "1.7",
+                "industry": "28.1",
+                "service": "70.2",
+                "region": "Americas",
+                "subregion": "Northern America"
+            },
+            {
+                "country": "Saint Pierre and Miquelon",
+                "agriculture": "2",
+                "industry": "15",
+                "service": "83",
+                "region": "Americas",
+                "subregion": "Northern America"
+            },
+            {
+                "country": "United States",
+                "agriculture": "0.9",
+                "industry": "18.9",
+                "service": "80.2",
+                "region": "Americas",
+                "subregion": "Northern America"
+            },
+            {
+                "country": "Argentina",
+                "agriculture": "10.9",
+                "industry": "28.2",
+                "service": "60.9",
+                "region": "Americas",
+                "subregion": "South America"
+            },
+            {
+                "country": "Bolivia",
+                "agriculture": "13",
+                "industry": "37.4",
+                "service": "50",
+                "region": "Americas",
+                "subregion": "South America"
+            },
+            {
+                "country": "Brazil",
+                "agriculture": "6.2",
+                "industry": "21",
+                "service": "72.8",
+                "region": "Americas",
+                "subregion": "South America"
+            },
+            {
+                "country": "Chile",
+                "agriculture": "4.4",
+                "industry": "31.4",
+                "service": "64.3",
+                "region": "Americas",
+                "subregion": "South America"
+            },
+            {
+                "country": "Colombia",
+                "agriculture": "7.4",
+                "industry": "31.3",
+                "service": "61.4",
+                "region": "Americas",
+                "subregion": "South America"
+            },
+            {
+                "country": "Ecuador",
+                "agriculture": "7.7",
+                "industry": "35.2",
+                "service": "56.9",
+                "region": "Americas",
+                "subregion": "South America"
+            },
+            {
+                "country": "Guyana",
+                "agriculture": "17.5",
+                "industry": "37.8",
+                "service": "44.7",
+                "region": "Americas",
+                "subregion": "South America"
+            },
+            {
+                "country": "Paraguay",
+                "agriculture": "17.9",
+                "industry": "27.7",
+                "service": "54.5",
+                "region": "Americas",
+                "subregion": "South America"
+            },
+            {
+                "country": "Peru",
+                "agriculture": "7.5",
+                "industry": "36.3",
+                "service": "56.1",
+                "region": "Americas",
+                "subregion": "South America"
+            },
+            {
+                "country": "Suriname",
+                "agriculture": "11.6",
+                "industry": "31.1",
+                "service": "57.4",
+                "region": "Americas",
+                "subregion": "South America"
+            },
+            {
+                "country": "Uruguay",
+                "agriculture": "6.2",
+                "industry": "25",
+                "service": "68.8",
+                "region": "Americas",
+                "subregion": "South America"
+            },
+            {
+                "country": "Venezuela",
+                "agriculture": "4.4",
+                "industry": "38.2",
+                "service": "57.4",
+                "region": "Americas",
+                "subregion": "South America"
+            },
+            {
+                "country": "Kazakhstan",
+                "agriculture": "4.8",
+                "industry": "34.4",
+                "service": "60.8",
+                "region": "Asia",
+                "subregion": "Central Asia"
+            },
+            {
+                "country": "Kyrgyzstan",
+                "agriculture": "14.3",
+                "industry": "32.5",
+                "service": "53.2",
+                "region": "Asia",
+                "subregion": "Central Asia"
+            },
+            {
+                "country": "Tajikistan",
+                "agriculture": "28.6",
+                "industry": "25.5",
+                "service": "45.9",
+                "region": "Asia",
+                "subregion": "Central Asia"
+            },
+            {
+                "country": "Turkmenistan",
+                "agriculture": "7.5",
+                "industry": "44.9",
+                "service": "47.7",
+                "region": "Asia",
+                "subregion": "Central Asia"
+            },
+            {
+                "country": "Uzbekistan",
+                "agriculture": "18.5",
+                "industry": "34.4",
+                "service": "47",
+                "region": "Asia",
+                "subregion": "Central Asia"
+            },
+            {
+                "country": "China",
+                "agriculture": "8.3",
+                "industry": "39.5",
+                "service": "52.2",
+                "region": "Asia",
+                "subregion": "Eastern Asia"
+            },
+            {
+                "country": "Hong Kong",
+                "agriculture": "0.1",
+                "industry": "7.2",
+                "service": "92.7",
+                "region": "Asia",
+                "subregion": "Eastern Asia"
+            },
+            {
+                "country": "Japan",
+                "agriculture": "1",
+                "industry": "29.7",
+                "service": "69.3",
+                "region": "Asia",
+                "subregion": "Eastern Asia"
+            },
+            {
+                "country": "Korea, North",
+                "agriculture": "25.4",
+                "industry": "41",
+                "service": "33.5",
+                "region": "Asia",
+                "subregion": "Eastern Asia"
+            },
+            {
+                "country": "Korea, South",
+                "agriculture": "2.2",
+                "industry": "39.3",
+                "service": "58.3",
+                "region": "Asia",
+                "subregion": "Eastern Asia"
+            },
+            {
+                "country": "Macau",
+                "agriculture": "0",
+                "industry": "11.3",
+                "service": "88.7",
+                "region": "Asia",
+                "subregion": "Eastern Asia"
+            },
+            {
+                "country": "Mongolia",
+                "agriculture": "13.2",
+                "industry": "36.1",
+                "service": "50.7",
+                "region": "Asia",
+                "subregion": "Eastern Asia"
+            },
+            {
+                "country": "Taiwan",
+                "agriculture": "1.8",
+                "industry": "36",
+                "service": "62.1",
+                "region": "Asia",
+                "subregion": "Eastern Asia"
+            },
+            {
+                "country": "Brunei",
+                "agriculture": "1.2",
+                "industry": "56.5",
+                "service": "42.3",
+                "region": "Asia",
+                "subregion": "South-Eastern Asia"
+            },
+            {
+                "country": "Cambodia",
+                "agriculture": "25.3",
+                "industry": "32.8",
+                "service": "41.9",
+                "region": "Asia",
+                "subregion": "South-Eastern Asia"
+            },
+            {
+                "country": "Indonesia",
+                "agriculture": "13.9",
+                "industry": "40.3",
+                "service": "45.9",
+                "region": "Asia",
+                "subregion": "South-Eastern Asia"
+            },
+            {
+                "country": "Laos",
+                "agriculture": "20.9",
+                "industry": "33.2",
+                "service": "45.9",
+                "region": "Asia",
+                "subregion": "South-Eastern Asia"
+            },
+            {
+                "country": "Malaysia",
+                "agriculture": "8.4",
+                "industry": "36.9",
+                "service": "54.7",
+                "region": "Asia",
+                "subregion": "South-Eastern Asia"
+            },
+            {
+                "country": "Myanmar",
+                "agriculture": "24.8",
+                "industry": "35.4",
+                "service": "39.9",
+                "region": "Asia",
+                "subregion": "South-Eastern Asia"
+            },
+            {
+                "country": "Philippines",
+                "agriculture": "9.6",
+                "industry": "30.6",
+                "service": "59.8",
+                "region": "Asia",
+                "subregion": "South-Eastern Asia"
+            },
+            {
+                "country": "Singapore",
+                "agriculture": "0",
+                "industry": "24.8",
+                "service": "75.2",
+                "region": "Asia",
+                "subregion": "South-Eastern Asia"
+            },
+            {
+                "country": "Thailand",
+                "agriculture": "8.2",
+                "industry": "36.2",
+                "service": "55.6",
+                "region": "Asia",
+                "subregion": "South-Eastern Asia"
+            },
+            {
+                "country": "Timor-Leste",
+                "agriculture": "9.4",
+                "industry": "57.8",
+                "service": "32.8",
+                "region": "Asia",
+                "subregion": "South-Eastern Asia"
+            },
+            {
+                "country": "Vietnam",
+                "agriculture": "15.3",
+                "industry": "33.3",
+                "service": "41.3",
+                "region": "Asia",
+                "subregion": "South-Eastern Asia"
+            },
+            {
+                "country": "Iran",
+                "agriculture": "9.8",
+                "industry": "35.9",
+                "service": "54.3",
+                "region": "Asia",
+                "subregion": "Southern Asia"
+            },
+            {
+                "country": "Afghanistan",
+                "agriculture": "23",
+                "industry": "21.1",
+                "service": "55.9",
+                "region": "Asia",
+                "subregion": "Southern Asia"
+            },
+            {
+                "country": "Bangladesh",
+                "agriculture": "14.2",
+                "industry": "29.2",
+                "service": "56.5",
+                "region": "Asia",
+                "subregion": "Southern Asia"
+            },
+            {
+                "country": "Bhutan",
+                "agriculture": "15.7",
+                "industry": "42.6",
+                "service": "41.7",
+                "region": "Asia",
+                "subregion": "Southern Asia"
+            },
+            {
+                "country": "India",
+                "agriculture": "15.4",
+                "industry": "23",
+                "service": "61.5",
+                "region": "Asia",
+                "subregion": "Southern Asia"
+            },
+            {
+                "country": "Maldives",
+                "agriculture": "3",
+                "industry": "16",
+                "service": "81",
+                "region": "Asia",
+                "subregion": "Southern Asia"
+            },
+            {
+                "country": "Nepal",
+                "agriculture": "27",
+                "industry": "13.5",
+                "service": "51.5",
+                "region": "Asia",
+                "subregion": "Southern Asia"
+            },
+            {
+                "country": "Pakistan",
+                "agriculture": "24.7",
+                "industry": "19.1",
+                "service": "56.3",
+                "region": "Asia",
+                "subregion": "Southern Asia"
+            },
+            {
+                "country": "Sri Lanka",
+                "agriculture": "7.8",
+                "industry": "30.5",
+                "service": "61.7",
+                "region": "Asia",
+                "subregion": "Southern Asia"
+            },
+            {
+                "country": "Armenia",
+                "agriculture": "17.7",
+                "industry": "27.8",
+                "service": "54.5",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Azerbaijan",
+                "agriculture": "6.2",
+                "industry": "49.1",
+                "service": "44.7",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Cyprus",
+                "agriculture": "2.3",
+                "industry": "11",
+                "service": "86.8",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Georgia",
+                "agriculture": "9.6",
+                "industry": "23.4",
+                "service": "66.2",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Turkey",
+                "agriculture": "6.7",
+                "industry": "31.8",
+                "service": "61.4",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Bahrain",
+                "agriculture": "0.3",
+                "industry": "38.2",
+                "service": "61.5",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Gaza Strip",
+                "agriculture": "3",
+                "industry": "21.1",
+                "service": "75",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Iraq",
+                "agriculture": "4.8",
+                "industry": "40.6",
+                "service": "54.6",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Israel",
+                "agriculture": "2.3",
+                "industry": "26.6",
+                "service": "69.5",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Jordan",
+                "agriculture": "4.3",
+                "industry": "28.9",
+                "service": "66.8",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Kuwait",
+                "agriculture": "0.4",
+                "industry": "58.7",
+                "service": "40.9",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Lebanon",
+                "agriculture": "5.7",
+                "industry": "21",
+                "service": "73.3",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Oman",
+                "agriculture": "1.7",
+                "industry": "45.2",
+                "service": "53",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Qatar",
+                "agriculture": "0.2",
+                "industry": "50.3",
+                "service": "49.5",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Saudi Arabia",
+                "agriculture": "2.6",
+                "industry": "44.2",
+                "service": "53.2",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Syria",
+                "agriculture": "20",
+                "industry": "19.6",
+                "service": "60.4",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "United Arab Emirates",
+                "agriculture": "0.9",
+                "industry": "49.8",
+                "service": "49.2",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "West Bank",
+                "agriculture": "3",
+                "industry": "21.1",
+                "service": "75",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Yemen",
+                "agriculture": "24.1",
+                "industry": "14.3",
+                "service": "61.6",
+                "region": "Asia",
+                "subregion": "Western Asia"
+            },
+            {
+                "country": "Belarus",
+                "agriculture": "8.3",
+                "industry": "40.6",
+                "service": "51.1",
+                "region": "Europe",
+                "subregion": "Eastern Europe"
+            },
+            {
+                "country": "Bulgaria",
+                "agriculture": "4.3",
+                "industry": "28",
+                "service": "67.7",
+                "region": "Europe",
+                "subregion": "Eastern Europe"
+            },
+            {
+                "country": "Czechia",
+                "agriculture": "2.5",
+                "industry": "37.8",
+                "service": "59.7",
+                "region": "Europe",
+                "subregion": "Eastern Europe"
+            },
+            {
+                "country": "Hungary",
+                "agriculture": "4.4",
+                "industry": "30.9",
+                "service": "64.7",
+                "region": "Europe",
+                "subregion": "Eastern Europe"
+            },
+            {
+                "country": "Moldova",
+                "agriculture": "12.2",
+                "industry": "14.6",
+                "service": "73.2",
+                "region": "Europe",
+                "subregion": "Eastern Europe"
+            },
+            {
+                "country": "Poland",
+                "agriculture": "2.4",
+                "industry": "40.2",
+                "service": "57.4",
+                "region": "Europe",
+                "subregion": "Eastern Europe"
+            },
+            {
+                "country": "Romania",
+                "agriculture": "4.2",
+                "industry": "33.2",
+                "service": "62.6",
+                "region": "Europe",
+                "subregion": "Eastern Europe"
+            },
+            {
+                "country": "Russia",
+                "agriculture": "4.7",
+                "industry": "32.4",
+                "service": "62.3",
+                "region": "Europe",
+                "subregion": "Eastern Europe"
+            },
+            {
+                "country": "Slovakia",
+                "agriculture": "3.8",
+                "industry": "35",
+                "service": "61.2",
+                "region": "Europe",
+                "subregion": "Eastern Europe"
+            },
+            {
+                "country": "Ukraine",
+                "agriculture": "14",
+                "industry": "27.8",
+                "service": "58.2",
+                "region": "Europe",
+                "subregion": "Eastern Europe"
+            },
+            {
+                "country": "Denmark",
+                "agriculture": "1.1",
+                "industry": "23.7",
+                "service": "75.2",
+                "region": "Europe",
+                "subregion": "Northern Europe"
+            },
+            {
+                "country": "Estonia",
+                "agriculture": "3.4",
+                "industry": "27.8",
+                "service": "68.8",
+                "region": "Europe",
+                "subregion": "Northern Europe"
+            },
+            {
+                "country": "Faroe Islands",
+                "agriculture": "18",
+                "industry": "39",
+                "service": "43",
+                "region": "Europe",
+                "subregion": "Northern Europe"
+            },
+            {
+                "country": "Finland",
+                "agriculture": "2.7",
+                "industry": "27.8",
+                "service": "69.5",
+                "region": "Europe",
+                "subregion": "Northern Europe"
+            },
+            {
+                "country": "Guernsey",
+                "agriculture": "3",
+                "industry": "10",
+                "service": "87",
+                "region": "Europe",
+                "subregion": "Northern Europe"
+            },
+            {
+                "country": "Iceland",
+                "agriculture": "5.8",
+                "industry": "19.8",
+                "service": "74.4",
+                "region": "Europe",
+                "subregion": "Northern Europe"
+            },
+            {
+                "country": "Ireland",
+                "agriculture": "1",
+                "industry": "38.2",
+                "service": "60.7",
+                "region": "Europe",
+                "subregion": "Northern Europe"
+            },
+            {
+                "country": "Isle of Man",
+                "agriculture": "1",
+                "industry": "13",
+                "service": "86",
+                "region": "Europe",
+                "subregion": "Northern Europe"
+            },
+            {
+                "country": "Jersey",
+                "agriculture": "2",
+                "industry": "2",
+                "service": "96",
+                "region": "Europe",
+                "subregion": "Northern Europe"
+            },
+            {
+                "country": "Latvia",
+                "agriculture": "3.2",
+                "industry": "21.6",
+                "service": "75.2",
+                "region": "Europe",
+                "subregion": "Northern Europe"
+            },
+            {
+                "country": "Lithuania",
+                "agriculture": "3.3",
+                "industry": "28.5",
+                "service": "68.3",
+                "region": "Europe",
+                "subregion": "Northern Europe"
+            },
+            {
+                "country": "Norway",
+                "agriculture": "2.4",
+                "industry": "31.1",
+                "service": "66.5",
+                "region": "Europe",
+                "subregion": "Northern Europe"
+            },
+            {
+                "country": "Sweden",
+                "agriculture": "1.6",
+                "industry": "33",
+                "service": "65.4",
+                "region": "Europe",
+                "subregion": "Northern Europe"
+            },
+            {
+                "country": "United Kingdom",
+                "agriculture": "0.6",
+                "industry": "19",
+                "service": "80.4",
+                "region": "Europe",
+                "subregion": "Northern Europe"
+            },
+            {
+                "country": "Albania",
+                "agriculture": "22.6",
+                "industry": "23.8",
+                "service": "53.7",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "Andorra",
+                "agriculture": "11.9",
+                "industry": "33.6",
+                "service": "54.5",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "Bosnia and Herzegovina",
+                "agriculture": "7.8",
+                "industry": "26.8",
+                "service": "65.4",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "Croatia",
+                "agriculture": "3.3",
+                "industry": "34.3",
+                "service": "62.9",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "Greece",
+                "agriculture": "4",
+                "industry": "16",
+                "service": "80",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "Italy",
+                "agriculture": "2.1",
+                "industry": "24",
+                "service": "73.9",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "Kosovo",
+                "agriculture": "11.9",
+                "industry": "17.7",
+                "service": "70.4",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "Macedonia",
+                "agriculture": "10",
+                "industry": "30",
+                "service": "60",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "Montenegro",
+                "agriculture": "7.5",
+                "industry": "15.9",
+                "service": "76.6",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "Portugal",
+                "agriculture": "2.2",
+                "industry": "22.1",
+                "service": "75.7",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "San Marino",
+                "agriculture": "0.1",
+                "industry": "39.2",
+                "service": "60.7",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "Serbia",
+                "agriculture": "9.8",
+                "industry": "41.1",
+                "service": "49.1",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "Slovenia",
+                "agriculture": "1.8",
+                "industry": "32.2",
+                "service": "65.9",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "Spain",
+                "agriculture": "2.6",
+                "industry": "23.2",
+                "service": "74.2",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "Malta",
+                "agriculture": "1.3",
+                "industry": "10.6",
+                "service": "88.1",
+                "region": "Europe",
+                "subregion": "Southern Europe"
+            },
+            {
+                "country": "Austria",
+                "agriculture": "1.2",
+                "industry": "28.4",
+                "service": "70.4",
+                "region": "Europe",
+                "subregion": "Western Europe"
+            },
+            {
+                "country": "Belgium",
+                "agriculture": "0.7",
+                "industry": "21.8",
+                "service": "77.5",
+                "region": "Europe",
+                "subregion": "Western Europe"
+            },
+            {
+                "country": "France",
+                "agriculture": "2",
+                "industry": "20.1",
+                "service": "77.9",
+                "region": "Europe",
+                "subregion": "Western Europe"
+            },
+            {
+                "country": "Germany",
+                "agriculture": "0.6",
+                "industry": "30.1",
+                "service": "69.3",
+                "region": "Europe",
+                "subregion": "Western Europe"
+            },
+            {
+                "country": "Gibraltar",
+                "agriculture": "0",
+                "industry": "0",
+                "service": "100",
+                "region": "Europe",
+                "subregion": "Western Europe"
+            },
+            {
+                "country": "Liechtenstein",
+                "agriculture": "7",
+                "industry": "41",
+                "service": "52",
+                "region": "Europe",
+                "subregion": "Western Europe"
+            },
+            {
+                "country": "Luxembourg",
+                "agriculture": "0.2",
+                "industry": "11.9",
+                "service": "87.9",
+                "region": "Europe",
+                "subregion": "Western Europe"
+            },
+            {
+                "country": "Monaco",
+                "agriculture": "0",
+                "industry": "14",
+                "service": "86",
+                "region": "Europe",
+                "subregion": "Western Europe"
+            },
+            {
+                "country": "Netherlands",
+                "agriculture": "1.6",
+                "industry": "17.9",
+                "service": "70.2",
+                "region": "Europe",
+                "subregion": "Western Europe"
+            },
+            {
+                "country": "Switzerland",
+                "agriculture": "0.7",
+                "industry": "25.6",
+                "service": "73.7",
+                "region": "Europe",
+                "subregion": "Western Europe"
+            },
+            {
+                "country": "Australia",
+                "agriculture": "3.6",
+                "industry": "26.1",
+                "service": "70.3",
+                "region": "Oceania",
+                "subregion": "Australia and New Zealand"
+            },
+            {
+                "country": "New Zealand",
+                "agriculture": "3.9",
+                "industry": "26.2",
+                "service": "69.9",
+                "region": "Oceania",
+                "subregion": "Australia and New Zealand"
+            },
+            {
+                "country": "Fiji",
+                "agriculture": "10.6",
+                "industry": "17.9",
+                "service": "71.5",
+                "region": "Oceania",
+                "subregion": "Melanesia"
+            },
+            {
+                "country": "New Caledonia",
+                "agriculture": "1.4",
+                "industry": "26.5",
+                "service": "72",
+                "region": "Oceania",
+                "subregion": "Melanesia"
+            },
+            {
+                "country": "Papua New Guinea",
+                "agriculture": "22.1",
+                "industry": "42.9",
+                "service": "35",
+                "region": "Oceania",
+                "subregion": "Melanesia"
+            },
+            {
+                "country": "Solomon Islands",
+                "agriculture": "34.3",
+                "industry": "7.6",
+                "service": "58.1",
+                "region": "Oceania",
+                "subregion": "Melanesia"
+            },
+            {
+                "country": "Tuvalu",
+                "agriculture": "24.5",
+                "industry": "5.6",
+                "service": "70",
+                "region": "Oceania",
+                "subregion": "Melanesia"
+            },
+            {
+                "country": "Vanuatu",
+                "agriculture": "27",
+                "industry": "9.1",
+                "service": "63.9",
+                "region": "Oceania",
+                "subregion": "Melanesia"
+            },
+            {
+                "country": "Kiribati",
+                "agriculture": "23",
+                "industry": "7",
+                "service": "70",
+                "region": "Oceania",
+                "subregion": "Micronesia"
+            },
+            {
+                "country": "Marshall Islands",
+                "agriculture": "4.4",
+                "industry": "9.9",
+                "service": "85.7",
+                "region": "Oceania",
+                "subregion": "Micronesia"
+            },
+            {
+                "country": "Micronesia, Federated States of",
+                "agriculture": "26.3",
+                "industry": "18.9",
+                "service": "54.8",
+                "region": "Oceania",
+                "subregion": "Micronesia"
+            },
+            {
+                "country": "Nauru",
+                "agriculture": "6.1",
+                "industry": "33",
+                "service": "60.8",
+                "region": "Oceania",
+                "subregion": "Micronesia"
+            },
+            {
+                "country": "Northern Mariana Islands",
+                "agriculture": "1.7",
+                "industry": "58.1",
+                "service": "40.2",
+                "region": "Oceania",
+                "subregion": "Micronesia"
+            },
+            {
+                "country": "Palau",
+                "agriculture": "3",
+                "industry": "19",
+                "service": "78",
+                "region": "Oceania",
+                "subregion": "Micronesia"
+            },
+            {
+                "country": "American Samoa",
+                "agriculture": "27.4",
+                "industry": "12.4",
+                "service": "60.2",
+                "region": "Oceania",
+                "subregion": "Polynesia"
+            },
+            {
+                "country": "Cook Islands",
+                "agriculture": "5.1",
+                "industry": "12.7",
+                "service": "82.1",
+                "region": "Oceania",
+                "subregion": "Polynesia"
+            },
+            {
+                "country": "French Polynesia",
+                "agriculture": "2.5",
+                "industry": "13",
+                "service": "84.5",
+                "region": "Oceania",
+                "subregion": "Polynesia"
+            },
+            {
+                "country": "Niue",
+                "agriculture": "23.5",
+                "industry": "26.9",
+                "service": "49.5",
+                "region": "Oceania",
+                "subregion": "Polynesia"
+            },
+            {
+                "country": "Samoa",
+                "agriculture": "10.4",
+                "industry": "23.6",
+                "service": "66",
+                "region": "Oceania",
+                "subregion": "Polynesia"
+            },
+            {
+                "country": "Tonga",
+                "agriculture": "19.5",
+                "industry": "20.8",
+                "service": "59.8",
+                "region": "Oceania",
+                "subregion": "Polynesia"
+            }
+        ];
+    </script>
+
+    <script>
+
+        // set the dimensions and margins of the graph
+        const margin = { top: 10, right: 30, bottom: 20, left: 50 };
+
+        // 网页窗口在某一大小打开时的宽高
+        var width = window.innerWidth - margin.left - margin.right;
+        var height = window.innerHeight - margin.top - margin.bottom;
+        var radius = 320;
+        var yOffset = radius / 4;
+
+        // var d3Ternary = d3.ternary;
+        ternaryPlot = d3.ternaryPlot;
+        barycentric = d3.barycentric;
+        const labels = ["Agriculture (A)", "Industry (B)", "Service (C)"];
+
+        var tickCount = 10;
+        // <!-- https://observablehq.com/@julesblm/introducing-d3-ternary -->
+        // this function assumes the gridlines arrays have been converted to a single path command
+        grid = (g, gridLines) =>
+            g
+                .selectAll("path")
+                .data(gridLines)
+                .join(
+                    enter =>
+                        enter
+                            .append("path")
+                            .attr("d", d => d)
+                            .attr("stroke", "#e3e3e3")
+                            .attr("stroke-width", (d, i) => (i & 1 ? 1 : 2)),
+                    update => update.attr('d', d => d) // update path command
+                    // theres no exit, lines are only drawn upto 'initial' triangle bounds
+                )
+
+        ticks = (g, ticks) =>
+            g
+                .selectAll("g")
+                .data(d => d, d => d.tick)
+                .join(
+                    enter => {
+                        const tickGroups = enter
+                            .append("g")
+                            .attr("class", "tick")
+                            .attr("transform", d => `translate(${d.position})`);
+
+                        tickGroups
+                            .append("text")
+                            .attr("text-anchor", d => d.textAnchor)
+                            .attr("transform", d => `rotate(${d.angle})`)
+                            .attr("dx", d => (-d.size - 5) * (d.textAnchor === "start" ? -1 : 1))
+                            .attr("dy", ".5em")
+                            .text(d => d.tick);
+
+                        tickGroups
+                            .append("line")
+                            .attr("transform", d => `rotate(${d.angle + 90})`)
+                            .attr("y2", d => d.size * (d.textAnchor === "start" ? -1 : 1))
+                            .attr("stroke", "grey");
+
+                        return tickGroups;
+                    },
+                    update => update.attr("transform", d => `translate(${d.position})`),
+                    exit => exit.remove()
+                )
+
+        axisLabels = (g, labels) =>
+            g
+                .selectAll("text")
+                .data(labels, d => d.label)
+                .join(
+                    enter =>
+                        enter
+                            .append("text")
+                            // .attr("dy", (d, i) => (i === 2 ? "-0.5em" : ".5em"))
+                            .attr(
+                                "transform",
+                                (d, i) => `translate(${d.position})rotate(${d.angle})`
+                            )
+                            .attr("text-anchor", "middle")
+                            .text(d => d.label),
+                    update =>
+                        update.attr(
+                            "transform",
+                            (d, i) => `translate(${d.position})rotate(${d.angle})`
+                        ),
+                    exit => exit.remove()
+                )
+        function basicTernaryPlot() {
+            const normalTernary = barycentric()
+                .a((d) => d.agriculture)
+                .b((d) => d.industry)
+                .c((d) => d.service);
+
+            return ternaryPlot(normalTernary)
+                .tickFormat("%")
+                .radius(radius)
+                .labels(labels);
+        }
+
+        function drawBasicTernaryPlot() {
+            let basicTernaryPlot1 = basicTernaryPlot();
+            // 创建SVG元素
+            // const svg = d3.select("body")
+            // .append("svg")
+            // .attr("width", width)
+            // .attr("height", height);
+            const svg = d3.select("#chart")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .attr("class", "chart")
+            // .attr("id", "g_chart")
+
+            // 选择SVG元素
+            const node = svg.node();
+
+            const radius = basicTernaryPlot1.radius();
+
+            const chart = svg
+                .append("g")
+                .attr("transform", `translate(${width / 2} ${height / 2 + yOffset})`)
+                .attr("height", 300)
+                .attr("font-family", "sans-serif")
+                .attr("id", "g_chart")
+                .on("mousemove", handleMouseMove);
+
+            const defs = chart.append("defs");
+
+            // 添加三角形裁切路径
+            const clipPath = defs
+                .append("clipPath")
+                .attr("id", "trianglePath")
+                .append("path")
+                .attr("d", basicTernaryPlot1.triangle());
+
+            // 添加坐标轴标签
+            const axisLabelsGroup = chart
+                .append("g")
+                .attr("class", "axis-labels")
+                .call(axisLabels, basicTernaryPlot1.axisLabels());
+
+            // 添加网格线
+            const gridLinesPaths = basicTernaryPlot1
+                .gridLines(gridLineCount)
+                .map(axisGrid => axisGrid.map(d3.line()).join(" "));
+
+            const gridGroup = chart
+                .append("g")
+                .attr("class", "grid")
+                .call(grid, gridLinesPaths);
+
+            const axisTicksGroups = chart
+                .append("g")
+                .attr("class", "ternary-ticks")
+                .attr("font-size", 10)
+                .selectAll("g")
+                .data(basicTernaryPlot1.ticks(tickCount))
+                .enter()
+                .append("g")
+                .attr("class", "axis-ticks");
+
+            axisTicksGroups.call(ticks);
+
+            // initial triangle
+            // 画三角形轮廓
+            // Controlling SVG Draw Order in D3
+            // https://dev.to/cselig/controlling-svg-draw-order-in-d3-4n9l
+            const trianglePath = chart
+                .append("path")
+                .attr("d", basicTernaryPlot1.triangle())
+                .attr("fill", "transparent")
+                .attr("stroke", "black")
+                .attr("stroke-width", 2);
+
+            const ternaryData = data.map(d => {
+                const [x, y] = basicTernaryPlot1(d);
+                return { x, y, ...d };
+            });
+
+            // https://zhuanlan.zhihu.com/p/38032622
+            // D3.js 中join和 enter的区别
+            // data
+            const dots = chart
+                .append("g")
+                .attr("class", "data")
+                .attr("clip-path", "url(#trianglePath)")
+                .selectAll("circle")
+                .data(ternaryData)
+                .join(
+                    enter =>
+                        enter.append("circle"),
+                    update =>
+                        update.remove(),
+                    exit =>
+                        exit.remove())
+                .attr("r", 4)
+                .attr("cx", d => d.x)
+                .attr("cy", d => d.y)
+                .attr("fill", "#444")
+                .attr("stroke", "#ddd")
+                .on("mouseover", function (d, i) {
+                    // d3.select(this)
+                    // .attr("opacity","0.5");
+                    console.log("eeeeeeeeee");
+                });
+
+            // test
+            // 添加悬停框 version 2
+            d3.selectAll("circle").on("mouseover", handleMouseOver);
+            d3.selectAll("circle").on("mouseout", handleMouseOut);
+
+            function handleMouseOver(d, i) {
+                // 计算矩形的位置和大小
+                const rect = this.getBoundingClientRect();
+                // 调整透明度
+                d3.select(this).attr("opacity", "0.5");
+                // TODO:xiaojiao, 获取元素的大小
+                const data = d3.select(this).data();
+                console.log("data>>>", data);
+                console.log("i>>>", i);
+                // 设置悬停提示框的内容和位置
+                // FIXME:xiaojiao, 将这个tooltip调整下
+                tooltip.html(`  Value: ${data[0].country}`)
+                    .style("left", `${rect.left + rect.width / 2}px`)
+                    .style("top", `${rect.top - 30}px`)
+                    .style("opacity", 1);
+                console.log("` ${data.key}, Value: ${i}`", ` ${data}, Value: ${i}`);
+                console.log("test", i);
+            }
+
+            function handleMouseOut() {
+                d3.select(this)
+                    .attr("opacity", "1");
+                // 隐藏悬停提示框
+                tooltip.style("opacity", 0);
+            }
+
+            dots.append("title").text(
+                d => `${d.country}
+                    Agriculture: ${d.agriculture}
+                    Industry: ${d.industry}
+                    Service: ${d.service}`
+            );
+            // dots.on("mouseout", function(d, i) {
+            //         // d3.select(this)
+            //         // .attr("opacity","0.5");
+            //         console.log("eeeeeeeeee");
+            //     })
+
+
+
+            // zoom v2 add here...
+            // https://observablehq.com/@julesblm/introducing-d3-ternary?collection=@julesblm/ternary-plots#zooming
+            const zoom = d3.zoom().scaleExtent([1, 100]).on("zoom", zoomed);
+
+            const [tx, ty] = basicTernaryPlot1.translate();
+            const k = basicTernaryPlot1.scale();
+
+            // We need to sync d3-zoom with the tranform of the partial domains
+            const initialTransform = d3.zoomIdentity
+                .translate(tx * radius, ty * radius)
+                .scale(k);
+
+            chart.call(zoom).call(zoom.transform, initialTransform);
+
+            function zoomed({ transform }) {
+                const { x, y, k } = transform;
+
+                const tx = x / radius,
+                    ty = y / radius;
+
+                // apply transform
+                basicTernaryPlot1.translate([tx, ty]);
+                basicTernaryPlot1.scale(k);
+
+                const zoomedDomains = basicTernaryPlot1.domainsFromVertices();
+
+                basicTernaryPlot1.setDomains(zoomedDomains);
+
+                // update data
+                dots
+                    .attr("cx", (d) => basicTernaryPlot1(d)[0])
+                    .attr("cy", (d) => basicTernaryPlot1(d)[1]);
+
+                // update gridlines and ticks
+                const gridLinesPaths = basicTernaryPlot1
+                    .gridLines()
+                    .map((axisGrid) => axisGrid.map(d3.line()).join(" "));
+
+                gridGroup.call(grid, gridLinesPaths);
+
+                axisTicksGroups.data(basicTernaryPlot1.ticks()).call(ticks, (d) => d);
+
+                // const zoomedVertices = someTernaryPlot.vertices();
+                // const newTrianglePath = `M${zoomedVertices[0]}L${zoomedVertices[1]}L${zoomedVertices[2]}Z`;
+            }
+
+            function handleMouseMove(d) {
+                const xy = d3.pointer(d);
+                const inverse = basicTernaryPlot1.invert(xy);
+
+                node
+                    .dispatchEvent(new CustomEvent("input"), { bubbles: true });
+                // node.dispatchEvent(new CustomEvent("mouseover"), { bubbles: true })
+                node.value = inverse;
+                // console.log(node.value);
+
+            }
+            // console.log("svg.node()", svg.node());
+            return svg.node();
+        }
+
+        drawBasicTernaryPlot();
+    </script>
+
+    <script>
+        // Tools
+        function addEvent(el, type, handler) {
+            if (el.addEventListener) {
+                el.addEventListener(type, handler);
+            } else {
+                el.attachEvent('on' + type, handler);
+            }
+        }
+        // 创建悬停提示框
+        // const tooltip = d3.select(".tooltip");
+        var tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .attr("position", "absolute")
+            .style("opacity", 0);    
+    </script>
+    <script>
+
+        // 滑动条调整
+        // const gridLineCount = 10;
+        const gridLineCount = document.getElementById("gridLineCount");
+
+        addEvent(gridLineCount, "input", function () {
+            var gridLineCountSize = gridLineCount.value;
+            var gridLineCountValue = parseInt(gridLineCountSize);
+
+            const gridLinesPaths = basicTernaryPlot()
+                .gridLines(gridLineCountValue)
+                .map(axisGrid => axisGrid.map(d3.line()).join(" "));
+
+            d3.select("#chart").selectAll(".grid")
+                .call(grid, gridLinesPaths);
+        });
+
+        const tickCountInput = document.getElementById("tickCount");
+        addEvent(tickCountInput, "input", function () {
+            var tickCountSize = tickCountInput.value;
+            var tickCountValue = parseInt(tickCountSize);
+
+            const tempTicks = d3.select("#chart").select(".ternary-ticks").selectAll(".axis-ticks")
+                .data(basicTernaryPlot().ticks(tickCountValue))
+            tempTicks.call(ticks);
+
+            // console.log("tickCountSize>>>>", tickCountSize);
+            // const axisTicksGroups = d3.select("#chart").selectAll(".axis-ticks")
+            // .append("g")
+            // .attr("class", "ternary-ticks")
+            // .attr("font-size", 10)
+            // .selectAll("g")
+            // .data(basicTernaryPlot().ticks(tickCountSize));
+            // .join("g")
+            // .attr("class", "axis-ticks");
+
+            // axisTicksGroups.call(ticks);
+            // tickCount = tickCountValue;
+            // drawBasicTernaryPlot();
+        });
+
+
+        const fontSelect = document.getElementById("fontSelect");
+        const fontInput = document.getElementById('fontInput');
+
+        fontSelect.addEventListener("change", function () {
+            const selectedFont = fontSelect.value;
+            if (fontSelect.value == 'custom') {
+                fontInput.style.display = 'block';
+                console.log(fontInput.value);
+                d3.selectAll("text").style("font-family", fontInput.value);
+            } else {
+                fontInput.style.display = 'none';
+            }
+            d3.selectAll("text").style("font-family", selectedFont);
+        });
+
+        const fontSizeRange = document.getElementById("fontSizeRange");
+        const sliderTooltip = document.querySelector(".sliderTooltip");
+
+        // 嵌套的子元素span中的value
+        var valueSpan = document.querySelector(".sliderTooltip .value");
+
+        fontSizeRange.addEventListener("input", function () {
+            const selectedFontSize = fontSizeRange.value;
+            d3.selectAll("text").style("font-size", selectedFontSize + "px");
+            const sliderRect = fontSizeRange.getBoundingClientRect();
+
+            const tooltipWidth = sliderTooltip.offsetWidth;
+            const tooltipHeight = sliderTooltip.offsetHeight;
+
+            // console.log("sliderTooltip", sliderTooltip);
+            const sliderValue = parseInt(selectedFontSize);
+            const sliderMin = parseInt(fontSizeRange.min);
+            const sliderMax = parseInt(fontSizeRange.max);
+            const sliderWidth = fontSizeRange.offsetWidth;
+
+            // console.log("sliderRect, tooltipWidth, tooltipHeight", sliderRect, tooltipWidth, tooltipHeight);
+            // TODO:xiaojiao, fix thar
+            const positionPercentage = (sliderValue - sliderMin) / (sliderMax - sliderMin);
+            const tooltipPosition = positionPercentage * (sliderWidth - tooltipWidth);
+
+            const tooltipX = tooltipWidth + tooltipPosition;
+            const tooltipY = sliderRect.top - tooltipHeight; // 自定义偏移量，避免与滑块重叠
+            // console.log("tooltipX", tooltipPosition);
+
+            sliderTooltip.style.left = tooltipX + "px";
+
+            // var value = valueSpan.textContent;
+            valueSpan.textContent = selectedFontSize + 'px';
+            // console.log(value, valueSpan); // 输出：16
+
+        });
+
+        // 添加slider tooltip
+        // 添加文字移动效果
+        fontSizeRange.addEventListener("mouseover", function () {
+            // console.log("sliderTooltip", sliderTooltip);
+            sliderTooltip.style.display = "block";
+            sliderTooltip.classList.add("show");
+        });
+
+        fontSizeRange.addEventListener("mouseout", function () {
+            sliderTooltip.classList.remove("show");
+            sliderTooltip.style.display = "none";
+        });
+
+        // 处理 data circle事件
+        // const dataCircle = document.querySelector(".data")
+        // console.log(dataCircle)
+        // let target = null;
+        // let event = null;
+
+        // dataCircle.addEventListener("mouseover", function (e) {
+        //     // console.log("eee", dataCircle);
+        //     event = e;
+        //     target = e.target;
+        //     // const xy = d3.pointer(this);
+        //     // temp = d3.select(this).select(".data")
+        //     // const inverse = basicTernaryPlot().invert(xy);
+        //     console.log("target", target, event);
+        //     // console.log("this", this, temp);
+        //     // console.log("inverse", inverse);
+
+        // }, true);
+
+        document.getElementById("center-button").addEventListener("click", function () {
+            // resizesvg();
+            // resetTransform();
+            // svg.call(zoom, d3.zoomIdentity);
+            // TODO:xiaojiao, 请支持不同浏览器的刷新, 2023/10/30
+            location.reload();
+        })
+
+
+
+    </script>
+</body>
+
+</html>
