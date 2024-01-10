@@ -33,12 +33,9 @@ Conducting a review of Hashmap by following the test.
 Improving It
 ====
 
-* You can use a sort on each bucket so that they're always sorted.
-  This increases your insert time but decreases your find time, because
-  you can then use a binary search to find each node.  Right now,
-  it's looping through all of the nodes in a bucket just to find one.
+* You can use a sort on each bucket so that they're always sorted. This increases your insert time but decreases your find time, because you can then use a binary search to find each node.  Right now,  it's looping through all of the nodes in a bucket just to find one.
 ```C
-
+// /ex37/liblcthw/src/lcthw/hashmap.c
 int Hashmap_set(Hashmap *map, void *key, void *data) {
 
     uint32_t hash = 0;
@@ -59,8 +56,34 @@ error:
     return -1;
 }
 ```
-* You can dynamically size the number of buckets, or let the caller
-  specify the number for each *Hashmap* created.
+* You can dynamically size the number of buckets, or let the caller specify the number for each *Hashmap* created.
+```C
+// /ex37/liblcthw/src/lcthw/hashmap.h
+Hashmap *Hashmap_create(Hashmap_compare compare, Hashmap_hash hash, size_t num_buckets);
+```
+```C
+// /ex37/liblcthw/src/lcthw/hashmap.c
+Hashmap *Hashmap_create(Hashmap_compare compare, 
+                        Hashmap_hash hash,
+                        size_t num_buckets) {
+    Hashmap *map = calloc(1, sizeof(Hashmap));
+    check_mem(map);
+
+    map->compare = compare == NULL ? default_compare : compare;
+    map->hash = hash == NULL ? default_hash : hash;
+    map->buckets = DArray_create(sizeof(DArray *), num_buckets);
+    map->buckets->end = map->buckets->max;                      // fake out expanding it
+    check_mem(map->buckets);
+
+    return map;
+error:
+    if (map) {
+        Hashmap_destroy(map);
+    }
+
+    return NULL;
+}
+```
 * You can use a better *default_hash*.  There are tons of them.
 
 
