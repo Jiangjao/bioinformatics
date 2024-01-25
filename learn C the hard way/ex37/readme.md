@@ -99,6 +99,22 @@ Improving It
 ====
 
 * You could have it delete buckets that are empty of nodes to save space, or put empty buckets into a cache so you can save on time lost creating and destroying them.
+```C
+// /ex37/liblcthw/src/lcthw/hashmap.c
+void Hashmap_clean_empty_buckets(Hashmap *map) {
+
+  for(int i = 0; i < DArray_count(map->buckets); i++) {
+
+    DArray *bucket = DArray_get(map->buckets, i);
+
+    // TODO:xiaojiao, find the bucket is null....
+    if (DArray_count(bucket)) {
+        DArray_destroy(bucket);
+        DArray_remove(map->buckets, i);
+        }
+    }
+}
+```
 * Right now, it just adds elements even if they already exist.  Write an alternative set method that only adds an element if it isn't set already.
 
 
@@ -107,6 +123,8 @@ Extra Credit
 ====
 
 * Research the *Hashmap* implementation in your favorite programming language to see what features it has.
+
+>[The priciple of Hashmap relization in python](https://www.cnblogs.com/Xuuuuuu/p/13894009.html)
 * Find out what the major disadvantages of a *Hashmap* are and how to avoid them.  For example, it doesn't preserve order without special changes, nor does it work when you need to find things based on parts of keys.
 ```
 Here are the main disadvantages of hashmaps and ways to mitigate them in English:
