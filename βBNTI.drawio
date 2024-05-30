@@ -1,9 +1,21 @@
-<mxfile host="app.diagrams.net" modified="2024-05-30T09:42:53.527Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0" version="24.4.10" etag="T2FToQD0GPMMi2BhfYbH" type="github">
+<mxfile host="app.diagrams.net" modified="2024-05-30T09:49:36.334Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0" etag="nBjPJdVVJdJCMdveAb2o" version="24.4.10" type="github">
   <diagram name="第 1 页" id="S0JFZ3FHSv7DLd90_BiI">
-    <mxGraphModel>
+    <mxGraphModel dx="832" dy="485" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="zHijuhk2n1MzG7dnHHHc-1" value="&lt;b&gt;Community&amp;nbsp;&lt;/b&gt;&lt;div&gt;&lt;b&gt;assembly&amp;nbsp;&lt;/b&gt;&lt;div&gt;&lt;b&gt;mechanisms&amp;nbsp;&lt;/b&gt;&lt;/div&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="30" y="230" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="zHijuhk2n1MzG7dnHHHc-2" value="" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="170" y="264.5" as="sourcePoint" />
+            <mxPoint x="340" y="265" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zHijuhk2n1MzG7dnHHHc-3" value="Phylogenetic&amp;nbsp;&amp;nbsp;diversity&amp;nbsp;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="200" y="220" width="100" height="30" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
