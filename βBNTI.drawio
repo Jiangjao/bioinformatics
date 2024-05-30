@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-05-30T09:49:36.334Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0" etag="nBjPJdVVJdJCMdveAb2o" version="24.4.10" type="github">
+<mxfile host="app.diagrams.net" modified="2024-05-30T09:53:16.699Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0" etag="mHdQOpJXqGXw88aYJ0ul" version="24.4.10" type="github">
   <diagram name="第 1 页" id="S0JFZ3FHSv7DLd90_BiI">
     <mxGraphModel dx="832" dy="485" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -15,6 +15,15 @@
         </mxCell>
         <mxCell id="zHijuhk2n1MzG7dnHHHc-3" value="Phylogenetic&amp;nbsp;&amp;nbsp;diversity&amp;nbsp;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="200" y="220" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zHijuhk2n1MzG7dnHHHc-4" value="" style="shape=curlyBracket;whiteSpace=wrap;html=1;rounded=1;labelPosition=left;verticalLabelPosition=middle;align=right;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="350" y="177.5" width="20" height="175" as="geometry" />
+        </mxCell>
+        <mxCell id="zHijuhk2n1MzG7dnHHHc-5" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;determinism&lt;/h1&gt;&lt;p&gt;Nonrandom dispersal: |βNTI|&amp;gt;2&lt;/p&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="380" y="110" width="210" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="zHijuhk2n1MzG7dnHHHc-6" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;Heading&lt;/h1&gt;&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.&lt;/p&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="380" y="300" width="180" height="120" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
