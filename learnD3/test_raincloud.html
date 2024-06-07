@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<head>
+    <title>Document</title>
+    <!-- Load d3.js -->
+    <!-- <script src="https://d3js.org/d3.v6.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+
+    <noscript>抱歉，你的浏览器不支持 JavaScript!</noscript>
+
+    <style>
+        svg .container {
+            width: 100%;
+            height: 100%;
+            margin: auto;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .tooltip {
+            position: absolute;
+            background-color: #f9f9f9;
+            padding: 8px;
+            border: 1px solid #ccc;
+            pointer-events: none;
+            font-size: 14px;
+        }
+
+        .basicSettings {
+            /* width: 80%; */
+            position: relative;
+            /* top: 38px; */
+            z-index: 1;
+            overflow-y: auto;
+        }
+
+        .downloadSettings {
+            width: 100%;
+            position: relative;
+            /* top: 18px; */
+            z-index: 2;
+        }
+
+        .sidebar {
+            width: 100%;
+            display: none;
+            /* 初始状态下隐藏下拉框 */
+        }
+
+        .sidebar h2 {
+            /* margin-bottom: 10px; */
+            /* border-bottom: 1px solid #ddd; */
+            padding-bottom: 5px;
+        }
+
+        .sidebar label {
+            /* width: 120px; */
+            /* text-align: right; */
+            margin-right: 10px;
+        }
+
+        .sidebar input,
+        .sidebar select {
+            padding: 5px;
+            border: 1px solid #ccc;
+            width: 25%;
+            border-radius: 4px;
+        }
+
+        .sidebar button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            background: #42b983;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .sidebar button:hover {
+            opacity: 0.8;
+        }
+
+        .sidebar input[type="number"] {
+            width: 50px;
+        }
+
+        .sidebar input[type="text"] {
+            width: 36%;
+        }
+
+        .sidebar input[type="range"] {
+            width: 100%;
+            /* transform: rotate(270deg); 添加垂直滚动条 */
+        }
+
+        /* .sidebar br {
+            display: none;
+        } */
+
+        .item {
+            display: flex;
+            align-items: center;
+            text-align: justify;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            width: 88%;
+        }
+
+        /* .item {} */
+
+        .sidebar hr {
+            overflow: hidden;
+            width: 88%;
+        }
+
+        /* 设置hr线 */
+        .item+hr {
+            margin: 10px 0;
+
+        }
+
+        .item+hr:first-child {
+            margin-top: 0;
+        }
+
+        .item+hr {
+            border: none;
+            border-top: 1px dotted #ccc;
+        }
+
+        /* hr {} */
+        /* .item label {
+            width: 120px;
+            } */
+        /* .sidebar {
+            display: flex;
+            flex-wrap: wrap;
+        } */
+
+        .sliderTooltip {
+            /* display: block; */
+            /* position: absolute; */
+            /* styles */
+            /* padding: 10px; */
+            position: absolute;
+            /* top: -30px; */
+            /* left: 134px; */
+            background-color: rgb(204 204 204 / 18%);
+            /* color: #f9f9f9; */
+            padding: 5px;
+            border-radius: 5px;
+            display: none;
+            margin-top: 14%;
+        }
+
+        .tooltip.show {
+            display: block;
+        }
+
+        .sidebar.show {
+            width: 100%;
+            height: auto;
+            position: relative;
+            /* padding: inherit; */
+            display: block;
+            padding: 10px 11px;
+            /* 点击后显示下拉框 */
+            transition: max-height 0.3s ease;
+            z-index: 1;
+            /* 添加过渡效果 */
+        }
+
+        /* 添加button的样式 */
+        .button-like {
+            display: inline-block;
+            padding: 10px 0 10px 10%;
+            background-color: #4CAF50;
+            color: white;
+            text-align: left;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 90%;
+        }
+
+        .button-like:hover {
+            background-color: #45a049;
+        }
+
+        .button-like:active {
+            background-color: #3e8e41;
+        }
+
+        /* TODO:xiaojiao, @media screen and (max-width: 700px) 如何使用2023/10/23 */
+        div.tooltip-donut {
+            position: absolute;
+            text-align: center;
+            padding: .5rem;
+            background: #FFFFFF;
+            color: #313639;
+            border: 1px solid #313639;
+            border-radius: 8px;
+            pointer-events: none;
+            font-size: 1.3rem;
+        }
+
+        /*手机屏幕下样式*/
+        @media screen and (max-width: 700px) {
+
+            div.tooltip-donut {
+                position: relative;
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+
+            div.tooltip-donut::after {
+                content: none;
+            }
+
+        }
+
+        icon-i {
+            text-align: center;
+        }
+
+        .dropdown {
+            /* padding: 10px 11px; */
+            position: relative;
+            /* display: inline-block; */
+        }
+
+        .dropdown-content {
+            display: none;
+            position: relative;
+            /* top: 100%; */
+            /* left: 0; */
+            width: 100%;
+            /* padding: 10px 11px; */
+            background-color: #4CAF50;
+        }
+
+
+        .settingContent {
+            display: block;
+            position: relative;
+            /* top: 100%; */
+            /* left: 0; */
+            width: 90%;
+            padding: 10px 11px;
+            /* overflow-y: scroll; */
+            height: 60vh;
+            overflow-y: scroll;
+            /* 设置垂直方向上溢出时显示滚动条 */
+            overflow-x: hidden;
+            scrollbar-width: thin;
+            /* 设置滚动条的宽度 */
+            scrollbar-color: gray lightgray;
+            /* 设置滚动条的颜色 */
+        }
+
+        /* div#settingContent {} */
+        /* .dropdown:hover .dropdown-content {
+        display: block;
+
+         } */
+
+        .filled {
+            fill: url("#mainGradient");
+        }
+
+        .ticks text {
+            font-family: sans-serif;
+            font-size: 17px;
+            text-anchor: start;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6"></script>
+    <!-- import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm"; -->
+
+</head>
+
+<body>
+    <div style="position: absolute; width:100%; height: 100%;">
+        <div>
+            <div style="width: 20%;z-index: 1; position: fixed; padding-right: 1%; right:0; top:40px; opacity: 0.9;">
+                <!-- add by xiaojiao 停靠右侧， x轴文本旋转 -->
+                <!-- add by xiaojiao 柱状图宽度调整 -->
+                <div class="dropdown">
+                    <div id="dropdownTest" class="downloadSettings" style="background:#F9F9F9;width: 100%;">
+                        <p class="button-like">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-cloud-arrow-down" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M7.646 10.854a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 9.293V5.5a.5.5 0 0 0-1 0v3.793L6.354 8.146a.5.5 0 1 0-.708.708l2 2z" />
+                                <path
+                                    d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z" />
+                            </svg>
+                            download
+                        </p>
+                    </div>
+                    <div id="dropdownContent" class="dropdown-content"
+                        style="background:#F9F9F9;width: 100%;display: none;">
+                        <div class="sidebar show">
+                            <button id="export">下载 SVG</button>
+                            <!-- <br> -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <br> -->
+                <div class="dropdown" style="background:#F9F9F9;width: 100%;">
+                    <div class="basicSettings">
+                        <!-- <button type="button" id="exitBtn" class="btn" onClick="exitFullscreen()">退出全屏</button> -->
+                        <p type="button" id="btn" class="btn button-like" title="fullscreen">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-gear" viewBox="0 0 16 16">
+                                <path title="修改参数"
+                                    d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+                                <path title="修改参数"
+                                    d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z" />
+                            </svg>
+                            <path title="fullscreen" fill-rule="evenodd"
+                                d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z" />
+                            </svg>
+                            setting
+                        </p>
+                    </div>
+                    <div class="settingContent" id="settingContent">
+                        <div class="sidebar show" id="mainsetting">
+                            <!-- <h2>文本 Settings</h2> -->
+                            <div class="item">
+                                <p>字体选择:</p>
+                                <!-- https://www.runoob.com/w3cnote/web-font-family.html -->
+                                <select class="form-select" id="fontSelect">
+                                    <option value="">Select</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">Serif Fonts
+                                    </option>
+                                    <option value="Georgia,serif" style="font-family: Georgia,serif">Georgia</option>
+                                    <option value="Palatino Linotype,Book Antiqua,Palatino,serif"
+                                        style="font-family: Palatino Linotype,Book Antiqua,Palatino,serif">Palatino
+                                        Linotype</option>
+                                    <option value="Times New Roman,Times,serif"
+                                        style="font-family: Times New Roman,Times,serif">Times New Roman</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">Sans-Serif
+                                        Fonts</option>
+                                    <option value="Arial,Helvetica,sans-serif"
+                                        style="font-family: Arial,Helvetica,sans-serif">Arial</option>
+                                    <option value="Arial Black,Gadget,sans-serif"
+                                        style="font-family: Arial Black,Gadget,sans-serif">Arial Black</option>
+                                    <option value="Comic Sans MS,cursive,sans-serif"
+                                        style="font-family: Comic Sans MS,cursive,sans-serif">Comic Sans MS</option>
+                                    <option value="Impact,Charcoal,sans-serif"
+                                        style="font-family: Impact,Charcoal,sans-serif">Impact</option>
+                                    <option value="Lucida Sans Unicode,Lucida Grande,sans-serif"
+                                        style="font-family: Lucida Sans Unicode,Lucida Grande,sans-serif">Lucida Sans
+                                        Unicode</option>
+                                    <option selected="selected" value="Tahoma,Geneva,sans-serif"
+                                        style="font-family: Tahoma,Geneva,sans-serif">Tahoma</option>
+                                    <option value="Trebuchet MS,Helvetica,sans-serif"
+                                        style="font-family: Trebuchet MS,Helvetica,sans-serif">Helvetica</option>
+                                    <option value="Verdana,Geneva,sans-serif"
+                                        style="font-family: Verdana,Geneva,sans-serif">Verdana</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">Monospace
+                                        Fonts</option>
+                                    <option value="Courier New,Courier,monospace"
+                                        style="font-family: Courier New,Courier,monospace">Courier New</option>
+                                    <option value="Lucida Console,Monaco,monospace"
+                                        style="font-family: Lucida Console,Monaco,monospace">Lucida Console</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">中文</option>
+                                    <option value="华文细黑,sans-serif" style="font-family: 华文细黑,sans-serif">华文细黑</option>
+                                    <option value="微软雅黑,sans-serif" style="font-family: 微软雅黑,sans-serif">微软雅黑</option>
+                                    <option value="中易宋体,sans-serif" style="font-family: 中易宋体,sans-serif">中易宋体</option>
+                                    <option value="WenQuanYi Micro Hei,sans-serif"
+                                        style="font-family: WenQuanYi Micro Hei,sans-serif">WenQuanYi Micro Hei</option>
+                                    <option value="楷体,serif" style="font-family: 楷体, serif">楷体</option>
+                                    <option value="隶书,sans-serif" style="font-family: 隶书, sans-serif">隶书</option>
+                                </select>
+                            </div>
+
+                            <div class="item">
+                                <p>字体大小: </p>
+                                <input type="range" id="fontSizeRange" min="6" max="56" step="1" value="16">
+                                <div class="sliderTooltip">
+                                    <span class="value"></span>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="item">
+                                <!-- <p>x 轴显示: </p> -->
+                                <!-- <input type="range" id="xaxisDisplay" min="6" max="56" step="1" value="16"> -->
+                                <button id="xaxisDisplay">去除x 轴</button>
+                            </div>
+
+                            <div class="item">
+                                <label for="stackBarWidth">柱状图宽度调整:</label>
+                                <input type="range" id="stackBarWidth" min="0" max="1000" step="0.1" value="2">
+                            </div>
+
+                            <div class="item">
+                                <p>散点大小调整: </p>
+                                <input type="range" id="scatterSizeRange" min="0" max="50" step="0.1" value="1.5">
+                                <div class="scatterSizeRange" style="display: none;">
+                                    <span class="value"></span>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <label for="upColor">up 散点 颜色:</label>
+                                <input type="color" id="upColor" value="#F41515">
+                            </div>
+
+                            <div class="item">
+                                <label for="downColor">down 散点 颜色:</label>
+                                <input type="color" id="downColor">
+                            </div>
+                            <hr>
+
+                            <div class="item">
+                                <button id="center-button">reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <br> -->
+                <!-- <br> -->
+                <div class="btns" id="btns" style="background:#F9F9F9;width: 100%;">
+
+                    <!-- <button type="button" id="exitBtn" class="btn" onClick="exitFullscreen()">退出全屏</button> -->
+                    <p type="button" id="btn" class="btn button-like fullScreen" title="fullscreen">
+                        <svg title="fullscreen" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            fill="currentColor" class="bi bi-arrows-fullscreen" viewBox="0 0 16 16">
+                            <path title="fullscreen" fill-rule="evenodd"
+                                d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z" />
+                        </svg>
+                        全屏
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="basicSettings" style="margin-left: auto; position: relative;">
+
+            </div>
+
+
+        </div>
+        <!-- Create a div where the graph will take place -->
+        <div id="container">
+
+            <!-- Create a div where the graph will take place -->
+            <div id="chart"></div>
+        </div>
+
+        <div id="myplot"></div>
+        <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6"></script>
+        <script type="module">
+
+        // const plot = Plot.rectY({length: 10000}, Plot.binX({y: "count"}, {x: Math.random})).plot();
+        // const div = document.querySelector("#myplot");
+        // div.append(plot);
+
+        </script>
+    </div>
+    <script>
+        // source Code https://observablehq.com/d/3516a7286cc23bf7
+
+        var data = [{"species":"Adelie","island":"Torgersen","culmen_length_mm":39.1,"culmen_depth_mm":18.7,"flipper_length_mm":181,"body_mass_g":3750,"sex":"MALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":39.5,"culmen_depth_mm":17.4,"flipper_length_mm":186,"body_mass_g":3800,"sex":"FEMALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":40.3,"culmen_depth_mm":18,"flipper_length_mm":195,"body_mass_g":3250,"sex":"FEMALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":36.7,"culmen_depth_mm":19.3,"flipper_length_mm":193,"body_mass_g":3450,"sex":"FEMALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":39.3,"culmen_depth_mm":20.6,"flipper_length_mm":190,"body_mass_g":3650,"sex":"MALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":38.9,"culmen_depth_mm":17.8,"flipper_length_mm":181,"body_mass_g":3625,"sex":"FEMALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":39.2,"culmen_depth_mm":19.6,"flipper_length_mm":195,"body_mass_g":4675,"sex":"MALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":34.1,"culmen_depth_mm":18.1,"flipper_length_mm":193,"body_mass_g":3475,"sex":null},{"species":"Adelie","island":"Torgersen","culmen_length_mm":42,"culmen_depth_mm":20.2,"flipper_length_mm":190,"body_mass_g":4250,"sex":null},{"species":"Adelie","island":"Torgersen","culmen_length_mm":37.8,"culmen_depth_mm":17.1,"flipper_length_mm":186,"body_mass_g":3300,"sex":null},{"species":"Adelie","island":"Torgersen","culmen_length_mm":37.8,"culmen_depth_mm":17.3,"flipper_length_mm":180,"body_mass_g":3700,"sex":null},{"species":"Adelie","island":"Torgersen","culmen_length_mm":41.1,"culmen_depth_mm":17.6,"flipper_length_mm":182,"body_mass_g":3200,"sex":"FEMALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":38.6,"culmen_depth_mm":21.2,"flipper_length_mm":191,"body_mass_g":3800,"sex":"MALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":34.6,"culmen_depth_mm":21.1,"flipper_length_mm":198,"body_mass_g":4400,"sex":"MALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":36.6,"culmen_depth_mm":17.8,"flipper_length_mm":185,"body_mass_g":3700,"sex":"FEMALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":38.7,"culmen_depth_mm":19,"flipper_length_mm":195,"body_mass_g":3450,"sex":"FEMALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":42.5,"culmen_depth_mm":20.7,"flipper_length_mm":197,"body_mass_g":4500,"sex":"MALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":34.4,"culmen_depth_mm":18.4,"flipper_length_mm":184,"body_mass_g":3325,"sex":"FEMALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":46,"culmen_depth_mm":21.5,"flipper_length_mm":194,"body_mass_g":4200,"sex":"MALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":37.8,"culmen_depth_mm":18.3,"flipper_length_mm":174,"body_mass_g":3400,"sex":"FEMALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":37.7,"culmen_depth_mm":18.7,"flipper_length_mm":180,"body_mass_g":3600,"sex":"MALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":35.9,"culmen_depth_mm":19.2,"flipper_length_mm":189,"body_mass_g":3800,"sex":"FEMALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":38.2,"culmen_depth_mm":18.1,"flipper_length_mm":185,"body_mass_g":3950,"sex":"MALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":38.8,"culmen_depth_mm":17.2,"flipper_length_mm":180,"body_mass_g":3800,"sex":"MALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":35.3,"culmen_depth_mm":18.9,"flipper_length_mm":187,"body_mass_g":3800,"sex":"FEMALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":40.6,"culmen_depth_mm":18.6,"flipper_length_mm":183,"body_mass_g":3550,"sex":"MALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":40.5,"culmen_depth_mm":17.9,"flipper_length_mm":187,"body_mass_g":3200,"sex":"FEMALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":37.9,"culmen_depth_mm":18.6,"flipper_length_mm":172,"body_mass_g":3150,"sex":"FEMALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":40.5,"culmen_depth_mm":18.9,"flipper_length_mm":180,"body_mass_g":3950,"sex":"MALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":39.5,"culmen_depth_mm":16.7,"flipper_length_mm":178,"body_mass_g":3250,"sex":"FEMALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":37.2,"culmen_depth_mm":18.1,"flipper_length_mm":178,"body_mass_g":3900,"sex":"MALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":39.5,"culmen_depth_mm":17.8,"flipper_length_mm":188,"body_mass_g":3300,"sex":"FEMALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":40.9,"culmen_depth_mm":18.9,"flipper_length_mm":184,"body_mass_g":3900,"sex":"MALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":36.4,"culmen_depth_mm":17,"flipper_length_mm":195,"body_mass_g":3325,"sex":"FEMALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":39.2,"culmen_depth_mm":21.1,"flipper_length_mm":196,"body_mass_g":4150,"sex":"MALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":38.8,"culmen_depth_mm":20,"flipper_length_mm":190,"body_mass_g":3950,"sex":"MALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":42.2,"culmen_depth_mm":18.5,"flipper_length_mm":180,"body_mass_g":3550,"sex":"FEMALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":37.6,"culmen_depth_mm":19.3,"flipper_length_mm":181,"body_mass_g":3300,"sex":"FEMALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":39.8,"culmen_depth_mm":19.1,"flipper_length_mm":184,"body_mass_g":4650,"sex":"MALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":36.5,"culmen_depth_mm":18,"flipper_length_mm":182,"body_mass_g":3150,"sex":"FEMALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":40.8,"culmen_depth_mm":18.4,"flipper_length_mm":195,"body_mass_g":3900,"sex":"MALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":36,"culmen_depth_mm":18.5,"flipper_length_mm":186,"body_mass_g":3100,"sex":"FEMALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":44.1,"culmen_depth_mm":19.7,"flipper_length_mm":196,"body_mass_g":4400,"sex":"MALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":37,"culmen_depth_mm":16.9,"flipper_length_mm":185,"body_mass_g":3000,"sex":"FEMALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":39.6,"culmen_depth_mm":18.8,"flipper_length_mm":190,"body_mass_g":4600,"sex":"MALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":41.1,"culmen_depth_mm":19,"flipper_length_mm":182,"body_mass_g":3425,"sex":"MALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":37.5,"culmen_depth_mm":18.9,"flipper_length_mm":179,"body_mass_g":2975,"sex":null},{"species":"Adelie","island":"Dream","culmen_length_mm":36,"culmen_depth_mm":17.9,"flipper_length_mm":190,"body_mass_g":3450,"sex":"FEMALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":42.3,"culmen_depth_mm":21.2,"flipper_length_mm":191,"body_mass_g":4150,"sex":"MALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":39.6,"culmen_depth_mm":17.7,"flipper_length_mm":186,"body_mass_g":3500,"sex":"FEMALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":40.1,"culmen_depth_mm":18.9,"flipper_length_mm":188,"body_mass_g":4300,"sex":"MALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":35,"culmen_depth_mm":17.9,"flipper_length_mm":190,"body_mass_g":3450,"sex":"FEMALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":42,"culmen_depth_mm":19.5,"flipper_length_mm":200,"body_mass_g":4050,"sex":"MALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":34.5,"culmen_depth_mm":18.1,"flipper_length_mm":187,"body_mass_g":2900,"sex":"FEMALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":41.4,"culmen_depth_mm":18.6,"flipper_length_mm":191,"body_mass_g":3700,"sex":"MALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":39,"culmen_depth_mm":17.5,"flipper_length_mm":186,"body_mass_g":3550,"sex":"FEMALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":40.6,"culmen_depth_mm":18.8,"flipper_length_mm":193,"body_mass_g":3800,"sex":"MALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":36.5,"culmen_depth_mm":16.6,"flipper_length_mm":181,"body_mass_g":2850,"sex":"FEMALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":37.6,"culmen_depth_mm":19.1,"flipper_length_mm":194,"body_mass_g":3750,"sex":"MALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":35.7,"culmen_depth_mm":16.9,"flipper_length_mm":185,"body_mass_g":3150,"sex":"FEMALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":41.3,"culmen_depth_mm":21.1,"flipper_length_mm":195,"body_mass_g":4400,"sex":"MALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":37.6,"culmen_depth_mm":17,"flipper_length_mm":185,"body_mass_g":3600,"sex":"FEMALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":41.1,"culmen_depth_mm":18.2,"flipper_length_mm":192,"body_mass_g":4050,"sex":"MALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":36.4,"culmen_depth_mm":17.1,"flipper_length_mm":184,"body_mass_g":2850,"sex":"FEMALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":41.6,"culmen_depth_mm":18,"flipper_length_mm":192,"body_mass_g":3950,"sex":"MALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":35.5,"culmen_depth_mm":16.2,"flipper_length_mm":195,"body_mass_g":3350,"sex":"FEMALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":41.1,"culmen_depth_mm":19.1,"flipper_length_mm":188,"body_mass_g":4100,"sex":"MALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":35.9,"culmen_depth_mm":16.6,"flipper_length_mm":190,"body_mass_g":3050,"sex":"FEMALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":41.8,"culmen_depth_mm":19.4,"flipper_length_mm":198,"body_mass_g":4450,"sex":"MALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":33.5,"culmen_depth_mm":19,"flipper_length_mm":190,"body_mass_g":3600,"sex":"FEMALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":39.7,"culmen_depth_mm":18.4,"flipper_length_mm":190,"body_mass_g":3900,"sex":"MALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":39.6,"culmen_depth_mm":17.2,"flipper_length_mm":196,"body_mass_g":3550,"sex":"FEMALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":45.8,"culmen_depth_mm":18.9,"flipper_length_mm":197,"body_mass_g":4150,"sex":"MALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":35.5,"culmen_depth_mm":17.5,"flipper_length_mm":190,"body_mass_g":3700,"sex":"FEMALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":42.8,"culmen_depth_mm":18.5,"flipper_length_mm":195,"body_mass_g":4250,"sex":"MALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":40.9,"culmen_depth_mm":16.8,"flipper_length_mm":191,"body_mass_g":3700,"sex":"FEMALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":37.2,"culmen_depth_mm":19.4,"flipper_length_mm":184,"body_mass_g":3900,"sex":"MALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":36.2,"culmen_depth_mm":16.1,"flipper_length_mm":187,"body_mass_g":3550,"sex":"FEMALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":42.1,"culmen_depth_mm":19.1,"flipper_length_mm":195,"body_mass_g":4000,"sex":"MALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":34.6,"culmen_depth_mm":17.2,"flipper_length_mm":189,"body_mass_g":3200,"sex":"FEMALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":42.9,"culmen_depth_mm":17.6,"flipper_length_mm":196,"body_mass_g":4700,"sex":"MALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":36.7,"culmen_depth_mm":18.8,"flipper_length_mm":187,"body_mass_g":3800,"sex":"FEMALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":35.1,"culmen_depth_mm":19.4,"flipper_length_mm":193,"body_mass_g":4200,"sex":"MALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":37.3,"culmen_depth_mm":17.8,"flipper_length_mm":191,"body_mass_g":3350,"sex":"FEMALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":41.3,"culmen_depth_mm":20.3,"flipper_length_mm":194,"body_mass_g":3550,"sex":"MALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":36.3,"culmen_depth_mm":19.5,"flipper_length_mm":190,"body_mass_g":3800,"sex":"MALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":36.9,"culmen_depth_mm":18.6,"flipper_length_mm":189,"body_mass_g":3500,"sex":"FEMALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":38.3,"culmen_depth_mm":19.2,"flipper_length_mm":189,"body_mass_g":3950,"sex":"MALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":38.9,"culmen_depth_mm":18.8,"flipper_length_mm":190,"body_mass_g":3600,"sex":"FEMALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":35.7,"culmen_depth_mm":18,"flipper_length_mm":202,"body_mass_g":3550,"sex":"FEMALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":41.1,"culmen_depth_mm":18.1,"flipper_length_mm":205,"body_mass_g":4300,"sex":"MALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":34,"culmen_depth_mm":17.1,"flipper_length_mm":185,"body_mass_g":3400,"sex":"FEMALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":39.6,"culmen_depth_mm":18.1,"flipper_length_mm":186,"body_mass_g":4450,"sex":"MALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":36.2,"culmen_depth_mm":17.3,"flipper_length_mm":187,"body_mass_g":3300,"sex":"FEMALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":40.8,"culmen_depth_mm":18.9,"flipper_length_mm":208,"body_mass_g":4300,"sex":"MALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":38.1,"culmen_depth_mm":18.6,"flipper_length_mm":190,"body_mass_g":3700,"sex":"FEMALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":40.3,"culmen_depth_mm":18.5,"flipper_length_mm":196,"body_mass_g":4350,"sex":"MALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":33.1,"culmen_depth_mm":16.1,"flipper_length_mm":178,"body_mass_g":2900,"sex":"FEMALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":43.2,"culmen_depth_mm":18.5,"flipper_length_mm":192,"body_mass_g":4100,"sex":"MALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":35,"culmen_depth_mm":17.9,"flipper_length_mm":192,"body_mass_g":3725,"sex":"FEMALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":41,"culmen_depth_mm":20,"flipper_length_mm":203,"body_mass_g":4725,"sex":"MALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":37.7,"culmen_depth_mm":16,"flipper_length_mm":183,"body_mass_g":3075,"sex":"FEMALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":37.8,"culmen_depth_mm":20,"flipper_length_mm":190,"body_mass_g":4250,"sex":"MALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":37.9,"culmen_depth_mm":18.6,"flipper_length_mm":193,"body_mass_g":2925,"sex":"FEMALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":39.7,"culmen_depth_mm":18.9,"flipper_length_mm":184,"body_mass_g":3550,"sex":"MALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":38.6,"culmen_depth_mm":17.2,"flipper_length_mm":199,"body_mass_g":3750,"sex":"FEMALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":38.2,"culmen_depth_mm":20,"flipper_length_mm":190,"body_mass_g":3900,"sex":"MALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":38.1,"culmen_depth_mm":17,"flipper_length_mm":181,"body_mass_g":3175,"sex":"FEMALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":43.2,"culmen_depth_mm":19,"flipper_length_mm":197,"body_mass_g":4775,"sex":"MALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":38.1,"culmen_depth_mm":16.5,"flipper_length_mm":198,"body_mass_g":3825,"sex":"FEMALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":45.6,"culmen_depth_mm":20.3,"flipper_length_mm":191,"body_mass_g":4600,"sex":"MALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":39.7,"culmen_depth_mm":17.7,"flipper_length_mm":193,"body_mass_g":3200,"sex":"FEMALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":42.2,"culmen_depth_mm":19.5,"flipper_length_mm":197,"body_mass_g":4275,"sex":"MALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":39.6,"culmen_depth_mm":20.7,"flipper_length_mm":191,"body_mass_g":3900,"sex":"FEMALE"},{"species":"Adelie","island":"Biscoe","culmen_length_mm":42.7,"culmen_depth_mm":18.3,"flipper_length_mm":196,"body_mass_g":4075,"sex":"MALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":38.6,"culmen_depth_mm":17,"flipper_length_mm":188,"body_mass_g":2900,"sex":"FEMALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":37.3,"culmen_depth_mm":20.5,"flipper_length_mm":199,"body_mass_g":3775,"sex":"MALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":35.7,"culmen_depth_mm":17,"flipper_length_mm":189,"body_mass_g":3350,"sex":"FEMALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":41.1,"culmen_depth_mm":18.6,"flipper_length_mm":189,"body_mass_g":3325,"sex":"MALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":36.2,"culmen_depth_mm":17.2,"flipper_length_mm":187,"body_mass_g":3150,"sex":"FEMALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":37.7,"culmen_depth_mm":19.8,"flipper_length_mm":198,"body_mass_g":3500,"sex":"MALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":40.2,"culmen_depth_mm":17,"flipper_length_mm":176,"body_mass_g":3450,"sex":"FEMALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":41.4,"culmen_depth_mm":18.5,"flipper_length_mm":202,"body_mass_g":3875,"sex":"MALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":35.2,"culmen_depth_mm":15.9,"flipper_length_mm":186,"body_mass_g":3050,"sex":"FEMALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":40.6,"culmen_depth_mm":19,"flipper_length_mm":199,"body_mass_g":4000,"sex":"MALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":38.8,"culmen_depth_mm":17.6,"flipper_length_mm":191,"body_mass_g":3275,"sex":"FEMALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":41.5,"culmen_depth_mm":18.3,"flipper_length_mm":195,"body_mass_g":4300,"sex":"MALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":39,"culmen_depth_mm":17.1,"flipper_length_mm":191,"body_mass_g":3050,"sex":"FEMALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":44.1,"culmen_depth_mm":18,"flipper_length_mm":210,"body_mass_g":4000,"sex":"MALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":38.5,"culmen_depth_mm":17.9,"flipper_length_mm":190,"body_mass_g":3325,"sex":"FEMALE"},{"species":"Adelie","island":"Torgersen","culmen_length_mm":43.1,"culmen_depth_mm":19.2,"flipper_length_mm":197,"body_mass_g":3500,"sex":"MALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":36.8,"culmen_depth_mm":18.5,"flipper_length_mm":193,"body_mass_g":3500,"sex":"FEMALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":37.5,"culmen_depth_mm":18.5,"flipper_length_mm":199,"body_mass_g":4475,"sex":"MALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":38.1,"culmen_depth_mm":17.6,"flipper_length_mm":187,"body_mass_g":3425,"sex":"FEMALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":41.1,"culmen_depth_mm":17.5,"flipper_length_mm":190,"body_mass_g":3900,"sex":"MALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":35.6,"culmen_depth_mm":17.5,"flipper_length_mm":191,"body_mass_g":3175,"sex":"FEMALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":40.2,"culmen_depth_mm":20.1,"flipper_length_mm":200,"body_mass_g":3975,"sex":"MALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":37,"culmen_depth_mm":16.5,"flipper_length_mm":185,"body_mass_g":3400,"sex":"FEMALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":39.7,"culmen_depth_mm":17.9,"flipper_length_mm":193,"body_mass_g":4250,"sex":"MALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":40.2,"culmen_depth_mm":17.1,"flipper_length_mm":193,"body_mass_g":3400,"sex":"FEMALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":40.6,"culmen_depth_mm":17.2,"flipper_length_mm":187,"body_mass_g":3475,"sex":"MALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":32.1,"culmen_depth_mm":15.5,"flipper_length_mm":188,"body_mass_g":3050,"sex":"FEMALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":40.7,"culmen_depth_mm":17,"flipper_length_mm":190,"body_mass_g":3725,"sex":"MALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":37.3,"culmen_depth_mm":16.8,"flipper_length_mm":192,"body_mass_g":3000,"sex":"FEMALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":39,"culmen_depth_mm":18.7,"flipper_length_mm":185,"body_mass_g":3650,"sex":"MALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":39.2,"culmen_depth_mm":18.6,"flipper_length_mm":190,"body_mass_g":4250,"sex":"MALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":36.6,"culmen_depth_mm":18.4,"flipper_length_mm":184,"body_mass_g":3475,"sex":"FEMALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":36,"culmen_depth_mm":17.8,"flipper_length_mm":195,"body_mass_g":3450,"sex":"FEMALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":37.8,"culmen_depth_mm":18.1,"flipper_length_mm":193,"body_mass_g":3750,"sex":"MALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":36,"culmen_depth_mm":17.1,"flipper_length_mm":187,"body_mass_g":3700,"sex":"FEMALE"},{"species":"Adelie","island":"Dream","culmen_length_mm":41.5,"culmen_depth_mm":18.5,"flipper_length_mm":201,"body_mass_g":4000,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":46.5,"culmen_depth_mm":17.9,"flipper_length_mm":192,"body_mass_g":3500,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":50,"culmen_depth_mm":19.5,"flipper_length_mm":196,"body_mass_g":3900,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":51.3,"culmen_depth_mm":19.2,"flipper_length_mm":193,"body_mass_g":3650,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":45.4,"culmen_depth_mm":18.7,"flipper_length_mm":188,"body_mass_g":3525,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":52.7,"culmen_depth_mm":19.8,"flipper_length_mm":197,"body_mass_g":3725,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":45.2,"culmen_depth_mm":17.8,"flipper_length_mm":198,"body_mass_g":3950,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":46.1,"culmen_depth_mm":18.2,"flipper_length_mm":178,"body_mass_g":3250,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":51.3,"culmen_depth_mm":18.2,"flipper_length_mm":197,"body_mass_g":3750,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":46,"culmen_depth_mm":18.9,"flipper_length_mm":195,"body_mass_g":4150,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":51.3,"culmen_depth_mm":19.9,"flipper_length_mm":198,"body_mass_g":3700,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":46.6,"culmen_depth_mm":17.8,"flipper_length_mm":193,"body_mass_g":3800,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":51.7,"culmen_depth_mm":20.3,"flipper_length_mm":194,"body_mass_g":3775,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":47,"culmen_depth_mm":17.3,"flipper_length_mm":185,"body_mass_g":3700,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":52,"culmen_depth_mm":18.1,"flipper_length_mm":201,"body_mass_g":4050,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":45.9,"culmen_depth_mm":17.1,"flipper_length_mm":190,"body_mass_g":3575,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":50.5,"culmen_depth_mm":19.6,"flipper_length_mm":201,"body_mass_g":4050,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":50.3,"culmen_depth_mm":20,"flipper_length_mm":197,"body_mass_g":3300,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":58,"culmen_depth_mm":17.8,"flipper_length_mm":181,"body_mass_g":3700,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":46.4,"culmen_depth_mm":18.6,"flipper_length_mm":190,"body_mass_g":3450,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":49.2,"culmen_depth_mm":18.2,"flipper_length_mm":195,"body_mass_g":4400,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":42.4,"culmen_depth_mm":17.3,"flipper_length_mm":181,"body_mass_g":3600,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":48.5,"culmen_depth_mm":17.5,"flipper_length_mm":191,"body_mass_g":3400,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":43.2,"culmen_depth_mm":16.6,"flipper_length_mm":187,"body_mass_g":2900,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":50.6,"culmen_depth_mm":19.4,"flipper_length_mm":193,"body_mass_g":3800,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":46.7,"culmen_depth_mm":17.9,"flipper_length_mm":195,"body_mass_g":3300,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":52,"culmen_depth_mm":19,"flipper_length_mm":197,"body_mass_g":4150,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":50.5,"culmen_depth_mm":18.4,"flipper_length_mm":200,"body_mass_g":3400,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":49.5,"culmen_depth_mm":19,"flipper_length_mm":200,"body_mass_g":3800,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":46.4,"culmen_depth_mm":17.8,"flipper_length_mm":191,"body_mass_g":3700,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":52.8,"culmen_depth_mm":20,"flipper_length_mm":205,"body_mass_g":4550,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":40.9,"culmen_depth_mm":16.6,"flipper_length_mm":187,"body_mass_g":3200,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":54.2,"culmen_depth_mm":20.8,"flipper_length_mm":201,"body_mass_g":4300,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":42.5,"culmen_depth_mm":16.7,"flipper_length_mm":187,"body_mass_g":3350,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":51,"culmen_depth_mm":18.8,"flipper_length_mm":203,"body_mass_g":4100,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":49.7,"culmen_depth_mm":18.6,"flipper_length_mm":195,"body_mass_g":3600,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":47.5,"culmen_depth_mm":16.8,"flipper_length_mm":199,"body_mass_g":3900,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":47.6,"culmen_depth_mm":18.3,"flipper_length_mm":195,"body_mass_g":3850,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":52,"culmen_depth_mm":20.7,"flipper_length_mm":210,"body_mass_g":4800,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":46.9,"culmen_depth_mm":16.6,"flipper_length_mm":192,"body_mass_g":2700,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":53.5,"culmen_depth_mm":19.9,"flipper_length_mm":205,"body_mass_g":4500,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":49,"culmen_depth_mm":19.5,"flipper_length_mm":210,"body_mass_g":3950,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":46.2,"culmen_depth_mm":17.5,"flipper_length_mm":187,"body_mass_g":3650,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":50.9,"culmen_depth_mm":19.1,"flipper_length_mm":196,"body_mass_g":3550,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":45.5,"culmen_depth_mm":17,"flipper_length_mm":196,"body_mass_g":3500,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":50.9,"culmen_depth_mm":17.9,"flipper_length_mm":196,"body_mass_g":3675,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":50.8,"culmen_depth_mm":18.5,"flipper_length_mm":201,"body_mass_g":4450,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":50.1,"culmen_depth_mm":17.9,"flipper_length_mm":190,"body_mass_g":3400,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":49,"culmen_depth_mm":19.6,"flipper_length_mm":212,"body_mass_g":4300,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":51.5,"culmen_depth_mm":18.7,"flipper_length_mm":187,"body_mass_g":3250,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":49.8,"culmen_depth_mm":17.3,"flipper_length_mm":198,"body_mass_g":3675,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":48.1,"culmen_depth_mm":16.4,"flipper_length_mm":199,"body_mass_g":3325,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":51.4,"culmen_depth_mm":19,"flipper_length_mm":201,"body_mass_g":3950,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":45.7,"culmen_depth_mm":17.3,"flipper_length_mm":193,"body_mass_g":3600,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":50.7,"culmen_depth_mm":19.7,"flipper_length_mm":203,"body_mass_g":4050,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":42.5,"culmen_depth_mm":17.3,"flipper_length_mm":187,"body_mass_g":3350,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":52.2,"culmen_depth_mm":18.8,"flipper_length_mm":197,"body_mass_g":3450,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":45.2,"culmen_depth_mm":16.6,"flipper_length_mm":191,"body_mass_g":3250,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":49.3,"culmen_depth_mm":19.9,"flipper_length_mm":203,"body_mass_g":4050,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":50.2,"culmen_depth_mm":18.8,"flipper_length_mm":202,"body_mass_g":3800,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":45.6,"culmen_depth_mm":19.4,"flipper_length_mm":194,"body_mass_g":3525,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":51.9,"culmen_depth_mm":19.5,"flipper_length_mm":206,"body_mass_g":3950,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":46.8,"culmen_depth_mm":16.5,"flipper_length_mm":189,"body_mass_g":3650,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":45.7,"culmen_depth_mm":17,"flipper_length_mm":195,"body_mass_g":3650,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":55.8,"culmen_depth_mm":19.8,"flipper_length_mm":207,"body_mass_g":4000,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":43.5,"culmen_depth_mm":18.1,"flipper_length_mm":202,"body_mass_g":3400,"sex":"FEMALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":49.6,"culmen_depth_mm":18.2,"flipper_length_mm":193,"body_mass_g":3775,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":50.8,"culmen_depth_mm":19,"flipper_length_mm":210,"body_mass_g":4100,"sex":"MALE"},{"species":"Chinstrap","island":"Dream","culmen_length_mm":50.2,"culmen_depth_mm":18.7,"flipper_length_mm":198,"body_mass_g":3775,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":46.1,"culmen_depth_mm":13.2,"flipper_length_mm":211,"body_mass_g":4500,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":50,"culmen_depth_mm":16.3,"flipper_length_mm":230,"body_mass_g":5700,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":48.7,"culmen_depth_mm":14.1,"flipper_length_mm":210,"body_mass_g":4450,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":50,"culmen_depth_mm":15.2,"flipper_length_mm":218,"body_mass_g":5700,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":47.6,"culmen_depth_mm":14.5,"flipper_length_mm":215,"body_mass_g":5400,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":46.5,"culmen_depth_mm":13.5,"flipper_length_mm":210,"body_mass_g":4550,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":45.4,"culmen_depth_mm":14.6,"flipper_length_mm":211,"body_mass_g":4800,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":46.7,"culmen_depth_mm":15.3,"flipper_length_mm":219,"body_mass_g":5200,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":43.3,"culmen_depth_mm":13.4,"flipper_length_mm":209,"body_mass_g":4400,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":46.8,"culmen_depth_mm":15.4,"flipper_length_mm":215,"body_mass_g":5150,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":40.9,"culmen_depth_mm":13.7,"flipper_length_mm":214,"body_mass_g":4650,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":49,"culmen_depth_mm":16.1,"flipper_length_mm":216,"body_mass_g":5550,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":45.5,"culmen_depth_mm":13.7,"flipper_length_mm":214,"body_mass_g":4650,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":48.4,"culmen_depth_mm":14.6,"flipper_length_mm":213,"body_mass_g":5850,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":45.8,"culmen_depth_mm":14.6,"flipper_length_mm":210,"body_mass_g":4200,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":49.3,"culmen_depth_mm":15.7,"flipper_length_mm":217,"body_mass_g":5850,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":42,"culmen_depth_mm":13.5,"flipper_length_mm":210,"body_mass_g":4150,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":49.2,"culmen_depth_mm":15.2,"flipper_length_mm":221,"body_mass_g":6300,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":46.2,"culmen_depth_mm":14.5,"flipper_length_mm":209,"body_mass_g":4800,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":48.7,"culmen_depth_mm":15.1,"flipper_length_mm":222,"body_mass_g":5350,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":50.2,"culmen_depth_mm":14.3,"flipper_length_mm":218,"body_mass_g":5700,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":45.1,"culmen_depth_mm":14.5,"flipper_length_mm":215,"body_mass_g":5000,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":46.5,"culmen_depth_mm":14.5,"flipper_length_mm":213,"body_mass_g":4400,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":46.3,"culmen_depth_mm":15.8,"flipper_length_mm":215,"body_mass_g":5050,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":42.9,"culmen_depth_mm":13.1,"flipper_length_mm":215,"body_mass_g":5000,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":46.1,"culmen_depth_mm":15.1,"flipper_length_mm":215,"body_mass_g":5100,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":44.5,"culmen_depth_mm":14.3,"flipper_length_mm":216,"body_mass_g":4100,"sex":null},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":47.8,"culmen_depth_mm":15,"flipper_length_mm":215,"body_mass_g":5650,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":48.2,"culmen_depth_mm":14.3,"flipper_length_mm":210,"body_mass_g":4600,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":50,"culmen_depth_mm":15.3,"flipper_length_mm":220,"body_mass_g":5550,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":47.3,"culmen_depth_mm":15.3,"flipper_length_mm":222,"body_mass_g":5250,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":42.8,"culmen_depth_mm":14.2,"flipper_length_mm":209,"body_mass_g":4700,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":45.1,"culmen_depth_mm":14.5,"flipper_length_mm":207,"body_mass_g":5050,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":59.6,"culmen_depth_mm":17,"flipper_length_mm":230,"body_mass_g":6050,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":49.1,"culmen_depth_mm":14.8,"flipper_length_mm":220,"body_mass_g":5150,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":48.4,"culmen_depth_mm":16.3,"flipper_length_mm":220,"body_mass_g":5400,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":42.6,"culmen_depth_mm":13.7,"flipper_length_mm":213,"body_mass_g":4950,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":44.4,"culmen_depth_mm":17.3,"flipper_length_mm":219,"body_mass_g":5250,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":44,"culmen_depth_mm":13.6,"flipper_length_mm":208,"body_mass_g":4350,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":48.7,"culmen_depth_mm":15.7,"flipper_length_mm":208,"body_mass_g":5350,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":42.7,"culmen_depth_mm":13.7,"flipper_length_mm":208,"body_mass_g":3950,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":49.6,"culmen_depth_mm":16,"flipper_length_mm":225,"body_mass_g":5700,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":45.3,"culmen_depth_mm":13.7,"flipper_length_mm":210,"body_mass_g":4300,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":49.6,"culmen_depth_mm":15,"flipper_length_mm":216,"body_mass_g":4750,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":50.5,"culmen_depth_mm":15.9,"flipper_length_mm":222,"body_mass_g":5550,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":43.6,"culmen_depth_mm":13.9,"flipper_length_mm":217,"body_mass_g":4900,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":45.5,"culmen_depth_mm":13.9,"flipper_length_mm":210,"body_mass_g":4200,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":50.5,"culmen_depth_mm":15.9,"flipper_length_mm":225,"body_mass_g":5400,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":44.9,"culmen_depth_mm":13.3,"flipper_length_mm":213,"body_mass_g":5100,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":45.2,"culmen_depth_mm":15.8,"flipper_length_mm":215,"body_mass_g":5300,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":46.6,"culmen_depth_mm":14.2,"flipper_length_mm":210,"body_mass_g":4850,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":48.5,"culmen_depth_mm":14.1,"flipper_length_mm":220,"body_mass_g":5300,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":45.1,"culmen_depth_mm":14.4,"flipper_length_mm":210,"body_mass_g":4400,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":50.1,"culmen_depth_mm":15,"flipper_length_mm":225,"body_mass_g":5000,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":46.5,"culmen_depth_mm":14.4,"flipper_length_mm":217,"body_mass_g":4900,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":45,"culmen_depth_mm":15.4,"flipper_length_mm":220,"body_mass_g":5050,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":43.8,"culmen_depth_mm":13.9,"flipper_length_mm":208,"body_mass_g":4300,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":45.5,"culmen_depth_mm":15,"flipper_length_mm":220,"body_mass_g":5000,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":43.2,"culmen_depth_mm":14.5,"flipper_length_mm":208,"body_mass_g":4450,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":50.4,"culmen_depth_mm":15.3,"flipper_length_mm":224,"body_mass_g":5550,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":45.3,"culmen_depth_mm":13.8,"flipper_length_mm":208,"body_mass_g":4200,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":46.2,"culmen_depth_mm":14.9,"flipper_length_mm":221,"body_mass_g":5300,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":45.7,"culmen_depth_mm":13.9,"flipper_length_mm":214,"body_mass_g":4400,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":54.3,"culmen_depth_mm":15.7,"flipper_length_mm":231,"body_mass_g":5650,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":45.8,"culmen_depth_mm":14.2,"flipper_length_mm":219,"body_mass_g":4700,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":49.8,"culmen_depth_mm":16.8,"flipper_length_mm":230,"body_mass_g":5700,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":46.2,"culmen_depth_mm":14.4,"flipper_length_mm":214,"body_mass_g":4650,"sex":null},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":49.5,"culmen_depth_mm":16.2,"flipper_length_mm":229,"body_mass_g":5800,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":43.5,"culmen_depth_mm":14.2,"flipper_length_mm":220,"body_mass_g":4700,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":50.7,"culmen_depth_mm":15,"flipper_length_mm":223,"body_mass_g":5550,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":47.7,"culmen_depth_mm":15,"flipper_length_mm":216,"body_mass_g":4750,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":46.4,"culmen_depth_mm":15.6,"flipper_length_mm":221,"body_mass_g":5000,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":48.2,"culmen_depth_mm":15.6,"flipper_length_mm":221,"body_mass_g":5100,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":46.5,"culmen_depth_mm":14.8,"flipper_length_mm":217,"body_mass_g":5200,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":46.4,"culmen_depth_mm":15,"flipper_length_mm":216,"body_mass_g":4700,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":48.6,"culmen_depth_mm":16,"flipper_length_mm":230,"body_mass_g":5800,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":47.5,"culmen_depth_mm":14.2,"flipper_length_mm":209,"body_mass_g":4600,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":51.1,"culmen_depth_mm":16.3,"flipper_length_mm":220,"body_mass_g":6000,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":45.2,"culmen_depth_mm":13.8,"flipper_length_mm":215,"body_mass_g":4750,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":45.2,"culmen_depth_mm":16.4,"flipper_length_mm":223,"body_mass_g":5950,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":49.1,"culmen_depth_mm":14.5,"flipper_length_mm":212,"body_mass_g":4625,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":52.5,"culmen_depth_mm":15.6,"flipper_length_mm":221,"body_mass_g":5450,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":47.4,"culmen_depth_mm":14.6,"flipper_length_mm":212,"body_mass_g":4725,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":50,"culmen_depth_mm":15.9,"flipper_length_mm":224,"body_mass_g":5350,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":44.9,"culmen_depth_mm":13.8,"flipper_length_mm":212,"body_mass_g":4750,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":50.8,"culmen_depth_mm":17.3,"flipper_length_mm":228,"body_mass_g":5600,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":43.4,"culmen_depth_mm":14.4,"flipper_length_mm":218,"body_mass_g":4600,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":51.3,"culmen_depth_mm":14.2,"flipper_length_mm":218,"body_mass_g":5300,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":47.5,"culmen_depth_mm":14,"flipper_length_mm":212,"body_mass_g":4875,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":52.1,"culmen_depth_mm":17,"flipper_length_mm":230,"body_mass_g":5550,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":47.5,"culmen_depth_mm":15,"flipper_length_mm":218,"body_mass_g":4950,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":52.2,"culmen_depth_mm":17.1,"flipper_length_mm":228,"body_mass_g":5400,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":45.5,"culmen_depth_mm":14.5,"flipper_length_mm":212,"body_mass_g":4750,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":49.5,"culmen_depth_mm":16.1,"flipper_length_mm":224,"body_mass_g":5650,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":44.5,"culmen_depth_mm":14.7,"flipper_length_mm":214,"body_mass_g":4850,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":50.8,"culmen_depth_mm":15.7,"flipper_length_mm":226,"body_mass_g":5200,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":49.4,"culmen_depth_mm":15.8,"flipper_length_mm":216,"body_mass_g":4925,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":46.9,"culmen_depth_mm":14.6,"flipper_length_mm":222,"body_mass_g":4875,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":48.4,"culmen_depth_mm":14.4,"flipper_length_mm":203,"body_mass_g":4625,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":51.1,"culmen_depth_mm":16.5,"flipper_length_mm":225,"body_mass_g":5250,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":48.5,"culmen_depth_mm":15,"flipper_length_mm":219,"body_mass_g":4850,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":55.9,"culmen_depth_mm":17,"flipper_length_mm":228,"body_mass_g":5600,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":47.2,"culmen_depth_mm":15.5,"flipper_length_mm":215,"body_mass_g":4975,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":49.1,"culmen_depth_mm":15,"flipper_length_mm":228,"body_mass_g":5500,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":47.3,"culmen_depth_mm":13.8,"flipper_length_mm":216,"body_mass_g":4725,"sex":null},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":46.8,"culmen_depth_mm":16.1,"flipper_length_mm":215,"body_mass_g":5500,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":41.7,"culmen_depth_mm":14.7,"flipper_length_mm":210,"body_mass_g":4700,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":53.4,"culmen_depth_mm":15.8,"flipper_length_mm":219,"body_mass_g":5500,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":43.3,"culmen_depth_mm":14,"flipper_length_mm":208,"body_mass_g":4575,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":48.1,"culmen_depth_mm":15.1,"flipper_length_mm":209,"body_mass_g":5500,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":50.5,"culmen_depth_mm":15.2,"flipper_length_mm":216,"body_mass_g":5000,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":49.8,"culmen_depth_mm":15.9,"flipper_length_mm":229,"body_mass_g":5950,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":43.5,"culmen_depth_mm":15.2,"flipper_length_mm":213,"body_mass_g":4650,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":51.5,"culmen_depth_mm":16.3,"flipper_length_mm":230,"body_mass_g":5500,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":46.2,"culmen_depth_mm":14.1,"flipper_length_mm":217,"body_mass_g":4375,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":55.1,"culmen_depth_mm":16,"flipper_length_mm":230,"body_mass_g":5850,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":44.5,"culmen_depth_mm":15.7,"flipper_length_mm":217,"body_mass_g":4875,"sex":null},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":48.8,"culmen_depth_mm":16.2,"flipper_length_mm":222,"body_mass_g":6000,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":47.2,"culmen_depth_mm":13.7,"flipper_length_mm":214,"body_mass_g":4925,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":46.8,"culmen_depth_mm":14.3,"flipper_length_mm":215,"body_mass_g":4850,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":50.4,"culmen_depth_mm":15.7,"flipper_length_mm":222,"body_mass_g":5750,"sex":"MALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":45.2,"culmen_depth_mm":14.8,"flipper_length_mm":212,"body_mass_g":5200,"sex":"FEMALE"},{"species":"Gentoo","island":"Biscoe","culmen_length_mm":49.9,"culmen_depth_mm":16.1,"flipper_length_mm":213,"body_mass_g":5400,"sex":"MALE"}];
+    </script>
+    <script>
+        // other source code: https://gist.github.com/vijithassar/c60dafea4431f292660d6f5e0487e470
+        // var Plot = {};
+
+        // var dimension = Inputs.select(
+        //     ['culmen_length_mm', 'culmen_depth_mm', 'flipper_length_mm', 'body_mass_g'],
+        //     { label: 'Dimension', value: 'flipper_length_mm' });
+        var dimension = 'culmen_length_mm';
+        // var thresholds = Inputs.select([10, 20, 60], { label: 'Bins for Half Violin', value: 20 })
+        var thresholds = 10;
+
+        // viewof rawDataSize = Inputs.range([10, 100], { value: 40, step: 10, label: 'Raw Data Size (%)' });
+        var rawDataSize = 30;
+
+        // var rawDataOffset = Inputs.range([0, 50], { value: 5, step: 5, label: 'Raw Data Offset (%)' })
+        var rawDataOffset = 20;
+
+        // viewof seed = Inputs.range([1, 100], { step: 1, label: 'Raw Data Seed', value: 1 })
+
+        var seed = 1;
+
+        // viewof showBoxPlot = Inputs.toggle({ label: 'Box Plot', value: true })
+        var showBoxPlot = true;
+
+        // viewof boxPlotSize = Inputs.range([5, 100], { value: 15, step: 5, label: 'Box Plot Size (%)' })
+        var boxPlotSize = 20;
+
+        // viewof boxPlotOffsetFlag = Inputs.toggle({ label: 'Box Plot Offset', value: 1, values: [1, 0] })
+        var boxPlotOffsetFlag = 1;
+
+        // viewof flipCoords = Inputs.toggle({ label: 'Flip Coordinate System', value: false });
+        var flipCoords = true;
+
+        var boxPlotOffset = 7.25;
+        var upperWhisker = d => Math.min(d3.max(d), upperQuartile(d) + 1.5 * iqr(d));
+        var lowerWhisker = d => Math.max(d3.min(d), lowerQuartile(d) - 1.5 * iqr(d));
+        var iqr = d => upperQuartile(d) - lowerQuartile(d);
+        var upperQuartile = d => d3.quantile(d, 0.75);
+        var lowerQuartile = d => d3.quantile(d, 0.25);
+
+        var jitter = (data, seed) => {
+                const rng = new Math.seedrandom(seed);
+
+                return data.map(() => -(rng() * rawDataSize + rawDataOffset) * maxTotal / 100);
+        }
+
+        var maxTotal = 29;
+
+        var bins = d3
+            .bin()
+            .domain(d3.extent(data, d => d[dimension]))
+            .thresholds(thresholds);
+
+        // var myrng = new Math.seedrandom('hello.');
+
+        // seedrandom = require('seedrandom');
+        
+        var halfViolinY = Plot.areaX(
+            data,
+            Plot.binY(
+                {
+                    x: 'count'
+                },
+                {
+                y: dimension,
+                fill: 'species',
+                thresholds: thresholds,
+                curve: 'basis'
+                }
+            )
+        );
+
+        var rawDataY = Plot.dot(
+            data,
+            {
+                y: dimension,
+                x: jitter(data, seed),
+                fill: 'species',
+                    stroke: null,
+                    r: 1.5
+                }
+        );
+
+        var boxPlotY = [
+            Plot.ruleY(
+                data,
+                    Plot.groupZ(
+                    {
+                            y: 'median'
+                        },
+                        {
+                            y: dimension,
+                            x1: -boxPlotOffset - boxPlotSize * maxTotal / 100 / 2,
+                            x2: -boxPlotOffset + boxPlotSize * maxTotal / 100 / 2,
+                            strokeWidth: 2,
+                    stroke: '#333333'
+                        }
+                    )
+                ),
+            Plot.rectY(
+                data,
+                Plot.groupZ(
+                {
+                    y1: lowerQuartile,
+                    y2: upperQuartile
+                },
+                {
+                    y: dimension,
+                            x1: -boxPlotOffset - boxPlotSize * maxTotal / 100 / 2,
+                            x2: -boxPlotOffset + boxPlotSize * maxTotal / 100 / 2,
+                            stroke: '#333333'
+                }
+                )
+            ),
+            Plot.ruleX(
+                data,
+                Plot.groupX(
+                {
+                    y1: lowerWhisker,
+                    y2: lowerQuartile
+                },
+                {
+                    y: dimension,
+                            x: -boxPlotOffset,
+                    stroke: '#333333'
+                }
+                )
+            ),
+            Plot.ruleX(
+                data,
+                Plot.groupX(
+                {
+                    y1: upperQuartile,
+                    y2: upperWhisker
+                },
+                {
+                    y: dimension,
+                            x: -boxPlotOffset,
+                    stroke: '#333333'
+                }
+                )
+            )  
+            ];
+
+        var  rainCloudX = {
+                marks: [
+                    Plot.ruleX([Math.floor(d3.min(data.map(d => d[dimension])))]),
+                    halfViolinX,
+                    rawDataX,
+                    showBoxPlot ? boxPlotX : []
+                ],
+                facet: {
+                    data: data,
+                    y: 'species',
+                    marginRight: 80
+                },
+                y: {
+                    ticks: 3,
+                    tickFormat: d => d < 0 ? '' : d 
+                },
+                marginBottom: 40,
+                width: 640,
+                height: 480
+            };
+        
+        var halfViolinX = Plot.areaY(
+            data,
+            Plot.binX(
+                {
+                y: 'count'
+                },
+                {
+                x: dimension,
+                fill: 'species',
+                thresholds: thresholds,
+                curve: 'basis'
+                }
+            )
+        );
+
+        var rawDataX = Plot.dot(
+            data,
+            {
+                    x: dimension,
+                y: jitter(data, seed),
+                fill: 'species',
+                    stroke: null,
+                    r: 1.5
+                }
+            );
+
+        var boxPlotX = [
+                Plot.ruleX(
+                    data,
+                        Plot.groupZ(
+                        {
+                                x: 'median'
+                            },
+                            {
+                                x: dimension,
+                                y1: -boxPlotOffset - boxPlotSize * maxTotal / 100 / 2,
+                                y2: -boxPlotOffset + boxPlotSize * maxTotal / 100 / 2,
+                                strokeWidth: 2,
+                        stroke: '#333333'
+                            }
+                        )
+                    ),
+                Plot.rectX(
+                    data,
+                    Plot.groupZ(
+                    {
+                        x1: lowerQuartile,
+                        x2: upperQuartile
+                    },
+                    {
+                        x: dimension,
+                                y1: -boxPlotOffset - boxPlotSize * maxTotal / 100 / 2,
+                                y2: -boxPlotOffset + boxPlotSize * maxTotal / 100 / 2,
+                                stroke: '#333333'
+                    }
+                    )
+                ),
+                Plot.ruleY(
+                    data,
+                    Plot.groupY(
+                    {
+                        x1: lowerWhisker,
+                        x2: lowerQuartile
+                    },
+                    {
+                        x: dimension,
+                                y: -boxPlotOffset,
+                        stroke: '#333333'
+                    }
+                    )
+                ),
+                Plot.ruleY(
+                    data,
+                    Plot.groupY(
+                    {
+                        x1: upperQuartile,
+                        x2: upperWhisker
+                    },
+                    {
+                        x: dimension,
+                                y: -boxPlotOffset,
+                        stroke: '#333333'
+                    }
+                    )
+                )  
+                ]
+
+        var rainCloudY = {
+            marks: [
+                Plot.ruleY([Math.floor(d3.min(data.map(d => d[dimension])))]),
+                halfViolinY,
+                rawDataY,
+                showBoxPlot ? boxPlotY : []
+            ],
+            facet: {
+                data: data,
+                x: 'species',
+                marginBottom: 40
+            },
+            x: {
+                ticks: 3,
+                tickFormat: d => d < 0 ? '' : d
+            },
+            marginTop: 40,
+            marginBottom: 60,
+            marginRight: 60,
+            width: 480,
+            height: 640
+        };
+
+        var overviewPlot = Plot.plot(flipCoords ? rainCloudY : rainCloudX)
+        const div = document.querySelector("#myplot");
+        div.append(overviewPlot);
+    </script>
+
+</body>
+</html>

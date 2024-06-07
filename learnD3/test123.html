@@ -1,0 +1,47 @@
+<!DOCTYPE html> 
+<html> 
+<meta charset="utf-8"> 
+<head> 
+  <title>Line in D3.js</title> 
+</head> 
+<script src="https://d3js.org/d3.v6.js"></script>
+
+<style> 
+path { 
+    fill:none; 
+    stroke:green; 
+} 
+</style> 
+  
+<body> 
+    <h1 style="text-align:center;  
+        color:green;">GeeksforGeeks</h1> 
+  <center> 
+    <svg id="gfg" width="200" height="200"></svg> 
+</center> 
+  <script> 
+//   https://www.jianshu.com/p/3f2a038e8357
+        var _svg = d3.select("body")
+                .append("svg")
+                .attr("width","400")
+                .attr("height","300");
+  
+        let dx = 40,x1=50,y1=50,x2=300,y2=300;
+        let dy = Math.round(Math.abs( ( ( y2 - y1 ) / ( x2 - x1 ) ) * dx ));
+        //向右上弯曲
+        let cpx = Math.round(( x1 + x2 ) / 2 + dx);
+        let cpy = Math.round(( x1 + x2 ) / 2 - dy);
+
+        var path = d3.path();
+        path.moveTo(x1,y1);
+        path.quadraticCurveTo(cpx,cpy,x2,y2);
+        
+        _svg.append('path')
+            .attr('d', path.toString())
+            .style('fill','none')
+            .style('stroke','red')
+            .style('stroke-width','2');     
+  
+</script> 
+</body>
+</html>

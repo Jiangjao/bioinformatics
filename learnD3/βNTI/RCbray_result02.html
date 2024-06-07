@@ -1,0 +1,5252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+
+    <title>Document</title>
+    <style>
+        svg .container {
+            width: 100%;
+            height: 100%;
+            margin: auto;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .tooltip {
+            position: absolute;
+            background-color: #f9f9f9;
+            padding: 8px;
+            border: 1px solid #ccc;
+            pointer-events: none;
+            font-size: 14px;
+        }
+        .center-wrap {
+            margin: 0 auto;
+        }
+        .basicSettings {
+            /* width: 80%; */
+            position: relative;
+            /* top: 38px; */
+            z-index: 1;
+            overflow-y: auto;
+        }
+
+        .downloadSettings {
+            width: 100%;
+            position: relative;
+            /* top: 18px; */
+            z-index: 2;
+        }
+
+        .sidebar {
+            width: 100%;
+            display: none;
+            /* 初始状态下隐藏下拉框 */
+        }
+
+        .sidebar p {
+            width: 120px;
+        }
+        .sidebar h2 {
+            /* margin-bottom: 10px; */
+            /* border-bottom: 1px solid #ddd; */
+            padding-bottom: 5px;
+        }
+
+
+        .sidebar label {
+            width: 120px;
+            /* text-align: right; */
+            /* margin-right: 10px; */
+            /* display: inline-block; */
+        }
+        /* 字体宽度大小设置 */
+        .sidebar .form-select {
+            width: 80px;
+        }
+        /* .sidebar input, */
+        .sidebar select {
+            width: 120px;
+            /* text-align: right; */
+            margin-right: 10px;
+            border-radius: 4px;
+        }
+
+        .sidebar button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            background: #42b983;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .sidebar button:hover {
+            opacity: 0.8;
+        }
+
+        .sidebar input[type="number"] {
+            width: 50px;
+        }
+
+        .sidebar input[type="text"] {
+            width: 36%;
+        }
+
+        .sidebar input[type="range"] {
+            width: 100%;
+            /* transform: rotate(270deg); 添加垂直滚动条 */
+        }
+
+        /* .sidebar br {
+            display: none;
+        } */
+
+        .item {
+            display: flex;
+            align-items: center;
+            text-align: justify;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            width: 88%;
+        }
+
+        /* .item {} */
+
+        .sidebar hr {
+            overflow: hidden;
+            width: 88%;
+        }
+
+        /* 设置hr线 */
+        .item+hr {
+            margin: 10px 0;
+
+        }
+
+        .item+hr:first-child {
+            margin-top: 0;
+        }
+
+        .item+hr {
+            border: none;
+            border-top: 1px dotted #ccc;
+        }
+
+        /* hr {} */
+        /* .item label {
+            width: 120px;
+            } */
+        /* .sidebar {
+            display: flex;
+            flex-wrap: wrap;
+        } */
+
+        .sliderTooltip {
+            /* display: block; */
+            /* position: absolute; */
+            /* styles */
+            /* padding: 10px; */
+            position: absolute;
+            /* top: -30px; */
+            /* left: 134px; */
+            background-color: rgb(204 204 204 / 18%);
+            /* color: #f9f9f9; */
+            padding: 5px;
+            border-radius: 5px;
+            display: none;
+            margin-top: 14%;
+        }
+
+        .tooltip.show {
+            display: block;
+        }
+
+        .sidebar.show {
+            width: 100%;
+            height: auto;
+            position: relative;
+            /* padding: inherit; */
+            display: block;
+            padding: 10px 11px;
+            /* 点击后显示下拉框 */
+            transition: max-height 0.3s ease;
+            z-index: 1;
+            /* 添加过渡效果 */
+        }
+
+        /* 添加button的样式 */
+        .button-like {
+            display: inline-block;
+            padding: 10px 0 10px 10%;
+            background-color: #4CAF50;
+            color: white;
+            text-align: left;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 90%;
+        }
+
+        .button-like:hover {
+            background-color: #45a049;
+        }
+
+        .button-like:active {
+            background-color: #3e8e41;
+        }
+
+        /* TODO:xiaojiao, @media screen and (max-width: 700px) 如何使用2023/10/23 */
+        div.tooltip-donut {
+            position: absolute;
+            text-align: center;
+            padding: .5rem;
+            background: #FFFFFF;
+            color: #313639;
+            border: 1px solid #313639;
+            border-radius: 8px;
+            pointer-events: none;
+            font-size: 1.3rem;
+        }
+
+        icon-i {
+            text-align: center;
+        }
+
+        .dropdown {
+            /* padding: 10px 11px; */
+            position: relative;
+            /* display: inline-block; */
+        }
+
+        .dropdown-content {
+            display: none;
+            position: relative;
+            /* top: 100%; */
+            /* left: 0; */
+            width: 100%;
+            /* padding: 10px 11px; */
+            background-color: #4CAF50;
+        }
+
+
+        .settingContent {
+            display: block;
+            position: relative;
+            /* top: 100%; */
+            /* left: 0; */
+            width: 90%;
+            padding: 10px 11px;
+            /* overflow-y: scroll; */
+            height: 60vh;
+            overflow-y: scroll;
+            /* 设置垂直方向上溢出时显示滚动条 */
+            overflow-x: hidden;
+            scrollbar-width: thin;
+            /* 设置滚动条的宽度 */
+            scrollbar-color: gray lightgray;
+            /* 设置滚动条的颜色 */
+        }
+
+        /* div#settingContent {} */
+        /* .dropdown:hover .dropdown-content {
+        display: block;
+
+         } */
+
+        .filled {
+            fill: url("#mainGradient");
+        }
+
+        .ticks text {
+            font-family: sans-serif;
+            font-size: 17px;
+            text-anchor: middle;
+        }
+    </style>
+</head>
+
+
+<body>
+<div>
+    <div>
+
+        <div style="width: 20%;z-index: 1; position: fixed; padding-right: 1%; right:0; top:40px; opacity: 0.9;">
+            <!-- add by xiaojiao 停靠右侧， x轴文本旋转 -->
+            <!-- add by xiaojiao 柱状图宽度调整 -->
+            <div class="dropdown">
+                <div id="dropdownTest" class="downloadSettings" style="background:#F9F9F9;width: 100%;">
+                    <p class="button-like">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-cloud-arrow-down" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M7.646 10.854a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 9.293V5.5a.5.5 0 0 0-1 0v3.793L6.354 8.146a.5.5 0 1 0-.708.708l2 2z" />
+                            <path
+                                d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z" />
+                        </svg>
+                        download
+                    </p>
+                </div>
+                <div id="dropdownContent" class="dropdown-content"
+                    style="background:#F9F9F9;width: 100%;display: none;">
+                    <div class="sidebar show">
+                        <h3>文本 Settings</h3>
+                        <button id="export">下载 SVG</button>
+                        <!-- <br> -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- <br> -->
+            <div class="dropdown" style="background:#F9F9F9;width: 100%;">
+                <div class="basicSettings">
+                    <!-- <button type="button" id="exitBtn" class="btn" onClick="exitFullscreen()">退出全屏</button> -->
+                    <p type="button" id="btn" class="btn button-like" title="fullscreen">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-gear" viewBox="0 0 16 16">
+                            <path title="修改参数"
+                                d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+                            <path title="修改参数"
+                                d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z" />
+                        </svg>
+                        <path title="fullscreen" fill-rule="evenodd"
+                            d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z" />
+                        </svg>
+                        setting
+                    </p>
+                </div>
+                <div class="settingContent" id="settingContent">
+                    <div class="sidebar show" id="mainsetting">
+                        <!-- <h2>文本 Settings</h2> -->
+                        <div class="item">
+                            <p>字体选择:</p>
+                            <!-- https://www.runoob.com/w3cnote/web-font-family.html -->
+                            <select class="form-select" id="fontSelect">
+                                <option value="">Select</option>
+                                <option disabled style="font-weight: bold; background-color: #EEEEEE">Serif Fonts
+                                </option>
+                                <option value="Georgia,serif" style="font-family: Georgia,serif">Georgia</option>
+                                <option value="Palatino Linotype,Book Antiqua,Palatino,serif"
+                                    style="font-family: Palatino Linotype,Book Antiqua,Palatino,serif">Palatino
+                                    Linotype</option>
+                                <option value="Times New Roman,Times,serif"
+                                    style="font-family: Times New Roman,Times,serif">Times New Roman</option>
+                                <option disabled style="font-weight: bold; background-color: #EEEEEE">Sans-Serif
+                                    Fonts</option>
+                                <option value="Arial,Helvetica,sans-serif"
+                                    style="font-family: Arial,Helvetica,sans-serif">Arial</option>
+                                <option value="Arial Black,Gadget,sans-serif"
+                                    style="font-family: Arial Black,Gadget,sans-serif">Arial Black</option>
+                                <option value="Comic Sans MS,cursive,sans-serif"
+                                    style="font-family: Comic Sans MS,cursive,sans-serif">Comic Sans MS</option>
+                                <option value="Impact,Charcoal,sans-serif"
+                                    style="font-family: Impact,Charcoal,sans-serif">Impact</option>
+                                <option value="Lucida Sans Unicode,Lucida Grande,sans-serif"
+                                    style="font-family: Lucida Sans Unicode,Lucida Grande,sans-serif">Lucida Sans
+                                    Unicode</option>
+                                <option selected="selected" value="Tahoma,Geneva,sans-serif"
+                                    style="font-family: Tahoma,Geneva,sans-serif">Tahoma</option>
+                                <option value="Trebuchet MS,Helvetica,sans-serif"
+                                    style="font-family: Trebuchet MS,Helvetica,sans-serif">Helvetica</option>
+                                <option value="Verdana,Geneva,sans-serif"
+                                    style="font-family: Verdana,Geneva,sans-serif">Verdana</option>
+                                <option disabled style="font-weight: bold; background-color: #EEEEEE">Monospace
+                                    Fonts</option>
+                                <option value="Courier New,Courier,monospace"
+                                    style="font-family: Courier New,Courier,monospace">Courier New</option>
+                                <option value="Lucida Console,Monaco,monospace"
+                                    style="font-family: Lucida Console,Monaco,monospace">Lucida Console</option>
+                                <option disabled style="font-weight: bold; background-color: #EEEEEE">中文</option>
+                                <option value="华文细黑,sans-serif" style="font-family: 华文细黑,sans-serif">华文细黑</option>
+                                <option value="微软雅黑,sans-serif" style="font-family: 微软雅黑,sans-serif">微软雅黑</option>
+                                <option value="中易宋体,sans-serif" style="font-family: 中易宋体,sans-serif">中易宋体</option>
+                                <option value="WenQuanYi Micro Hei,sans-serif"
+                                    style="font-family: WenQuanYi Micro Hei,sans-serif">WenQuanYi Micro Hei</option>
+                                <option value="楷体,serif" style="font-family: 楷体, serif">楷体</option>
+                                <option value="隶书,sans-serif" style="font-family: 隶书, sans-serif">隶书</option>
+                            </select>
+                        </div>
+
+                        <div class="item">
+                            <label>字体大小: </label>
+                            <input type="range" id="fontSizeRange" min="6" max="56" step="1" value="16">
+                            <div class="sliderTooltip">
+                                <span class="value"></span>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="item">
+                            <p>散点大小调整: </p>
+                            <input type="range" id="scatterSizeRange" min="0" max="50" step="0.1" value="1.5">
+                            <div class="scatterSizeRange" style="display: none;">
+                                <span class="value"></span>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <label>辅助线颜色: </label>
+                            <input type="color" id="vertial_hortizal_lines" >
+                        </div>
+                        <div class="item">
+                            <label for="colorPicker">边界颜色:</label>
+                            <input type="color" id="colorPicker">
+                            <input type="text" id="colorValue">
+
+                        </div>
+
+                        <div class="item">
+                            <label for="startColor">startColor:</label>
+                            <input type="color" id="startColor" value="#ff0000">
+                        </div>
+
+                        <div class="item">
+                            <label for="endColor">endColor:</label>
+                            <input type="color" id="endColor" value="#0000ff">
+                        </div>
+                        <div class="item">
+                            <button id="applySettings">Apply Settings</button>
+                        </div>
+
+                        <hr>
+
+                        <div class="item">
+                            <label for="sizeSlider">扇形宽度:</label>
+                            <input type="range" id="sizeSlider" min="100" max="500" value="360" step="1">
+                        </div>
+                        <div class="item">
+                            <label for="rotateSlider">旋转:</label>
+                            <input type="range" id="rotateSlider" min="0" max="360" step="1" value="30">
+                            <input type="text" id="rotateValue" readonly>
+                        </div>
+
+                        <div class="item">
+                            <label for="innerRadiusSlider">内部环形大小:</label>
+                            <input type="range" min="0" max="1000" value="320" id="innerRadiusSlider">
+                        </div>
+                        <div class="item">
+                            <label for="segmentHeightSlider">扇形高度:</label>
+                            <input type="range" id="segmentHeightSlider" min="0" max="1200" step="1" value="360">
+                        </div>
+                        <div class="item">
+                            <label for="treeDisplay">画树图</label>
+                            <input type="checkbox" id="treeDisplay" checked=true>
+                        </div>
+
+                        <div class="item">
+                            <button id="center-button">reset</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <br> -->
+            <!-- <br> -->
+            <div class="btns" id="btns" style="background:#F9F9F9;width: 100%;">
+
+                <!-- <button type="button" id="exitBtn" class="btn" onClick="exitFullscreen()">退出全屏</button> -->
+                <p type="button" id="btn" class="btn button-like fullScreen" title="fullscreen">
+                    <svg title="fullscreen" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        fill="currentColor" class="bi bi-arrows-fullscreen" viewBox="0 0 16 16">
+                        <path title="fullscreen" fill-rule="evenodd"
+                            d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z" />
+                    </svg>
+                    全屏
+                </p>
+            </div>
+        </div>
+
+
+        <div class="basicSettings" style="margin-left: auto; position: relative;">
+
+        </div>
+
+
+    </div>
+    <div id="my_dataviz">
+
+        <!-- <div id="my_dataviz"></div> -->
+
+    </div>
+
+</div>
+    <script>
+        const fontSelect = document.getElementById("fontSelect");
+        const textElement = d3.select("#my_dataviz");
+
+        fontSelect.addEventListener("change", function () {
+            const selectedFont = fontSelect.value;
+            d3.selectAll("text").style("font-family", selectedFont);
+            // svg.style("font-family", selectedFont);
+        });
+
+        const fontSizeRange = document.getElementById("fontSizeRange");
+        const sliderTooltip = document.querySelector(".sliderTooltip");
+
+        // 嵌套的子元素span中的value
+        var valueSpan = document.querySelector(".sliderTooltip .value");
+
+        fontSizeRange.addEventListener("input", function () {
+            const selectedFontSize = fontSizeRange.value;
+            d3.select("#my_dataviz").selectAll("text").style("font-size", selectedFontSize + "px");
+            // svg.style("font-size", selectedFontSize + "px");
+            const sliderRect = fontSizeRange.getBoundingClientRect();
+
+            const tooltipWidth = sliderTooltip.offsetWidth;
+            const tooltipHeight = sliderTooltip.offsetHeight;
+
+            console.log("sliderTooltip", sliderTooltip);
+            const sliderValue = parseInt(selectedFontSize);
+            const sliderMin = parseInt(fontSizeRange.min);
+            const sliderMax = parseInt(fontSizeRange.max);
+            const sliderWidth = fontSizeRange.offsetWidth;
+
+            console.log("sliderRect, tooltipWidth, tooltipHeight", sliderRect, tooltipWidth, tooltipHeight);
+
+            // TODO:xiaojiao, fix thar
+            // const tooltipX = 1;
+            const positionPercentage = (sliderValue - sliderMin) / (sliderMax - sliderMin);
+            const tooltipPosition = positionPercentage * (sliderWidth - tooltipWidth);
+
+            const tooltipX = tooltipWidth + tooltipPosition;
+            const tooltipY = sliderRect.top - tooltipHeight; // 自定义偏移量，避免与滑块重叠
+            console.log("tooltipX", tooltipPosition);
+
+            sliderTooltip.style.left = tooltipX + "px";
+            // sliderTooltip.style.top = -0.1 + "px";
+
+            valueSpan.textContent = selectedFontSize + 'px';
+        });
+
+        // 添加slider tooltip
+        fontSizeRange.addEventListener("mouseover", function () {
+            console.log("sliderTooltip", sliderTooltip);
+            // tooltip.classList.add()
+            sliderTooltip.style.display = "block";
+
+            sliderTooltip.classList.add("show");
+        });
+
+        fontSizeRange.addEventListener("mouseout", function () {
+
+            sliderTooltip.classList.remove("show");
+            sliderTooltip.style.display = "none";
+        });
+
+    </script>
+
+    <script>
+        // 网页窗口在某一大小打开时的宽高
+        // https://stackoverflow.com/questions/16265123/resize-svg-when-window-is-resized-in-d3-js
+        var width = window.innerWidth || document.clientWidth || document.body.clientWidth;
+        var height = window.innerHeight || document.clientHeight || document.body.clientHeight;
+
+
+        var xAxisWidth = 300;   // x轴宽度
+        var yAxisWidth = 300;   // y轴宽度
+
+        // 创建颜色比例尺
+        const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+
+        var margin = { top: 10, right: 500, bottom: 50, left: 170 },
+            width = width - margin.left - margin.right,
+            height = height - margin.top - margin.bottom;
+
+        var dataset = [
+    // [
+    //     "name",
+    //     "x",
+    //     "y",
+    //     "category"
+    // ],
+    [
+        "S9_S7",
+        1.37163091245058,
+        -0.478,
+        "S"
+    ],
+    [
+        "S1_S6",
+        -0.480714844916403,
+        -1,
+        "S"
+    ],
+    [
+        "S5_S1",
+        0.353496329608636,
+        -1,
+        "S"
+    ],
+    [
+        "S8_S9",
+        1.83530356332312,
+        -1,
+        "S"
+    ],
+    [
+        "S3_S6",
+        -1.20500122934585,
+        -1,
+        "S"
+    ],
+    [
+        "S1_S9",
+        2.24932108513564,
+        -0.126,
+        "S"
+    ],
+    [
+        "S6_S4",
+        0.122885713128645,
+        -1,
+        "S"
+    ],
+    [
+        "S5_S4",
+        -0.590953136245292,
+        -1,
+        "S"
+    ],
+    [
+        "S9_S5",
+        3.13716224553555,
+        -0.264,
+        "S"
+    ],
+    [
+        "S7_S9",
+        1.37163091245058,
+        -0.478,
+        "S"
+    ],
+    [
+        "S7_S4",
+        0.298208823311112,
+        -1,
+        "S"
+    ],
+    [
+        "S6_S1",
+        -0.480714844916403,
+        -1,
+        "S"
+    ],
+    [
+        "S4_S6",
+        0.122885713128645,
+        -1,
+        "S"
+    ],
+    [
+        "S9_S3",
+        2.34667189305531,
+        0.336,
+        "S"
+    ],
+    [
+        "S8_S3",
+        2.10484816988167,
+        0.492,
+        "S"
+    ],
+    [
+        "S3_S3",
+        0,
+        0,
+        "S"
+    ],
+    [
+        "S7_S5",
+        0.29118108825433,
+        -1,
+        "S"
+    ],
+    [
+        "S6_S5",
+        0.249856878762251,
+        -1,
+        "S"
+    ],
+    [
+        "S4_S9",
+        1.67094194188944,
+        -0.176,
+        "S"
+    ],
+    [
+        "S2_S7",
+        -0.14651235136041,
+        -1,
+        "S"
+    ],
+    [
+        "S1_S4",
+        -0.93184840295738,
+        -1,
+        "S"
+    ],
+    [
+        "S7_S3",
+        1.53338830553728,
+        -1,
+        "S"
+    ],
+    [
+        "S4_S4",
+        0,
+        0,
+        "S"
+    ],
+    [
+        "S8_S7",
+        -0.091908175350431,
+        -0.374,
+        "S"
+    ],
+    [
+        "S9_S1",
+        2.24932108513564,
+        -0.126,
+        "S"
+    ],
+    [
+        "S6_S8",
+        -1.41261722677118,
+        0.188,
+        "S"
+    ],
+    [
+        "S3_S8",
+        2.10484816988167,
+        0.492,
+        "S"
+    ],
+    [
+        "S2_S2",
+        0,
+        0,
+        "S"
+    ],
+    [
+        "S2_S6",
+        -0.03092446798114,
+        -1,
+        "S"
+    ],
+    [
+        "S5_S6",
+        0.249856878762251,
+        -1,
+        "S"
+    ],
+    [
+        "S1_S8",
+        -0.673933374063422,
+        -0.034,
+        "S"
+    ],
+    [
+        "S6_S3",
+        -1.20500122934585,
+        -1,
+        "S"
+    ],
+    [
+        "S5_S9",
+        3.13716224553555,
+        -0.264,
+        "S"
+    ],
+    [
+        "S5_S8",
+        -0.059761149143491,
+        -0.128,
+        "S"
+    ],
+    [
+        "S4_S8",
+        -1.78685090777522,
+        -0.048,
+        "S"
+    ],
+    [
+        "S4_S2",
+        -1.78983457023312,
+        -1,
+        "S"
+    ],
+    [
+        "S8_S1",
+        -0.673933374063422,
+        -0.034,
+        "S"
+    ],
+    [
+        "S2_S4",
+        -1.78983457023312,
+        -1,
+        "S"
+    ],
+    [
+        "S7_S6",
+        -0.18308819092835,
+        -1,
+        "S"
+    ],
+    [
+        "S5_S5",
+        0,
+        0,
+        "S"
+    ],
+    [
+        "S1_S5",
+        0.353496329608636,
+        -1,
+        "S"
+    ],
+    [
+        "S9_S8",
+        1.83530356332312,
+        -1,
+        "S"
+    ],
+    [
+        "S9_S4",
+        1.67094194188944,
+        -0.176,
+        "S"
+    ],
+    [
+        "S8_S2",
+        -0.103169712955053,
+        -0.752,
+        "S"
+    ],
+    [
+        "S2_S9",
+        0.132576656677481,
+        -0.596,
+        "S"
+    ],
+    [
+        "S7_S1",
+        -0.329385278755969,
+        -1,
+        "S"
+    ],
+    [
+        "S4_S3",
+        0.476153872567014,
+        -1,
+        "S"
+    ],
+    [
+        "S4_S1",
+        -0.93184840295738,
+        -1,
+        "S"
+    ],
+    [
+        "S4_S7",
+        0.298208823311112,
+        -1,
+        "S"
+    ],
+    [
+        "S9_S6",
+        0.417972173313471,
+        -0.068,
+        "S"
+    ],
+    [
+        "S3_S7",
+        1.53338830553728,
+        -1,
+        "S"
+    ],
+    [
+        "S2_S3",
+        0.746892659402574,
+        -1,
+        "S"
+    ],
+    [
+        "S1_S2",
+        -0.637308053081309,
+        -1,
+        "S"
+    ],
+    [
+        "S7_S7",
+        0,
+        0,
+        "S"
+    ],
+    [
+        "S6_S9",
+        0.417972173313471,
+        -0.068,
+        "S"
+    ],
+    [
+        "S6_S6",
+        0,
+        0,
+        "S"
+    ],
+    [
+        "S8_S4",
+        -1.78685090777522,
+        -0.048,
+        "S"
+    ],
+    [
+        "S3_S5",
+        0.522680275105166,
+        -1,
+        "S"
+    ],
+    [
+        "S3_S4",
+        0.476153872567014,
+        -1,
+        "S"
+    ],
+    [
+        "S1_S1",
+        0,
+        0,
+        "S"
+    ],
+    [
+        "S7_S2",
+        -0.14651235136041,
+        -1,
+        "S"
+    ],
+    [
+        "S5_S3",
+        0.522680275105166,
+        -1,
+        "S"
+    ],
+    [
+        "S5_S7",
+        0.29118108825433,
+        -1,
+        "S"
+    ],
+    [
+        "S4_S5",
+        -0.590953136245292,
+        -1,
+        "S"
+    ],
+    [
+        "S8_S8",
+        0,
+        0,
+        "S"
+    ],
+    [
+        "S8_S5",
+        -0.059761149143491,
+        -0.128,
+        "S"
+    ],
+    [
+        "S1_S3",
+        0.056606474532968,
+        -1,
+        "S"
+    ],
+    [
+        "S1_S7",
+        -0.329385278755969,
+        -1,
+        "S"
+    ],
+    [
+        "S7_S8",
+        -0.091908175350431,
+        -0.374,
+        "S"
+    ],
+    [
+        "S6_S2",
+        -0.03092446798114,
+        -1,
+        "S"
+    ],
+    [
+        "S6_S7",
+        -0.18308819092835,
+        -1,
+        "S"
+    ],
+    [
+        "S5_S2",
+        0.033631121600676,
+        -1,
+        "S"
+    ],
+    [
+        "S9_S9",
+        0,
+        0,
+        "S"
+    ],
+    [
+        "S8_S6",
+        -1.41261722677118,
+        0.188,
+        "S"
+    ],
+    [
+        "S3_S9",
+        2.34667189305531,
+        0.336,
+        "S"
+    ],
+    [
+        "S3_S2",
+        0.746892659402574,
+        -1,
+        "S"
+    ],
+    [
+        "S3_S1",
+        0.056606474532968,
+        -1,
+        "S"
+    ],
+    [
+        "S2_S1",
+        -0.637308053081309,
+        -1,
+        "S"
+    ],
+    [
+        "S2_S5",
+        0.033631121600676,
+        -1,
+        "S"
+    ],
+    [
+        "S9_S2",
+        0.132576656677481,
+        -0.596,
+        "S"
+    ],
+    [
+        "S2_S8",
+        -0.103169712955053,
+        -0.752,
+        "S"
+    ],
+    [
+        "C9_C5",
+        2.68187826447285,
+        1,
+        "C"
+    ],
+    [
+        "C3_C2",
+        2.139957885587,
+        1,
+        "C"
+    ],
+    [
+        "C2_C5",
+        2.35051749390496,
+        0.988,
+        "C"
+    ],
+    [
+        "C2_C4",
+        3.52431743424366,
+        0.986,
+        "C"
+    ],
+    [
+        "C2_C3",
+        2.139957885587,
+        1,
+        "C"
+    ],
+    [
+        "C1_C4",
+        4.59801830238907,
+        1,
+        "C"
+    ],
+    [
+        "C7_C9",
+        2.30568459367074,
+        1,
+        "C"
+    ],
+    [
+        "C6_C4",
+        2.35144944421534,
+        1,
+        "C"
+    ],
+    [
+        "N8_N6",
+        1.9974860334987,
+        0.886,
+        "N"
+    ],
+    [
+        "C5_C1",
+        3.49834090664256,
+        0.964,
+        "C"
+    ],
+    [
+        "N8_N7",
+        2.64301140692694,
+        -0.12,
+        "N"
+    ],
+    [
+        "C5_C4",
+        1.93477961512817,
+        0.862,
+        "C"
+    ],
+    [
+        "N9_N9",
+        0,
+        0,
+        "N"
+    ],
+    [
+        "N1_N3",
+        2.22521673086371,
+        -1,
+        "N"
+    ],
+    [
+        "N1_N5",
+        1.30286188356389,
+        -0.994,
+        "N"
+    ],
+    [
+        "N8_N5",
+        1.23719634670649,
+        0.998,
+        "N"
+    ],
+    [
+        "N9_N1",
+        0.822821754842837,
+        1,
+        "N"
+    ],
+    [
+        "N9_N7",
+        0.753324210466984,
+        0.686,
+        "N"
+    ],
+    [
+        "N3_N8",
+        2.9414907637314,
+        0.948,
+        "N"
+    ],
+    [
+        "N1_N8",
+        2.06287637266927,
+        1,
+        "N"
+    ],
+    [
+        "N2_N8",
+        2.59432864479745,
+        0.924,
+        "N"
+    ],
+    [
+        "N5_N3",
+        1.36139195586776,
+        -0.868,
+        "N"
+    ],
+    [
+        "N2_N7",
+        2.06695851925298,
+        0.348,
+        "N"
+    ],
+    [
+        "N6_N4",
+        2.0730443951569,
+        -0.922,
+        "N"
+    ],
+    [
+        "N6_N5",
+        0.035058541463195,
+        -0.934,
+        "N"
+    ],
+    [
+        "N3_N1",
+        2.22521673086371,
+        -1,
+        "N"
+    ],
+    [
+        "N4_N3",
+        2.39538693793436,
+        -0.998,
+        "N"
+    ],
+    [
+        "N4_N5",
+        1.55842207675601,
+        -1,
+        "N"
+    ],
+    [
+        "N5_N8",
+        1.23719634670649,
+        0.998,
+        "N"
+    ],
+    [
+        "N5_N2",
+        1.8591512521255,
+        -0.958,
+        "N"
+    ],
+    [
+        "N7_N8",
+        2.64301140692694,
+        -0.12,
+        "N"
+    ],
+    [
+        "C9_C9",
+        0,
+        0,
+        "C"
+    ],
+    [
+        "C8_C6",
+        2.3862964193577,
+        1,
+        "C"
+    ],
+    [
+        "C7_C5",
+        2.85132622628831,
+        0.994,
+        "C"
+    ],
+    [
+        "N1_N2",
+        2.1145205767426,
+        -0.882,
+        "N"
+    ],
+    [
+        "C8_C1",
+        2.7967923659304,
+        0.966,
+        "C"
+    ],
+    [
+        "C9_C4",
+        3.01922075002371,
+        1,
+        "C"
+    ],
+    [
+        "C5_C8",
+        1.51718463838514,
+        0.99,
+        "C"
+    ],
+    [
+        "C4_C5",
+        1.93477961512817,
+        0.862,
+        "C"
+    ],
+    [
+        "N9_N2",
+        0.713156417192838,
+        1,
+        "N"
+    ],
+    [
+        "N3_N7",
+        1.9859423793091,
+        0.078,
+        "N"
+    ],
+    [
+        "N5_N9",
+        0.065501006766163,
+        1,
+        "N"
+    ],
+    [
+        "C8_C8",
+        0,
+        0,
+        "C"
+    ],
+    [
+        "C1_C7",
+        2.59048831030536,
+        1,
+        "C"
+    ],
+    [
+        "C1_C5",
+        3.49834090664256,
+        0.964,
+        "C"
+    ],
+    [
+        "C6_C7",
+        1.91217068355949,
+        1,
+        "C"
+    ],
+    [
+        "C5_C9",
+        2.68187826447285,
+        1,
+        "C"
+    ],
+    [
+        "N8_N3",
+        2.9414907637314,
+        0.948,
+        "N"
+    ],
+    [
+        "N2_N2",
+        0,
+        0,
+        "N"
+    ],
+    [
+        "N3_N2",
+        0.213618419745551,
+        -0.79,
+        "N"
+    ],
+    [
+        "N4_N1",
+        1.22104298064461,
+        -1,
+        "N"
+    ],
+    [
+        "N7_N9",
+        0.753324210466984,
+        0.686,
+        "N"
+    ],
+    [
+        "C9_C8",
+        2.90241977536005,
+        1,
+        "C"
+    ],
+    [
+        "C8_C9",
+        2.90241977536005,
+        1,
+        "C"
+    ],
+    [
+        "C2_C7",
+        3.16992963282162,
+        1,
+        "C"
+    ],
+    [
+        "C2_C6",
+        2.74486847795212,
+        1,
+        "C"
+    ],
+    [
+        "C1_C8",
+        2.7967923659304,
+        0.966,
+        "C"
+    ],
+    [
+        "C7_C3",
+        2.51895451610827,
+        1,
+        "C"
+    ],
+    [
+        "C7_C1",
+        2.59048831030536,
+        1,
+        "C"
+    ],
+    [
+        "C5_C3",
+        2.13637090966329,
+        0.998,
+        "C"
+    ],
+    [
+        "C4_C9",
+        3.01922075002371,
+        1,
+        "C"
+    ],
+    [
+        "N1_N7",
+        0.044043813604125,
+        0.484,
+        "N"
+    ],
+    [
+        "N5_N1",
+        1.30286188356389,
+        -0.994,
+        "N"
+    ],
+    [
+        "N6_N6",
+        0,
+        0,
+        "N"
+    ],
+    [
+        "N7_N4",
+        -0.201628273471611,
+        -0.012,
+        "N"
+    ],
+    [
+        "C9_C3",
+        1.93618015298516,
+        0.602,
+        "C"
+    ],
+    [
+        "C8_C7",
+        2.4706293029366,
+        1,
+        "C"
+    ],
+    [
+        "C7_C2",
+        3.16992963282162,
+        1,
+        "C"
+    ],
+    [
+        "N8_N1",
+        2.06287637266927,
+        1,
+        "N"
+    ],
+    [
+        "N8_N2",
+        2.59432864479745,
+        0.924,
+        "N"
+    ],
+    [
+        "N9_N3",
+        0.081499683821468,
+        0.98,
+        "N"
+    ],
+    [
+        "N1_N9",
+        0.822821754842837,
+        1,
+        "N"
+    ],
+    [
+        "N2_N3",
+        0.213618419745551,
+        -0.79,
+        "N"
+    ],
+    [
+        "N4_N8",
+        1.13445102476732,
+        0.958,
+        "N"
+    ],
+    [
+        "N4_N7",
+        -0.201628273471611,
+        -0.012,
+        "N"
+    ],
+    [
+        "N5_N5",
+        0,
+        0,
+        "N"
+    ],
+    [
+        "N6_N9",
+        0.06427564238182,
+        0.966,
+        "N"
+    ],
+    [
+        "N7_N3",
+        1.9859423793091,
+        0.078,
+        "N"
+    ],
+    [
+        "C9_C1",
+        2.45821471548577,
+        1,
+        "C"
+    ],
+    [
+        "C9_C6",
+        0.797618260972689,
+        0.752,
+        "C"
+    ],
+    [
+        "C3_C8",
+        2.33298898467862,
+        1,
+        "C"
+    ],
+    [
+        "C1_C2",
+        2.00961153519347,
+        0.996,
+        "C"
+    ],
+    [
+        "C7_C4",
+        2.12908212785265,
+        1,
+        "C"
+    ],
+    [
+        "C6_C3",
+        3.90491677076113,
+        -0.138,
+        "C"
+    ],
+    [
+        "C6_C2",
+        2.74486847795212,
+        1,
+        "C"
+    ],
+    [
+        "N5_N6",
+        0.035058541463195,
+        -0.934,
+        "N"
+    ],
+    [
+        "N6_N3",
+        0.228436660673056,
+        -0.952,
+        "N"
+    ],
+    [
+        "N7_N2",
+        2.06695851925298,
+        0.348,
+        "N"
+    ],
+    [
+        "C8_C3",
+        2.33298898467862,
+        1,
+        "C"
+    ],
+    [
+        "C1_C3",
+        1.95060854346635,
+        1,
+        "C"
+    ],
+    [
+        "C1_C6",
+        3.25038896517001,
+        1,
+        "C"
+    ],
+    [
+        "C7_C6",
+        1.91217068355949,
+        1,
+        "C"
+    ],
+    [
+        "C6_C8",
+        2.3862964193577,
+        1,
+        "C"
+    ],
+    [
+        "C4_C8",
+        3.05480375412199,
+        1,
+        "C"
+    ],
+    [
+        "C4_C1",
+        4.59801830238907,
+        1,
+        "C"
+    ],
+    [
+        "C4_C6",
+        2.35144944421534,
+        1,
+        "C"
+    ],
+    [
+        "C4_C4",
+        0,
+        0,
+        "C"
+    ],
+    [
+        "N9_N5",
+        0.065501006766163,
+        1,
+        "N"
+    ],
+    [
+        "N3_N3",
+        0,
+        0,
+        "N"
+    ],
+    [
+        "N5_N4",
+        1.55842207675601,
+        -1,
+        "N"
+    ],
+    [
+        "C9_C2",
+        2.87122790007606,
+        1,
+        "C"
+    ],
+    [
+        "C8_C2",
+        2.60143071976091,
+        1,
+        "C"
+    ],
+    [
+        "C8_C4",
+        3.05480375412199,
+        1,
+        "C"
+    ],
+    [
+        "C3_C1",
+        1.95060854346635,
+        1,
+        "C"
+    ],
+    [
+        "C3_C5",
+        2.13637090966329,
+        0.998,
+        "C"
+    ],
+    [
+        "C1_C9",
+        2.45821471548577,
+        1,
+        "C"
+    ],
+    [
+        "C6_C5",
+        2.04029408796857,
+        1,
+        "C"
+    ],
+    [
+        "C4_C2",
+        3.52431743424366,
+        0.986,
+        "C"
+    ],
+    [
+        "C4_C7",
+        2.12908212785265,
+        1,
+        "C"
+    ],
+    [
+        "N8_N9",
+        1.5440321022881,
+        0.184,
+        "N"
+    ],
+    [
+        "N1_N1",
+        0,
+        0,
+        "N"
+    ],
+    [
+        "N1_N6",
+        1.58299097946108,
+        -0.908,
+        "N"
+    ],
+    [
+        "N4_N6",
+        2.0730443951569,
+        -0.922,
+        "N"
+    ],
+    [
+        "C3_C3",
+        0,
+        0,
+        "C"
+    ],
+    [
+        "C3_C6",
+        3.90491677076113,
+        -0.138,
+        "C"
+    ],
+    [
+        "C2_C1",
+        2.00961153519347,
+        0.996,
+        "C"
+    ],
+    [
+        "C1_C1",
+        0,
+        0,
+        "C"
+    ],
+    [
+        "C6_C9",
+        0.797618260972689,
+        0.752,
+        "C"
+    ],
+    [
+        "C6_C1",
+        3.25038896517001,
+        1,
+        "C"
+    ],
+    [
+        "C5_C2",
+        2.35051749390496,
+        0.988,
+        "C"
+    ],
+    [
+        "N8_N8",
+        0,
+        0,
+        "N"
+    ],
+    [
+        "N5_N7",
+        0.606793384189441,
+        0.798,
+        "N"
+    ],
+    [
+        "N6_N8",
+        1.9974860334987,
+        0.886,
+        "N"
+    ],
+    [
+        "N7_N5",
+        0.606793384189441,
+        0.798,
+        "N"
+    ],
+    [
+        "N3_N9",
+        0.081499683821468,
+        0.98,
+        "N"
+    ],
+    [
+        "N4_N9",
+        1.15929550323508,
+        1,
+        "N"
+    ],
+    [
+        "N6_N7",
+        1.20975261647719,
+        0.294,
+        "N"
+    ],
+    [
+        "C9_C7",
+        2.30568459367074,
+        1,
+        "C"
+    ],
+    [
+        "C2_C8",
+        2.60143071976091,
+        1,
+        "C"
+    ],
+    [
+        "C7_C7",
+        0,
+        0,
+        "C"
+    ],
+    [
+        "C6_C6",
+        0,
+        0,
+        "C"
+    ],
+    [
+        "C5_C7",
+        2.85132622628831,
+        0.994,
+        "C"
+    ],
+    [
+        "C4_C3",
+        2.69357225764454,
+        1,
+        "C"
+    ],
+    [
+        "N1_N4",
+        1.22104298064461,
+        -1,
+        "N"
+    ],
+    [
+        "N2_N1",
+        2.1145205767426,
+        -0.882,
+        "N"
+    ],
+    [
+        "C8_C5",
+        1.51718463838514,
+        0.99,
+        "C"
+    ],
+    [
+        "C3_C7",
+        2.51895451610827,
+        1,
+        "C"
+    ],
+    [
+        "C2_C9",
+        2.87122790007606,
+        1,
+        "C"
+    ],
+    [
+        "C7_C8",
+        2.4706293029366,
+        1,
+        "C"
+    ],
+    [
+        "C5_C6",
+        2.04029408796857,
+        1,
+        "C"
+    ],
+    [
+        "C5_C5",
+        0,
+        0,
+        "C"
+    ],
+    [
+        "N9_N8",
+        1.5440321022881,
+        0.184,
+        "N"
+    ],
+    [
+        "N9_N4",
+        1.15929550323508,
+        1,
+        "N"
+    ],
+    [
+        "N9_N6",
+        0.06427564238182,
+        0.966,
+        "N"
+    ],
+    [
+        "N2_N9",
+        0.713156417192838,
+        1,
+        "N"
+    ],
+    [
+        "N2_N5",
+        1.8591512521255,
+        -0.958,
+        "N"
+    ],
+    [
+        "N2_N6",
+        0.547268191754924,
+        -1,
+        "N"
+    ],
+    [
+        "N4_N2",
+        2.1130825139451,
+        -0.942,
+        "N"
+    ],
+    [
+        "N4_N4",
+        0,
+        0,
+        "N"
+    ],
+    [
+        "N7_N1",
+        0.044043813604125,
+        0.484,
+        "N"
+    ],
+    [
+        "C3_C9",
+        1.93618015298516,
+        0.602,
+        "C"
+    ],
+    [
+        "C2_C2",
+        0,
+        0,
+        "C"
+    ],
+    [
+        "N2_N4",
+        2.1130825139451,
+        -0.942,
+        "N"
+    ],
+    [
+        "N3_N6",
+        0.228436660673056,
+        -0.952,
+        "N"
+    ],
+    [
+        "N6_N1",
+        1.58299097946108,
+        -0.908,
+        "N"
+    ],
+    [
+        "C3_C4",
+        2.69357225764454,
+        1,
+        "C"
+    ],
+    [
+        "N8_N4",
+        1.13445102476732,
+        0.958,
+        "N"
+    ],
+    [
+        "N3_N4",
+        2.39538693793436,
+        -0.998,
+        "N"
+    ],
+    [
+        "N3_N5",
+        1.36139195586776,
+        -0.868,
+        "N"
+    ],
+    [
+        "N6_N2",
+        0.547268191754924,
+        -1,
+        "N"
+    ],
+    [
+        "N7_N6",
+        1.20975261647719,
+        0.294,
+        "N"
+    ],
+    [
+        "N7_N7",
+        0,
+        0,
+        "N"
+    ],
+    [
+        "S9_N2",
+        1.8098668711729,
+        0.92,
+        "others"
+    ],
+    [
+        "S9_N3",
+        1.29662624270787,
+        0.748,
+        "others"
+    ],
+    [
+        "S3_C1",
+        -1.26013307725844,
+        1,
+        "others"
+    ],
+    [
+        "S3_C7",
+        -1.21394527323807,
+        1,
+        "others"
+    ],
+    [
+        "S2_C4",
+        -0.810390580717717,
+        0.97,
+        "others"
+    ],
+    [
+        "S1_N7",
+        0.442373368760333,
+        0.414,
+        "others"
+    ],
+    [
+        "S7_N1",
+        0.739479798059933,
+        -1,
+        "others"
+    ],
+    [
+        "S6_N7",
+        -0.70056209758556,
+        0.422,
+        "others"
+    ],
+    [
+        "S5_N2",
+        0.615143283104506,
+        -0.738,
+        "others"
+    ],
+    [
+        "S9_N1",
+        1.66568368603348,
+        0.504,
+        "others"
+    ],
+    [
+        "S8_C3",
+        1.24088721950602,
+        0.426,
+        "others"
+    ],
+    [
+        "S3_C9",
+        1.69130412516158,
+        0.95,
+        "others"
+    ],
+    [
+        "S3_C3",
+        0.960729933763056,
+        0.784,
+        "others"
+    ],
+    [
+        "S3_N3",
+        0.302797786596785,
+        -0.654,
+        "others"
+    ],
+    [
+        "S3_N6",
+        0.717624541326034,
+        0.022,
+        "others"
+    ],
+    [
+        "S2_N8",
+        0.878664824435462,
+        1,
+        "others"
+    ],
+    [
+        "S2_N3",
+        0.962617699878217,
+        -0.83,
+        "others"
+    ],
+    [
+        "S7_C8",
+        -0.799307609467443,
+        0.926,
+        "others"
+    ],
+    [
+        "S7_C3",
+        0.770153022867752,
+        -0.184,
+        "others"
+    ],
+    [
+        "S7_N6",
+        0.201499650661545,
+        -0.7,
+        "others"
+    ],
+    [
+        "S5_N5",
+        -0.027886667483576,
+        -1,
+        "others"
+    ],
+    [
+        "S4_C8",
+        -0.740004582661009,
+        0.984,
+        "others"
+    ],
+    [
+        "S8_C8",
+        -1.39600375347473,
+        0.45,
+        "others"
+    ],
+    [
+        "S8_N3",
+        -0.266136123297497,
+        0.576,
+        "others"
+    ],
+    [
+        "S3_N7",
+        0.499800067564618,
+        0.944,
+        "others"
+    ],
+    [
+        "S2_C3",
+        1.8683883887903,
+        0.33,
+        "others"
+    ],
+    [
+        "S2_N6",
+        1.90500039169067,
+        -0.41,
+        "others"
+    ],
+    [
+        "S6_C9",
+        -0.120001551341096,
+        0.464,
+        "others"
+    ],
+    [
+        "S6_C3",
+        -0.284662247506581,
+        0.006,
+        "others"
+    ],
+    [
+        "S5_N6",
+        0.220078525898058,
+        -0.694,
+        "others"
+    ],
+    [
+        "S8_C7",
+        -0.250938819111395,
+        0.954,
+        "others"
+    ],
+    [
+        "S3_C8",
+        -0.797379343128027,
+        1,
+        "others"
+    ],
+    [
+        "S3_N9",
+        -0.003116020865231,
+        1,
+        "others"
+    ],
+    [
+        "S2_C9",
+        1.31595661934079,
+        0.626,
+        "others"
+    ],
+    [
+        "S2_C8",
+        -0.692081879548677,
+        0.964,
+        "others"
+    ],
+    [
+        "S2_N5",
+        0.443737999734429,
+        -0.73,
+        "others"
+    ],
+    [
+        "S1_C2",
+        -0.423912248735914,
+        1,
+        "others"
+    ],
+    [
+        "S1_C1",
+        -0.545909276257304,
+        0.996,
+        "others"
+    ],
+    [
+        "S1_N6",
+        -0.476964232074698,
+        -0.682,
+        "others"
+    ],
+    [
+        "S7_C7",
+        -0.48047006853718,
+        0.98,
+        "others"
+    ],
+    [
+        "S7_C6",
+        1.62173524659381,
+        -0.284,
+        "others"
+    ],
+    [
+        "S7_N3",
+        0.427792384722123,
+        -0.988,
+        "others"
+    ],
+    [
+        "S7_N4",
+        0.623895024251477,
+        -1,
+        "others"
+    ],
+    [
+        "S7_N7",
+        0.077186090704278,
+        0.38,
+        "others"
+    ],
+    [
+        "S5_C4",
+        -1.03630710470059,
+        0.966,
+        "others"
+    ],
+    [
+        "S1_N8",
+        0.32850779228858,
+        0.996,
+        "others"
+    ],
+    [
+        "S7_C4",
+        -1.652808013222,
+        0.914,
+        "others"
+    ],
+    [
+        "S6_N4",
+        1.04903974937677,
+        -1,
+        "others"
+    ],
+    [
+        "S5_C8",
+        0.37273571064699,
+        0.988,
+        "others"
+    ],
+    [
+        "S5_C6",
+        0.875236029058909,
+        -0.182,
+        "others"
+    ],
+    [
+        "S5_N4",
+        0.054459492501152,
+        -1,
+        "others"
+    ],
+    [
+        "S5_N7",
+        -1.05791984707989,
+        0.312,
+        "others"
+    ],
+    [
+        "S9_N9",
+        -0.825525858633127,
+        1,
+        "others"
+    ],
+    [
+        "S8_N7",
+        0.365573130066139,
+        0.37,
+        "others"
+    ],
+    [
+        "S3_C6",
+        1.46590396422252,
+        0.72,
+        "others"
+    ],
+    [
+        "S3_N4",
+        1.7207075151904,
+        -1,
+        "others"
+    ],
+    [
+        "S2_C6",
+        2.75491310058267,
+        0.292,
+        "others"
+    ],
+    [
+        "S1_C4",
+        -1.09678928908554,
+        0.982,
+        "others"
+    ],
+    [
+        "S7_N8",
+        -0.162724793469363,
+        0.98,
+        "others"
+    ],
+    [
+        "S6_N5",
+        -0.855743824535819,
+        -1,
+        "others"
+    ],
+    [
+        "S5_C3",
+        1.12124996225891,
+        0,
+        "others"
+    ],
+    [
+        "S9_C2",
+        -1.42189181665293,
+        0.996,
+        "others"
+    ],
+    [
+        "S9_N6",
+        1.5271143284374,
+        0.876,
+        "others"
+    ],
+    [
+        "S8_C6",
+        2.06400089732507,
+        0.542,
+        "others"
+    ],
+    [
+        "S8_N9",
+        -0.906808332360189,
+        0.984,
+        "others"
+    ],
+    [
+        "S3_C5",
+        -1.6502703138249,
+        1,
+        "others"
+    ],
+    [
+        "S3_N8",
+        0.375207632548844,
+        1,
+        "others"
+    ],
+    [
+        "S2_C2",
+        -0.932468721287466,
+        0.998,
+        "others"
+    ],
+    [
+        "S9_C7",
+        -1.11030266368334,
+        0.992,
+        "others"
+    ],
+    [
+        "S1_C6",
+        1.58675003179585,
+        -0.144,
+        "others"
+    ],
+    [
+        "S8_C2",
+        -0.537357231876928,
+        0.94,
+        "others"
+    ],
+    [
+        "S8_C5",
+        -1.4847141640982,
+        0.654,
+        "others"
+    ],
+    [
+        "S7_N5",
+        -1.22727362965014,
+        -1,
+        "others"
+    ],
+    [
+        "S8_C4",
+        -0.705862189673831,
+        0.708,
+        "others"
+    ],
+    [
+        "S8_N5",
+        0.707396090806423,
+        0.914,
+        "others"
+    ],
+    [
+        "S6_C6",
+        0.384021633180708,
+        -0.138,
+        "others"
+    ],
+    [
+        "S2_N2",
+        1.61106478203785,
+        -0.322,
+        "others"
+    ],
+    [
+        "S5_C1",
+        -0.08681147592558,
+        0.988,
+        "others"
+    ],
+    [
+        "S1_C5",
+        -0.72671586586857,
+        0.942,
+        "others"
+    ],
+    [
+        "S5_N1",
+        1.34849444245145,
+        -0.994,
+        "others"
+    ],
+    [
+        "S5_C2",
+        -0.34615939549965,
+        1,
+        "others"
+    ],
+    [
+        "S8_N2",
+        1.02237079941299,
+        0.886,
+        "others"
+    ],
+    [
+        "S3_N2",
+        0.825410101701436,
+        0.074,
+        "others"
+    ],
+    [
+        "S2_C7",
+        -0.188865411522355,
+        0.998,
+        "others"
+    ],
+    [
+        "S2_N9",
+        -0.140278446749432,
+        1,
+        "others"
+    ],
+    [
+        "S1_N2",
+        0.146521478378056,
+        -0.746,
+        "others"
+    ],
+    [
+        "S5_C5",
+        -1.72214904488329,
+        0.922,
+        "others"
+    ],
+    [
+        "S4_C9",
+        0.429451658453718,
+        0.5,
+        "others"
+    ],
+    [
+        "S9_C4",
+        -1.100717722202,
+        0.974,
+        "others"
+    ],
+    [
+        "S9_N4",
+        1.80578224974906,
+        0.57,
+        "others"
+    ],
+    [
+        "S8_C9",
+        1.75763745492412,
+        0.002,
+        "others"
+    ],
+    [
+        "S8_N1",
+        0.986275033481218,
+        0.396,
+        "others"
+    ],
+    [
+        "S1_C8",
+        0.034848366770942,
+        0.996,
+        "others"
+    ],
+    [
+        "S1_C3",
+        0.47310626163657,
+        0.07,
+        "others"
+    ],
+    [
+        "S7_C2",
+        -0.975990547956399,
+        0.996,
+        "others"
+    ],
+    [
+        "S6_C8",
+        -2.30409107275031,
+        0.998,
+        "others"
+    ],
+    [
+        "S9_N7",
+        0.061877585572531,
+        0.756,
+        "others"
+    ],
+    [
+        "S6_C2",
+        -1.77039354184815,
+        1,
+        "others"
+    ],
+    [
+        "S6_C1",
+        -2.14532698802999,
+        1,
+        "others"
+    ],
+    [
+        "S6_N8",
+        -0.678592925321273,
+        0.996,
+        "others"
+    ],
+    [
+        "S2_N1",
+        1.50088741373109,
+        -1,
+        "others"
+    ],
+    [
+        "S6_N6",
+        -0.148664520104712,
+        -0.714,
+        "others"
+    ],
+    [
+        "S1_C9",
+        1.48084181557725,
+        0.556,
+        "others"
+    ],
+    [
+        "S5_N3",
+        -0.158962873302634,
+        -0.978,
+        "others"
+    ],
+    [
+        "S7_C9",
+        0.494070687002489,
+        0.258,
+        "others"
+    ],
+    [
+        "S7_C5",
+        -1.66814258225349,
+        0.832,
+        "others"
+    ],
+    [
+        "S6_C5",
+        -2.02391869699946,
+        0.978,
+        "others"
+    ],
+    [
+        "S6_N9",
+        -0.965304389020321,
+        1,
+        "others"
+    ],
+    [
+        "S8_C1",
+        -1.06953253419806,
+        0.722,
+        "others"
+    ],
+    [
+        "S3_C2",
+        -1.26603229890674,
+        1,
+        "others"
+    ],
+    [
+        "S2_C5",
+        -1.52822538646391,
+        0.948,
+        "others"
+    ],
+    [
+        "S2_N4",
+        1.07045668115503,
+        -0.976,
+        "others"
+    ],
+    [
+        "S1_N1",
+        0.960966086598203,
+        -0.99,
+        "others"
+    ],
+    [
+        "S1_N3",
+        0.07907462281189,
+        -0.964,
+        "others"
+    ],
+    [
+        "S7_C1",
+        -1.09787513272041,
+        0.938,
+        "others"
+    ],
+    [
+        "S7_N9",
+        -0.646586037086007,
+        0.996,
+        "others"
+    ],
+    [
+        "S6_C4",
+        -1.91322051451013,
+        0.986,
+        "others"
+    ],
+    [
+        "S6_N3",
+        -1.10550227265179,
+        -0.972,
+        "others"
+    ],
+    [
+        "S5_N8",
+        -0.399624852368833,
+        0.988,
+        "others"
+    ],
+    [
+        "S9_N8",
+        0.486085249769616,
+        0.996,
+        "others"
+    ],
+    [
+        "S8_N8",
+        0.754161644778033,
+        0.956,
+        "others"
+    ],
+    [
+        "S8_N6",
+        1.42760436208985,
+        0.812,
+        "others"
+    ],
+    [
+        "S3_C4",
+        -1.45190754382092,
+        1,
+        "others"
+    ],
+    [
+        "S2_C1",
+        -1.02220980197398,
+        0.976,
+        "others"
+    ],
+    [
+        "S2_N7",
+        0.135119170161042,
+        0.78,
+        "others"
+    ],
+    [
+        "S7_N2",
+        0.750363922373151,
+        -0.74,
+        "others"
+    ],
+    [
+        "S6_C7",
+        -1.43752539870087,
+        1,
+        "others"
+    ],
+    [
+        "S6_N2",
+        -0.262070402936464,
+        -0.754,
+        "others"
+    ],
+    [
+        "S9_C8",
+        -1.24875866936125,
+        0.87,
+        "others"
+    ],
+    [
+        "S9_C5",
+        -1.39160676251069,
+        0.954,
+        "others"
+    ],
+    [
+        "S3_N1",
+        2.47498212503424,
+        -0.918,
+        "others"
+    ],
+    [
+        "S3_N5",
+        -0.223906015335088,
+        -1,
+        "others"
+    ],
+    [
+        "S1_N9",
+        -0.045889606857575,
+        1,
+        "others"
+    ],
+    [
+        "S1_N5",
+        -0.435573812091314,
+        -1,
+        "others"
+    ],
+    [
+        "S5_C7",
+        -0.030963010592135,
+        0.992,
+        "others"
+    ],
+    [
+        "S9_C3",
+        -0.117897569448793,
+        0.706,
+        "others"
+    ],
+    [
+        "S9_C1",
+        -1.86624010557444,
+        0.936,
+        "others"
+    ],
+    [
+        "S9_N5",
+        0.691414204737821,
+        0.9,
+        "others"
+    ],
+    [
+        "S8_N4",
+        2.0667825092342,
+        0.576,
+        "others"
+    ],
+    [
+        "S6_N1",
+        0.015393734274896,
+        -0.998,
+        "others"
+    ],
+    [
+        "S5_C9",
+        1.32231904198626,
+        0.5,
+        "others"
+    ],
+    [
+        "S9_C9",
+        -0.11724026269932,
+        0.602,
+        "others"
+    ],
+    [
+        "S9_C6",
+        0.425775973702068,
+        0.688,
+        "others"
+    ],
+    [
+        "S1_C7",
+        0.862972631044578,
+        1,
+        "others"
+    ],
+    [
+        "S1_N4",
+        2.22334847730336,
+        -1,
+        "others"
+    ],
+    [
+        "S5_N9",
+        0.220734193776965,
+        1,
+        "others"
+    ],
+    [
+        "C9_N2",
+        1.88799385153906,
+        0.89,
+        "others"
+    ],
+    [
+        "S4_C2",
+        -0.775193152462077,
+        1,
+        "others"
+    ],
+    [
+        "S4_C1",
+        -0.473250688975998,
+        0.992,
+        "others"
+    ],
+    [
+        "S4_N6",
+        -1.15794186932151,
+        -0.718,
+        "others"
+    ],
+    [
+        "S4_N2",
+        -0.263636348296024,
+        -0.724,
+        "others"
+    ],
+    [
+        "S4_C3",
+        0.272035519524834,
+        -0.038,
+        "others"
+    ],
+    [
+        "S4_N1",
+        0.390874470125916,
+        -1,
+        "others"
+    ],
+    [
+        "C9_N9",
+        -0.574471973387772,
+        0.968,
+        "others"
+    ],
+    [
+        "C3_S8",
+        1.24088721950602,
+        0.426,
+        "others"
+    ],
+    [
+        "C3_S2",
+        1.8683883887903,
+        0.33,
+        "others"
+    ],
+    [
+        "C2_N1",
+        0.366805425466176,
+        1,
+        "others"
+    ],
+    [
+        "C2_N3",
+        0.233307513758551,
+        1,
+        "others"
+    ],
+    [
+        "C2_N9",
+        -1.8055222282124,
+        0.992,
+        "others"
+    ],
+    [
+        "C1_S2",
+        -1.02220980197398,
+        0.976,
+        "others"
+    ],
+    [
+        "C7_S3",
+        -1.21394527323807,
+        1,
+        "others"
+    ],
+    [
+        "C7_N4",
+        0.443712122261379,
+        0.996,
+        "others"
+    ],
+    [
+        "C5_S6",
+        -2.02391869699946,
+        0.978,
+        "others"
+    ],
+    [
+        "C6_N1",
+        1.4482799438919,
+        0.328,
+        "others"
+    ],
+    [
+        "C4_S8",
+        -0.705862189673831,
+        0.708,
+        "others"
+    ],
+    [
+        "C6_N2",
+        2.04178509442137,
+        0.062,
+        "others"
+    ],
+    [
+        "C4_N8",
+        1.98148386783861,
+        1,
+        "others"
+    ],
+    [
+        "C5_S9",
+        -1.39160676251069,
+        0.954,
+        "others"
+    ],
+    [
+        "N9_C3",
+        0.888038345860657,
+        0.992,
+        "others"
+    ],
+    [
+        "N8_S6",
+        -0.678592925321273,
+        0.996,
+        "others"
+    ],
+    [
+        "N9_C2",
+        -1.8055222282124,
+        0.992,
+        "others"
+    ],
+    [
+        "N8_C3",
+        2.15145815117311,
+        0.994,
+        "others"
+    ],
+    [
+        "N8_C2",
+        1.41614242305872,
+        1,
+        "others"
+    ],
+    [
+        "N8_C6",
+        0.743190027537265,
+        0.996,
+        "others"
+    ],
+    [
+        "N2_C8",
+        0.129081885356769,
+        1,
+        "others"
+    ],
+    [
+        "N9_S9",
+        -0.825525858633127,
+        1,
+        "others"
+    ],
+    [
+        "N3_S9",
+        1.29662624270787,
+        0.748,
+        "others"
+    ],
+    [
+        "N3_S4",
+        -0.713700945419314,
+        -0.974,
+        "others"
+    ],
+    [
+        "N1_C9",
+        0.619959981548236,
+        0.868,
+        "others"
+    ],
+    [
+        "N4_S2",
+        1.07045668115503,
+        -0.976,
+        "others"
+    ],
+    [
+        "N5_C5",
+        -0.906228793427578,
+        1,
+        "others"
+    ],
+    [
+        "N3_S3",
+        0.302797786596785,
+        -0.654,
+        "others"
+    ],
+    [
+        "N7_S6",
+        -0.70056209758556,
+        0.422,
+        "others"
+    ],
+    [
+        "N4_S9",
+        1.80578224974906,
+        0.57,
+        "others"
+    ],
+    [
+        "N4_S1",
+        2.22334847730336,
+        -1,
+        "others"
+    ],
+    [
+        "N4_C1",
+        -0.061989478749154,
+        0.998,
+        "others"
+    ],
+    [
+        "N6_S8",
+        1.42760436208985,
+        0.812,
+        "others"
+    ],
+    [
+        "C9_S9",
+        -0.11724026269932,
+        0.602,
+        "others"
+    ],
+    [
+        "S4_C6",
+        0.659500227859029,
+        -0.126,
+        "others"
+    ],
+    [
+        "S4_C4",
+        -1.57132640720918,
+        0.96,
+        "others"
+    ],
+    [
+        "S4_N8",
+        0.014356759585888,
+        0.994,
+        "others"
+    ],
+    [
+        "S4_N9",
+        -0.84279685408007,
+        1,
+        "others"
+    ],
+    [
+        "C9_N8",
+        -0.381010951284984,
+        0.992,
+        "others"
+    ],
+    [
+        "C9_N4",
+        1.59690462946429,
+        0.604,
+        "others"
+    ],
+    [
+        "C8_S1",
+        0.034848366770942,
+        0.996,
+        "others"
+    ],
+    [
+        "C8_N7",
+        1.46582587733463,
+        0.998,
+        "others"
+    ],
+    [
+        "C6_S5",
+        0.875236029058909,
+        -0.182,
+        "others"
+    ],
+    [
+        "C6_N9",
+        -0.099021310064734,
+        1,
+        "others"
+    ],
+    [
+        "C5_S3",
+        -1.6502703138249,
+        1,
+        "others"
+    ],
+    [
+        "C5_N7",
+        0.263880361225785,
+        0.98,
+        "others"
+    ],
+    [
+        "N1_C7",
+        -0.142208128838017,
+        1,
+        "others"
+    ],
+    [
+        "N2_S2",
+        1.61106478203785,
+        -0.322,
+        "others"
+    ],
+    [
+        "N4_C8",
+        1.11251249756694,
+        0.994,
+        "others"
+    ],
+    [
+        "N6_S3",
+        0.717624541326034,
+        0.022,
+        "others"
+    ],
+    [
+        "N6_C8",
+        -0.357774444085489,
+        1,
+        "others"
+    ],
+    [
+        "N6_C1",
+        -0.644011272557081,
+        1,
+        "others"
+    ],
+    [
+        "N7_S9",
+        0.061877585572531,
+        0.756,
+        "others"
+    ],
+    [
+        "N7_C4",
+        0.737429401727106,
+        0.976,
+        "others"
+    ],
+    [
+        "C9_S6",
+        -0.120001551341096,
+        0.464,
+        "others"
+    ],
+    [
+        "C8_S9",
+        -1.24875866936125,
+        0.87,
+        "others"
+    ],
+    [
+        "C8_S6",
+        -2.30409107275031,
+        0.998,
+        "others"
+    ],
+    [
+        "C8_N8",
+        0.246597330330987,
+        1,
+        "others"
+    ],
+    [
+        "C3_S6",
+        -0.284662247506581,
+        0.006,
+        "others"
+    ],
+    [
+        "C2_S8",
+        -0.537357231876928,
+        0.94,
+        "others"
+    ],
+    [
+        "C2_N4",
+        -0.056863970059426,
+        1,
+        "others"
+    ],
+    [
+        "C7_S2",
+        -0.188865411522355,
+        0.998,
+        "others"
+    ],
+    [
+        "C7_N8",
+        0.445448193076327,
+        1,
+        "others"
+    ],
+    [
+        "C7_N5",
+        -0.334398177433069,
+        1,
+        "others"
+    ],
+    [
+        "C6_S8",
+        2.06400089732507,
+        0.542,
+        "others"
+    ],
+    [
+        "C4_S3",
+        -1.45190754382092,
+        1,
+        "others"
+    ],
+    [
+        "C4_S2",
+        -0.810390580717717,
+        0.97,
+        "others"
+    ],
+    [
+        "N9_C7",
+        -2.58101815535326,
+        0.976,
+        "others"
+    ],
+    [
+        "N1_S3",
+        2.47498212503424,
+        -0.918,
+        "others"
+    ],
+    [
+        "N1_C8",
+        0.795003580086838,
+        1,
+        "others"
+    ],
+    [
+        "N2_C9",
+        1.88799385153906,
+        0.89,
+        "others"
+    ],
+    [
+        "N3_C9",
+        1.26289345911427,
+        0.766,
+        "others"
+    ],
+    [
+        "N4_S4",
+        1.05056474994771,
+        -1,
+        "others"
+    ],
+    [
+        "N5_C2",
+        -0.649085766874679,
+        1,
+        "others"
+    ],
+    [
+        "N6_S5",
+        0.220078525898058,
+        -0.694,
+        "others"
+    ],
+    [
+        "N7_S8",
+        0.365573130066139,
+        0.37,
+        "others"
+    ],
+    [
+        "N7_S2",
+        0.135119170161042,
+        0.78,
+        "others"
+    ],
+    [
+        "S4_N4",
+        1.05056474994771,
+        -1,
+        "others"
+    ],
+    [
+        "S4_C5",
+        -1.56807423733756,
+        0.914,
+        "others"
+    ],
+    [
+        "S4_N7",
+        0.155771917100835,
+        0.448,
+        "others"
+    ],
+    [
+        "C8_S8",
+        -1.39600375347473,
+        0.45,
+        "others"
+    ],
+    [
+        "C1_S4",
+        -0.473250688975998,
+        0.992,
+        "others"
+    ],
+    [
+        "C6_S3",
+        1.46590396422252,
+        0.72,
+        "others"
+    ],
+    [
+        "C5_N8",
+        0.486484303571726,
+        1,
+        "others"
+    ],
+    [
+        "C5_N4",
+        -0.47067897356471,
+        0.966,
+        "others"
+    ],
+    [
+        "N8_S5",
+        -0.399624852368833,
+        0.988,
+        "others"
+    ],
+    [
+        "N9_S8",
+        -0.906808332360189,
+        0.984,
+        "others"
+    ],
+    [
+        "N1_C5",
+        -0.092945920829167,
+        1,
+        "others"
+    ],
+    [
+        "N2_C4",
+        1.14678100607465,
+        0.996,
+        "others"
+    ],
+    [
+        "N3_C7",
+        -0.213107919765423,
+        1,
+        "others"
+    ],
+    [
+        "N3_C6",
+        1.00892454268886,
+        0.304,
+        "others"
+    ],
+    [
+        "N4_C6",
+        2.27655665180836,
+        -0.386,
+        "others"
+    ],
+    [
+        "N5_S9",
+        0.691414204737821,
+        0.9,
+        "others"
+    ],
+    [
+        "N6_C3",
+        2.10418143697383,
+        -0.384,
+        "others"
+    ],
+    [
+        "S4_N5",
+        -0.911770456216755,
+        -1,
+        "others"
+    ],
+    [
+        "C9_S4",
+        0.429451658453718,
+        0.5,
+        "others"
+    ],
+    [
+        "C8_S3",
+        -0.797379343128027,
+        1,
+        "others"
+    ],
+    [
+        "C8_S2",
+        -0.692081879548677,
+        0.964,
+        "others"
+    ],
+    [
+        "C3_S4",
+        0.272035519524834,
+        -0.038,
+        "others"
+    ],
+    [
+        "C3_N9",
+        0.888038345860657,
+        0.992,
+        "others"
+    ],
+    [
+        "C2_N7",
+        1.65743234559923,
+        0.998,
+        "others"
+    ],
+    [
+        "C1_S9",
+        -1.86624010557444,
+        0.936,
+        "others"
+    ],
+    [
+        "C1_S7",
+        -1.09787513272041,
+        0.938,
+        "others"
+    ],
+    [
+        "C1_N3",
+        0.285246297156725,
+        1,
+        "others"
+    ],
+    [
+        "C7_S9",
+        -1.11030266368334,
+        0.992,
+        "others"
+    ],
+    [
+        "C7_S4",
+        -0.136027437099675,
+        1,
+        "others"
+    ],
+    [
+        "C4_N1",
+        0.200442191375833,
+        1,
+        "others"
+    ],
+    [
+        "N8_S2",
+        0.878664824435462,
+        1,
+        "others"
+    ],
+    [
+        "N8_S4",
+        0.014356759585888,
+        0.994,
+        "others"
+    ],
+    [
+        "N9_C9",
+        -0.574471973387772,
+        0.968,
+        "others"
+    ],
+    [
+        "N1_S6",
+        0.015393734274896,
+        -0.998,
+        "others"
+    ],
+    [
+        "N2_S6",
+        -0.262070402936464,
+        -0.754,
+        "others"
+    ],
+    [
+        "N3_S1",
+        0.07907462281189,
+        -0.964,
+        "others"
+    ],
+    [
+        "N4_S5",
+        0.054459492501152,
+        -1,
+        "others"
+    ],
+    [
+        "N7_S7",
+        0.077186090704278,
+        0.38,
+        "others"
+    ],
+    [
+        "N7_C9",
+        -0.059975573861119,
+        0.586,
+        "others"
+    ],
+    [
+        "S4_N3",
+        -0.713700945419314,
+        -0.974,
+        "others"
+    ],
+    [
+        "C9_N5",
+        1.18013920034248,
+        0.924,
+        "others"
+    ],
+    [
+        "C8_N5",
+        0.282243908466505,
+        1,
+        "others"
+    ],
+    [
+        "C3_N8",
+        2.15145815117311,
+        0.994,
+        "others"
+    ],
+    [
+        "C3_N2",
+        2.4738093298946,
+        0.196,
+        "others"
+    ],
+    [
+        "C2_N5",
+        -0.649085766874679,
+        1,
+        "others"
+    ],
+    [
+        "C1_S1",
+        -0.545909276257304,
+        0.996,
+        "others"
+    ],
+    [
+        "C1_S6",
+        -2.14532698802999,
+        1,
+        "others"
+    ],
+    [
+        "C7_N9",
+        -2.58101815535326,
+        0.976,
+        "others"
+    ],
+    [
+        "C6_S6",
+        0.384021633180708,
+        -0.138,
+        "others"
+    ],
+    [
+        "C6_N8",
+        0.743190027537265,
+        0.996,
+        "others"
+    ],
+    [
+        "C5_N6",
+        -0.690432268924749,
+        0.986,
+        "others"
+    ],
+    [
+        "C4_S7",
+        -1.652808013222,
+        0.914,
+        "others"
+    ],
+    [
+        "N8_C8",
+        0.246597330330987,
+        1,
+        "others"
+    ],
+    [
+        "N8_C5",
+        0.486484303571726,
+        1,
+        "others"
+    ],
+    [
+        "N9_S6",
+        -0.965304389020321,
+        1,
+        "others"
+    ],
+    [
+        "N9_C8",
+        -1.84013940879445,
+        0.994,
+        "others"
+    ],
+    [
+        "N1_S5",
+        1.34849444245145,
+        -0.994,
+        "others"
+    ],
+    [
+        "N1_C1",
+        0.412941712425156,
+        1,
+        "others"
+    ],
+    [
+        "N2_S1",
+        0.146521478378056,
+        -0.746,
+        "others"
+    ],
+    [
+        "N2_C6",
+        2.04178509442137,
+        0.062,
+        "others"
+    ],
+    [
+        "N4_C5",
+        -0.47067897356471,
+        0.966,
+        "others"
+    ],
+    [
+        "N5_S8",
+        0.707396090806423,
+        0.914,
+        "others"
+    ],
+    [
+        "N5_C3",
+        2.24608525795889,
+        0.548,
+        "others"
+    ],
+    [
+        "N7_C3",
+        1.98164747197561,
+        0.522,
+        "others"
+    ],
+    [
+        "N7_C2",
+        1.65743234559923,
+        0.998,
+        "others"
+    ],
+    [
+        "N7_C7",
+        1.08197614644077,
+        0.988,
+        "others"
+    ],
+    [
+        "C8_N3",
+        0.640091032010109,
+        1,
+        "others"
+    ],
+    [
+        "C3_S9",
+        -0.117897569448793,
+        0.706,
+        "others"
+    ],
+    [
+        "C2_S2",
+        -0.932468721287466,
+        0.998,
+        "others"
+    ],
+    [
+        "C2_S4",
+        -0.775193152462077,
+        1,
+        "others"
+    ],
+    [
+        "C6_N6",
+        1.73670827467428,
+        -0.462,
+        "others"
+    ],
+    [
+        "C5_N3",
+        -0.102359832627743,
+        0.998,
+        "others"
+    ],
+    [
+        "N8_S9",
+        0.486085249769616,
+        0.996,
+        "others"
+    ],
+    [
+        "N9_S1",
+        -0.045889606857575,
+        1,
+        "others"
+    ],
+    [
+        "N9_C5",
+        -1.35445874609085,
+        1,
+        "others"
+    ],
+    [
+        "N1_S8",
+        0.986275033481218,
+        0.396,
+        "others"
+    ],
+    [
+        "N2_S8",
+        1.02237079941299,
+        0.886,
+        "others"
+    ],
+    [
+        "N3_S5",
+        -0.158962873302634,
+        -0.978,
+        "others"
+    ],
+    [
+        "N4_C9",
+        1.59690462946429,
+        0.604,
+        "others"
+    ],
+    [
+        "N4_C3",
+        1.50346627017025,
+        -0.07,
+        "others"
+    ],
+    [
+        "N5_C7",
+        -0.334398177433069,
+        1,
+        "others"
+    ],
+    [
+        "C9_S2",
+        1.31595661934079,
+        0.626,
+        "others"
+    ],
+    [
+        "C9_N7",
+        -0.059975573861119,
+        0.586,
+        "others"
+    ],
+    [
+        "C8_S5",
+        0.37273571064699,
+        0.988,
+        "others"
+    ],
+    [
+        "C8_N1",
+        0.795003580086838,
+        1,
+        "others"
+    ],
+    [
+        "C3_S1",
+        0.47310626163657,
+        0.07,
+        "others"
+    ],
+    [
+        "C2_S7",
+        -0.975990547956399,
+        0.996,
+        "others"
+    ],
+    [
+        "C1_N5",
+        -1.29912505224111,
+        1,
+        "others"
+    ],
+    [
+        "C7_N1",
+        -0.142208128838017,
+        1,
+        "others"
+    ],
+    [
+        "C7_N3",
+        -0.213107919765423,
+        1,
+        "others"
+    ],
+    [
+        "C6_S9",
+        0.425775973702068,
+        0.688,
+        "others"
+    ],
+    [
+        "C6_N5",
+        2.42479620073865,
+        0.43,
+        "others"
+    ],
+    [
+        "C4_S1",
+        -1.09678928908554,
+        0.982,
+        "others"
+    ],
+    [
+        "N8_C1",
+        1.00078466329089,
+        1,
+        "others"
+    ],
+    [
+        "N8_C4",
+        1.98148386783861,
+        1,
+        "others"
+    ],
+    [
+        "N9_S3",
+        -0.003116020865231,
+        1,
+        "others"
+    ],
+    [
+        "N9_S7",
+        -0.646586037086007,
+        0.996,
+        "others"
+    ],
+    [
+        "N3_C1",
+        0.285246297156725,
+        1,
+        "others"
+    ],
+    [
+        "N4_S8",
+        2.0667825092342,
+        0.576,
+        "others"
+    ],
+    [
+        "N4_C2",
+        -0.056863970059426,
+        1,
+        "others"
+    ],
+    [
+        "N5_S2",
+        0.443737999734429,
+        -0.73,
+        "others"
+    ],
+    [
+        "N5_S7",
+        -1.22727362965014,
+        -1,
+        "others"
+    ],
+    [
+        "N6_S9",
+        1.5271143284374,
+        0.876,
+        "others"
+    ],
+    [
+        "N6_S1",
+        -0.476964232074698,
+        -0.682,
+        "others"
+    ],
+    [
+        "N6_C5",
+        -0.690432268924749,
+        0.986,
+        "others"
+    ],
+    [
+        "C8_N4",
+        1.11251249756694,
+        0.994,
+        "others"
+    ],
+    [
+        "C3_S3",
+        0.960729933763056,
+        0.784,
+        "others"
+    ],
+    [
+        "C3_N5",
+        2.24608525795889,
+        0.548,
+        "others"
+    ],
+    [
+        "C3_N7",
+        1.98164747197561,
+        0.522,
+        "others"
+    ],
+    [
+        "C1_S8",
+        -1.06953253419806,
+        0.722,
+        "others"
+    ],
+    [
+        "C6_S1",
+        1.58675003179585,
+        -0.144,
+        "others"
+    ],
+    [
+        "C6_S4",
+        0.659500227859029,
+        -0.126,
+        "others"
+    ],
+    [
+        "C5_N1",
+        -0.092945920829167,
+        1,
+        "others"
+    ],
+    [
+        "C5_N2",
+        -0.305979859832188,
+        1,
+        "others"
+    ],
+    [
+        "C5_N5",
+        -0.906228793427578,
+        1,
+        "others"
+    ],
+    [
+        "C4_S4",
+        -1.57132640720918,
+        0.96,
+        "others"
+    ],
+    [
+        "C4_N2",
+        1.14678100607465,
+        0.996,
+        "others"
+    ],
+    [
+        "C4_N7",
+        0.737429401727106,
+        0.976,
+        "others"
+    ],
+    [
+        "N1_C4",
+        0.200442191375833,
+        1,
+        "others"
+    ],
+    [
+        "N2_C1",
+        -0.078923241764293,
+        1,
+        "others"
+    ],
+    [
+        "N4_S7",
+        0.623895024251477,
+        -1,
+        "others"
+    ],
+    [
+        "N5_C1",
+        -1.29912505224111,
+        1,
+        "others"
+    ],
+    [
+        "N7_S1",
+        0.442373368760333,
+        0.414,
+        "others"
+    ],
+    [
+        "N7_C1",
+        1.95461190345475,
+        1,
+        "others"
+    ],
+    [
+        "C9_S8",
+        1.75763745492412,
+        0.002,
+        "others"
+    ],
+    [
+        "C9_N3",
+        1.26289345911427,
+        0.766,
+        "others"
+    ],
+    [
+        "C8_S4",
+        -0.740004582661009,
+        0.984,
+        "others"
+    ],
+    [
+        "C3_N6",
+        2.10418143697383,
+        -0.384,
+        "others"
+    ],
+    [
+        "C2_S6",
+        -1.77039354184815,
+        1,
+        "others"
+    ],
+    [
+        "C2_N8",
+        1.41614242305872,
+        1,
+        "others"
+    ],
+    [
+        "C6_S2",
+        2.75491310058267,
+        0.292,
+        "others"
+    ],
+    [
+        "N8_S1",
+        0.32850779228858,
+        0.996,
+        "others"
+    ],
+    [
+        "N8_S7",
+        -0.162724793469363,
+        0.98,
+        "others"
+    ],
+    [
+        "N1_S9",
+        1.66568368603348,
+        0.504,
+        "others"
+    ],
+    [
+        "N1_C3",
+        1.84452438091709,
+        0.48,
+        "others"
+    ],
+    [
+        "N2_S7",
+        0.750363922373151,
+        -0.74,
+        "others"
+    ],
+    [
+        "N2_C7",
+        0.006672111314487,
+        1,
+        "others"
+    ],
+    [
+        "N3_S6",
+        -1.10550227265179,
+        -0.972,
+        "others"
+    ],
+    [
+        "N3_C3",
+        0.131396445710701,
+        0.43,
+        "others"
+    ],
+    [
+        "N3_C5",
+        -0.102359832627743,
+        0.998,
+        "others"
+    ],
+    [
+        "N3_C4",
+        -0.188777069873153,
+        1,
+        "others"
+    ],
+    [
+        "N4_C7",
+        0.443712122261379,
+        0.996,
+        "others"
+    ],
+    [
+        "N5_S3",
+        -0.223906015335088,
+        -1,
+        "others"
+    ],
+    [
+        "N5_C6",
+        2.42479620073865,
+        0.43,
+        "others"
+    ],
+    [
+        "N6_S6",
+        -0.148664520104712,
+        -0.714,
+        "others"
+    ],
+    [
+        "N6_S4",
+        -1.15794186932151,
+        -0.718,
+        "others"
+    ],
+    [
+        "N7_S3",
+        0.499800067564618,
+        0.944,
+        "others"
+    ],
+    [
+        "N7_C6",
+        1.77382214256258,
+        0.338,
+        "others"
+    ],
+    [
+        "C8_N2",
+        0.129081885356769,
+        1,
+        "others"
+    ],
+    [
+        "C2_S9",
+        -1.42189181665293,
+        0.996,
+        "others"
+    ],
+    [
+        "C2_N2",
+        -0.189644234094346,
+        1,
+        "others"
+    ],
+    [
+        "C1_N9",
+        -1.50490885564222,
+        1,
+        "others"
+    ],
+    [
+        "C1_N2",
+        -0.078923241764293,
+        1,
+        "others"
+    ],
+    [
+        "C7_S8",
+        -0.250938819111395,
+        0.954,
+        "others"
+    ],
+    [
+        "C6_S7",
+        1.62173524659381,
+        -0.284,
+        "others"
+    ],
+    [
+        "C4_S6",
+        -1.91322051451013,
+        0.986,
+        "others"
+    ],
+    [
+        "N8_C7",
+        0.445448193076327,
+        1,
+        "others"
+    ],
+    [
+        "N9_C6",
+        -0.099021310064734,
+        1,
+        "others"
+    ],
+    [
+        "N4_S6",
+        1.04903974937677,
+        -1,
+        "others"
+    ],
+    [
+        "N5_S5",
+        -0.027886667483576,
+        -1,
+        "others"
+    ],
+    [
+        "N5_C9",
+        1.18013920034248,
+        0.924,
+        "others"
+    ],
+    [
+        "N5_C8",
+        0.282243908466505,
+        1,
+        "others"
+    ],
+    [
+        "N5_C4",
+        -0.093226840679629,
+        1,
+        "others"
+    ],
+    [
+        "N6_S2",
+        1.90500039169067,
+        -0.41,
+        "others"
+    ],
+    [
+        "N6_S7",
+        0.201499650661545,
+        -0.7,
+        "others"
+    ],
+    [
+        "N7_S5",
+        -1.05791984707989,
+        0.312,
+        "others"
+    ],
+    [
+        "N7_C8",
+        1.46582587733463,
+        0.998,
+        "others"
+    ],
+    [
+        "C9_S3",
+        1.69130412516158,
+        0.95,
+        "others"
+    ],
+    [
+        "C9_S1",
+        1.48084181557725,
+        0.556,
+        "others"
+    ],
+    [
+        "C8_N9",
+        -1.84013940879445,
+        0.994,
+        "others"
+    ],
+    [
+        "C2_S1",
+        -0.423912248735914,
+        1,
+        "others"
+    ],
+    [
+        "C2_S5",
+        -0.34615939549965,
+        1,
+        "others"
+    ],
+    [
+        "C2_N6",
+        -0.998573265928088,
+        0.996,
+        "others"
+    ],
+    [
+        "C1_N7",
+        1.95461190345475,
+        1,
+        "others"
+    ],
+    [
+        "C7_N2",
+        0.006672111314487,
+        1,
+        "others"
+    ],
+    [
+        "C5_S2",
+        -1.52822538646391,
+        0.948,
+        "others"
+    ],
+    [
+        "C5_S5",
+        -1.72214904488329,
+        0.922,
+        "others"
+    ],
+    [
+        "C4_S5",
+        -1.03630710470059,
+        0.966,
+        "others"
+    ],
+    [
+        "N9_S2",
+        -0.140278446749432,
+        1,
+        "others"
+    ],
+    [
+        "N9_S4",
+        -0.84279685408007,
+        1,
+        "others"
+    ],
+    [
+        "N9_C4",
+        -2.03927956699688,
+        0.994,
+        "others"
+    ],
+    [
+        "N1_S1",
+        0.960966086598203,
+        -0.99,
+        "others"
+    ],
+    [
+        "N1_S4",
+        0.390874470125916,
+        -1,
+        "others"
+    ],
+    [
+        "N2_S3",
+        0.825410101701436,
+        0.074,
+        "others"
+    ],
+    [
+        "N2_S5",
+        0.615143283104506,
+        -0.738,
+        "others"
+    ],
+    [
+        "N4_S3",
+        1.7207075151904,
+        -1,
+        "others"
+    ],
+    [
+        "N4_C4",
+        0.972546050037206,
+        0.984,
+        "others"
+    ],
+    [
+        "N6_C2",
+        -0.998573265928088,
+        0.996,
+        "others"
+    ],
+    [
+        "N6_C6",
+        1.73670827467428,
+        -0.462,
+        "others"
+    ],
+    [
+        "N6_C4",
+        -0.092338438938807,
+        0.954,
+        "others"
+    ],
+    [
+        "C9_S7",
+        0.494070687002489,
+        0.258,
+        "others"
+    ],
+    [
+        "C3_S5",
+        1.12124996225891,
+        0,
+        "others"
+    ],
+    [
+        "C1_S3",
+        -1.26013307725844,
+        1,
+        "others"
+    ],
+    [
+        "C7_S7",
+        -0.48047006853718,
+        0.98,
+        "others"
+    ],
+    [
+        "C5_S1",
+        -0.72671586586857,
+        0.942,
+        "others"
+    ],
+    [
+        "C5_S4",
+        -1.56807423733756,
+        0.914,
+        "others"
+    ],
+    [
+        "C5_N9",
+        -1.35445874609085,
+        1,
+        "others"
+    ],
+    [
+        "C4_N5",
+        -0.093226840679629,
+        1,
+        "others"
+    ],
+    [
+        "N9_C1",
+        -1.50490885564222,
+        1,
+        "others"
+    ],
+    [
+        "N1_S2",
+        1.50088741373109,
+        -1,
+        "others"
+    ],
+    [
+        "N1_C6",
+        1.4482799438919,
+        0.328,
+        "others"
+    ],
+    [
+        "N3_S8",
+        -0.266136123297497,
+        0.576,
+        "others"
+    ],
+    [
+        "N3_C8",
+        0.640091032010109,
+        1,
+        "others"
+    ],
+    [
+        "N3_C2",
+        0.233307513758551,
+        1,
+        "others"
+    ],
+    [
+        "N5_S6",
+        -0.855743824535819,
+        -1,
+        "others"
+    ],
+    [
+        "N5_S4",
+        -0.911770456216755,
+        -1,
+        "others"
+    ],
+    [
+        "N6_C9",
+        1.63001471276384,
+        0.658,
+        "others"
+    ],
+    [
+        "N7_C5",
+        0.263880361225785,
+        0.98,
+        "others"
+    ],
+    [
+        "C9_N1",
+        0.619959981548236,
+        0.868,
+        "others"
+    ],
+    [
+        "C9_N6",
+        1.63001471276384,
+        0.658,
+        "others"
+    ],
+    [
+        "C3_N3",
+        0.131396445710701,
+        0.43,
+        "others"
+    ],
+    [
+        "C3_N4",
+        1.50346627017025,
+        -0.07,
+        "others"
+    ],
+    [
+        "C2_S3",
+        -1.26603229890674,
+        1,
+        "others"
+    ],
+    [
+        "C1_S5",
+        -0.08681147592558,
+        0.988,
+        "others"
+    ],
+    [
+        "C7_S6",
+        -1.43752539870087,
+        1,
+        "others"
+    ],
+    [
+        "C7_N7",
+        1.08197614644077,
+        0.988,
+        "others"
+    ],
+    [
+        "C6_N4",
+        2.27655665180836,
+        -0.386,
+        "others"
+    ],
+    [
+        "C6_N7",
+        1.77382214256258,
+        0.338,
+        "others"
+    ],
+    [
+        "C5_S8",
+        -1.4847141640982,
+        0.654,
+        "others"
+    ],
+    [
+        "C4_S9",
+        -1.100717722202,
+        0.974,
+        "others"
+    ],
+    [
+        "C4_N9",
+        -2.03927956699688,
+        0.994,
+        "others"
+    ],
+    [
+        "C4_N6",
+        -0.092338438938807,
+        0.954,
+        "others"
+    ],
+    [
+        "N8_S8",
+        0.754161644778033,
+        0.956,
+        "others"
+    ],
+    [
+        "N8_S3",
+        0.375207632548844,
+        1,
+        "others"
+    ],
+    [
+        "N9_S5",
+        0.220734193776965,
+        1,
+        "others"
+    ],
+    [
+        "N1_C2",
+        0.366805425466176,
+        1,
+        "others"
+    ],
+    [
+        "N2_S9",
+        1.8098668711729,
+        0.92,
+        "others"
+    ],
+    [
+        "N2_C3",
+        2.4738093298946,
+        0.196,
+        "others"
+    ],
+    [
+        "N6_C7",
+        -1.16173146912385,
+        0.994,
+        "others"
+    ],
+    [
+        "N7_S4",
+        0.155771917100835,
+        0.448,
+        "others"
+    ],
+    [
+        "S4_C7",
+        -0.136027437099675,
+        1,
+        "others"
+    ],
+    [
+        "C9_S5",
+        1.32231904198626,
+        0.5,
+        "others"
+    ],
+    [
+        "C8_S7",
+        -0.799307609467443,
+        0.926,
+        "others"
+    ],
+    [
+        "C8_N6",
+        -0.357774444085489,
+        1,
+        "others"
+    ],
+    [
+        "C3_S7",
+        0.770153022867752,
+        -0.184,
+        "others"
+    ],
+    [
+        "C3_N1",
+        1.84452438091709,
+        0.48,
+        "others"
+    ],
+    [
+        "C1_N8",
+        1.00078466329089,
+        1,
+        "others"
+    ],
+    [
+        "C1_N1",
+        0.412941712425156,
+        1,
+        "others"
+    ],
+    [
+        "C1_N4",
+        -0.061989478749154,
+        0.998,
+        "others"
+    ],
+    [
+        "C1_N6",
+        -0.644011272557081,
+        1,
+        "others"
+    ],
+    [
+        "C7_S1",
+        0.862972631044578,
+        1,
+        "others"
+    ],
+    [
+        "C7_S5",
+        -0.030963010592135,
+        0.992,
+        "others"
+    ],
+    [
+        "C7_N6",
+        -1.16173146912385,
+        0.994,
+        "others"
+    ],
+    [
+        "C6_N3",
+        1.00892454268886,
+        0.304,
+        "others"
+    ],
+    [
+        "C5_S7",
+        -1.66814258225349,
+        0.832,
+        "others"
+    ],
+    [
+        "C4_N3",
+        -0.188777069873153,
+        1,
+        "others"
+    ],
+    [
+        "C4_N4",
+        0.972546050037206,
+        0.984,
+        "others"
+    ],
+    [
+        "N8_C9",
+        -0.381010951284984,
+        0.992,
+        "others"
+    ],
+    [
+        "N1_S7",
+        0.739479798059933,
+        -1,
+        "others"
+    ],
+    [
+        "N2_S4",
+        -0.263636348296024,
+        -0.724,
+        "others"
+    ],
+    [
+        "N2_C2",
+        -0.189644234094346,
+        1,
+        "others"
+    ],
+    [
+        "N2_C5",
+        -0.305979859832188,
+        1,
+        "others"
+    ],
+    [
+        "N3_S2",
+        0.962617699878217,
+        -0.83,
+        "others"
+    ],
+    [
+        "N3_S7",
+        0.427792384722123,
+        -0.988,
+        "others"
+    ],
+    [
+        "N5_S1",
+        -0.435573812091314,
+        -1,
+        "others"
+    ]
+];
+        // set the dimensions and margins of the graph
+        // const margin = { top: 10, right: 30, bottom: 30, left: 60 },
+        //     width = 460 - margin.left - margin.right,
+        //     height = 400 - margin.top - margin.bottom;
+
+        // append the svg object to the body of the page
+        const svg = d3.select("#my_dataviz")
+            .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform",
+                `translate(${margin.left}, ${margin.top})`);
+
+
+        console.log("dataset >>>")
+
+        // 创建悬停提示框
+        // 创建悬停提示框
+        var tooltip = d3.select("#my_dataviz")
+                    .append("div")
+                    .style("opacity", 0)
+                    .attr("class", "tooltip")
+                    .style("font-size", "16px");
+
+        // Three function that change the tooltip when user hover / move / leave a cell
+        var mouseover = function (event, d) {
+            tooltip
+                .transition()
+                .duration(200)
+                .style("opacity", 1);
+            console.log(">>> d", d);
+            tooltip
+                .html("<span style='color:grey'>item: </span>" + d[0] + "<br />x:"+  d[1] + "<br />y:" +d[2])
+                .style("left", (event.pageX + 30) + "px")
+                .style("top", (event.pageY + 30) + "px");
+        }
+
+        var mousemove = function (event, d) {
+            tooltip
+                .style("left", (event.pageX + 30) + "px")
+                .style("top", (event.pageY + 30) + "px");
+        }
+
+        var mouseleave = function (d) {
+            tooltip
+                .transition()
+                .duration(200)
+                .style("opacity", 0);
+        }
+        // console.log(dataset);
+        // Add X axis
+        const x = d3.scaleLinear()
+            .domain([-3, 5.5])
+            .range([0, width]);
+        svg.append("g")
+            .attr("transform", `translate(0, ${height})`)
+            .call(d3.axisBottom(x));
+
+        // Add Y axis
+        const y = d3.scaleLinear()
+            .domain([-1.2, 1.2])
+            .range([height, 0]);
+        svg.append("g")
+            .call(d3.axisLeft(y));
+
+        // Color scale: give me a specie name, I return a color
+        const color = d3.scaleOrdinal()
+            .domain(["S", "C", "N", "others"])
+            .range(["#440154ff", "#21908dff", "#fde725ff", "pink"])
+
+        
+        // 相交线
+        horization_vertical_lines = svg.append("g").attr("id", "horization_vertical_lines")
+        // 绘制垂直和水平线  
+
+        function drawLine(xstart, ystart, axis) {
+
+            // 获取范围
+            var xRange = x.domain();
+            var yRange = y.domain();
+
+            var x1, y1, x2, y2;
+
+            if (axis == "x") {
+                // 水平线
+
+                y1 = ystart;
+                y2 = ystart;
+
+                x1 = xRange[0];
+                x2 = xRange[1];
+
+            } else if (axis == "y") {
+                // 垂直线
+
+                x1 = xstart;
+                x2 = xstart;
+
+                y1 = yRange[0];
+                y2 = yRange[1];
+
+            }
+            // console.log(" >>>>", x1, x2, y1, y2);
+            // 绘制
+            horization_vertical_lines.append("g")
+                .append("line")
+                .attr("x1", x(x1))
+                .attr("y1", y(y1))
+                .attr("x2", x(x2))
+                .attr("y2", y(y2))
+                .attr("stroke", "steelblue")
+                .style('stroke-dasharray', '5,5');
+        }
+
+
+        //  绘制垂直的正交线
+        // drawLine(0, 0, "x");
+        drawLine(2, 0, "y");
+        drawLine(-2, 0, "y");
+
+        drawLine(0, 0.95, "x");
+        drawLine(0, -0.95, "x");
+        var groupsArray = ["S", "C", "N", "others"];
+
+        
+        // 初始化colorSet, 为柱状图添加颜色
+        var colorSet = []
+        for (var colorindex = 0; colorindex < groupsArray.length; colorindex ++) {
+            colorSet.push(colorScale(colorindex));
+        }
+        // Add dots
+        svg.append('g')
+            .attr("id", "dots")
+            .selectAll("dot")
+            .data(dataset)
+            .join("circle")
+            .attr("cx", function (d) { return x(d[1]); })
+            .attr("cy", function (d) { return y(d[2]); })
+            .attr("r", 5)
+            .style("fill", function (d) { return color(d[0]) })
+            .attr("id", "indPoints")
+            .on("mouseover", mouseover)
+            .on("mousemove", mousemove)
+            .on("mouseleave", mouseleave)
+
+
+
+        // legend
+         // 绘制legend容器
+         var legend = svg.append("g")
+            .attr("class", "legend");
+
+        var drawLegend = function(groupsArray) {
+            legend
+            .selectAll("circle")
+            .data(groupsArray)
+            .enter()
+            .append("circle")
+            .attr("cx", width + 10)
+            .attr("cy", function (d, i) {
+                return i * 30;
+            })
+            .attr("r", 6)
+            .style("fill", function (d, i) {
+                return color(d);
+            })
+            // .on("mouseover", mouseover)
+            // .on("mousemove", mousemove)
+            // .on("mouseleave", mouseleave); // 根据分组获取颜色
+
+            // 图例文本
+            legend
+                .selectAll("text")
+                .data(groupsArray)
+                .enter()
+                .append("text")
+                .attr("x", width + 30)
+                .attr("y", function (d, i) {
+                    return i * 30 + 8;
+                })
+                .attr("text-anchor", "start")
+                .text(function (d, i) {
+                    return groupsArray[i];
+                });
+            
+        }
+
+        drawLegend(groupsArray);
+        // 缩放行为
+        // 创建一个缩放行为，并设置缩放事件处理程序
+        const zoom = d3.zoom().on('zoom', (e) => {
+            svg.attr('transform', e.transform);
+        });
+
+        d3.select("#my_dataviz").call(zoom)
+            // .call(zoom.transform, d3.zoomIdentity);
+
+            
+        // 添加圆圈颜色、大小选择
+        scatterSizeRange = document.getElementById("scatterSizeRange");
+        scatterSizeRange.addEventListener("input", function () {
+            scatterSizeRangeValue = parseFloat(scatterSizeRange.value);
+            d3.selectAll("#dots").selectAll("circle").attr("r", scatterSizeRangeValue);
+        })
+
+        
+        // TODO:xiaojiao, 柱状图颜色配置 2023/11/03
+        // 先缓存 subgroups.length
+        for (var i = 0, len = groupsArray.length; i < len; i++) {
+            // 获取当前数据的值
+            var group = groupsArray[i];
+
+            // 创建外部 <div> 元素
+            const outerDiv = document.createElement("div");
+            outerDiv.className = "item";
+
+            // 创建 <label> 元素
+            const labelElement = document.createElement("label");
+            labelElement.setAttribute("for",  group + "yAxisColor");
+            labelElement.textContent = group + ":";
+
+            // 创建 <input> 元素
+            const inputElement = document.createElement("input");
+            inputElement.type = "color";
+            inputElement.id =  group + "yAxisColor";
+            inputElement.value = colorSet[i];
+
+            // 添加事件监听器
+            inputElement.addEventListener("change", function() {
+                // 处理颜色值变化的逻辑
+                var newColorValue = this.value;
+                
+                // 定义颜色数组
+                // const colorArray = ["red", "blue", "green", "yellow"];
+
+                // FIXME:xiaojiao,这里每次需要遍历，两层for 可以优化的
+                // draw rect
+                d3.select(".legend")
+                .selectAll("circle")
+                // .data(stackedData)
+                // .join("circle")
+                // .attr("class", "group")
+                .style("fill",  function (d, j) {
+                    // console.log("this >>>", this, d, j);
+                    // console.log(inputElement.id);
+                    // console.log(d)
+                    var pre_value = d;
+                    if (pre_value + "yAxisColor" == inputElement.id) {
+                        // console.log("this >>>", this, d, j);
+
+                        // 修改全局属性colorSet
+                        colorSet[j] = newColorValue;
+                        // console.log("groupsArray[j] >>>", groupsArray[j],  inputElement.id);
+                        // console.log(newColorValue)
+                        return newColorValue;
+                    }
+                    return colorSet[j];
+                });
+
+                var new_color_map = d3.scaleOrdinal()
+                    .domain(["S", "C", "N", "others"])
+                    .range(colorSet);
+                // draw lengend
+                // 假设您已经选择了包含子元素的父元素
+                var parentElement = d3.select("#dots");
+
+                // 选择所有子元素
+                var childElements = parentElement.selectAll("circle");
+
+               
+                // 遍历每个子元素
+                childElements.join("circle").each(function(_, i) {
+                    var childElement = d3.select(this);
+
+                    // if (_[3] + "yAxisColor" == inputElement.id) {
+                    //     // console.log("this >>>", this, d, j);
+
+                    //     // 修改全局属性colorSet
+                    //     colorSet[j] = newColorValue;
+                    //     // console.log("groupsArray[j] >>>", groupsArray[j],  inputElement.id);
+                    //     // console.log(newColorValue)
+                    //     return newColorValue;
+                    // }
+                    // // 获取子元素的 fill 属性值
+                    childElement.style("fill", new_color_map(_[3]));
+                    // console.log("childElement >>>", childElement.style())
+                    // childElement.select("text").attr("fill", colorSet[i]);
+  
+                });
+            });
+
+            // 将 label 和 input 元素添加到外部 div 元素中
+            outerDiv.appendChild(labelElement);
+            outerDiv.appendChild(inputElement);
+
+            // 将外部 div 元素添加到 mainSettingDiv 中
+            const mainSettingDiv = document.getElementById("mainsetting");
+            mainSettingDiv.appendChild(outerDiv);
+        }
+
+        // 辅助线颜色显示
+        vertial_hortizal_lines_color_adjust = document.getElementById("vertial_hortizal_lines");
+
+        vertial_hortizal_lines_color_adjust.addEventListener("change", function (){
+            var color_value = vertial_hortizal_lines_color_adjust.value;
+            d3.select("#horization_vertical_lines").selectAll("line").style("stroke", color_value);
+        })
+    </script>
+
+</body>
+
+</html>

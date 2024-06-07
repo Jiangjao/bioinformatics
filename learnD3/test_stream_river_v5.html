@@ -442,7 +442,7 @@
                             <div class="item">
                                 <p>类型</p>
                                 <select id="typeSelect" data-sign="riverType" class="form-select" title="riverselect">
-                                    <option value="wave">波浪</option>
+                                    <option value="wave" selected>波浪</option>
                                     <option value="line">折线</option>
                                     <option value="pile">阶梯</option>
                                 </select>
@@ -501,7 +501,7 @@
     <script>
         // 定义全局状态
         const globalState = {
-            selectedType: 'pile',
+            selectedType: 'wave',
             fontSizeRange: 16
         }
 
@@ -522,12 +522,6 @@
 
     </script>
     <script>
-
-        // window.onload=function(){
-        //     // document.getElementById("bg").style.backgroundColor="#F00";
-        //     clientX = document.body.clientWidth - 100;
-        //     clientY = document.body.clientHeight - 100;
-        // }
 
         // TODO:xiaojiao, 监听窗口resize 时的变化
         let flag = true
@@ -658,11 +652,13 @@
         //     .range(['#e41a1c', '#377eb8', '#4daf4a'])
 
         //stack the data? --> stack per subgroup
+        // https://observablehq.com/@d3/streamgraph-transitions?intent=fork
+        // https://d3js.org/d3-shape/stack#stack_offset
+        // todo:xiaojiao, 使得图对称
         const stackedData = d3.stack()
-            // .offset(d3.stackOffsetSilhouette)
-            // .offset(d3.stackOffsetDiverging)
-            .keys(subgroups)
-            (data)
+            //.order(d3.stackOffsetSilhouette)
+            .order(d3.stackOffsetSilhouette)
+            .keys(subgroups)(data)
 
         // console.log("data", data)
 
@@ -816,7 +812,6 @@
         }
 
         legendGroupDraw(subgroups, colorSet);
-        // console.log("d.data.group", data.group);
         // Show the bars
         const rect_group = svg.append("g").attr("id", "rect_group")
 
@@ -1297,6 +1292,7 @@
 
         // https://observablehq.com/@stardisblue/scale-bar
         // 调节柱状图宽度
+        // TODO:xiaojiao, 如何让这个图形类型切换时, 自动匹配到不同类型的图？
         let stackBarWidthInputMax = parseInt(stackBarWidthInput.max);
         stackBarWidthInput.addEventListener("input", function () {
             stackBarWidth = +stackBarWidthInput.value;
@@ -1304,18 +1300,21 @@
             newBand = d3.scaleBand()
                 .domain(groups)
                 .range([0, stackBarWidth * (data.length)])
-                .paddingInner(0.5)
-                .paddingOuter(0.5);
-            // newBand.paddingInner(1).paddingOuter(0);
-            x.domain(groups).range([0, stackBarWidth * (data.length - 1)]);
-            xAxis.call(d3.axisBottom(newBand));
-            // svg.attr("width", stackBarWidthInputMax);
+                .paddingInner(0)
+                .paddingOuter(0);
+            x.domain(groups).range([0, stackBarWidth * (data.length)]);
 
-            console.log("newBand >>>", newBand);
-            // 清除area 图
-            // utils.removelinkArea();
-            // updata rect
             if (globalState.selectedType == "pile") {
+
+                // newBand.paddingInner(1).paddingOuter(0);
+                x.domain(groups).range([0, stackBarWidth * (data.length - 1)]);
+                xAxis.call(d3.axisBottom(newBand));
+                // svg.attr("width", stackBarWidthInputMax);
+
+                console.log("newBand >>>", newBand);
+                // 清除area 图
+                // utils.removelinkArea();
+                // updata rect
                 // TODO:xiaojiao, 需要使得这个x.bandwidth()大于0
                 rect_group
                 .selectAll("g")
@@ -1336,6 +1335,13 @@
                 .attr("height", d => y(d[0]) - y(d[1]))
                 .attr("width", stackBarWidth)
                 console.log("pil up here")
+            } else {
+                newBand = d3.scaleBand()
+                .domain(groups)
+                .range([0, stackBarWidth * (data.length)])
+                .paddingInner(0)
+                .paddingOuter(0);
+                xAxis.call(d3.axisBottom(newBand));
             }
 
             // .attr("z-index", 1);
@@ -1355,10 +1361,10 @@
                     // 可以在这里执行一些特定的操作或调用相关的函数
                 });
             // }
-                
+
                     // update lengend
-                    legendGroup.attr("transform", "translate(" + (stackBarWidth * data.length) + ", 20)")
-                        
+                legendGroup.attr("transform", "translate(" + (stackBarWidth * (data.length) + 20)+ 20 + ", 20)")
+
 
             // console.log("x.bandwidth()", newBand.bandwidth());
 

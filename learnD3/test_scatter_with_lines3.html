@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>散点图</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <style>
+        .tooltip {
+            padding: 8px 12px;
+            color: red;
+            border-radius: 6px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+            pointer-events: none;
+            transform: translate(-50%, -100%);
+            font-family: "Helvetica", sans-serif;
+            font-size: 12px;
+            background: rgba(20, 10, 30, 0.6);
+            transition: 0.2s opacity ease-out, 0.1s border-color ease-out;
+            backdrop-filter: blur(4px);
+            background-color: black;
+            border: none;
+            border-radius: 5px;
+            padding: 15px;
+            min-width: 200px;
+            text-align: left;
+            color: red;
+        }
+
+        svg .container {
+            width: 100%;
+            height: 100%;
+            margin: auto;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .tooltip {
+            position: absolute;
+            background-color: #f9f9f9;
+            padding: 8px;
+            border: 1px solid #ccc;
+            pointer-events: none;
+            font-size: 14px;
+        }
+
+        .basicSettings {
+            /* width: 80%; */
+            position: relative;
+            /* top: 38px; */
+            z-index: 1;
+            overflow-y: auto;
+        }
+
+        .downloadSettings {
+            width: 100%;
+            position: relative;
+            /* top: 18px; */
+            z-index: 2;
+        }
+
+        .sidebar {
+            width: 100%;
+            display: none;
+            /* 初始状态下隐藏下拉框 */
+        }
+
+        .sidebar h2 {
+            /* margin-bottom: 10px; */
+            /* border-bottom: 1px solid #ddd; */
+            padding-bottom: 5px;
+        }
+
+        .sidebar label {
+            /* width: 120px; */
+            /* text-align: right; */
+            margin-right: 10px;
+        }
+
+        .sidebar input,
+        .sidebar select {
+            padding: 5px;
+            border: 1px solid #ccc;
+            width: 25%;
+            border-radius: 4px;
+        }
+
+        .sidebar button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            background: #42b983;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .sidebar button:hover {
+            opacity: 0.8;
+        }
+
+        .sidebar input[type="number"] {
+            width: 50px;
+        }
+
+        .sidebar input[type="text"] {
+            width: 36%;
+        }
+
+        .sidebar input[type="range"] {
+            width: 100%;
+            /* transform: rotate(270deg); 添加垂直滚动条 */
+        }
+
+        /* .sidebar br {
+            display: none;
+        } */
+
+        .item {
+            display: flex;
+            align-items: center;
+            text-align: justify;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            width: 88%;
+        }
+
+        /* .item {} */
+
+        .sidebar hr {
+            overflow: hidden;
+            width: 88%;
+        }
+
+        /* 设置hr线 */
+        .item+hr {
+            margin: 10px 0;
+
+        }
+
+        .item+hr:first-child {
+            margin-top: 0;
+        }
+
+        .item+hr {
+            border: none;
+            border-top: 1px dotted #ccc;
+        }
+
+        /* hr {} */
+        /* .item label {
+            width: 120px;
+            } */
+        /* .sidebar {
+            display: flex;
+            flex-wrap: wrap;
+        } */
+
+        .sliderTooltip {
+            /* display: block; */
+            /* position: absolute; */
+            /* styles */
+            /* padding: 10px; */
+            position: absolute;
+            /* top: -30px; */
+            /* left: 134px; */
+            background-color: rgb(204 204 204 / 18%);
+            /* color: #f9f9f9; */
+            padding: 5px;
+            border-radius: 5px;
+            display: none;
+            margin-top: 14%;
+        }
+
+        .tooltip.show {
+            display: block;
+        }
+
+        .sidebar.show {
+            width: 100%;
+            height: auto;
+            position: relative;
+            /* padding: inherit; */
+            display: block;
+            padding: 10px 11px;
+            /* 点击后显示下拉框 */
+            transition: max-height 0.3s ease;
+            z-index: 1;
+            /* 添加过渡效果 */
+        }
+
+        /* 添加button的样式 */
+        .button-like {
+            display: inline-block;
+            padding: 10px 0 10px 10%;
+            background-color: #4CAF50;
+            color: white;
+            text-align: left;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 90%;
+        }
+
+        .button-like:hover {
+            background-color: #45a049;
+        }
+
+        .button-like:active {
+            background-color: #3e8e41;
+        }
+
+        /* TODO:xiaojiao, @media screen and (max-width: 700px) 如何使用2023/10/23 */
+        div.tooltip-donut {
+            position: absolute;
+            text-align: center;
+            padding: .5rem;
+            background: #FFFFFF;
+            color: #313639;
+            border: 1px solid #313639;
+            border-radius: 8px;
+            pointer-events: none;
+            font-size: 1.3rem;
+        }
+
+        /*手机屏幕下样式*/
+        @media screen and (max-width: 700px) {
+
+            div.tooltip-donut {
+                position: relative;
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+
+            div.tooltip-donut::after {
+                content: none;
+            }
+
+        }
+
+        icon-i {
+            text-align: center;
+        }
+
+        .dropdown {
+            /* padding: 10px 11px; */
+            position: relative;
+            /* display: inline-block; */
+        }
+
+        .dropdown-content {
+            display: none;
+            position: relative;
+            /* top: 100%; */
+            /* left: 0; */
+            width: 100%;
+            /* padding: 10px 11px; */
+            background-color: #4CAF50;
+        }
+
+
+        .settingContent {
+            display: block;
+            position: relative;
+            /* top: 100%; */
+            /* left: 0; */
+            width: 90%;
+            padding: 10px 11px;
+            /* overflow-y: scroll; */
+            height: 60vh;
+            overflow-y: scroll;
+            /* 设置垂直方向上溢出时显示滚动条 */
+            overflow-x: hidden;
+            scrollbar-width: thin;
+            /* 设置滚动条的宽度 */
+            scrollbar-color: gray lightgray;
+            /* 设置滚动条的颜色 */
+        }
+
+        /* div#settingContent {} */
+        /* .dropdown:hover .dropdown-content {
+        display: block;
+
+         } */
+
+        .filled {
+            fill: url("#mainGradient");
+        }
+
+        .ticks text {
+            font-family: sans-serif;
+            font-size: 17px;
+            text-anchor: middle;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="position: absolute; width:100%; height: 100%;">
+        <div>
+            <div style="width: 20%;z-index: 1; position: fixed; padding-right: 1%; right:0; top:40px; opacity: 0.9;">
+                <!-- add by xiaojiao 停靠右侧， x轴文本旋转 -->
+                <!-- add by xiaojiao 柱状图宽度调整 -->
+                <div class="dropdown">
+                    <div id="dropdownTest" class="downloadSettings" style="background:#F9F9F9;width: 100%;">
+                        <p class="button-like">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-cloud-arrow-down" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M7.646 10.854a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 9.293V5.5a.5.5 0 0 0-1 0v3.793L6.354 8.146a.5.5 0 1 0-.708.708l2 2z" />
+                                <path
+                                    d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z" />
+                            </svg>
+                            download
+                        </p>
+                    </div>
+                    <div id="dropdownContent" class="dropdown-content"
+                        style="background:#F9F9F9;width: 100%;display: none;">
+                        <div class="sidebar show">
+                            <button id="export">下载 SVG</button>
+                            <!-- <br> -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <br> -->
+                <div class="dropdown" style="background:#F9F9F9;width: 100%;">
+                    <div class="basicSettings">
+                        <!-- <button type="button" id="exitBtn" class="btn" onClick="exitFullscreen()">退出全屏</button> -->
+                        <p type="button" id="btn" class="btn button-like" title="fullscreen">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-gear" viewBox="0 0 16 16">
+                                <path title="修改参数"
+                                    d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+                                <path title="修改参数"
+                                    d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z" />
+                            </svg>
+                            <path title="fullscreen" fill-rule="evenodd"
+                                d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z" />
+                            </svg>
+                            setting
+                        </p>
+                    </div>
+                    <div class="settingContent" id="settingContent">
+                        <div class="sidebar show" id="mainsetting">
+                            <!-- <h2>文本 Settings</h2> -->
+                            <div class="item">
+                                <p>字体选择:</p>
+                                <!-- https://www.runoob.com/w3cnote/web-font-family.html -->
+                                <select class="form-select" id="fontSelect">
+                                    <option value="">Select</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">Serif Fonts
+                                    </option>
+                                    <option value="Georgia,serif" style="font-family: Georgia,serif">Georgia</option>
+                                    <option value="Palatino Linotype,Book Antiqua,Palatino,serif"
+                                        style="font-family: Palatino Linotype,Book Antiqua,Palatino,serif">Palatino
+                                        Linotype</option>
+                                    <option value="Times New Roman,Times,serif"
+                                        style="font-family: Times New Roman,Times,serif">Times New Roman</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">Sans-Serif
+                                        Fonts</option>
+                                    <option value="Arial,Helvetica,sans-serif"
+                                        style="font-family: Arial,Helvetica,sans-serif">Arial</option>
+                                    <option value="Arial Black,Gadget,sans-serif"
+                                        style="font-family: Arial Black,Gadget,sans-serif">Arial Black</option>
+                                    <option value="Comic Sans MS,cursive,sans-serif"
+                                        style="font-family: Comic Sans MS,cursive,sans-serif">Comic Sans MS</option>
+                                    <option value="Impact,Charcoal,sans-serif"
+                                        style="font-family: Impact,Charcoal,sans-serif">Impact</option>
+                                    <option value="Lucida Sans Unicode,Lucida Grande,sans-serif"
+                                        style="font-family: Lucida Sans Unicode,Lucida Grande,sans-serif">Lucida Sans
+                                        Unicode</option>
+                                    <option selected="selected" value="Tahoma,Geneva,sans-serif"
+                                        style="font-family: Tahoma,Geneva,sans-serif">Tahoma</option>
+                                    <option value="Trebuchet MS,Helvetica,sans-serif"
+                                        style="font-family: Trebuchet MS,Helvetica,sans-serif">Helvetica</option>
+                                    <option value="Verdana,Geneva,sans-serif"
+                                        style="font-family: Verdana,Geneva,sans-serif">Verdana</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">Monospace
+                                        Fonts</option>
+                                    <option value="Courier New,Courier,monospace"
+                                        style="font-family: Courier New,Courier,monospace">Courier New</option>
+                                    <option value="Lucida Console,Monaco,monospace"
+                                        style="font-family: Lucida Console,Monaco,monospace">Lucida Console</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">中文</option>
+                                    <option value="华文细黑,sans-serif" style="font-family: 华文细黑,sans-serif">华文细黑</option>
+                                    <option value="微软雅黑,sans-serif" style="font-family: 微软雅黑,sans-serif">微软雅黑</option>
+                                    <option value="中易宋体,sans-serif" style="font-family: 中易宋体,sans-serif">中易宋体</option>
+                                    <option value="WenQuanYi Micro Hei,sans-serif"
+                                        style="font-family: WenQuanYi Micro Hei,sans-serif">WenQuanYi Micro Hei</option>
+                                    <option value="楷体,serif" style="font-family: 楷体, serif">楷体</option>
+                                    <option value="隶书,sans-serif" style="font-family: 隶书, sans-serif">隶书</option>
+                                </select>
+                            </div>
+
+                            <div class="item">
+                                <p>字体大小: </p>
+                                <input type="range" id="fontSizeRange" min="6" max="56" step="1" value="16">
+                                <div class="sliderTooltip">
+                                    <span class="value"></span>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="item">
+                                <label for="xAxisrotateSlider">x轴字体旋转:</label>
+                                <input type="range" id="xAxisrotateSlider" min="0" max="360" step="1" value="30">
+                                <input type="text" id="xAxisrotateSliderValue" readonly>
+                            </div>
+
+                            <div class="item">
+                                <p>散点大小调整: </p>
+                                <input type="range" id="scatterSizeRange" min="0" max="50" step="0.1" value="1.5">
+                                <div class="scatterSizeRange" style="display: none;">
+                                    <span class="value"></span>
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <label for="dotsStrokeColor">散点描边颜色调整:</label>
+                                <input type="color" id="dotsStrokeColor" value="#FBF1F5">
+                            </div>
+
+
+                            <div class="item">
+                                <label for="dotsColor">散点颜色:</label>
+                                <input type="color" id="dotsColor">
+                            </div>
+
+
+                            <hr>
+
+                            <div class="item">
+                                <button id="center-button">reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dropdown" style="background:#F9F9F9;width: 100%;">
+                    <div class="basicSettings">
+                        <p type="button" id="helpbtn" class="btn button-like" title="fullscreen">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-question-square" viewBox="0 0 16 16">
+                                <path
+                                    d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
+                                <path title="fullscreen" fill-rule="evenodd"
+                                    d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94" />
+                            </svg>
+                            help
+                        </p>
+                    </div>
+                    <div class="settingContent" id="helpContent">
+                        <div class="sidebar show" id="helpsetting">
+                            <h3>基本的使用</h3>
+                            <ol>
+                                <li>可以拖拽移动图形</li>
+                                <li>鼠标放大缩小图像</li>
+                                <li>悬浮到特定图案上会有文字展示</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <!-- <br> -->
+                <!-- <br> -->
+                <div class="btns" id="btns" style="background:#F9F9F9;width: 100%;">
+
+                    <!-- <button type="button" id="exitBtn" class="btn" onClick="exitFullscreen()">退出全屏</button> -->
+                    <p type="button" id="btn" class="btn button-like fullScreen" title="fullscreen">
+                        <svg title="fullscreen" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            fill="currentColor" class="bi bi-arrows-fullscreen" viewBox="0 0 16 16">
+                            <path title="fullscreen" fill-rule="evenodd"
+                                d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z" />
+                        </svg>
+                        全屏
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="basicSettings" style="margin-left: auto; position: relative;">
+
+            </div>
+
+
+        </div>
+        <!-- Create a div where the graph will take place -->
+        <div id="container">
+
+            <!-- Create a div where the graph will take place -->
+            <!-- <div id="chart"></div> -->
+        </div>
+
+        <!-- <div id="myplot"></div> -->
+        <!-- <script src="https://cdn.jsdelivr.net/npm/d3@7"></script> -->
+        <!-- <script src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6"></script> -->
+        <!-- Plugin for color scale -->
+        <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+
+        <!-- Create a div where the graph will take place -->
+        <div id="content">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svglite" width="504.00pt" height="504.00pt" viewBox="0 0 504.00 504.00">
+                <defs>
+                  <style type="text/css"><![CDATA[
+                    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+                      fill: none;
+                      stroke: #000000;
+                      stroke-linecap: round;
+                      stroke-linejoin: round;
+                      stroke-miterlimit: 10.00;
+                    }
+                    .svglite text {
+                      white-space: pre;
+                    }
+                  ]]></style>
+                </defs>
+                <rect width="100%" height="100%" style="stroke: none; fill: #FFFFFF;"/>
+                <defs>
+                  <clipPath id="cpMC4wMHw1MDQuMDB8MC4wMHw1MDQuMDA=">
+                    <rect x="0.00" y="0.00" width="504.00" height="504.00"/>
+                  </clipPath>
+                </defs>
+                <g clip-path="url(#cpMC4wMHw1MDQuMDB8MC4wMHw1MDQuMDA=)">
+                <rect x="0.00" y="0.00" width="504.00" height="504.00" style="stroke-width: 1.07; stroke: #FFFFFF; fill: #FFFFFF;"/>
+                </g>
+                <defs>
+                  <clipPath id="cpNDAuNjJ8NDQ3LjcwfDUuNDh8NDcyLjI5">
+                    <rect x="40.62" y="5.48" width="407.08" height="466.82"/>
+                  </clipPath>
+                </defs>
+                <g clip-path="url(#cpNDAuNjJ8NDQ3LjcwfDUuNDh8NDcyLjI5)">
+                <rect x="40.62" y="5.48" width="407.08" height="466.82" style="stroke-width: 1.07;"/>
+                <circle cx="108.92" cy="414.33" r="1.95" style="stroke-width: 0.71; stroke: none; fill: #EE0000;"/>
+                <circle cx="103.21" cy="448.74" r="1.95" style="stroke-width: 0.71; stroke: none; fill: #EE0000;"/>
+                <circle cx="117.15" cy="368.77" r="1.95" style="stroke-width: 0.71; stroke: none; fill: #EE0000;"/>
+                <circle cx="120.22" cy="384.13" r="1.95" style="stroke-width: 0.71; stroke: none; fill: #EE0000;"/>
+                <circle cx="236.78" cy="220.50" r="1.95" style="stroke-width: 0.71; stroke: none; fill: #912CEE;"/>
+                <circle cx="172.45" cy="164.72" r="1.95" style="stroke-width: 0.71; stroke: none; fill: #912CEE;"/>
+                <circle cx="211.12" cy="63.65" r="1.95" style="stroke-width: 0.71; stroke: none; fill: #912CEE;"/>
+                <circle cx="150.46" cy="139.26" r="1.95" style="stroke-width: 0.71; stroke: none; fill: #912CEE;"/>
+                <circle cx="335.96" cy="299.70" r="1.95" style="stroke-width: 0.71; stroke: none; fill: #00CD00;"/>
+                <circle cx="415.78" cy="352.86" r="1.95" style="stroke-width: 0.71; stroke: none; fill: #00CD00;"/>
+                <circle cx="414.74" cy="331.99" r="1.95" style="stroke-width: 0.71; stroke: none; fill: #00CD00;"/>
+                <circle cx="393.17" cy="357.71" r="1.95" style="stroke-width: 0.71; stroke: none; fill: #00CD00;"/>
+                <circle cx="196.32" cy="403.23" r="1.95" style="stroke-width: 0.71; stroke: #EE0000;"/>
+                <circle cx="72.35" cy="429.26" r="1.95" style="stroke-width: 0.71; stroke: #EE0000;"/>
+                <circle cx="70.01" cy="377.49" r="1.95" style="stroke-width: 0.71; stroke: #EE0000;"/>
+                <circle cx="59.12" cy="445.25" r="1.95" style="stroke-width: 0.71; stroke: #EE0000;"/>
+                <circle cx="164.75" cy="134.49" r="1.95" style="stroke-width: 0.71; stroke: #912CEE;"/>
+                <circle cx="185.21" cy="110.01" r="1.95" style="stroke-width: 0.71; stroke: #912CEE;"/>
+                <circle cx="166.58" cy="125.87" r="1.95" style="stroke-width: 0.71; stroke: #912CEE;"/>
+                <circle cx="229.18" cy="158.25" r="1.95" style="stroke-width: 0.71; stroke: #912CEE;"/>
+                <circle cx="429.20" cy="359.79" r="1.95" style="stroke-width: 0.71; stroke: #00CD00;"/>
+                <circle cx="407.36" cy="451.08" r="1.95" style="stroke-width: 0.71; stroke: #00CD00;"/>
+                <circle cx="400.11" cy="343.46" r="1.95" style="stroke-width: 0.71; stroke: #00CD00;"/>
+                <circle cx="399.76" cy="208.18" r="1.95" style="stroke-width: 0.71; stroke: #00CD00;"/>
+                <line x1="108.92" y1="414.33" x2="196.32" y2="403.23" style="stroke-width: 0.64; stroke: #0000FF; stroke-linecap: butt;"/>
+                <polyline points="194.06,404.95 196.32,403.23 193.71,402.13 " style="stroke-width: 0.64; stroke: #0000FF; stroke-linecap: butt;"/>
+                <line x1="103.21" y1="448.74" x2="72.35" y2="429.26" style="stroke-width: 0.64; stroke: #0000FF; stroke-linecap: butt;"/>
+                <polyline points="75.19,429.37 72.35,429.26 73.67,431.76 " style="stroke-width: 0.64; stroke: #0000FF; stroke-linecap: butt;"/>
+                <line x1="117.15" y1="368.77" x2="70.01" y2="377.49" style="stroke-width: 0.64; stroke: #0000FF; stroke-linecap: butt;"/>
+                <polyline points="72.17,375.65 70.01,377.49 72.68,378.43 " style="stroke-width: 0.64; stroke: #0000FF; stroke-linecap: butt;"/>
+                <line x1="120.22" y1="384.13" x2="59.12" y2="445.25" style="stroke-width: 0.64; stroke: #0000FF; stroke-linecap: butt;"/>
+                <polyline points="59.86,442.51 59.12,445.25 61.86,444.51 " style="stroke-width: 0.64; stroke: #0000FF; stroke-linecap: butt;"/>
+                <line x1="236.78" y1="220.50" x2="164.75" y2="134.49" style="stroke-width: 0.64; stroke: #0000FF; stroke-linecap: butt;"/>
+                <polyline points="167.41,135.46 164.75,134.49 165.24,137.28 " style="stroke-width: 0.64; stroke: #0000FF; stroke-linecap: butt;"/>
+                <line x1="172.45" y1="164.72" x2="185.21" y2="110.01" style="stroke-width: 0.64; stroke: #0000FF; stroke-linecap: butt;"/>
+                <polyline points="186.03,112.72 185.21,110.01 183.27,112.08 " style="stroke-width: 0.64; stroke: #0000FF; stroke-linecap: butt;"/>
+                <line x1="211.12" y1="63.65" x2="166.58" y2="125.87" style="stroke-width: 0.64; stroke: #0000FF; stroke-linecap: butt;"/>
+                <polyline points="166.86,123.05 166.58,125.87 169.16,124.70 " style="stroke-width: 0.64; stroke: #0000FF; stroke-linecap: butt;"/>
+                <line x1="150.46" y1="139.26" x2="229.18" y2="158.25" style="stroke-width: 0.64; stroke: #0000FF; stroke-linecap: butt;"/>
+                <polyline points="226.46,159.05 229.18,158.25 227.12,156.30 " style="stroke-width: 0.64; stroke: #0000FF; stroke-linecap: butt;"/>
+                <line x1="335.96" y1="299.70" x2="429.20" y2="359.79" style="stroke-width: 0.64; stroke: #0000FF; stroke-linecap: butt;"/>
+                <polyline points="426.37,359.65 429.20,359.79 427.90,357.27 " style="stroke-width: 0.64; stroke: #0000FF; stroke-linecap: butt;"/>
+                <line x1="415.78" y1="352.86" x2="407.36" y2="451.08" style="stroke-width: 0.64; stroke: #0000FF; stroke-linecap: butt;"/>
+                <polyline points="406.16,448.51 407.36,451.08 408.98,448.75 " style="stroke-width: 0.64; stroke: #0000FF; stroke-linecap: butt;"/>
+                <line x1="414.74" y1="331.99" x2="400.11" y2="343.46" style="stroke-width: 0.64; stroke: #0000FF; stroke-linecap: butt;"/>
+                <polyline points="401.17,340.83 400.11,343.46 402.92,343.06 " style="stroke-width: 0.64; stroke: #0000FF; stroke-linecap: butt;"/>
+                <line x1="393.17" y1="357.71" x2="399.76" y2="208.18" style="stroke-width: 0.64; stroke: #0000FF; stroke-linecap: butt;"/>
+                <polyline points="401.07,210.70 399.76,208.18 398.24,210.57 " style="stroke-width: 0.64; stroke: #0000FF; stroke-linecap: butt;"/>
+                <line x1="231.66" y1="472.29" x2="231.66" y2="5.48" style="stroke-width: 0.64; stroke: #BEBEBE; stroke-dasharray: 4.00,4.00; stroke-linecap: butt;"/>
+                <line x1="40.62" y1="295.53" x2="447.70" y2="295.53" style="stroke-width: 0.64; stroke: #BEBEBE; stroke-dasharray: 4.00,4.00; stroke-linecap: butt;"/>
+                <line x1="0.00" y1="152.94" x2="504.00" y2="463.16" style="stroke-width: 0.64; stroke-linecap: butt;"/>
+                <line x1="93.90" y1="504.00" x2="426.96" y2="0.00" style="stroke-width: 0.64; stroke-linecap: butt;"/>
+                <text x="58.12" y="31.07" style="font-size: 8.54px; font-family: &quot;Arial&quot;;" textLength="7.36px" lengthAdjust="spacingAndGlyphs">M</text>
+                <text x="65.48" y="26.63" style="font-size: 5.98px; font-family: &quot;Arial&quot;;" textLength="3.79px" lengthAdjust="spacingAndGlyphs">2</text>
+                <text x="71.32" y="31.07" style="font-size: 8.54px; font-family: &quot;DejaVu Sans&quot;;" textLength="7.15px" lengthAdjust="spacingAndGlyphs">=</text>
+                <text x="80.51" y="31.07" style="font-size: 8.54px; font-family: &quot;Arial&quot;;" textLength="46.14px" lengthAdjust="spacingAndGlyphs">0.4636703</text>
+                </g>
+                <g clip-path="url(#cpMC4wMHw1MDQuMDB8MC4wMHw1MDQuMDA=)">
+                <text x="35.69" y="426.75" text-anchor="end" style="font-size: 8.80px;fill: #4D4D4D; font-family: &quot;Arial&quot;;" textLength="17.16px" lengthAdjust="spacingAndGlyphs">-0.2</text>
+                <text x="35.69" y="298.74" text-anchor="end" style="font-size: 8.80px;fill: #4D4D4D; font-family: &quot;Arial&quot;;" textLength="13.98px" lengthAdjust="spacingAndGlyphs">0.0</text>
+                <text x="35.69" y="170.72" text-anchor="end" style="font-size: 8.80px;fill: #4D4D4D; font-family: &quot;Arial&quot;;" textLength="13.98px" lengthAdjust="spacingAndGlyphs">0.2</text>
+                <text x="35.69" y="42.71" text-anchor="end" style="font-size: 8.80px;fill: #4D4D4D; font-family: &quot;Arial&quot;;" textLength="13.98px" lengthAdjust="spacingAndGlyphs">0.4</text>
+                <polyline points="37.88,423.54 40.62,423.54 " style="stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;"/>
+                <polyline points="37.88,295.53 40.62,295.53 " style="stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;"/>
+                <polyline points="37.88,167.51 40.62,167.51 " style="stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;"/>
+                <polyline points="37.88,39.50 40.62,39.50 " style="stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;"/>
+                <polyline points="99.02,475.03 99.02,472.29 " style="stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;"/>
+                <polyline points="165.34,475.03 165.34,472.29 " style="stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;"/>
+                <polyline points="231.66,475.03 231.66,472.29 " style="stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;"/>
+                <polyline points="297.98,475.03 297.98,472.29 " style="stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;"/>
+                <polyline points="364.31,475.03 364.31,472.29 " style="stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;"/>
+                <polyline points="430.63,475.03 430.63,472.29 " style="stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;"/>
+                <text x="99.02" y="483.64" text-anchor="middle" style="font-size: 8.80px;fill: #4D4D4D; font-family: &quot;Arial&quot;;" textLength="17.16px" lengthAdjust="spacingAndGlyphs">-0.2</text>
+                <text x="165.34" y="483.64" text-anchor="middle" style="font-size: 8.80px;fill: #4D4D4D; font-family: &quot;Arial&quot;;" textLength="17.16px" lengthAdjust="spacingAndGlyphs">-0.1</text>
+                <text x="231.66" y="483.64" text-anchor="middle" style="font-size: 8.80px;fill: #4D4D4D; font-family: &quot;Arial&quot;;" textLength="13.98px" lengthAdjust="spacingAndGlyphs">0.0</text>
+                <text x="297.98" y="483.64" text-anchor="middle" style="font-size: 8.80px;fill: #4D4D4D; font-family: &quot;Arial&quot;;" textLength="13.98px" lengthAdjust="spacingAndGlyphs">0.1</text>
+                <text x="364.31" y="483.64" text-anchor="middle" style="font-size: 8.80px;fill: #4D4D4D; font-family: &quot;Arial&quot;;" textLength="13.98px" lengthAdjust="spacingAndGlyphs">0.2</text>
+                <text x="430.63" y="483.64" text-anchor="middle" style="font-size: 8.80px;fill: #4D4D4D; font-family: &quot;Arial&quot;;" textLength="13.98px" lengthAdjust="spacingAndGlyphs">0.3</text>
+                <text x="244.16" y="496.23" text-anchor="middle" style="font-size: 11.00px; font-family: &quot;Arial&quot;;" textLength="68.98px" lengthAdjust="spacingAndGlyphs">Dimension 1</text>
+                <text transform="translate(13.50,238.89) rotate(-90)" text-anchor="middle" style="font-size: 11.00px; font-family: &quot;Arial&quot;;" textLength="68.98px" lengthAdjust="spacingAndGlyphs">Dimension 2</text>
+                <rect x="458.66" y="199.59" width="39.86" height="78.59" style="stroke-width: 1.07; stroke: none; fill: #FFFFFF;"/>
+                <rect x="464.14" y="220.86" width="17.28" height="17.28" style="stroke-width: 1.07; stroke: none;"/>
+                <circle cx="472.78" cy="229.50" r="1.95" style="stroke-width: 0.71; stroke: none; fill: #EE0000;"/>
+                <circle cx="472.78" cy="229.50" r="1.95" style="stroke-width: 0.71; stroke: #EE0000;"/>
+                <rect x="464.14" y="238.14" width="17.28" height="17.28" style="stroke-width: 1.07; stroke: none;"/>
+                <circle cx="472.78" cy="246.78" r="1.95" style="stroke-width: 0.71; stroke: none; fill: #912CEE;"/>
+                <circle cx="472.78" cy="246.78" r="1.95" style="stroke-width: 0.71; stroke: #912CEE;"/>
+                <rect x="464.14" y="255.42" width="17.28" height="17.28" style="stroke-width: 1.07; stroke: none;"/>
+                <circle cx="472.78" cy="264.06" r="1.95" style="stroke-width: 0.71; stroke: none; fill: #00CD00;"/>
+                <circle cx="472.78" cy="264.06" r="1.95" style="stroke-width: 0.71; stroke: #00CD00;"/>
+                <text x="486.90" y="232.71" style="font-size: 8.80px; font-family: &quot;Arial&quot;;" textLength="6.02px" lengthAdjust="spacingAndGlyphs">A</text>
+                <text x="486.90" y="249.99" style="font-size: 8.80px; font-family: &quot;Arial&quot;;" textLength="6.03px" lengthAdjust="spacingAndGlyphs">B</text>
+                <text x="486.90" y="267.27" style="font-size: 8.80px; font-family: &quot;Arial&quot;;" textLength="6.14px" lengthAdjust="spacingAndGlyphs">C</text>
+                </g>
+                </svg>
+        </div>
+
+
+    </div>
+
+
+
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+
+    <script>
+        
+        // 网页窗口在某一大小打开时的宽高
+        // https://stackoverflow.com/questions/16265123/resize-svg-when-window-is-resized-in-d3-js
+        var width = window.innerWidth || document.clientWidth || document.body.clientWidth;
+        var height = window.innerHeight || document.clientHeight || document.body.clientHeight;
+
+
+        var xAxisWidth = 300;   // x轴宽度
+        var yAxisWidth = 300;   // y轴宽度
+
+        var margin = { top: 10, right: 500, bottom: 50, left: 170 },
+            width = width - margin.left - margin.right,
+            height = height - margin.top - margin.bottom;
+
+        svg = d3.select(".svglite")
+        svg.attr("width", width);
+        svg.attr("height", height)
+        // 创建一个缩放行为，并设置缩放事件处理程序
+        const zoom = d3.zoom().on('zoom', (e) => {
+            svg.attr('transform', e.transform);
+        });
+
+        d3.select("#content").call(zoom)
+            .call(zoom.transform, d3.zoomIdentity);
+    </script>
+    
+
+        <script>
+            // 字体选择
+            const fontSelect = document.getElementById("fontSelect");
+            const textElement = d3.select("#container");
+    
+            fontSelect.addEventListener("change", function () {
+                const selectedFont = fontSelect.value;
+                d3.selectAll("text").style("font-family", selectedFont);
+                // svg.style("font-family", selectedFont);
+            });
+    
+            // 构建下拉展开
+            var dropdownTest = document.getElementById("dropdownTest")
+            var dropdownContent = document.getElementById("dropdownContent");
+    
+            dropdownTest.addEventListener("click", function () {
+                dropdownContent.style.display = (dropdownContent.style.display === "none") ? "block" : "none";
+    
+            });
+    
+            function addEvent(el, type, handler) {
+                if (el.addEventListener) {
+                    el.addEventListener(type, handler);
+                } else {
+                    el.attachEvent('on' + type, handler);
+                }
+            }
+    
+            // 字体大小选择
+            const fontSizeRange = document.getElementById("fontSizeRange");
+            const sliderTooltip = document.querySelector(".sliderTooltip");
+    
+            // 嵌套的子元素span中的value
+            var valueSpan = document.querySelector(".sliderTooltip .value");
+    
+            fontSizeRange.addEventListener("input", function () {
+                const selectedFontSize = fontSizeRange.value;
+                d3.selectAll("text").style("font-size", selectedFontSize + "px");
+    
+                // svg.style("font-size", selectedFontSize + "px");
+                const sliderRect = fontSizeRange.getBoundingClientRect();
+    
+                const tooltipWidth = sliderTooltip.offsetWidth;
+                const tooltipHeight = sliderTooltip.offsetHeight;
+    
+    
+                const sliderValue = parseInt(selectedFontSize);
+                const sliderMin = parseInt(fontSizeRange.min);
+                const sliderMax = parseInt(fontSizeRange.max);
+                const sliderWidth = fontSizeRange.offsetWidth;
+    
+    
+    
+                // TODO:xiaojiao, fix thar
+                // const tooltipX = 1;
+                const positionPercentage = (sliderValue - sliderMin) / (sliderMax - sliderMin);
+                const tooltipPosition = positionPercentage * (sliderWidth - tooltipWidth);
+    
+                const tooltipX = tooltipWidth + tooltipPosition;
+                const tooltipY = sliderRect.top - tooltipHeight; // 自定义偏移量，避免与滑块重叠
+    
+    
+                sliderTooltip.style.left = tooltipX + "px";
+                // sliderTooltip.style.top = -0.1 + "px";
+    
+                // var value = valueSpan.textContent;
+                valueSpan.textContent = selectedFontSize + 'px';
+    
+            });
+            
+            // 去除字体长度的限制
+            // textLength
+            // 添加slider tooltip
+            fontSizeRange.addEventListener("mouseover", function () {
+    
+                // tooltip.classList.add()
+                sliderTooltip.style.display = "block";
+    
+                sliderTooltip.classList.add("show");
+            });
+    
+            fontSizeRange.addEventListener("mouseout", function () {
+    
+                sliderTooltip.classList.remove("show");
+                sliderTooltip.style.display = "none";
+            });
+    
+            // 添加圆圈颜色、大小选择
+            scatterSizeRange = document.getElementById("scatterSizeRange");
+            scatterSizeRange.addEventListener("input", function () {
+                scatterSizeRangeValue = parseFloat(scatterSizeRange.value);
+                d3.selectAll("#indPoints").attr("r", scatterSizeRangeValue);
+            })
+    
+        // 添加圆圈颜色、大小选择
+        scatterSizeRange = document.getElementById("scatterSizeRange");
+        scatterSizeRange.addEventListener("input", function () {
+            scatterSizeRangeValue = parseFloat(scatterSizeRange.value);
+            d3.selectAll("circle").attr("r", scatterSizeRangeValue);
+        })
+            // 下载
+            // TODO:xiaojiao, download 、export and save...
+            // see here https://www.omicshare.com/tools/Public/Home/dist/js/report.js
+            // https://d3export.housegordon.org/
+            function download_fun(id, type, name) {
+                name = name == '' || name == undefined ? 'image' : name;
+                type = type == '' || type == undefined ? 'svg' : type;
+                var svg = d3.select('#' + id).select('svg');
+                var g = svg.select('g');
+                svg.attr('version', '1.1')
+                    .attr('xmlns', 'http://www.w3.org/2000/svg')
+                    .attr('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+                var a = document.createElement("a");
+                a.setAttribute('target', '_self')
+                document.body.appendChild(a);
+                a.setAttribute('style', 'display:none;')
+                if (type == 'svg') {
+                    var html = svg.node().outerHTML;
+                    var base64Svg = window.btoa(encodeURIComponent(html).replace(/%([0-9A-F]{2})/g, function (match, p1) {
+                        return String.fromCharCode('0x' + p1);
+                    }));
+                    a.setAttribute('href', 'data:image/svg+xml;charset=utf-8;base64,' + base64Svg)
+                    a.setAttribute('download', name + '.svg')
+                    a.click();
+                    a.remove()
+                }
+            }
+    
+            var svgDownload = d3.select(".svglite");
+            svgDownload.attr('version', '1.1')
+                .attr('xmlns', 'http://www.w3.org/2000/svg')
+                .attr('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+            // var base64Svg = window.btoa(encodeURIComponent(html).replace(/%([0-9A-F]{2})/g, function (match, p1) {
+            //     return String.fromCharCode('0x' + p1);
+            // }));
+            // console.log("html",html)
+            // console.log("svg", svgDownload)
+            const svgString = new XMLSerializer().serializeToString(svgDownload.node());
+    
+            const downloadButton = document.getElementById("export");
+    
+            downloadButton.addEventListener("click", () => {
+                // 创建一个临时的 SVG 元素用于操作
+                const tempSvg = svgDownload.node().cloneNode(true);
+    
+                // 查找并移除所有的动画元素
+                const animateElements = tempSvg.querySelectorAll("animate, animateTransform, animateMotion");
+                animateElements.forEach((animateElement) => {
+                    animateElement.remove();
+                });
+    
+                // 将修改后的 SVG 元素转换为字符串
+                const modifiedSvgString = new XMLSerializer().serializeToString(tempSvg);
+    
+                // 创建下载链接
+                const link = document.createElement("a");
+                link.href = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(modifiedSvgString);
+                link.download = "svg_file.svg";
+                link.click();
+            });
+    
+            
+            const helpBtn = document.getElementById('helpbtn');
+            const helpContent = document.getElementById('helpContent');
+    
+            helpBtn.addEventListener('click', toggleHelp);
+    
+            function toggleHelp() {
+                helpContent.classList.toggle('show');
+                helpContent.style.display = (helpContent.style.display === "none") ? "block" : "none";
+            }
+            helpContent.classList.remove('show');
+            // 获取 "Basic Settings" 元素
+            const basicSettings = document.querySelector(".basicSettings");
+    
+            // icon-i gd-icon-param
+    
+    
+            // 获取下拉框元素
+            const settingContent = document.querySelector("#settingContent");
+    
+            // 添加点击事件监听器
+            basicSettings.addEventListener("click", function () {
+                // 切换下拉框的显示状态
+                // 获取元素的位置信息
+                var rect = this.getBoundingClientRect();
+                var position = {
+                    top: rect.top,
+                    left: rect.left,
+                    right: rect.right,
+                    bottom: rect.bottom
+                };
+                settingContent.style.display = (settingContent.style.display === "none") ? "block" : "none";
+    
+            });
+            // xAxisrotateSlider
+            const xAxisrotateSlider = document.getElementById("xAxisrotateSlider");
+            const xAxisrotateSliderValue = document.getElementById("xAxisrotateSliderValue");
+            xAxisrotateSlider.addEventListener("input", function () {
+                const rotate = xAxisrotateSlider.value;
+                // 清空现有的图形并重新绘制cluster
+                xAxisrotateSliderValue.value = rotate;
+    
+                // 旋转文字
+                d3.selectAll("#xAxis").selectAll("text")
+                    .attr("text-anchor", "start")
+                    .attr("transform", `rotate(${rotate})`);
+    
+            });
+
+    
+            // 自助刷新
+            document.getElementById("center-button").addEventListener("click", function () {
+                // resizesvg();
+                // resetTransform();
+                // svg.call(zoom, d3.zoomIdentity);
+                // TODO:xiaojiao, 请支持不同浏览器的刷新, 2023/10/30
+                location.reload();
+                // window.addEventListener("load", (event) => {
+                //     moveSvgAfterload();
+                // });
+                // resizesvg();
+            });
+    
+
+    
+
+        </script>
+</body>
+
+</html>

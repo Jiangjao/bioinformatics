@@ -1,0 +1,690 @@
+#sample                                                                                                                                                                         
+.alpha.-cyperone                                                                                                                                                                
+.alpha.-ionone                                                                                                                                                                  
+.beta.-ecdysone                                                                                                                                                                 
+.beta.-homoproline                                                                                                                                                              
+.delta.-6_testosterone_enanthate                                                                                                                                                
+.delta.-hexalactone                                                                                                                                                             
+.gamma.-aminobutyric_acid                                                                                                                                                       
+.gamma.-muricholic_acid                                                                                                                                                         
+.gamma.-undecalactone                                                                                                                                                           
+(2r)-3-hydroxyisovaleroylcarnitine                                                                                                                                              
+(e,e)-piperic_acid                                                                                                                                                              
+(e)-4-hexen-1-ol                                                                                                                                                                
+(r)-(+)-arachidonyl-1'-hydroxy-2'-propylamide                                                                                                                                   
+1-(1z-hexadecenyl)-sn-glycero-3-phosphocholine                                                                                                                                  
+1-(1z-octadecenyl)-2-(4z,7z,10z,13z,16z,19z-docosahexaenoyl)-sn-glycero-3-phosphoethanolamine                                                                                   
+1-(1z-octadecenyl)-2-(5z,8z,11z,14z-eicosatetraenoyl)-sn-glycero-3-phosphocholine                                                                                               
+1-(1z-octadecenyl)-sn-glycero-3-phosphocholine                                                                                                                                  
+1-(cyclopentylcarbonyl)-4-piperidinamine                                                                                                                                        
+1-[4,5-dihydroxy-6-(hydroxymethyl)-3-[(e)-3-(4-hydroxyphenyl)prop-2-enoyl]oxyoxan-2-yl]oxy-6-hydroxy-7-methylidene-4a,5,6,7a-tetrahydro-1h-cyclopenta[c]pyran-4-carboxylic acid 
+1-arachidoyl-2-hydroxy-sn-glycero-3-phosphocholine                                                                                                                              
+1-hexadecyl-2-(9z-octadecenoyl)-sn-glycero-3-phosphocholine                                                                                                                     
+1-hexadecyl-sn-glycero-3-phosphocholine                                                                                                                                         
+1-hydroxy_vitamin_d2                                                                                                                                                            
+1-methyl-2-undecylquinolin-4-one                                                                                                                                                
+1-methyladenosine                                                                                                                                                               
+1-methylhistidine                                                                                                                                                               
+1-myristoyl-2-palmitoyl-sn-glycero-3-phosphocholine                                                                                                                             
+1-myristoyl-sn-glycero-3-phosphocholine                                                                                                                                         
+1-o-hexadecyl-2-deoxy-2-thio-s-acetyl-sn-glyceryl-3-phosphorylcholine                                                                                                           
+1-octadecyl lysophosphatidic acid                                                                                                                                               
+1-oleoyl-2-myristoyl-sn-glycero-3-phosphocholine                                                                                                                                
+1-oleoyl-l-.alpha.-lysophosphatidic acid                                                                                                                                        
+1-oleoyl-sn-glycero-3-phosphocholine                                                                                                                                            
+1-palmitoyl-2-docosahexaenoyl-sn-glycero-3-phosphocholine                                                                                                                       
+1-palmitoyl-2-linoleoyl-sn-glycero-3-phosphocholine                                                                                                                             
+1-palmitoyl-sn-glycero-3-phosphocholine                                                                                                                                         
+1-pentadecanoyl-sn-glycero-3-phosphocholine                                                                                                                                     
+1-stearoyl-2-arachidonyl-sn-glycero-3-phosphocholine                                                                                                                            
+1-stearoyl-2-docosahexaenoyl-sn-glycero-3-phosphocholine                                                                                                                        
+1-stearoyl-2-hydroxy-sn-glycero-3-phosphocholine                                                                                                                                
+1-stearoyl-2-hydroxy-sn-glycero-3-phosphoethanolamine                                                                                                                           
+1-stearoyl-2-linoleoyl-sn-glycero-3-phospho-l-serine                                                                                                                            
+1,1-dimethyl-4-phenylpiperazinium                                                                                                                                               
+1,2-diamino-2-methylpropane                                                                                                                                                     
+1,2-dilinoleoylglycerol                                                                                                                                                         
+1,2-dioleoyl-sn-glycero-3-phosphatidylcholine                                                                                                                                   
+1,2-dipalmitoleoyl-sn-glycero-3-phosphocholine                                                                                                                                  
+1,2-ditetradecanoyl-sn-glycero-3-phosphocholine                                                                                                                                 
+1,2-dithiolane-3-pentanamide, n,n'-1,3-propanediylbis-                                                                                                                          
+1,3-benzenediol, 5-methyl-2-[(1r,6r)-3-methyl-6-(1-methylethenyl)-2-cyclohexen-1-yl]-                                                                                           
+1,6-anhydro-.beta.-d-glucose                                                                                                                                                    
+1',4-sophorolactone 6',6-diacetate                                                                                                                                              
+10-deacetylbaccatin iii                                                                                                                                                         
+12-cytisineacetamide                                                                                                                                                            
+15-ketofluprostenol                                                                                                                                                             
+15-ketoprostaglandin f2.alpha.                                                                                                                                                  
+16.alpha.-hydroxyestrone                                                                                                                                                        
+17-trifluoromethylphenyltrinorprostaglandin f2.alpha. isopropyl ester                                                                                                           
+17-trifluoromethylphenyltrinorprostaglandin f2.alpha. methyl ester                                                                                                              
+17.alpha.-hydroxypregnenolone                                                                                                                                                   
+17.beta.-nandrolone decanoate                                                                                                                                                   
+17alpha-hydroxyprogesterone                                                                                                                                                     
+1h-1,2,4-triazol-3-amine                                                                                                                                                        
+1h-indazole-3-carboxylic acid, 1-(5-fluoropentyl)-, 1-naphthalenyl ester                                                                                                        
+2-(2',3',4'-trihydroxybutyl)quinoxaline                                                                                                                                         
+2-adamantanone                                                                                                                                                                  
+2-amino-1-phenylbutane                                                                                                                                                          
+2-amino-1-phenylethanol                                                                                                                                                         
+2-amino-2-methyl-1-propanol                                                                                                                                                     
+2-amino-2-methyl-1,3-propanediol                                                                                                                                                
+2-aminoadipic acid                                                                                                                                                              
+2-aminoethylphosphonic acid                                                                                                                                                     
+2-aminoisobutyric acid                                                                                                                                                          
+2-aminophenol                                                                                                                                                                   
+2-arachidonoylglycerol                                                                                                                                                          
+2-bromoamphetamine                                                                                                                                                              
+2-chloro-2',6'-diethylacetanilide                                                                                                                                               
+2-deoxy-d-glucose                                                                                                                                                               
+2-furancarboxylic acid, 5-[3-[4-[2-(4-fluorophenyl)ethoxy]phenyl]propyl]-                                                                                                       
+2-hexenal                                                                                                                                                                       
+2-hydroxy-4-methoxybenzophenone                                                                                                                                                 
+2-hydroxyatrazine                                                                                                                                                               
+2-hydroxybenzyl alcohol                                                                                                                                                         
+2-imidazolidinethione                                                                                                                                                           
+2-imino-4-methylpiperidine                                                                                                                                                      
+2-linoleoyl-1-palmitoyl-sn-glycero-3-phosphoethanolamine                                                                                                                        
+2-methyl-4-nitroaniline                                                                                                                                                         
+2-methylbenzyl alcohol                                                                                                                                                          
+2-oleoyl-1-palmitoyl-sn-glycero-3-phosphocholine                                                                                                                                
+2-piperidinecarboxylic acid, 1-(3,3-dimethyl-1,2-dioxopentyl)-, (1r)-1-(3-aminophenyl)-3-(3,4-dimethoxyphenyl)propyl ester, (2s)-                                               
+2-pyrrolidinone, 1-methyl-                                                                                                                                                      
+2,4-diaminotoluene                                                                                                                                                              
+2,4-dihydroxybenzophenone                                                                                                                                                       
+2,4,5-trimethylaniline                                                                                                                                                          
+2,4,6-tri-tert-butylaniline                                                                                                                                                     
+2,5-hexanedione                                                                                                                                                                 
+2,6-dichlorobenzamide                                                                                                                                                           
+2'-methoxy-.beta.-naphthoflavone                                                                                                                                                
+2(1h)-pyridinone                                                                                                                                                                
+21-hydroxypregnenolone                                                                                                                                                          
+3-[(cholamidopropyl)dimethylammonio]-1-propanesulfonate                                                                                                                         
+3-amino-2,3-dihydrobenzoic acid                                                                                                                                                 
+3-dehydrocarnitine                                                                                                                                                              
+3-fluorophenmetrazine                                                                                                                                                           
+3-hydroxymandelic acid                                                                                                                                                          
+3-methyl-l-histidine                                                                                                                                                            
+3-methyladenine                                                                                                                                                                 
+3-oxazolidinecarboxylic acid, 2,2-dimethyl-4-(1-oxo-2-hexadecyn-1-yl)-, 1,1-dimethylethyl ester, (4s)-                                                                          
+3-phenanthrenesulfonic acid                                                                                                                                                     
+3-pyridinecarboxaldehyde                                                                                                                                                        
+3,3-dimethylacrylic acid                                                                                                                                                        
+3,3'-dimethyl-4,4'-diaminodiphenylmethane                                                                                                                                       
+3,5-dibromo-l-tyrosine                                                                                                                                                          
+3,5,9-trioxa-4-phosphatetracosan-1-aminium, 7-(acetyloxy)-24-carboxy-4-hydroxy-n,n,n-trimethyl-, inner salt, 4-oxide, (r)-                                                      
+3beta-hydroxydeoxodihydrodeoxygedunin                                                                                                                                           
+3h-imidazo(4,5-f)quinoline, 2-amino-3-methyl-                                                                                                                                   
+4-(methylnitrosamino)-1-(3-pyridyl)-1-butanol                                                                                                                                   
+4-acetamidobutanoate                                                                                                                                                            
+4-aminophenol                                                                                                                                                                   
+4-androsten-17.beta.-ol-3-one glucosiduronate                                                                                                                                   
+4-benzofuranethanamine, 2,3-dihydro-.alpha.-methyl-                                                                                                                             
+4-chlorobutyric acid ethyl ester                                                                                                                                                
+4-fluoro-.alpha.-pyrrolidinobutiophenone                                                                                                                                        
+4-hydroxy-3-methoxybenzyl alcohol                                                                                                                                               
+4-hydroxyatorvastatin lactone                                                                                                                                                   
+4-hydroxychalcone                                                                                                                                                               
+4-hydroxycyclophosphamide                                                                                                                                                       
+4-hydroxydebrisoquine                                                                                                                                                           
+4-hydroxyisoleucine                                                                                                                                                             
+4-hydroxyquinoline                                                                                                                                                              
+4-methyl-1h-pyrazole                                                                                                                                                            
+4-methylbenzyl alcohol                                                                                                                                                          
+4-methylcatechol                                                                                                                                                                
+4-nitrobenzylamine                                                                                                                                                              
+4-oxo-2-nonenal                                                                                                                                                                 
+4-penten-1-one, 3,3,4-trimethyl-1-[1-[(tetrahydro-2h-pyran-4-yl)methyl]-1h-indol-3-yl]-                                                                                         
+4-quinazolinamine, 2-(hexahydro-4-methyl-1h-1,4-diazepin-1-yl)-6,7-dimethoxy-n-[1-(phenylmethyl)-4-piperidinyl]-                                                                
+4,4'-diaminodiphenylmethane                                                                                                                                                     
+4,4'-dichlorobenzophenone                                                                                                                                                       
+4',5-dihydroxy-7-methoxyflavanone                                                                                                                                               
+4(z),7(z),10(z),13(z),16(z)-n-(2-hydroxyethyl)docosapentaenamide                                                                                                                
+4h-imidazol-4-one, 2-amino-1,5-dihydro-1-methyl-5-[[4-(methylsulfonyl)phenyl]methylene]-, (5z)-                                                                                 
+5-aminolevulinic acid                                                                                                                                                           
+5-aminosalicylic acid                                                                                                                                                           
+5-aminovaleric acid                                                                                                                                                             
+5-androsten-3.beta.,16.alpha.-diol-17-one                                                                                                                                       
+5-androstene-3.beta.,17.beta.-diol                                                                                                                                              
+5-iodouridine                                                                                                                                                                   
+5-methyl-5,6-dihydrouracil                                                                                                                                                      
+5-methylbenzotriazole                                                                                                                                                           
+5-methylisoxazol-3-amine                                                                                                                                                        
+5,6-dimethylbenzimidazole                                                                                                                                                       
+5.beta.-pregnane-3.alpha.,17.alpha.,20.alpha.-triol                                                                                                                             
+6-acetylmorphine                                                                                                                                                                
+6-amino-2-methylquinolin-4-ol                                                                                                                                                   
+6.beta.-hydroxyeplerenone                                                                                                                                                       
+6',7'-dihydroxybergamottin                                                                                                                                                      
+7-hydroxy-4-methylchromen-2-one                                                                                                                                                 
+7-methoxy-2-methylquinolin-4-ol                                                                                                                                                 
+7-methoxycoumarin                                                                                                                                                               
+7-methoxycoumarin-4-acetic acid                                                                                                                                                 
+8-methylcaffeine                                                                                                                                                                
+9-oxo-11.alpha.,16r-dihydroxy-17-cyclobutyl-5z,13e-dien-1-oic acid                                                                                                              
+Acadesine (drug)                                                                                                                                                                
+Acetamide, 2-[4-[(5,6-diphenyl-2-pyrazinyl)(1-methylethyl)amino]butoxy]-n-(methylsulfonyl)-                                                                                     
+Acetaminophen                                                                                                                                                                   
+Acetohexamide                                                                                                                                                                   
+Acetylcarnitine                                                                                                                                                                 
+Acetylcholine                                                                                                                                                                   
+Acetyleugenol                                                                                                                                                                   
+Adenine                                                                                                                                                                         
+Aflatoxin b2                                                                                                                                                                    
+Agmatine                                                                                                                                                                        
+Ala-Gly                                                                                                                                                                         
+Alanine conjugated cholic acid                                                                                                                                                  
+Albiflorin                                                                                                                                                                      
+Allidochlor                                                                                                                                                                     
+Allyl 3-amino-1-piperidinecarboxylate                                                                                                                                           
+Alprenolol                                                                                                                                                                      
+Ametryne                                                                                                                                                                        
+Aminophenazone                                                                                                                                                                  
+Amphetamine                                                                                                                                                                     
+Ampicillin                                                                                                                                                                      
+Amprenavir                                                                                                                                                                      
+Ancymidol                                                                                                                                                                       
+Angeloylgomisin h                                                                                                                                                               
+Anserine                                                                                                                                                                        
+Apomorphine                                                                                                                                                                     
+Arcaine                                                                                                                                                                         
+Arg-gly                                                                                                                                                                         
+Arg-Leu                                                                                                                                                                         
+Arg-phe                                                                                                                                                                         
+Arg-Pro                                                                                                                                                                         
+Arginine                                                                                                                                                                        
+Artemisinin                                                                                                                                                                     
+Asn-Asp                                                                                                                                                                         
+Asn-Gln                                                                                                                                                                         
+Asn-Ile                                                                                                                                                                         
+Asn-Ile-Arg                                                                                                                                                                     
+Asn-Trp-Arg                                                                                                                                                                     
+Asp-Arg                                                                                                                                                                         
+Asp-Val-Arg                                                                                                                                                                     
+Aspartame                                                                                                                                                                       
+Atglistatin                                                                                                                                                                     
+Atorvastatin                                                                                                                                                                    
+Azaconazole                                                                                                                                                                     
+Azamethiphos                                                                                                                                                                    
+Azatadine                                                                                                                                                                       
+Batimastat                                                                                                                                                                      
+Benz[a]anthracene                                                                                                                                                               
+Benzenemethanol, .alpha.-[(1r)-1-(methylamino)butyl]-, (.alpha.s)-rel-                                                                                                          
+Benzyl alcohol                                                                                                                                                                  
+Benzyl butyl phthalate                                                                                                                                                          
+Berberine                                                                                                                                                                       
+Beta-estradiol                                                                                                                                                                  
+Betaine                                                                                                                                                                         
+Betonicine                                                                                                                                                                      
+Bifenazate                                                                                                                                                                      
+Biopterin                                                                                                                                                                       
+Biotin                                                                                                                                                                          
+Bisphenol a                                                                                                                                                                     
+Bisphenol a diglycidyl ether                                                                                                                                                    
+Bufalin                                                                                                                                                                         
+Bufotalin                                                                                                                                                                       
+Bupirimate                                                                                                                                                                      
+Butanoic acid                                                                                                                                                                   
+Butylate                                                                                                                                                                        
+Butyric acid, 4-[(4-chloro-o-tolyl)oxy]-                                                                                                                                        
+Caffeate                                                                                                                                                                        
+Caldine                                                                                                                                                                         
+Cannabidiol dimethyl ether                                                                                                                                                      
+Captopril                                                                                                                                                                       
+Carbendazim                                                                                                                                                                     
+Carboplatin                                                                                                                                                                     
+Carnitine                                                                                                                                                                       
+Carprofen                                                                                                                                                                       
+Catalposide                                                                                                                                                                     
+Cefixime                                                                                                                                                                        
+Chitobiose                                                                                                                                                                      
+Chloridazon-methyl-desphenyl                                                                                                                                                    
+Chlorprothixene                                                                                                                                                                 
+Chlorzoxazone                                                                                                                                                                   
+Choline                                                                                                                                                                         
+Chrysosplenetin                                                                                                                                                                 
+Cidofovir                                                                                                                                                                       
+Cinnamyl 3,4-dihydroxy-.alpha.-cyanocinnamate                                                                                                                                   
+Cinobufagin                                                                                                                                                                     
+Ciprofloxacin                                                                                                                                                                   
+Cis-11,14-eicosadienoic acid                                                                                                                                                    
+Cis-4-hydroxy-l-proline                                                                                                                                                         
+Clofazimine                                                                                                                                                                     
+Clomazon                                                                                                                                                                        
+Cocaine                                                                                                                                                                         
+Combrestatin a4                                                                                                                                                                 
+Creatine                                                                                                                                                                        
+Cucurbitacin d                                                                                                                                                                  
+Cucurbitacin i                                                                                                                                                                  
+Curcumin                                                                                                                                                                        
+Cyanazine                                                                                                                                                                       
+Cycloheximide                                                                                                                                                                   
+Cyclohexylamine                                                                                                                                                                 
+Cyclopentolate                                                                                                                                                                  
+Cyclopiazonic acid                                                                                                                                                              
+Cyclosulfamuron                                                                                                                                                                 
+Cyphenothrin                                                                                                                                                                    
+Cyproconazole                                                                                                                                                                   
+Cys-Gln                                                                                                                                                                         
+Cys-Pro-Lys                                                                                                                                                                     
+D-.alpha.-tocopherol succinate                                                                                                                                                  
+D-erythro-imidazolylglycerol phosphate                                                                                                                                          
+D-glucosamine 6-phosphate                                                                                                                                                       
+D-glucosaminic acid                                                                                                                                                             
+D-mannosamine                                                                                                                                                                   
+D-myo-inositol-1,3,5-triphosphate                                                                                                                                               
+D-neopterin                                                                                                                                                                     
+Daunorubicin                                                                                                                                                                    
+Debrisoquin                                                                                                                                                                     
+Decamethylcyclopentasiloxane                                                                                                                                                    
+Decanal                                                                                                                                                                         
+Decanoyl-l-carnitine                                                                                                                                                            
+Decapropylene glycol                                                                                                                                                            
+Dehydroaripiprazole                                                                                                                                                             
+Demeton s                                                                                                                                                                       
+Deoxyvasicinone                                                                                                                                                                 
+Dereplicator identification - rhapsamine                                                                                                                                        
+Desferrioxamine d2                                                                                                                                                              
+Diacetyl                                                                                                                                                                        
+Dichlormid                                                                                                                                                                      
+Dictamine                                                                                                                                                                       
+Dicyclohexylamine                                                                                                                                                               
+Dicyclomine                                                                                                                                                                     
+Diethylcarbamazine                                                                                                                                                              
+Difloxacin                                                                                                                                                                      
+Digalacturonic acid                                                                                                                                                             
+Dikegulac acid                                                                                                                                                                  
+Dimethocaine                                                                                                                                                                    
+Dinitramine                                                                                                                                                                     
+Dioctylamine                                                                                                                                                                    
+Dipropetryn                                                                                                                                                                     
+Dipyridamole                                                                                                                                                                    
+Disulfiram                                                                                                                                                                      
+DL-arginine                                                                                                                                                                     
+DL-asparagine                                                                                                                                                                   
+DL-cysteine                                                                                                                                                                     
+DL-Glutamic acid                                                                                                                                                                
+DL-leucine                                                                                                                                                                      
+DL-proline                                                                                                                                                                      
+DL-threonine                                                                                                                                                                    
+DL-tryptophan                                                                                                                                                                   
+Dobutamine                                                                                                                                                                      
+Dodeca-2(e),4(e)-dienoic acid                                                                                                                                                   
+Dodemorph                                                                                                                                                                       
+Doxorubicin                                                                                                                                                                     
+Ecgonine                                                                                                                                                                        
+Ectoine                                                                                                                                                                         
+Edaravone                                                                                                                                                                       
+Eicosapentaenoic acid                                                                                                                                                           
+Ellipticine                                                                                                                                                                     
+Emetine                                                                                                                                                                         
+Endrin aldehyde                                                                                                                                                                 
+Enterolactone                                                                                                                                                                   
+Epoxiconazole                                                                                                                                                                   
+Eprosartan                                                                                                                                                                      
+Ergosterol                                                                                                                                                                      
+Eriodictyol                                                                                                                                                                     
+Erucamide                                                                                                                                                                       
+Estrone glucuronide                                                                                                                                                             
+Estrone sulfate                                                                                                                                                                 
+Ethanone, 1-[2-hydroxy-3-propyl-4-[4-(2h-tetrazol-5-yl)butoxy]phenyl]-                                                                                                          
+Ethcathinone                                                                                                                                                                    
+Ethylmorphine                                                                                                                                                                   
+Exo-norborneol                                                                                                                                                                  
+Fenpropidin                                                                                                                                                                     
+Ferimzone                                                                                                                                                                       
+Fingolimod                                                                                                                                                                      
+Flufenacet oa                                                                                                                                                                   
+Flumethasone pivalate                                                                                                                                                           
+Flutamide                                                                                                                                                                       
+Flutriafol                                                                                                                                                                      
+Folinic acid                                                                                                                                                                    
+Formetanate                                                                                                                                                                     
+Fraxin                                                                                                                                                                          
+Fumagillin                                                                                                                                                                      
+Furaltadone                                                                                                                                                                     
+Furmecyclox                                                                                                                                                                     
+G-guanidinobutyrate                                                                                                                                                             
+Gabapentin related compound a                                                                                                                                                   
+Galacto-n-biose                                                                                                                                                                 
+Galanthamine                                                                                                                                                                    
+Gamma-glu-glu                                                                                                                                                                   
+gamma-L-Glutamyl-L-valine                                                                                                                                                       
+gamma-Tocotrienol                                                                                                                                                               
+Gardenin b                                                                                                                                                                      
+Genipin                                                                                                                                                                         
+Gibberellin a4                                                                                                                                                                  
+Glu-Arg                                                                                                                                                                         
+Glu-Glu                                                                                                                                                                         
+Glu-Thr                                                                                                                                                                         
+Glutathione, oxidized                                                                                                                                                           
+Gly-Phe                                                                                                                                                                         
+Gly-Val                                                                                                                                                                         
+Glycerophosphocholine                                                                                                                                                           
+Glycochenodeoxycholate                                                                                                                                                          
+Glycocholic acid                                                                                                                                                                
+Glycodeoxycholic acid                                                                                                                                                           
+Gossypol                                                                                                                                                                        
+Granisetron                                                                                                                                                                     
+Hamamelitannin                                                                                                                                                                  
+Harmaline                                                                                                                                                                       
+Harmalol                                                                                                                                                                        
+Harmine                                                                                                                                                                         
+Harpagoside                                                                                                                                                                     
+Hc toxin                                                                                                                                                                        
+Hesperetin                                                                                                                                                                      
+Hexadecanedioic acid                                                                                                                                                            
+Hexamethylcyclotrisiloxane                                                                                                                                                      
+Hexapropylene glycol                                                                                                                                                            
+Hexylamine                                                                                                                                                                      
+Hexythiazox                                                                                                                                                                     
+His-Ala-Lys                                                                                                                                                                     
+His-Gln                                                                                                                                                                         
+His-Glu                                                                                                                                                                         
+His-Gly                                                                                                                                                                         
+His-Leu                                                                                                                                                                         
+His-Phe                                                                                                                                                                         
+Huperzine a                                                                                                                                                                     
+hydrocortisone 21-acetate                                                                                                                                                       
+Hydrocotarnine                                                                                                                                                                  
+Hydroxyflutamide                                                                                                                                                                
+Hypoxanthine                                                                                                                                                                    
+Ile-Arg                                                                                                                                                                         
+Ile-Gln                                                                                                                                                                         
+Imazamethabenz-methyl                                                                                                                                                           
+Imazamox                                                                                                                                                                        
+Imazapic                                                                                                                                                                        
+Imazethapyr                                                                                                                                                                     
+Indican                                                                                                                                                                         
+Indole-3-acetamide                                                                                                                                                              
+Indole-3-acetonitrile                                                                                                                                                           
+Indole-3-carboxaldehyde                                                                                                                                                         
+Indolelactic acid                                                                                                                                                               
+Irgarol                                                                                                                                                                         
+Isatin                                                                                                                                                                          
+Isobutyryl-l-carnitine                                                                                                                                                          
+Isoeugenyl acetate                                                                                                                                                              
+Isoorientin                                                                                                                                                                     
+Isophorone                                                                                                                                                                      
+Isoproterenol                                                                                                                                                                   
+Isoprothiolane                                                                                                                                                                  
+Isouron                                                                                                                                                                         
+Isoxanthopterin                                                                                                                                                                 
+L-canavanine                                                                                                                                                                    
+L-carnitine                                                                                                                                                                     
+L-carnosine                                                                                                                                                                     
+L-deprenyl                                                                                                                                                                      
+L-glutarylcarnitine                                                                                                                                                             
+L-homoarginine                                                                                                                                                                  
+L-homocitrulline                                                                                                                                                                
+L-hydroxyarginine                                                                                                                                                               
+L-leucyl-l-proline                                                                                                                                                              
+L-oxonoreleagnine                                                                                                                                                               
+L-saccharopine                                                                                                                                                                  
+Lactose                                                                                                                                                                         
+Lauroyl-l-carnitine                                                                                                                                                             
+Lauryldimethylamine oxide                                                                                                                                                       
+Leu-Ala                                                                                                                                                                         
+Leu-Gln                                                                                                                                                                         
+Leucine                                                                                                                                                                         
+Leucylleucine                                                                                                                                                                   
+Lignan j1                                                                                                                                                                       
+Linoelaidic acid                                                                                                                                                                
+Linolenic acid                                                                                                                                                                  
+Linoleoylglycine                                                                                                                                                                
+Liquiritin                                                                                                                                                                      
+Lobelanidine                                                                                                                                                                    
+Lomefloxacin                                                                                                                                                                    
+Loperamide                                                                                                                                                                      
+Lovastatin hydroxy acid                                                                                                                                                         
+Lpc 18:2                                                                                                                                                                        
+Luvangetin                                                                                                                                                                      
+Lys-Gly-Lys                                                                                                                                                                     
+Lys-Ile-Lys                                                                                                                                                                     
+Mafenide                                                                                                                                                                        
+Marmesin                                                                                                                                                                        
+Maslinic acid                                                                                                                                                                   
+Mefenoxam                                                                                                                                                                       
+Melatonin                                                                                                                                                                       
+Menadione                                                                                                                                                                       
+Meperidine                                                                                                                                                                      
+Mescaline                                                                                                                                                                       
+Met-Phe-Arg                                                                                                                                                                     
+Metamitron                                                                                                                                                                      
+Methanone, [1-(2-hydroxypentyl)-1h-indol-3-yl](2,2,3,3-tetramethylcyclopropyl)-                                                                                                 
+Methanone, [1-(5-methylhexyl)-1h-indol-3-yl](2,2,3,3-tetramethylcyclopropyl)-                                                                                                   
+Methiocarb                                                                                                                                                                      
+Methiocarb-sulfoxide phenol                                                                                                                                                     
+Methionine sulfoxide                                                                                                                                                            
+Methyl (1-(cyclohexylmethyl)-1h-indole-3-carbonyl)-l-valinate                                                                                                                   
+Methyl 5,6-diacetyloxy-10-hydroxy-2,4b,7,7,10a,12a-hexamethyl-12-methylidene-1,4,8-trioxo-4a,5,6,6a,9,10,10b,11-octahydronaphtho[1,2-h]isochromene-2-carboxylate                
+Methyl hexadecanoate                                                                                                                                                            
+Methyl isovalerate                                                                                                                                                              
+Methyldopa                                                                                                                                                                      
+Methylecgonine                                                                                                                                                                  
+Methylene blue                                                                                                                                                                  
+Methylguanidine                                                                                                                                                                 
+Methyltyrosinate                                                                                                                                                                
+Metribuzin                                                                                                                                                                      
+Mevalonic acid                                                                                                                                                                  
+Miglitol                                                                                                                                                                        
+Miltefosine                                                                                                                                                                     
+Mitragynine                                                                                                                                                                     
+Mitraphylline                                                                                                                                                                   
+Monomethyl tetrachloroterephthalate                                                                                                                                             
+Morphine                                                                                                                                                                        
+Myclobutanil                                                                                                                                                                    
+Mycophenolate mofetil                                                                                                                                                           
+Myricetin                                                                                                                                                                       
+Myristicine                                                                                                                                                                     
+N-.alpha.-acetyl-l-ornithine                                                                                                                                                    
+N-(1-amino-3,3-dimethyl-1-oxobutan-2-yl)-1-pentyl-1h-indole-3-carboxamide                                                                                                       
+N-(3-dimethylaminopropyl)-n'-ethylcarbodiimide                                                                                                                                  
+N-(4-piperidinyl)acetamide                                                                                                                                                      
+N-acetyl-d-galactosamine                                                                                                                                                        
+N-acetyl-d-lactosamine                                                                                                                                                          
+N-acetyl-l-phenylalanine                                                                                                                                                        
+N-acetyl-o-fluoro-dl-phenylalanine                                                                                                                                              
+N-acetylcarnosine                                                                                                                                                               
+N-acetylhistamine                                                                                                                                                               
+N-acetylneuraminic acid, 2,3-dehydro-2-deoxy-                                                                                                                                   
+N-acetylputrescine                                                                                                                                                              
+N-acetylsphingosine                                                                                                                                                             
+N-acetylsulfamerazine                                                                                                                                                           
+N-acetylsulfamethoxazole                                                                                                                                                        
+N-alpha-acetyl-l-lysine                                                                                                                                                         
+N-arachidonylmaleimide                                                                                                                                                          
+N-methyl-l-alanine                                                                                                                                                              
+N-methyl-l-glutamic acid                                                                                                                                                        
+N-myristoylsphinganine                                                                                                                                                          
+N-nitrosodimethylamine                                                                                                                                                          
+N-nitrosopyrrolidine                                                                                                                                                            
+N-palmitoyl-d-sphingosine                                                                                                                                                       
+N-phenyl-2-naphthylamine                                                                                                                                                        
+N-phenylacetyl-l-prolylglycine ethyl ester                                                                                                                                      
+N.epsilon.-acetyl-l-lysine                                                                                                                                                      
+N6-(1-iminoethyl)-l-lysine                                                                                                                                                      
+N6-methyl-l-lysine                                                                                                                                                              
+N8-acetylspermidine                                                                                                                                                             
+Nalorphine                                                                                                                                                                      
+Napropamide                                                                                                                                                                     
+Neohesperidose                                                                                                                                                                  
+Ng,ng-dimethyl-l-arginine                                                                                                                                                       
+Nicotinate                                                                                                                                                                      
+Nicotine                                                                                                                                                                        
+Nifurtimox                                                                                                                                                                      
+Nilutamide                                                                                                                                                                      
+Nivalenol                                                                                                                                                                       
+Nobiletin                                                                                                                                                                       
+Nonapropylene glycol                                                                                                                                                            
+Nordihydroguaiaretic acid                                                                                                                                                       
+Norvaline                                                                                                                                                                       
+Nudifloramide                                                                                                                                                                   
+O-acetyl-l-serine                                                                                                                                                               
+O-desmethyltramadol                                                                                                                                                             
+O-succinyl-l-homoserine                                                                                                                                                         
+Octaethylene glycol                                                                                                                                                             
+Octanoylcarnitine                                                                                                                                                               
+Octapropylene glycol                                                                                                                                                            
+Octhilinone                                                                                                                                                                     
+Oleyl anilide                                                                                                                                                                   
+Ouabain                                                                                                                                                                         
+Oxadixyl                                                                                                                                                                        
+Oxamniquine                                                                                                                                                                     
+Oxandrolone                                                                                                                                                                     
+Oxazepam                                                                                                                                                                        
+Oxcarbazepine                                                                                                                                                                   
+P-fluoro-l-phenylalanine                                                                                                                                                        
+Palmitamide                                                                                                                                                                     
+Palmitoleoyl 3-carbacyclic phosphatidic acid                                                                                                                                    
+Palmitoleoyl ethanolamide                                                                                                                                                       
+Palmitoylserinol                                                                                                                                                                
+Pantothenate                                                                                                                                                                    
+Pantothenic acid                                                                                                                                                                
+Pantothenol                                                                                                                                                                     
+Papaverine                                                                                                                                                                      
+Parthenolide                                                                                                                                                                    
+Penicillic acid                                                                                                                                                                 
+Pentaethylene glycol                                                                                                                                                            
+Pentapropylene glycol                                                                                                                                                           
+Pentazocine                                                                                                                                                                     
+Pentostatin                                                                                                                                                                     
+Perchloroterephthalic acid                                                                                                                                                      
+Perifosine                                                                                                                                                                      
+Perillaldehyde                                                                                                                                                                  
+Perseitol                                                                                                                                                                       
+Phe-arg                                                                                                                                                                         
+Phe-Asp-Arg                                                                                                                                                                     
+Phe-phe                                                                                                                                                                         
+Phe-trp                                                                                                                                                                         
+Phenylalanine                                                                                                                                                                   
+Phenylbutazone                                                                                                                                                                  
+Phenyllactic acid                                                                                                                                                               
+Phosmet-oxon                                                                                                                                                                    
+Phosphocholine                                                                                                                                                                  
+Phthalic anhydride                                                                                                                                                              
+Phytosphingosine                                                                                                                                                                
+Picloram                                                                                                                                                                        
+Pindolol                                                                                                                                                                        
+Pioglitazone                                                                                                                                                                    
+Pipamperone                                                                                                                                                                     
+Piperidine                                                                                                                                                                      
+Piperine                                                                                                                                                                        
+Piperonyl butoxide                                                                                                                                                              
+Piperonyl sulfoxide                                                                                                                                                             
+Pirimiphos-ethyl                                                                                                                                                                
+Platensimycin                                                                                                                                                                   
+Podophyllotoxin                                                                                                                                                                 
+Pristimerin                                                                                                                                                                     
+Pro-hyp                                                                                                                                                                         
+Pro-pro                                                                                                                                                                         
+Pro-Thr                                                                                                                                                                         
+Pro-Trp                                                                                                                                                                         
+Profluralin                                                                                                                                                                     
+Prolintane                                                                                                                                                                      
+Prometryne                                                                                                                                                                      
+Propazine                                                                                                                                                                       
+Propranolol                                                                                                                                                                     
+Prosulfocarb                                                                                                                                                                    
+Prunasin                                                                                                                                                                        
+Pseudopelletierine                                                                                                                                                              
+Pseurotin a                                                                                                                                                                     
+Pterostilbene                                                                                                                                                                   
+Purmorphamine                                                                                                                                                                   
+Pygenic acid c                                                                                                                                                                  
+Pyocyanin                                                                                                                                                                       
+Pyraclonil                                                                                                                                                                      
+Pyraflufen-ethyl                                                                                                                                                                
+Pyrantel                                                                                                                                                                        
+Pyridine                                                                                                                                                                        
+Pyridoxamine                                                                                                                                                                    
+Pyrimethamine                                                                                                                                                                   
+Pyrimethanil                                                                                                                                                                    
+Pyroquilon                                                                                                                                                                      
+Rac-4-sulfoxypropranolol                                                                                                                                                        
+Raloxifene                                                                                                                                                                      
+Retinene                                                                                                                                                                        
+Retrorsine n-oxide                                                                                                                                                              
+Rottlerin                                                                                                                                                                       
+S-lactoylglutathione                                                                                                                                                            
+Salithion                                                                                                                                                                       
+Sarafloxacin                                                                                                                                                                    
+Sarcosine                                                                                                                                                                       
+Sarsasapogenin                                                                                                                                                                  
+Schweinfurthin e                                                                                                                                                                
+Scutellarin                                                                                                                                                                     
+Sempervirine                                                                                                                                                                    
+Ser-Asn                                                                                                                                                                         
+Sesamin                                                                                                                                                                         
+Sildenafil                                                                                                                                                                      
+Simazine                                                                                                                                                                        
+Simetryn                                                                                                                                                                        
+Solasodine                                                                                                                                                                      
+Spectinomycin                                                                                                                                                                   
+Sphingosine                                                                                                                                                                     
+Spirodiclofen                                                                                                                                                                   
+Spirotetramat                                                                                                                                                                   
+Stachydrine                                                                                                                                                                     
+Stearoylcarnitine                                                                                                                                                               
+Succinic acid n,n-dimethylhydrazide                                                                                                                                             
+Sucrose                                                                                                                                                                         
+Sulfallate                                                                                                                                                                      
+Sulfamethazine                                                                                                                                                                  
+Sulfasalazine                                                                                                                                                                   
+Sulforaphane                                                                                                                                                                    
+Swainsonine                                                                                                                                                                     
+Teniposide                                                                                                                                                                      
+Tenofovir                                                                                                                                                                       
+Terbutaline                                                                                                                                                                     
+Tetrabenazine                                                                                                                                                                   
+Tetraethylene glycol                                                                                                                                                            
+Tetrahydro-l-biopterin                                                                                                                                                          
+Tetrahydrozoline                                                                                                                                                                
+Tetrazolo[1,5-b]pyridazine, 6-(phenylsulfinyl)-                                                                                                                                 
+Tetrodotoxin                                                                                                                                                                    
+Thio-p-toluamide                                                                                                                                                                
+Thr-Ala                                                                                                                                                                         
+Thr-Ala-Arg                                                                                                                                                                     
+Thr-Arg                                                                                                                                                                         
+Thr-His                                                                                                                                                                         
+Thr-Phe                                                                                                                                                                         
+Thymidine 5'-monophosphate                                                                                                                                                      
+Thymoquinone                                                                                                                                                                    
+Tiamulin                                                                                                                                                                        
+Tillam                                                                                                                                                                          
+Tolmetin                                                                                                                                                                        
+Topiramate                                                                                                                                                                      
+Tozasertib                                                                                                                                                                      
+Trachelanthine                                                                                                                                                                  
+Trans-cinnamic acid                                                                                                                                                             
+Trans-dehydroandrosterone                                                                                                                                                       
+Trans-hydroxyglimepiride                                                                                                                                                        
+Trans-vaccenic acid                                                                                                                                                             
+Trans-zeatin                                                                                                                                                                    
+Trenbolone                                                                                                                                                                      
+Triclopyr                                                                                                                                                                       
+Trietazine                                                                                                                                                                      
+Trifluoroperazine                                                                                                                                                               
+Trigonelline                                                                                                                                                                    
+Trihexyphenidyl                                                                                                                                                                 
+Trilostane                                                                                                                                                                      
+Trimethylamine n-oxide                                                                                                                                                          
+Trioxsalen                                                                                                                                                                      
+Tripropylene glycol                                                                                                                                                             
+Tris(hydroxymethyl)aminomethane                                                                                                                                                 
+Tropinone                                                                                                                                                                       
+Tryptophan betaine                                                                                                                                                              
+Undecanoic acid                                                                                                                                                                 
+Val-His                                                                                                                                                                         
+Val-Phe                                                                                                                                                                         
+Validamycin a                                                                                                                                                                   
+Vasicine                                                                                                                                                                        
+Vasicinone                                                                                                                                                                      
+Vernolate                                                                                                                                                                       
+Vigabatrin                                                                                                                                                                      
+Vildagliptin                                                                                                                                                                    
+Vitexin                                                                                                                                                                         
+Wortmannin                                                                                                                                                                      
+Xylitol                                                                                                                                                                         
+Yangonin                                                                                                                                                                        
+Zaleplon                                                                                                                                                                        

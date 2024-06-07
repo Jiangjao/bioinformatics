@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<head>
+    <title>Document</title>
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v6.min.js" crossorigin></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/d3@7"></script> -->
+
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+    <noscript>抱歉，你的浏览器不支持 JavaScript!</noscript>
+    <!-- <script src="https://d3js.org/d3.v4.js"></script> -->
+
+    <style>
+        .tooltip {
+            padding: 8px 12px;
+            color: red;
+            border-radius: 6px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+            pointer-events: none;
+            transform: translate(-50%, -100%);
+            font-family: "Helvetica", sans-serif;
+            font-size: 12px;
+            background: rgba(20, 10, 30, 0.6);
+            transition: 0.2s opacity ease-out, 0.1s border-color ease-out;
+            backdrop-filter: blur(4px);
+            background-color: black;
+            border: none;
+            border-radius: 5px;
+            padding: 15px;
+            min-width: 200px;
+            text-align: left;
+            color: red;
+        }
+
+        svg .container {
+            width: 100%;
+            height: 100%;
+            margin: auto;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .tooltip {
+            position: absolute;
+            background-color: #f9f9f9;
+            padding: 8px;
+            border: 1px solid #ccc;
+            pointer-events: none;
+            font-size: 14px;
+        }
+
+        .basicSettings {
+            /* width: 80%; */
+            position: relative;
+            /* top: 38px; */
+            z-index: 1;
+            overflow-y: auto;
+        }
+
+        .downloadSettings {
+            width: 100%;
+            position: relative;
+            /* top: 18px; */
+            z-index: 2;
+        }
+
+        .sidebar {
+            width: 100%;
+            display: none;
+            /* 初始状态下隐藏下拉框 */
+        }
+
+        .sidebar h2 {
+            /* margin-bottom: 10px; */
+            /* border-bottom: 1px solid #ddd; */
+            padding-bottom: 5px;
+        }
+
+        .sidebar label {
+            /* width: 120px; */
+            /* text-align: right; */
+            margin-right: 10px;
+        }
+
+        .sidebar input,
+        .sidebar select {
+            padding: 5px;
+            border: 1px solid #ccc;
+            width: 25%;
+            border-radius: 4px;
+        }
+
+        .sidebar button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            background: #42b983;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .sidebar button:hover {
+            opacity: 0.8;
+        }
+
+        .sidebar input[type="number"] {
+            width: 50px;
+        }
+
+        .sidebar input[type="text"] {
+            width: 36%;
+        }
+
+        .sidebar input[type="range"] {
+            width: 100%;
+            /* transform: rotate(270deg); 添加垂直滚动条 */
+        }
+
+        /* .sidebar br {
+            display: none;
+        } */
+
+        .item {
+            display: flex;
+            align-items: center;
+            text-align: justify;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            width: 88%;
+        }
+
+        /* .item {} */
+
+        .sidebar hr {
+            overflow: hidden;
+            width: 88%;
+        }
+
+        /* 设置hr线 */
+        .item+hr {
+            margin: 10px 0;
+
+        }
+
+        .item+hr:first-child {
+            margin-top: 0;
+        }
+
+        .item+hr {
+            border: none;
+            border-top: 1px dotted #ccc;
+        }
+
+        /* hr {} */
+        /* .item label {
+            width: 120px;
+            } */
+        /* .sidebar {
+            display: flex;
+            flex-wrap: wrap;
+        } */
+
+        .sliderTooltip {
+            /* display: block; */
+            /* position: absolute; */
+            /* styles */
+            /* padding: 10px; */
+            position: absolute;
+            /* top: -30px; */
+            /* left: 134px; */
+            background-color: rgb(204 204 204 / 18%);
+            /* color: #f9f9f9; */
+            padding: 5px;
+            border-radius: 5px;
+            display: none;
+            margin-top: 14%;
+        }
+
+        .tooltip.show {
+            display: block;
+        }
+
+        .sidebar.show {
+            width: 100%;
+            height: auto;
+            position: relative;
+            /* padding: inherit; */
+            display: block;
+            padding: 10px 11px;
+            /* 点击后显示下拉框 */
+            transition: max-height 0.3s ease;
+            z-index: 1;
+            /* 添加过渡效果 */
+        }
+
+        /* 添加button的样式 */
+        .button-like {
+            display: inline-block;
+            padding: 10px 0 10px 10%;
+            background-color: #4CAF50;
+            color: white;
+            text-align: left;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 90%;
+        }
+
+        .button-like:hover {
+            background-color: #45a049;
+        }
+
+        .button-like:active {
+            background-color: #3e8e41;
+        }
+
+        /* TODO:xiaojiao, @media screen and (max-width: 700px) 如何使用2023/10/23 */
+        div.tooltip-donut {
+            position: absolute;
+            text-align: center;
+            padding: .5rem;
+            background: #FFFFFF;
+            color: #313639;
+            border: 1px solid #313639;
+            border-radius: 8px;
+            pointer-events: none;
+            font-size: 1.3rem;
+        }
+
+        /*手机屏幕下样式*/
+        @media screen and (max-width: 700px) {
+
+            div.tooltip-donut {
+                position: relative;
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+
+            div.tooltip-donut::after {
+                content: none;
+            }
+
+        }
+
+        icon-i {
+            text-align: center;
+        }
+
+        .dropdown {
+            /* padding: 10px 11px; */
+            position: relative;
+            /* display: inline-block; */
+        }
+
+        .dropdown-content {
+            display: none;
+            position: relative;
+            /* top: 100%; */
+            /* left: 0; */
+            width: 100%;
+            /* padding: 10px 11px; */
+            background-color: #4CAF50;
+        }
+
+
+        .settingContent {
+            display: block;
+            position: relative;
+            /* top: 100%; */
+            /* left: 0; */
+            width: 90%;
+            padding: 10px 11px;
+            /* overflow-y: scroll; */
+            height: 60vh;
+            overflow-y: scroll;
+            /* 设置垂直方向上溢出时显示滚动条 */
+            overflow-x: hidden;
+            scrollbar-width: thin;
+            /* 设置滚动条的宽度 */
+            scrollbar-color: gray lightgray;
+            /* 设置滚动条的颜色 */
+        }
+
+        /* div#settingContent {} */
+        /* .dropdown:hover .dropdown-content {
+        display: block;
+
+         } */
+
+        .filled {
+            fill: url("#mainGradient");
+        }
+
+        .ticks text {
+            font-family: sans-serif;
+            font-size: 17px;
+            text-anchor: middle;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6"></script> -->
+    <!-- import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm"; -->
+
+
+    <!-- Load d3.js and plugin for color scale -->
+    <!-- <script src="https://d3js.org/d3.v4.js"></script> -->
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+
+</head>
+
+<body>
+    <div style="position: absolute; width:100%; height: 100%;">
+        <div>
+            <div style="width: 20%;z-index: 1; position: fixed; padding-right: 1%; right:0; top:40px; opacity: 0.9;">
+                <!-- add by xiaojiao 停靠右侧， x轴文本旋转 -->
+                <!-- add by xiaojiao 柱状图宽度调整 -->
+                <div class="dropdown">
+                    <div id="dropdownTest" class="downloadSettings" style="background:#F9F9F9;width: 100%;">
+                        <p class="button-like">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-cloud-arrow-down" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M7.646 10.854a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 9.293V5.5a.5.5 0 0 0-1 0v3.793L6.354 8.146a.5.5 0 1 0-.708.708l2 2z" />
+                                <path
+                                    d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z" />
+                            </svg>
+                            download
+                        </p>
+                    </div>
+                    <div id="dropdownContent" class="dropdown-content"
+                        style="background:#F9F9F9;width: 100%;display: none;">
+                        <div class="sidebar show">
+                            <button id="export">下载 SVG</button>
+                            <!-- <br> -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <br> -->
+                <div class="dropdown" style="background:#F9F9F9;width: 100%;">
+                    <div class="basicSettings">
+                        <!-- <button type="button" id="exitBtn" class="btn" onClick="exitFullscreen()">退出全屏</button> -->
+                        <p type="button" id="btn" class="btn button-like" title="fullscreen">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-gear" viewBox="0 0 16 16">
+                                <path title="修改参数"
+                                    d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+                                <path title="修改参数"
+                                    d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z" />
+                            </svg>
+                            <path title="fullscreen" fill-rule="evenodd"
+                                d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z" />
+                            </svg>
+                            setting
+                        </p>
+                    </div>
+                    <div class="settingContent" id="settingContent">
+                        <div class="sidebar show" id="mainsetting">
+                            <!-- <h2>文本 Settings</h2> -->
+                            <div class="item">
+                                <p>字体选择:</p>
+                                <!-- https://www.runoob.com/w3cnote/web-font-family.html -->
+                                <select class="form-select" id="fontSelect">
+                                    <option value="">Select</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">Serif Fonts
+                                    </option>
+                                    <option value="Georgia,serif" style="font-family: Georgia,serif">Georgia</option>
+                                    <option value="Palatino Linotype,Book Antiqua,Palatino,serif"
+                                        style="font-family: Palatino Linotype,Book Antiqua,Palatino,serif">Palatino
+                                        Linotype</option>
+                                    <option value="Times New Roman,Times,serif"
+                                        style="font-family: Times New Roman,Times,serif">Times New Roman</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">Sans-Serif
+                                        Fonts</option>
+                                    <option value="Arial,Helvetica,sans-serif"
+                                        style="font-family: Arial,Helvetica,sans-serif">Arial</option>
+                                    <option value="Arial Black,Gadget,sans-serif"
+                                        style="font-family: Arial Black,Gadget,sans-serif">Arial Black</option>
+                                    <option value="Comic Sans MS,cursive,sans-serif"
+                                        style="font-family: Comic Sans MS,cursive,sans-serif">Comic Sans MS</option>
+                                    <option value="Impact,Charcoal,sans-serif"
+                                        style="font-family: Impact,Charcoal,sans-serif">Impact</option>
+                                    <option value="Lucida Sans Unicode,Lucida Grande,sans-serif"
+                                        style="font-family: Lucida Sans Unicode,Lucida Grande,sans-serif">Lucida Sans
+                                        Unicode</option>
+                                    <option selected="selected" value="Tahoma,Geneva,sans-serif"
+                                        style="font-family: Tahoma,Geneva,sans-serif">Tahoma</option>
+                                    <option value="Trebuchet MS,Helvetica,sans-serif"
+                                        style="font-family: Trebuchet MS,Helvetica,sans-serif">Helvetica</option>
+                                    <option value="Verdana,Geneva,sans-serif"
+                                        style="font-family: Verdana,Geneva,sans-serif">Verdana</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">Monospace
+                                        Fonts</option>
+                                    <option value="Courier New,Courier,monospace"
+                                        style="font-family: Courier New,Courier,monospace">Courier New</option>
+                                    <option value="Lucida Console,Monaco,monospace"
+                                        style="font-family: Lucida Console,Monaco,monospace">Lucida Console</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">中文</option>
+                                    <option value="华文细黑,sans-serif" style="font-family: 华文细黑,sans-serif">华文细黑</option>
+                                    <option value="微软雅黑,sans-serif" style="font-family: 微软雅黑,sans-serif">微软雅黑</option>
+                                    <option value="中易宋体,sans-serif" style="font-family: 中易宋体,sans-serif">中易宋体</option>
+                                    <option value="WenQuanYi Micro Hei,sans-serif"
+                                        style="font-family: WenQuanYi Micro Hei,sans-serif">WenQuanYi Micro Hei</option>
+                                    <option value="楷体,serif" style="font-family: 楷体, serif">楷体</option>
+                                    <option value="隶书,sans-serif" style="font-family: 隶书, sans-serif">隶书</option>
+                                </select>
+                            </div>
+
+                            <div class="item">
+                                <p>字体大小: </p>
+                                <input type="range" id="fontSizeRange" min="6" max="56" step="1" value="16">
+                                <div class="sliderTooltip">
+                                    <span class="value"></span>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="item">
+                                <label for="xAxisrotateSlider">x轴字体旋转:</label>
+                                <input type="range" id="xAxisrotateSlider" min="0" max="360" step="1" value="30">
+                                <input type="text" id="xAxisrotateSliderValue" readonly>
+                            </div>
+
+                            <div class="item">
+                                <label for="dotsDensity">散点密度调整:</label>
+                                <input type="range" id="dotsDensity" min="0" max="1000" step="0.1" value="2">
+                            </div>
+                            <div class="item">
+                                <label for="dotsPosition">散点位置调整:</label>
+                                <input type="range" id="dotsPosition" min="-100" max="1000" step="0.1" value="2">
+                            </div>
+
+                            <div class="item">
+                                <p>散点大小调整: </p>
+                                <input type="range" id="scatterSizeRange" min="0" max="50" step="0.1" value="1.5">
+                                <div class="scatterSizeRange" style="display: none;">
+                                    <span class="value"></span>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <label for="stackBarWidth">柱状图宽度调整:</label>
+                                <input type="range" id="stackBarWidth" min="0" max="100" step="0.1" value="2">
+                            </div>
+
+                            <div class="item">
+                                <label for="dotsStrokeColor">散点描边颜色调整:</label>
+                                <input type="color" id="dotsStrokeColor" value="#FBF1F5">
+                            </div>
+
+                            <div class="item">
+                                <label for="volinsColor">核密度曲线:</label>
+                                <input type="color" id="volinsColor" value="#808080">
+                            </div>
+
+                            <div class="item">
+                                <label for="dotsColor">散点颜色:</label>
+                                <input type="color" id="dotsColor">
+                            </div>
+
+                            <div class="item">
+                                <!-- <p>x 轴显示: </p> -->
+                                <button id="boxplotDisplay">去除箱线图</button>
+                            </div>
+
+                            <hr>
+
+                            <div class="item">
+                                <button id="center-button">reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dropdown" style="background:#F9F9F9;width: 100%;">
+                    <div class="basicSettings">
+                        <p type="button" id="helpbtn" class="btn button-like" title="fullscreen">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-question-square" viewBox="0 0 16 16">
+                                <path
+                                    d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
+                                <path title="fullscreen" fill-rule="evenodd"
+                                    d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94" />
+                            </svg>
+                            help
+                        </p>
+                    </div>
+                    <div class="settingContent" id="helpContent">
+                        <div class="sidebar show" id="helpsetting">
+                            <h3>基本的使用</h3>
+                            <ol>
+                                <li>可以拖拽移动图形</li>
+                                <li>鼠标放大缩小图像</li>
+                                <li>悬浮到特定图案上会有文字展示</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <!-- <br> -->
+                <!-- <br> -->
+                <div class="btns" id="btns" style="background:#F9F9F9;width: 100%;">
+
+                    <!-- <button type="button" id="exitBtn" class="btn" onClick="exitFullscreen()">退出全屏</button> -->
+                    <p type="button" id="btn" class="btn button-like fullScreen" title="fullscreen">
+                        <svg title="fullscreen" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            fill="currentColor" class="bi bi-arrows-fullscreen" viewBox="0 0 16 16">
+                            <path title="fullscreen" fill-rule="evenodd"
+                                d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z" />
+                        </svg>
+                        全屏
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="basicSettings" style="margin-left: auto; position: relative;">
+
+            </div>
+
+
+        </div>
+        <!-- Create a div where the graph will take place -->
+        <div id="container">
+
+            <!-- Create a div where the graph will take place -->
+            <!-- <div id="chart"></div> -->
+        </div>
+
+        <!-- <div id="myplot"></div> -->
+        <!-- <script src="https://cdn.jsdelivr.net/npm/d3@7"></script> -->
+        <!-- <script src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6"></script> -->
+        <!-- Plugin for color scale -->
+        <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+
+        <!-- Create a div where the graph will take place -->
+        <div id="my_dataviz"></div>
+
+
+    </div>
+    <script>
+        var globalState = {
+            "density": 30,
+            "dotsPosition": 20,
+        }
+
+        // Read the data and compute summary statistics for each specie
+              // 数据
+              var data = [{'Species': 'Iris_setosa ', 'value': 5.1}, {'Species': 'Iris_versicolor ', 'value': 7.0}, {'Species': 'Iris_virginica', 'value': 6.3}, {'Species': 'Iris_setosa ', 'value': 4.9}, {'Species': 'Iris_versicolor ', 'value': 6.4}, {'Species': 'Iris_virginica', 'value': 5.8}, {'Species': 'Iris_setosa ', 'value': 4.7}, {'Species': 'Iris_versicolor ', 'value': 6.9}, {'Species': 'Iris_virginica', 'value': 7.1}, {'Species': 'Iris_setosa ', 'value': 4.6}, {'Species': 'Iris_versicolor ', 'value': 5.5}, {'Species': 'Iris_virginica', 'value': 6.3}, {'Species': 'Iris_setosa ', 'value': 5.0}, {'Species': 'Iris_versicolor ', 'value': 6.5}, {'Species': 'Iris_virginica', 'value': 6.5}, {'Species': 'Iris_setosa ', 'value': 5.4}, {'Species': 'Iris_versicolor ', 'value': 5.7}, {'Species': 'Iris_virginica', 'value': 7.6}, {'Species': 'Iris_setosa ', 'value': 4.6}, {'Species': 'Iris_versicolor ', 'value': 6.3}, {'Species': 'Iris_virginica', 'value': 4.9}, {'Species': 'Iris_setosa ', 'value': 5.0}, {'Species': 'Iris_versicolor ', 'value': 4.9}, {'Species': 'Iris_virginica', 'value': 7.3}, {'Species': 'Iris_setosa ', 'value': 4.4}, {'Species': 'Iris_versicolor ', 'value': 6.6}, {'Species': 'Iris_virginica', 'value': 6.7}, {'Species': 'Iris_setosa ', 'value': 4.9}, {'Species': 'Iris_versicolor ', 'value': 5.2}, {'Species': 'Iris_virginica', 'value': 7.2}, {'Species': 'Iris_setosa ', 'value': 5.4}, {'Species': 'Iris_versicolor ', 'value': 5.0}, {'Species': 'Iris_virginica', 'value': 6.5}, {'Species': 'Iris_setosa ', 'value': 4.8}, {'Species': 'Iris_versicolor ', 'value': 5.9}, {'Species': 'Iris_virginica', 'value': 6.4}, {'Species': 'Iris_setosa ', 'value': 4.8}, {'Species': 'Iris_versicolor ', 'value': 6.0}, {'Species': 'Iris_virginica', 'value': 6.8}, {'Species': 'Iris_setosa ', 'value': 4.3}, {'Species': 'Iris_versicolor ', 'value': 6.1}, {'Species': 'Iris_virginica', 'value': 5.7}, {'Species': 'Iris_setosa ', 'value': 5.8}, {'Species': 'Iris_versicolor ', 'value': 5.6}, {'Species': 'Iris_virginica', 'value': 5.8}, {'Species': 'Iris_setosa ', 'value': 5.7}, {'Species': 'Iris_versicolor ', 'value': 6.7}, {'Species': 'Iris_virginica', 'value': 6.4}, {'Species': 'Iris_setosa ', 'value': 5.4}, {'Species': 'Iris_versicolor ', 'value': 5.6}, {'Species': 'Iris_virginica', 'value': 6.5}, {'Species': 'Iris_setosa ', 'value': 5.1}, {'Species': 'Iris_versicolor ', 'value': 5.8}, {'Species': 'Iris_virginica', 'value': 7.7}, {'Species': 'Iris_setosa ', 'value': 5.7}, {'Species': 'Iris_versicolor ', 'value': 6.2}, {'Species': 'Iris_virginica', 'value': 7.7}, {'Species': 'Iris_setosa ', 'value': 5.1}, {'Species': 'Iris_versicolor ', 'value': 5.6}, {'Species': 'Iris_virginica', 'value': 6.0}, {'Species': 'Iris_setosa ', 'value': 5.4}, {'Species': 'Iris_versicolor ', 'value': 5.9}, {'Species': 'Iris_virginica', 'value': 6.9}, {'Species': 'Iris_setosa ', 'value': 5.1}, {'Species': 'Iris_versicolor ', 'value': 6.1}, {'Species': 'Iris_virginica', 'value': 5.6}, {'Species': 'Iris_setosa ', 'value': 4.6}, {'Species': 'Iris_versicolor ', 'value': 6.3}, {'Species': 'Iris_virginica', 'value': 7.7}, {'Species': 'Iris_setosa ', 'value': 5.1}, {'Species': 'Iris_versicolor ', 'value': 6.1}, {'Species': 'Iris_virginica', 'value': 6.3}, {'Species': 'Iris_setosa ', 'value': 4.8}, {'Species': 'Iris_versicolor ', 'value': 6.4}, {'Species': 'Iris_virginica', 'value': 6.7}, {'Species': 'Iris_setosa ', 'value': 5.0}, {'Species': 'Iris_versicolor ', 'value': 6.6}, {'Species': 'Iris_virginica', 'value': 7.2}, {'Species': 'Iris_setosa ', 'value': 5.0}, {'Species': 'Iris_versicolor ', 'value': 6.8}, {'Species': 'Iris_virginica', 'value': 6.2}, {'Species': 'Iris_setosa ', 'value': 5.2}, {'Species': 'Iris_versicolor ', 'value': 6.7}, {'Species': 'Iris_virginica', 'value': 6.1}, {'Species': 'Iris_setosa ', 'value': 5.2}, {'Species': 'Iris_versicolor ', 'value': 6.0}, {'Species': 'Iris_virginica', 'value': 6.4}, {'Species': 'Iris_setosa ', 'value': 4.7}, {'Species': 'Iris_versicolor ', 'value': 5.7}, {'Species': 'Iris_virginica', 'value': 7.2}, {'Species': 'Iris_setosa ', 'value': 4.8}, {'Species': 'Iris_versicolor ', 'value': 5.5}, {'Species': 'Iris_virginica', 'value': 7.4}, {'Species': 'Iris_setosa ', 'value': 5.4}, {'Species': 'Iris_versicolor ', 'value': 5.5}, {'Species': 'Iris_virginica', 'value': 7.9}, {'Species': 'Iris_setosa ', 'value': 5.2}, {'Species': 'Iris_versicolor ', 'value': 5.8}, {'Species': 'Iris_virginica', 'value': 6.4}, {'Species': 'Iris_setosa ', 'value': 5.5}, {'Species': 'Iris_versicolor ', 'value': 6.0}, {'Species': 'Iris_virginica', 'value': 6.3}, {'Species': 'Iris_setosa ', 'value': 4.9}, {'Species': 'Iris_versicolor ', 'value': 5.4}, {'Species': 'Iris_virginica', 'value': 6.1}, {'Species': 'Iris_setosa ', 'value': 5.0}, {'Species': 'Iris_versicolor ', 'value': 6.0}, {'Species': 'Iris_virginica', 'value': 7.7}, {'Species': 'Iris_setosa ', 'value': 5.5}, {'Species': 'Iris_versicolor ', 'value': 6.7}, {'Species': 'Iris_virginica', 'value': 6.3}, {'Species': 'Iris_setosa ', 'value': 4.9}, {'Species': 'Iris_versicolor ', 'value': 6.3}, {'Species': 'Iris_virginica', 'value': 6.4}, {'Species': 'Iris_setosa ', 'value': 4.4}, {'Species': 'Iris_versicolor ', 'value': 5.6}, {'Species': 'Iris_virginica', 'value': 6.0}, {'Species': 'Iris_setosa ', 'value': 5.1}, {'Species': 'Iris_versicolor ', 'value': 5.5}, {'Species': 'Iris_virginica', 'value': 6.9}, {'Species': 'Iris_setosa ', 'value': 5.0}, {'Species': 'Iris_versicolor ', 'value': 5.5}, {'Species': 'Iris_virginica', 'value': 6.7}, {'Species': 'Iris_setosa ', 'value': 4.5}, {'Species': 'Iris_versicolor ', 'value': 6.1}, {'Species': 'Iris_virginica', 'value': 6.9}, {'Species': 'Iris_setosa ', 'value': 4.4}, {'Species': 'Iris_versicolor ', 'value': 5.8}, {'Species': 'Iris_virginica', 'value': 5.8}, {'Species': 'Iris_setosa ', 'value': 5.0}, {'Species': 'Iris_versicolor ', 'value': 5.0}, {'Species': 'Iris_virginica', 'value': 6.8}, {'Species': 'Iris_setosa ', 'value': 5.1}, {'Species': 'Iris_versicolor ', 'value': 5.6}, {'Species': 'Iris_virginica', 'value': 6.7}, {'Species': 'Iris_setosa ', 'value': 4.8}, {'Species': 'Iris_versicolor ', 'value': 5.7}, {'Species': 'Iris_virginica', 'value': 6.7}, {'Species': 'Iris_setosa ', 'value': 5.1}, {'Species': 'Iris_versicolor ', 'value': 5.7}, {'Species': 'Iris_virginica', 'value': 6.3}, {'Species': 'Iris_setosa ', 'value': 4.6}, {'Species': 'Iris_versicolor ', 'value': 6.2}, {'Species': 'Iris_virginica', 'value': 6.5}, {'Species': 'Iris_setosa ', 'value': 5.3}, {'Species': 'Iris_versicolor ', 'value': 5.1}, {'Species': 'Iris_virginica', 'value': 6.2}, {'Species': 'Iris_setosa ', 'value': 5.0}, {'Species': 'Iris_versicolor ', 'value': 5.7}, {'Species': 'Iris_virginica', 'value': 5.9}];
+
+// 高度
+    </script>
+    <!-- Create a div where the graph will take place -->
+    <div id="my_dataviz"></div>
+    <script>
+        // TODO:xiaojiao, 监听窗口resize 时的变化
+        let flag = true
+        // 全屏设置
+        let isFullscreen = false;
+
+        window.onresize = function () {
+
+            // 全屏时放弃改变窗口大小
+            // added by xiaojiao 2023/12/04
+            if (isFullscreen) {
+                return;
+            }
+
+            if (flag) {
+                flag = false
+                location.reload();
+            }
+            let timeId = setTimeout(() => {
+                flag = true
+                timeId = null // 清除延时定时器
+            }, 1000)
+            width = document.body.clientWidth;
+        }
+
+        // 网页窗口在某一大小打开时的宽高
+        // https://stackoverflow.com/questions/16265123/resize-svg-when-window-is-resized-in-d3-js
+        var width = window.innerWidth || document.clientWidth || document.body.clientWidth;
+        var height = window.innerHeight || document.clientHeight || document.body.clientHeight;
+
+        // make group around
+        // set the dimensions and margins of the graph
+        var margin = { top: 10, right: 500, bottom: 50, left: 70 },
+            width = width - margin.left - margin.right,
+            height = height - margin.top - margin.bottom;
+
+        // append the svg object to the body of the page
+        var svg = d3.select("#my_dataviz")
+            .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .attr("id", "chart")
+            .append("g")
+            .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
+
+        var y_min_value = 4;
+        var y_max_value = 4;
+        // 测定y轴取值范围
+
+        function y_area(data, item) {
+            // 1. 将数据转换为数组
+
+            var groups = {};
+
+            for (var i = 0; i < data.length; i++) {
+                const item = data[i];
+
+                const species = item.Species;
+
+                if (!groups[species]) {
+                    groups[species] = [];
+                }
+
+                groups[species].push(item);
+            }
+
+            // 2. 计算结果
+            const quartiles = {};
+
+            for (var i = 0; i < Object.keys(groups).length; i++) {
+
+                const species = Object.keys(groups)[i];
+
+                const group = groups[species];
+
+                // 3. 提取特征值数组 
+                const sepalLengths = [];
+
+                for (var j = 0; j < group.length; j++) {
+                    sepalLengths.push(group[j][item]);
+                }
+
+                // 4. 排序
+                sepalLengths.sort((a, b) => a - b);
+
+                // 5. 计算下标
+                const length = sepalLengths.length;
+
+                if (length == 0) {
+                    Error("啥数据？")
+                }
+                // 6. 计算分位数
+                let q1, q2, q3;
+
+                for (var k = 0; k < length; k++) {
+
+                    const value = parseFloat(sepalLengths[k]) ;
+                    const ratio = k / length;
+
+                    // 计算四分位数，暂时保留
+                    // if (ratio < 0.1) {
+                    //     q1 = value;
+                    // } else if (ratio < 0.5) {
+                    //     q2 = value;
+                    // } else if (ratio < 0.75) {
+                    //     q3 = value;
+                    // }
+                    q1 = parseFloat(sepalLengths[0]);
+                    q3 = parseFloat(sepalLengths[length - 1]);
+                    interQuantileRange = Math.abs(q3 - q1);
+                    min = q1 - 1.5 * interQuantileRange;
+                    max = q3 + 1.5 * interQuantileRange;
+                    console.log("max >>>", max);
+                }
+
+                // 7. 收集结果
+                quartiles[species] = {
+                    "Sepal_Length": [q1, q2, q3],
+                    "discrete_range_min": min,
+                    "discrete_range_max": max
+                };
+
+            }
+            return quartiles;
+        }
+
+
+        let minMin, maxMax;
+        // Build and Show the X scale. It is a band scale like for a boxplot: each group has an dedicated RANGE on the axis. This range has a length of x.bandwidth
+        // TODO:xiaojiao, 获取这个的groups
+        var subgroups = ['Iris_setosa ', 'Iris_versicolor ', 'Iris_virginica'];
+        var item = "value";
+        y_range = y_area(data, item);
+        discreteRanges = y_range;
+        for(var i = 0; i < Object.keys(discreteRanges).length; i++) {
+
+            const species = Object.keys(discreteRanges)[i];
+
+            const range = discreteRanges[species];
+
+            // discrete_range_min
+            if(!minMin || range.discrete_range_min < minMin) {
+                minMin = range.discrete_range_min; 
+            }
+
+            // discrete_range_max  
+            if(!maxMax || range.discrete_range_max > maxMax) {
+                maxMax = range.discrete_range_max;
+            }
+        }
+
+        // y_min_value = minMin;
+        // y_max_value = maxMax;
+        var sumstatBoxplot11 = d3.groups(data, d => d.Species)
+            .map(group => {
+                // console.log("group >>>", group);
+                var values = group.map(d => d[item]);
+                var index, values;
+                index = group[0];
+                values = group[1];
+                q1 = d3.quantile(values.map(function (g) { return g[item]; }).sort(d3.ascending), .25)
+                median = d3.quantile(values.map(function (g) { return g[item]; }).sort(d3.ascending), .5)
+                q3 = d3.quantile(values.map(function (g) { return g[item]; }).sort(d3.ascending), .75)
+                interQuantileRange = q3 - q1
+                min = q1 - 1.5 * interQuantileRange
+                max = q3 + 1.5 * interQuantileRange
+                if (y_min_value < min) {
+                    y_min_value = min
+                }
+                if (y_max_value >= max) {
+                    y_min_value = max
+                }
+                return ({
+                    key: index,
+                    value: {
+                        min: min, max: max
+                    }
+                })
+            });
+        // Read the data and compute summary statistics for each specie
+
+        // Build and Show the Y scale
+        var y = d3.scaleLinear()
+            .domain([minMin, maxMax])          // Note that here the Y scale is set manually
+            .range([height, 0])
+        svg.append("g").call(d3.axisLeft(y))
+
+
+        // TODO:xiaojiao, 需要指定哪个数据作为散点的来源
+        var x = d3.scaleBand()
+            .range([0, width])
+            .domain(subgroups)
+            .padding(0.05)     // This is important: it is the space between 2 groups. 0 means no padding. 1 is the maximum.
+        const xAxis =  svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .attr("id", "xAxis")
+            .call(d3.axisBottom(x).tickPadding(globalState.dotsPosition))
+
+        // Features of the histogram
+        var histogram = d3.histogram()
+            .domain(y.domain())
+            .thresholds(y.ticks(20))    // Important: how many bins approx are going to be made? It is the 'resolution' of the violin plot
+            .value(d => d)
+
+        // Compute the binning for each group of the dataset
+        // var sumstat = d3.nest()  // nest function allows to group the calculation per level of a factor
+        //     .key(function (d) { return d.Species; })
+        //     .rollup(function (d) {   // For each key..
+        //         input = d.map(function (g) { return g.Sepal_Length; })    // Keep the variable called Sepal_Length
+        //         bins = histogram(input)   // And compute the binning on it.
+        //         return (bins)
+        //     })
+        //     .entries(data)
+
+        // 使用d3.group按Species分组
+        // const groups = d3.groups(data, d => d.Species);
+
+        // https://observablehq.com/@d3/d3v6-migration-guide
+        var sumstat1 = d3.rollups(data,
+            (d) => {
+
+                // 对每个分组数据计算
+                //   const values = group.map(d => d.Sepal_Length);
+                var input = d.map(function (g) { return g[item]; })
+                // 使用histo计算直方图 
+                const bins = histogram(input)
+
+                return bins
+
+            }, (d) => { return d.Species; });
+
+        const result = sumstat1.map(item => {
+            return {
+                key: item[0],
+                value: item[1]
+            };
+        });
+
+        // }
+        sumstat = result;
+        console.log("sumstat1 >>>", sumstat1);
+        // Compute quartiles, median, inter quantile range min and max --> these info are then used to draw the box.
+        var sumstatBoxplot = d3.groups(data, d => d.Species)
+            .map(group => {
+                // console.log("group >>>", group);
+                var values = group.map(d => d[item]);
+                var index, values;
+                index = group[0];
+                values = group[1];
+                q1 = d3.quantile(values.map(function (g) { return g[item]; }).sort(d3.ascending), .25)
+                median = d3.quantile(values.map(function (g) { return g[item]; }).sort(d3.ascending), .5)
+                q3 = d3.quantile(values.map(function (g) { return g[item]; }).sort(d3.ascending), .75)
+                interQuantileRange = q3 - q1
+                min = q1 - 1.5 * interQuantileRange
+                max = q3 + 1.5 * interQuantileRange
+                return ({
+                    key: index,
+                    value: {
+                        q1: q1, median: median, q3: q3, interQuantileRange: interQuantileRange, min: min, max: max
+                    }
+                })
+            });
+
+        // What is the biggest number of value in a bin? We need it cause this value will have a width of 100% of the bandwidth.
+        var maxNum = 0
+        for (i in sumstat) {
+            allBins = sumstat[i].value
+            console.log("allBins >>>", allBins);
+            lengths = allBins.map(function (a) { return a.length; })
+            longuest = d3.max(lengths)
+            if (longuest > maxNum) { maxNum = longuest }
+        }
+
+        // The maximum width of a violin must be x.bandwidth = the width dedicated to a group
+        var xNum = d3.scaleLinear()
+            .range([0, x.bandwidth()])
+            .domain([-maxNum, maxNum])
+
+        // Color scale for dots
+        var myColor = d3.scaleSequential()
+            .interpolator(d3.interpolateInferno)
+            .domain([minMin, maxMax])
+
+        console.log("sumstat >>", sumstat);
+        console.log("data >>>", data);
+        // Add the shape to this svg!
+        const myViolins = svg.append("g")
+                            .attr("id", "myViolins")
+            myViolins
+            .selectAll("myViolin")
+            .data(sumstat)
+            .enter()        // So now we are working group per group
+            .append("g")
+            .attr("id", "myViolin")
+            .attr("transform", function (d) { return ("translate(" + x(d.key) + " ,0)") }) // Translation on the right to be at the group position
+            .append("path")
+            .datum(function (d) { return (d.value) })     // So now we are working bin per bin
+            .style("stroke", "none")
+            .style("fill", "grey")
+            .attr("d", d3.area()
+                .x0(xNum(0))
+                .x1(function (d) { return (xNum(d.length)) })
+                .y(function (d) { return (y(d.x0)) })
+                .curve(d3.curveCatmullRom)    // This makes the line smoother to give the violin appearance. Try d3.curveStep to see the difference
+            )
+
+        // Add individual points with jitter
+        var jitterWidth = 35
+
+        // create a tooltip
+        var tooltip = d3.select("#my_dataviz")
+            .append("div")
+            .style("opacity", 0)
+            .attr("class", "tooltip")
+            .style("font-size", "16px");
+
+        // Three function that change the tooltip when user hover / move / leave a cell
+        var mouseover = function (event, d) {
+            tooltip
+                .transition()
+                .duration(200)
+                .style("opacity", 1);
+
+            tooltip
+                .html("<span style='color:grey'>Sepal length: </span>" + d[item])
+                .style("left", (event.pageX + 30) + "px")
+                .style("top", (event.pageY + 30) + "px");
+        }
+
+        var mousemove = function (event, d) {
+            tooltip
+                .style("left", (event.pageX + 30) + "px")
+                .style("top", (event.pageY + 30) + "px");
+        }
+
+        var mouseleave = function (d) {
+            tooltip
+                .transition()
+                .duration(200)
+                .style("opacity", 0);
+        }
+
+        const bubbles = svg
+                .append("g")
+                .attr("id", "bubbles")
+        // TODO:Xiaojiao, 需要调整这个jitterWidth
+        function drawbublles(startPos, jitterWidth) {
+            bubbles
+                .selectAll("indPoints")
+                .data(data)
+                .enter()
+                .append("circle")
+                .attr("cx", function (d) { return (x(d.Species) + x.bandwidth() / 2 + startPos - Math.random() * jitterWidth) })
+                .attr("cy", function (d) { return (y(d[item])) })
+                .attr("r", 5)
+                .style("fill", function (d) { return (myColor(d[item])) })
+                .attr("stroke", "white")
+                .attr("id", "indPoints")
+                .on("mouseover", mouseover)
+                .on("mousemove", mousemove)
+                .on("mouseleave", mouseleave)
+        }
+
+        drawbublles(0, jitterWidth);
+        // boxplot
+        // TODO:xiaojiao, find the boxplot
+        // rectangle for the main box
+        var boxPlots = svg.append("g").attr("id", "boxplot");
+        boxPlots
+            .selectAll("boxes")
+            .data(sumstatBoxplot)
+            .enter()
+            .append("rect")
+            .attr("x", function (d) { return (x(d.key)) }) // console.log(x(d.value.q1)) ;
+            .attr("width", x.bandwidth() / 2) //console.log(x(d.value.q3)-x(d.value.q1))
+            .attr("y", function (d) { return y(d.value.q3); })
+            .attr("height", function (d) { return (y(d.value.q1) - y(d.value.q3)) })
+            .attr("stroke", "black")
+            .style("fill", "#69b3a2")
+            .style("opacity", 0.3)
+
+        // Show the main vertical line
+        // TODO:Xiaojiao, 添加竖线
+        boxPlots
+            .selectAll("vertLines")
+            .data(sumstatBoxplot)
+            .enter()
+            .append("line")
+            .attr("y1", function (d) { return (y(d.value.min)) })
+            .attr("y2", function (d) { return (y(d.value.max)) })
+            .attr("x1", function (d) { return (x(d.key) + x.bandwidth() / 4) })
+            .attr("x2", function (d) { return (x(d.key) + x.bandwidth() / 4) })
+            .attr("stroke", "black")
+            .style("width", 40)
+
+        // Show the median
+        boxPlots
+            .selectAll("medianLines")
+            .data(sumstatBoxplot)
+            .enter()
+            .append("line")
+            .attr("y1", function (d) { return (y(d.value.median)) })
+            .attr("y2", function (d) { return (y(d.value.median)) })
+            .attr("x1", function (d) { return (x(d.key)) })
+            .attr("x2", function (d) { return (x(d.key) + x.bandwidth() / 2) })
+            .attr("stroke", "black")
+            .style("width", 80)
+
+        console.log("sumstatBoxplot >>>", sumstatBoxplot);
+        // svg
+        //     .selectAll("medianLines")
+        //     .data(sumstatBoxplot)
+        //     .enter()
+        //     .append("line")
+        //       .attr("y1", function(d){return(y(d.key))})
+        //       .attr("y2", function(d){return(y(d.key) + y.bandwidth()/2)})
+        //       .attr("x1", function(d){return(x(d.value.median))})
+        //       .attr("x2", function(d){return(x(d.value.median))})
+        //       .attr("stroke", "black")
+        //       .style("width", 80)
+
+        // 创建一个缩放行为，并设置缩放事件处理程序
+        const zoom = d3.zoom().on('zoom', (e) => {
+            svg.attr('transform', e.transform);
+        });
+        d3.select("#my_dataviz").call(zoom);
+        //     .call(zoom.transform, d3.zoomIdentity.scale(0.8));
+
+        d3.select("#my_dataviz").attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+        // 调节宽度
+                // https://observablehq.com/@stardisblue/scale-bar
+        // 调节柱状图宽度
+        const stackBarWidthInput = document.getElementById("stackBarWidth");
+        let stackBarWidthInputMax = parseInt(stackBarWidthInput.max);
+
+        stackBarWidthInput.addEventListener("input", function () {
+            stackBarWidthInputValue = parseFloat(stackBarWidthInput.value);
+            stackBarWidth = +stackBarWidthInput.value;
+            var newBand = x.domain(subgroups).range([0, stackBarWidth * data.length]);
+            x.domain(subgroups).range([0, stackBarWidth * data.length]);
+            xAxis.call(d3.axisBottom(newBand).tickSizeOuter(0));
+            // svg.attr("width", stackBarWidthInputMax);
+
+            // updata boxplot
+            boxPlots.selectAll("rect").remove();
+            boxPlots.selectAll("line").remove();
+
+            boxPlots
+            .selectAll("boxes")
+            .data(sumstatBoxplot)
+            .enter()
+            .append("rect")
+            .attr("x", function (d) { return (x(d.key)) }) // console.log(x(d.value.q1)) ;
+            .attr("width", x.bandwidth() / 2) //console.log(x(d.value.q3)-x(d.value.q1))
+            .attr("y", function (d) { return y(d.value.q3); })
+            .attr("height", function (d) { return (y(d.value.q1) - y(d.value.q3)) })
+            .attr("stroke", "black")
+            .style("fill", "#69b3a2")
+            .style("opacity", 0.3)
+                d3.selectAll("#myViolin")
+                    .attr("transform", function (_, i){
+                        // console.log("this", this);
+                        var preY = this.getAttribute("transform")
+                        // console.log("preY", preY);
+                        "translate(" + (stackBarWidth * data.length) + ", )"
+                    })
+                    // TODO:Xiaojiao, 添加竖线
+        boxPlots
+            .selectAll("vertLines")
+            .data(sumstatBoxplot)
+            .enter()
+            .append("line")
+            .attr("y1", function (d) { return (y(d.value.min)) })
+            .attr("y2", function (d) { return (y(d.value.max)) })
+            .attr("x1", function (d) { return (x(d.key) + x.bandwidth() / 4) })
+            .attr("x2", function (d) { return (x(d.key) + x.bandwidth() / 4) })
+            .attr("stroke", "black")
+            .style("width", 40)
+                    // Show the median
+        boxPlots
+            .selectAll("medianLines")
+            .data(sumstatBoxplot)
+            .enter()
+            .append("line")
+            .attr("y1", function (d) { return (y(d.value.median)) })
+            .attr("y2", function (d) { return (y(d.value.median)) })
+            .attr("x1", function (d) { return (x(d.key)) })
+            .attr("x2", function (d) { return (x(d.key) + x.bandwidth() / 2) })
+            .attr("stroke", "black")
+            .style("width", 80)
+
+
+
+            // TODO:xiaojiao ， 更新area的比例尺 2023、11、02
+            // draw bubbles
+            d3.select("#bubbles").selectAll("circle").remove();
+            d3.selectAll("#indPoints").remove();
+            drawbublles(0, jitterWidth);
+
+            // myViolins
+        myViolins.selectAll("path").remove();
+        // 更新xNum
+        var xNum = d3.scaleLinear()
+            .range([0, x.bandwidth()])
+            .domain([-maxNum, maxNum])
+        myViolins
+            .selectAll("myViolin")
+            .data(sumstat)
+            .enter()        // So now we are working group per group
+            .append("g")
+            .attr("id", "myViolin")
+            .attr("transform", function (d) { return ("translate(" + x(d.key) + " ,0)") }) // Translation on the right to be at the group position
+            .append("path")
+            .datum(function (d) { return (d.value) })     // So now we are working bin per bin
+            .style("stroke", "none")
+            .style("fill", "grey")
+            .attr("d", d3.area()
+                .x0(xNum(0))
+                .x1(function (d) { return (xNum(d.length)) })
+                .y(function (d) { return (y(d.x0)) })
+                .curve(d3.curveCatmullRom)    // This makes the line smoother to give the violin appearance. Try d3.curveStep to see the difference
+            )
+
+        // Add individual points with jitter
+        })
+
+    </script>
+
+    <script>
+        // 字体选择
+        const fontSelect = document.getElementById("fontSelect");
+        const textElement = d3.select("#container");
+
+        fontSelect.addEventListener("change", function () {
+            const selectedFont = fontSelect.value;
+            d3.selectAll("text").style("font-family", selectedFont);
+            // svg.style("font-family", selectedFont);
+        });
+
+        // 构建下拉展开
+        var dropdownTest = document.getElementById("dropdownTest")
+        var dropdownContent = document.getElementById("dropdownContent");
+
+        dropdownTest.addEventListener("click", function () {
+            dropdownContent.style.display = (dropdownContent.style.display === "none") ? "block" : "none";
+
+        });
+
+        function addEvent(el, type, handler) {
+            if (el.addEventListener) {
+                el.addEventListener(type, handler);
+            } else {
+                el.attachEvent('on' + type, handler);
+            }
+        }
+
+        // 字体大小选择
+        const fontSizeRange = document.getElementById("fontSizeRange");
+        const sliderTooltip = document.querySelector(".sliderTooltip");
+
+        // 嵌套的子元素span中的value
+        var valueSpan = document.querySelector(".sliderTooltip .value");
+
+        fontSizeRange.addEventListener("input", function () {
+            const selectedFontSize = fontSizeRange.value;
+            d3.selectAll("text").style("font-size", selectedFontSize + "px");
+
+            // svg.style("font-size", selectedFontSize + "px");
+            const sliderRect = fontSizeRange.getBoundingClientRect();
+
+            const tooltipWidth = sliderTooltip.offsetWidth;
+            const tooltipHeight = sliderTooltip.offsetHeight;
+
+
+            const sliderValue = parseInt(selectedFontSize);
+            const sliderMin = parseInt(fontSizeRange.min);
+            const sliderMax = parseInt(fontSizeRange.max);
+            const sliderWidth = fontSizeRange.offsetWidth;
+
+
+
+            // TODO:xiaojiao, fix thar
+            // const tooltipX = 1;
+            const positionPercentage = (sliderValue - sliderMin) / (sliderMax - sliderMin);
+            const tooltipPosition = positionPercentage * (sliderWidth - tooltipWidth);
+
+            const tooltipX = tooltipWidth + tooltipPosition;
+            const tooltipY = sliderRect.top - tooltipHeight; // 自定义偏移量，避免与滑块重叠
+
+
+            sliderTooltip.style.left = tooltipX + "px";
+            // sliderTooltip.style.top = -0.1 + "px";
+
+            // var value = valueSpan.textContent;
+            valueSpan.textContent = selectedFontSize + 'px';
+
+        });
+
+        // 添加slider tooltip
+        fontSizeRange.addEventListener("mouseover", function () {
+
+            // tooltip.classList.add()
+            sliderTooltip.style.display = "block";
+
+            sliderTooltip.classList.add("show");
+        });
+
+        fontSizeRange.addEventListener("mouseout", function () {
+
+            sliderTooltip.classList.remove("show");
+            sliderTooltip.style.display = "none";
+        });
+
+        // 添加圆圈颜色、大小选择
+        scatterSizeRange = document.getElementById("scatterSizeRange");
+        scatterSizeRange.addEventListener("input", function () {
+            scatterSizeRangeValue = parseFloat(scatterSizeRange.value);
+            d3.selectAll("#indPoints").attr("r", scatterSizeRangeValue);
+        })
+
+        // 下载
+        // TODO:xiaojiao, download 、export and save...
+        // see here https://www.omicshare.com/tools/Public/Home/dist/js/report.js
+        // https://d3export.housegordon.org/
+        function download_fun(id, type, name) {
+            name = name == '' || name == undefined ? 'image' : name;
+            type = type == '' || type == undefined ? 'svg' : type;
+            var svg = d3.select('#' + id).select('svg');
+            var g = svg.select('g');
+            svg.attr('version', '1.1')
+                .attr('xmlns', 'http://www.w3.org/2000/svg')
+                .attr('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+            var a = document.createElement("a");
+            a.setAttribute('target', '_self')
+            document.body.appendChild(a);
+            a.setAttribute('style', 'display:none;')
+            if (type == 'svg') {
+                var html = svg.node().outerHTML;
+                var base64Svg = window.btoa(encodeURIComponent(html).replace(/%([0-9A-F]{2})/g, function (match, p1) {
+                    return String.fromCharCode('0x' + p1);
+                }));
+                a.setAttribute('href', 'data:image/svg+xml;charset=utf-8;base64,' + base64Svg)
+                a.setAttribute('download', name + '.svg')
+                a.click();
+                a.remove()
+            }
+        }
+
+        var svgDownload = d3.select("#chart");
+        svgDownload.attr('version', '1.1')
+            .attr('xmlns', 'http://www.w3.org/2000/svg')
+            .attr('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+        // var base64Svg = window.btoa(encodeURIComponent(html).replace(/%([0-9A-F]{2})/g, function (match, p1) {
+        //     return String.fromCharCode('0x' + p1);
+        // }));
+        // console.log("html",html)
+        // console.log("svg", svgDownload)
+        const svgString = new XMLSerializer().serializeToString(svgDownload.node());
+
+        const downloadButton = document.getElementById("export");
+
+        downloadButton.addEventListener("click", () => {
+            // 创建一个临时的 SVG 元素用于操作
+            const tempSvg = svgDownload.node().cloneNode(true);
+
+            // 查找并移除所有的动画元素
+            const animateElements = tempSvg.querySelectorAll("animate, animateTransform, animateMotion");
+            animateElements.forEach((animateElement) => {
+                animateElement.remove();
+            });
+
+            // 将修改后的 SVG 元素转换为字符串
+            const modifiedSvgString = new XMLSerializer().serializeToString(tempSvg);
+
+            // 创建下载链接
+            const link = document.createElement("a");
+            link.href = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(modifiedSvgString);
+            link.download = "svg_file.svg";
+            link.click();
+        });
+
+        
+        const helpBtn = document.getElementById('helpbtn');
+        const helpContent = document.getElementById('helpContent');
+
+        helpBtn.addEventListener('click', toggleHelp);
+
+        function toggleHelp() {
+            helpContent.classList.toggle('show');
+            helpContent.style.display = (helpContent.style.display === "none") ? "block" : "none";
+        }
+        helpContent.classList.remove('show');
+        // 获取 "Basic Settings" 元素
+        const basicSettings = document.querySelector(".basicSettings");
+
+        // icon-i gd-icon-param
+
+
+        // 获取下拉框元素
+        const settingContent = document.querySelector("#settingContent");
+
+        // 添加点击事件监听器
+        basicSettings.addEventListener("click", function () {
+            // 切换下拉框的显示状态
+            // 获取元素的位置信息
+            var rect = this.getBoundingClientRect();
+            var position = {
+                top: rect.top,
+                left: rect.left,
+                right: rect.right,
+                bottom: rect.bottom
+            };
+            settingContent.style.display = (settingContent.style.display === "none") ? "block" : "none";
+
+        });
+        // xAxisrotateSlider
+        const xAxisrotateSlider = document.getElementById("xAxisrotateSlider");
+        const xAxisrotateSliderValue = document.getElementById("xAxisrotateSliderValue");
+        xAxisrotateSlider.addEventListener("input", function () {
+            const rotate = xAxisrotateSlider.value;
+            // 清空现有的图形并重新绘制cluster
+            xAxisrotateSliderValue.value = rotate;
+
+            // 旋转文字
+            d3.selectAll("#xAxis").selectAll("text")
+                .attr("text-anchor", "start")
+                .attr("transform", `rotate(${rotate})`);
+
+        });
+        // const rotateSlider = document.getElementById("rotateSlider");
+        // const rotateValue = document.getElementById("rotateValue");
+
+        // rotateSlider.addEventListener("input", function () {
+        //     const rotate = rotateSlider.value;
+
+        //     // 清空现有的图形并重新绘制cluster
+        //     rotateValue.value = rotate;
+
+        //     // 获取当前的缩放变换
+        //     var transform = d3.zoomTransform(d3.select("#chart").node());
+        //     // const transform = d3.select("#heatmap").attr("transform");
+
+        //     // 获取当前的缩放比例
+        //     const scale = transform.k;
+        //     // x轴平移量
+        //     var translateX = transform.x;
+        //     // y轴平移量
+        //     var translateY = transform.y;
+
+        //     // const
+        //     console.log("<<< rotateSlider 中的transform>>", transform);
+        //     d3.select("#chart").attr("transform", `rotate(${rotate}) scale(${scale}) translate(${translateX},${translateY}) `);
+
+        //     console.log("rotateValue", rotateValue);
+        // });
+
+        // 自助刷新
+        document.getElementById("center-button").addEventListener("click", function () {
+            // resizesvg();
+            // resetTransform();
+            // svg.call(zoom, d3.zoomIdentity);
+            // TODO:xiaojiao, 请支持不同浏览器的刷新, 2023/10/30
+            location.reload();
+            // window.addEventListener("load", (event) => {
+            //     moveSvgAfterload();
+            // });
+            // resizesvg();
+        });
+
+        const dotsDensity = document.getElementById("dotsDensity");
+        startPos = 0;
+        globalState.dotsPosition = startPos;
+        dotsDensity.addEventListener("input", function () {
+            const density = parseFloat(dotsDensity.value);
+
+            // 清空现有的图形并重新绘制cluster
+            // rotateValue.value = rotate;
+            d3.selectAll("#indPoints").remove();
+
+            globalState.density = density;
+            drawbublles(globalState.dotsPosition, density);
+        });
+
+        const dotsPosition = document.getElementById("dotsPosition");
+        dotsPosition.addEventListener("input", function () {
+            const newDotsPosition = parseFloat(dotsPosition.value);
+
+            // 清空现有的图形并重新绘制cluster
+            // rotateValue.value = rotate;
+            d3.selectAll("#indPoints").remove();
+
+            // update globalState
+            globalState.dotsPosition = newDotsPosition;
+            drawbublles(newDotsPosition, globalState.density);
+        });
+
+        // 去除箱线图
+        // x 轴显示
+        const boxplotDisplayButton = document.getElementById("boxplotDisplay");
+
+        boxplotDisplayButton.addEventListener("click", () => {
+            d3.select("#boxplot").remove();
+            boxplotDisplayButton.style.display = "none";
+        });
+
+        const volinsColor = document.getElementById("volinsColor");
+
+        volinsColor.addEventListener("input", () => {
+            const newDotsColor = volinsColor.value;
+
+            d3.selectAll("#myViolin").selectAll("path").style("fill", newDotsColor);
+        });
+
+        const dotsColor = document.getElementById("dotsColor");
+        dotsColor.addEventListener("input", () => {
+            const newDotsColor = dotsColor.value;
+
+            d3.selectAll("#indPoints").style("fill", newDotsColor);
+        });
+
+        const dotsStrokeColor = document.getElementById("dotsStrokeColor");
+        dotsStrokeColor.addEventListener("input", () => {
+            const newDotsColor = dotsStrokeColor.value;
+
+            d3.selectAll("#indPoints").style("stroke", newDotsColor);
+        });
+    </script>
+</body>
+
+</html>

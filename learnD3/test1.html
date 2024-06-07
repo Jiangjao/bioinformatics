@@ -2,44 +2,189 @@
 <html>
    <head>
       <script type = "text/javascript" src = "https://d3js.org/d3.v4.min.js"></script>
+   
+      <title></title>
+      <style>
+         ul, ol {
+            margin: 0;
+            padding: 0;
+         }
+         a {
+            text-decoration: none;
+         }
+         .outerNode{
+            width: 1248px;
+            height: 104px;
+            border: 1px solid black;
+         }
+         .outerNode > .left {
+            width: 237px;
+            height: 104px;
+            float: left;
+         }
+         .outerNode > .right {
+            width: 1011px;
+            height: 104px;
+            float: left;
+            /* background-color: aliceblue; */
+         }
+         .outerNode > .left > .left_ul {
+            float: left;
+            list-style: none;
+            margin-top: 17px;
+            margin-left: 6px;
+         }
+         .outerNode > .left > .left_ul > li {
+            height: 70px;
+            width: 48px;
+            float: left;
+            margin-right: 22px;
+            /* background: black; */
+         }
+         .outerNode > .left > .left_ul > li a{
+            display: block;
+            color: black;
+         }
+         .outerNode > .left > .left_ul > li  .top_image {
+            height: 48px;
+            width: 48px;
+            float: left;
+            margin-right: 22px;
+            background: black;
+         }
+         .outerNode > .left > .left_ul > li  .top_text {
+            height: 14px;
+            width: 48px;
+            margin-top: 8px;
+            line-height: 8px;
+            text-align: center;
+            float: left;
+         }
+
+         .right > ol {
+            float: left;
+            list-style: none;
+            margin-top: 17px;
+         }
+         .right > ol > li{
+            width: 73px;
+            height: 30px;
+            float: left;
+            /* border:1px solid #f2f2f3; */
+            background-color: #f6f7f9;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 5px;
+            margin-right: 7px;
+            margin-bottom: 9px;
+         }
+         .right > ol > li a {
+            color:#505256;
+            font-size: 14px;
+         }
+      </style>
    </head>
    <body>
-      <div>
-         Hello World!    
+      <div class="outerNode">
+         <div class="left">
+            <ul class="left_ul">
+               <li>
+                  <a href="#">
+                  <div class="top_image"></div>
+                  <div class="top_text">动态</div>
+               </a>
+               </li>
+               <li>
+                  <a href="#">
+                  <div class="top_image"></div>
+                  <div class="top_text">热门</div>
+               </a>
+               </li>
+               <li>
+                  <a href="#">
+                  <div class="top_image"></div>
+                  <div class="top_text">频道</div>
+               </a>
+               </li>
+            </ul>
+         </div>
+         <div class="right">
+            <ol>
+               <li>
+                  <a href="#">番剧</a>
+               </li>
+               <li>
+                  <a href="#">国创</a>
+               </li>
+               <li>
+                  <a href="#">番剧</a>
+               </li>
+               <li>
+                  <a href="#">番剧</a>
+               </li>
+               <li>
+                  <a href="#">番剧</a>
+               </li>
+               <li>
+                  <a href="#">番剧</a>
+               </li>
+               <li>
+                  <a href="#">番剧</a>
+               </li>
+               <li>
+                  <a href="#">番剧</a>
+               </li>
+               <li>
+                  <a href="#">番剧</a>
+               </li>
+               <li>
+                  <a href="#">番剧</a>
+               </li>
+               <li>
+                  <a href="#">番剧</a>
+               </li>
+               <li>
+                  <a href="#">番剧</a>
+               </li>
+               <li>
+                  <a href="#">番剧</a>
+               </li>
+               <li>
+                  <a href="#">番剧</a>
+               </li>
+               <li>
+                  <a href="#">番剧</a>
+               </li>
+               <li>
+                  <a href="#">番剧</a>
+               </li>
+               <li>
+                  <a href="#">番剧</a>
+               </li>
+               <li>
+                  <a href="#">番剧</a>
+               </li>
+               <li>
+                  <a href="#">番剧</a>
+               </li>
+               <li>
+                  <a href="#">番剧</a>
+               </li>
+               <li>
+                  <a href="#">番剧</a>
+               </li>
+               <li>
+                  <a href="#">番剧</a>
+               </li>
+               <li>
+                  <a href="#">番剧</a>
+               </li>
+               <li>
+                  <a href="#">更多</a>
+               </li>
+
+            </ol>
+         </div>
       </div>
-      <div class="myclass">
-        Hello World!2    
-     </div>
-     <ul id = "list">
-        <li><li>
-     </ul> 
-     <p></p>
-      <p></p>
-      <p></p>
-      <script>
-        //  alert(d3.select("div").text());
-        //  d3.select("div.myclass").append("span").text("from D3.js").attr("style", "color: red");;
-        //  d3.select("#list").selectAll("li").data([10, 20, 30, 25, 15]);
-        d3.select("#list").selectAll("li")
-   .data([10, 20, 30, 25, 15])
-   .text(function(d) { return d; });
-        d3.select("#list").selectAll("li")
-            .data([10, 20, 30, 25, 15])
-            .text(function(d) {return "This is pre-existing element and the value is " + d;})
-            .enter()
-            .append("li")
-            .text(function(d)
-                {return "This is dynamically created element and the value is " + d;});
-                var data = [1, 2, 3];
-         var paragraph = d3.select("body")
-         .selectAll("p")
-         .data(data)
-         .text(function (d, i) {
-            console.log("d: " + d);
-            console.log("i: " + i);
-            console.log("this: " + this);
-            return "The index is " + i + " and the data is " + d;
-         });
-      </script>
    </body>
 </html>

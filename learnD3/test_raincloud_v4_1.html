@@ -1,0 +1,1608 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<head>
+    <title>Document</title>
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/d3@7"></script> -->
+
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+    <noscript>抱歉，你的浏览器不支持 JavaScript!</noscript>
+    <!-- <script src="https://d3js.org/d3.v4.js"></script> -->
+
+    <style>
+        .tooltip {
+            padding: 8px 12px;
+            color: red;
+            border-radius: 6px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+            pointer-events: none;
+            transform: translate(-50%, -100%);
+            font-family: "Helvetica", sans-serif;
+            font-size: 12px;
+            background: rgba(20, 10, 30, 0.6);
+            transition: 0.2s opacity ease-out, 0.1s border-color ease-out;
+            backdrop-filter: blur(4px);
+            background-color: black;
+            border: none;
+            border-radius: 5px;
+            padding: 15px;
+            min-width: 200px;
+            text-align: left;
+            color: red;
+        }
+
+        svg .container {
+            width: 100%;
+            height: 100%;
+            margin: auto;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .tooltip {
+            position: absolute;
+            background-color: #f9f9f9;
+            padding: 8px;
+            border: 1px solid #ccc;
+            pointer-events: none;
+            font-size: 14px;
+        }
+
+        .basicSettings {
+            /* width: 80%; */
+            position: relative;
+            /* top: 38px; */
+            z-index: 1;
+            overflow-y: auto;
+        }
+
+        .downloadSettings {
+            width: 100%;
+            position: relative;
+            /* top: 18px; */
+            z-index: 2;
+        }
+
+        .sidebar {
+            width: 100%;
+            display: none;
+            /* 初始状态下隐藏下拉框 */
+        }
+
+        .sidebar h2 {
+            /* margin-bottom: 10px; */
+            /* border-bottom: 1px solid #ddd; */
+            padding-bottom: 5px;
+        }
+
+        .sidebar label {
+            /* width: 120px; */
+            /* text-align: right; */
+            margin-right: 10px;
+        }
+
+        .sidebar input,
+        .sidebar select {
+            padding: 5px;
+            border: 1px solid #ccc;
+            width: 25%;
+            border-radius: 4px;
+        }
+
+        .sidebar button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            background: #42b983;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .sidebar button:hover {
+            opacity: 0.8;
+        }
+
+        .sidebar input[type="number"] {
+            width: 50px;
+        }
+
+        .sidebar input[type="text"] {
+            width: 36%;
+        }
+
+        .sidebar input[type="range"] {
+            width: 100%;
+            /* transform: rotate(270deg); 添加垂直滚动条 */
+        }
+
+        /* .sidebar br {
+            display: none;
+        } */
+
+        .item {
+            display: flex;
+            align-items: center;
+            text-align: justify;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            width: 88%;
+        }
+
+        /* .item {} */
+
+        .sidebar hr {
+            overflow: hidden;
+            width: 88%;
+        }
+
+        /* 设置hr线 */
+        .item+hr {
+            margin: 10px 0;
+
+        }
+
+        .item+hr:first-child {
+            margin-top: 0;
+        }
+
+        .item+hr {
+            border: none;
+            border-top: 1px dotted #ccc;
+        }
+
+        /* hr {} */
+        /* .item label {
+            width: 120px;
+            } */
+        /* .sidebar {
+            display: flex;
+            flex-wrap: wrap;
+        } */
+
+        .sliderTooltip {
+            /* display: block; */
+            /* position: absolute; */
+            /* styles */
+            /* padding: 10px; */
+            position: absolute;
+            /* top: -30px; */
+            /* left: 134px; */
+            background-color: rgb(204 204 204 / 18%);
+            /* color: #f9f9f9; */
+            padding: 5px;
+            border-radius: 5px;
+            display: none;
+            margin-top: 14%;
+        }
+
+        .tooltip.show {
+            display: block;
+        }
+
+        .sidebar.show {
+            width: 100%;
+            height: auto;
+            position: relative;
+            /* padding: inherit; */
+            display: block;
+            padding: 10px 11px;
+            /* 点击后显示下拉框 */
+            transition: max-height 0.3s ease;
+            z-index: 1;
+            /* 添加过渡效果 */
+        }
+
+        /* 添加button的样式 */
+        .button-like {
+            display: inline-block;
+            padding: 10px 0 10px 10%;
+            background-color: #4CAF50;
+            color: white;
+            text-align: left;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 90%;
+        }
+
+        .button-like:hover {
+            background-color: #45a049;
+        }
+
+        .button-like:active {
+            background-color: #3e8e41;
+        }
+
+        /* TODO:xiaojiao, @media screen and (max-width: 700px) 如何使用2023/10/23 */
+        div.tooltip-donut {
+            position: absolute;
+            text-align: center;
+            padding: .5rem;
+            background: #FFFFFF;
+            color: #313639;
+            border: 1px solid #313639;
+            border-radius: 8px;
+            pointer-events: none;
+            font-size: 1.3rem;
+        }
+
+        /*手机屏幕下样式*/
+        @media screen and (max-width: 700px) {
+
+            div.tooltip-donut {
+                position: relative;
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+
+            div.tooltip-donut::after {
+                content: none;
+            }
+
+        }
+
+        icon-i {
+            text-align: center;
+        }
+
+        .dropdown {
+            /* padding: 10px 11px; */
+            position: relative;
+            /* display: inline-block; */
+        }
+
+        .dropdown-content {
+            display: none;
+            position: relative;
+            /* top: 100%; */
+            /* left: 0; */
+            width: 100%;
+            /* padding: 10px 11px; */
+            background-color: #4CAF50;
+        }
+
+
+        .settingContent {
+            display: block;
+            position: relative;
+            /* top: 100%; */
+            /* left: 0; */
+            width: 90%;
+            padding: 10px 11px;
+            /* overflow-y: scroll; */
+            height: 60vh;
+            overflow-y: scroll;
+            /* 设置垂直方向上溢出时显示滚动条 */
+            overflow-x: hidden;
+            scrollbar-width: thin;
+            /* 设置滚动条的宽度 */
+            scrollbar-color: gray lightgray;
+            /* 设置滚动条的颜色 */
+        }
+
+        /* div#settingContent {} */
+        /* .dropdown:hover .dropdown-content {
+        display: block;
+
+         } */
+
+        .filled {
+            fill: url("#mainGradient");
+        }
+
+        .ticks text {
+            font-family: sans-serif;
+            font-size: 17px;
+            text-anchor: start;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6"></script> -->
+    <!-- import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm"; -->
+
+
+    <!-- Load d3.js and plugin for color scale -->
+    <!-- <script src="https://d3js.org/d3.v4.js"></script> -->
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+
+</head>
+
+<body>
+    <script>
+        // Read the data and compute summary statistics for each specie
+        var data = [
+            {
+                "Sepal_Length": "5.1",
+                "Sepal_Width": "3.5",
+                "Petal_Length": "1.4",
+                "Petal_Width": "0.2",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "4.9",
+                "Sepal_Width": "3",
+                "Petal_Length": "1.4",
+                "Petal_Width": "0.2",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "4.7",
+                "Sepal_Width": "3.2",
+                "Petal_Length": "1.3",
+                "Petal_Width": "0.2",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "4.6",
+                "Sepal_Width": "3.1",
+                "Petal_Length": "1.5",
+                "Petal_Width": "0.2",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "5",
+                "Sepal_Width": "3.6",
+                "Petal_Length": "1.4",
+                "Petal_Width": "0.2",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "5.4",
+                "Sepal_Width": "3.9",
+                "Petal_Length": "1.7",
+                "Petal_Width": "0.4",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "4.6",
+                "Sepal_Width": "3.4",
+                "Petal_Length": "1.4",
+                "Petal_Width": "0.3",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "5",
+                "Sepal_Width": "3.4",
+                "Petal_Length": "1.5",
+                "Petal_Width": "0.2",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "4.4",
+                "Sepal_Width": "2.9",
+                "Petal_Length": "1.4",
+                "Petal_Width": "0.2",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "4.9",
+                "Sepal_Width": "3.1",
+                "Petal_Length": "1.5",
+                "Petal_Width": "0.1",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "5.4",
+                "Sepal_Width": "3.7",
+                "Petal_Length": "1.5",
+                "Petal_Width": "0.2",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "4.8",
+                "Sepal_Width": "3.4",
+                "Petal_Length": "1.6",
+                "Petal_Width": "0.2",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "4.8",
+                "Sepal_Width": "3",
+                "Petal_Length": "1.4",
+                "Petal_Width": "0.1",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "4.3",
+                "Sepal_Width": "3",
+                "Petal_Length": "1.1",
+                "Petal_Width": "0.1",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "5.8",
+                "Sepal_Width": "4",
+                "Petal_Length": "1.2",
+                "Petal_Width": "0.2",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "5.7",
+                "Sepal_Width": "4.4",
+                "Petal_Length": "1.5",
+                "Petal_Width": "0.4",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "5.4",
+                "Sepal_Width": "3.9",
+                "Petal_Length": "1.3",
+                "Petal_Width": "0.4",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "5.1",
+                "Sepal_Width": "3.5",
+                "Petal_Length": "1.4",
+                "Petal_Width": "0.3",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "5.7",
+                "Sepal_Width": "3.8",
+                "Petal_Length": "1.7",
+                "Petal_Width": "0.3",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "5.1",
+                "Sepal_Width": "3.8",
+                "Petal_Length": "1.5",
+                "Petal_Width": "0.3",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "5.4",
+                "Sepal_Width": "3.4",
+                "Petal_Length": "1.7",
+                "Petal_Width": "0.2",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "5.1",
+                "Sepal_Width": "3.7",
+                "Petal_Length": "1.5",
+                "Petal_Width": "0.4",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "4.6",
+                "Sepal_Width": "3.6",
+                "Petal_Length": "1",
+                "Petal_Width": "0.2",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "5.1",
+                "Sepal_Width": "3.3",
+                "Petal_Length": "1.7",
+                "Petal_Width": "0.5",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "4.8",
+                "Sepal_Width": "3.4",
+                "Petal_Length": "1.9",
+                "Petal_Width": "0.2",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "5",
+                "Sepal_Width": "3",
+                "Petal_Length": "1.6",
+                "Petal_Width": "0.2",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "5",
+                "Sepal_Width": "3.4",
+                "Petal_Length": "1.6",
+                "Petal_Width": "0.4",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "5.2",
+                "Sepal_Width": "3.5",
+                "Petal_Length": "1.5",
+                "Petal_Width": "0.2",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "5.2",
+                "Sepal_Width": "3.4",
+                "Petal_Length": "1.4",
+                "Petal_Width": "0.2",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "4.7",
+                "Sepal_Width": "3.2",
+                "Petal_Length": "1.6",
+                "Petal_Width": "0.2",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "4.8",
+                "Sepal_Width": "3.1",
+                "Petal_Length": "1.6",
+                "Petal_Width": "0.2",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "5.4",
+                "Sepal_Width": "3.4",
+                "Petal_Length": "1.5",
+                "Petal_Width": "0.4",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "5.2",
+                "Sepal_Width": "4.1",
+                "Petal_Length": "1.5",
+                "Petal_Width": "0.1",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "5.5",
+                "Sepal_Width": "4.2",
+                "Petal_Length": "1.4",
+                "Petal_Width": "0.2",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "4.9",
+                "Sepal_Width": "3.1",
+                "Petal_Length": "1.5",
+                "Petal_Width": "0.2",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "5",
+                "Sepal_Width": "3.2",
+                "Petal_Length": "1.2",
+                "Petal_Width": "0.2",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "5.5",
+                "Sepal_Width": "3.5",
+                "Petal_Length": "1.3",
+                "Petal_Width": "0.2",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "4.9",
+                "Sepal_Width": "3.6",
+                "Petal_Length": "1.4",
+                "Petal_Width": "0.1",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "4.4",
+                "Sepal_Width": "3",
+                "Petal_Length": "1.3",
+                "Petal_Width": "0.2",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "5.1",
+                "Sepal_Width": "3.4",
+                "Petal_Length": "1.5",
+                "Petal_Width": "0.2",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "5",
+                "Sepal_Width": "3.5",
+                "Petal_Length": "1.3",
+                "Petal_Width": "0.3",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "4.5",
+                "Sepal_Width": "2.3",
+                "Petal_Length": "1.3",
+                "Petal_Width": "0.3",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "4.4",
+                "Sepal_Width": "3.2",
+                "Petal_Length": "1.3",
+                "Petal_Width": "0.2",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "5",
+                "Sepal_Width": "3.5",
+                "Petal_Length": "1.6",
+                "Petal_Width": "0.6",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "5.1",
+                "Sepal_Width": "3.8",
+                "Petal_Length": "1.9",
+                "Petal_Width": "0.4",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "4.8",
+                "Sepal_Width": "3",
+                "Petal_Length": "1.4",
+                "Petal_Width": "0.3",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "5.1",
+                "Sepal_Width": "3.8",
+                "Petal_Length": "1.6",
+                "Petal_Width": "0.2",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "4.6",
+                "Sepal_Width": "3.2",
+                "Petal_Length": "1.4",
+                "Petal_Width": "0.2",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "5.3",
+                "Sepal_Width": "3.7",
+                "Petal_Length": "1.5",
+                "Petal_Width": "0.2",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "5",
+                "Sepal_Width": "3.3",
+                "Petal_Length": "1.4",
+                "Petal_Width": "0.2",
+                "Species": "setosa"
+            },
+            {
+                "Sepal_Length": "7",
+                "Sepal_Width": "3.2",
+                "Petal_Length": "4.7",
+                "Petal_Width": "1.4",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "6.4",
+                "Sepal_Width": "3.2",
+                "Petal_Length": "4.5",
+                "Petal_Width": "1.5",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "6.9",
+                "Sepal_Width": "3.1",
+                "Petal_Length": "4.9",
+                "Petal_Width": "1.5",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "5.5",
+                "Sepal_Width": "2.3",
+                "Petal_Length": "4",
+                "Petal_Width": "1.3",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "6.5",
+                "Sepal_Width": "2.8",
+                "Petal_Length": "4.6",
+                "Petal_Width": "1.5",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "5.7",
+                "Sepal_Width": "2.8",
+                "Petal_Length": "4.5",
+                "Petal_Width": "1.3",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "6.3",
+                "Sepal_Width": "3.3",
+                "Petal_Length": "4.7",
+                "Petal_Width": "1.6",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "4.9",
+                "Sepal_Width": "2.4",
+                "Petal_Length": "3.3",
+                "Petal_Width": "1",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "6.6",
+                "Sepal_Width": "2.9",
+                "Petal_Length": "4.6",
+                "Petal_Width": "1.3",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "5.2",
+                "Sepal_Width": "2.7",
+                "Petal_Length": "3.9",
+                "Petal_Width": "1.4",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "5",
+                "Sepal_Width": "2",
+                "Petal_Length": "3.5",
+                "Petal_Width": "1",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "5.9",
+                "Sepal_Width": "3",
+                "Petal_Length": "4.2",
+                "Petal_Width": "1.5",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "6",
+                "Sepal_Width": "2.2",
+                "Petal_Length": "4",
+                "Petal_Width": "1",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "6.1",
+                "Sepal_Width": "2.9",
+                "Petal_Length": "4.7",
+                "Petal_Width": "1.4",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "5.6",
+                "Sepal_Width": "2.9",
+                "Petal_Length": "3.6",
+                "Petal_Width": "1.3",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "6.7",
+                "Sepal_Width": "3.1",
+                "Petal_Length": "4.4",
+                "Petal_Width": "1.4",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "5.6",
+                "Sepal_Width": "3",
+                "Petal_Length": "4.5",
+                "Petal_Width": "1.5",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "5.8",
+                "Sepal_Width": "2.7",
+                "Petal_Length": "4.1",
+                "Petal_Width": "1",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "6.2",
+                "Sepal_Width": "2.2",
+                "Petal_Length": "4.5",
+                "Petal_Width": "1.5",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "5.6",
+                "Sepal_Width": "2.5",
+                "Petal_Length": "3.9",
+                "Petal_Width": "1.1",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "5.9",
+                "Sepal_Width": "3.2",
+                "Petal_Length": "4.8",
+                "Petal_Width": "1.8",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "6.1",
+                "Sepal_Width": "2.8",
+                "Petal_Length": "4",
+                "Petal_Width": "1.3",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "6.3",
+                "Sepal_Width": "2.5",
+                "Petal_Length": "4.9",
+                "Petal_Width": "1.5",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "6.1",
+                "Sepal_Width": "2.8",
+                "Petal_Length": "4.7",
+                "Petal_Width": "1.2",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "6.4",
+                "Sepal_Width": "2.9",
+                "Petal_Length": "4.3",
+                "Petal_Width": "1.3",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "6.6",
+                "Sepal_Width": "3",
+                "Petal_Length": "4.4",
+                "Petal_Width": "1.4",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "6.8",
+                "Sepal_Width": "2.8",
+                "Petal_Length": "4.8",
+                "Petal_Width": "1.4",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "6.7",
+                "Sepal_Width": "3",
+                "Petal_Length": "5",
+                "Petal_Width": "1.7",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "6",
+                "Sepal_Width": "2.9",
+                "Petal_Length": "4.5",
+                "Petal_Width": "1.5",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "5.7",
+                "Sepal_Width": "2.6",
+                "Petal_Length": "3.5",
+                "Petal_Width": "1",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "5.5",
+                "Sepal_Width": "2.4",
+                "Petal_Length": "3.8",
+                "Petal_Width": "1.1",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "5.5",
+                "Sepal_Width": "2.4",
+                "Petal_Length": "3.7",
+                "Petal_Width": "1",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "5.8",
+                "Sepal_Width": "2.7",
+                "Petal_Length": "3.9",
+                "Petal_Width": "1.2",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "6",
+                "Sepal_Width": "2.7",
+                "Petal_Length": "5.1",
+                "Petal_Width": "1.6",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "5.4",
+                "Sepal_Width": "3",
+                "Petal_Length": "4.5",
+                "Petal_Width": "1.5",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "6",
+                "Sepal_Width": "3.4",
+                "Petal_Length": "4.5",
+                "Petal_Width": "1.6",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "6.7",
+                "Sepal_Width": "3.1",
+                "Petal_Length": "4.7",
+                "Petal_Width": "1.5",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "6.3",
+                "Sepal_Width": "2.3",
+                "Petal_Length": "4.4",
+                "Petal_Width": "1.3",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "5.6",
+                "Sepal_Width": "3",
+                "Petal_Length": "4.1",
+                "Petal_Width": "1.3",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "5.5",
+                "Sepal_Width": "2.5",
+                "Petal_Length": "4",
+                "Petal_Width": "1.3",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "5.5",
+                "Sepal_Width": "2.6",
+                "Petal_Length": "4.4",
+                "Petal_Width": "1.2",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "6.1",
+                "Sepal_Width": "3",
+                "Petal_Length": "4.6",
+                "Petal_Width": "1.4",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "5.8",
+                "Sepal_Width": "2.6",
+                "Petal_Length": "4",
+                "Petal_Width": "1.2",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "5",
+                "Sepal_Width": "2.3",
+                "Petal_Length": "3.3",
+                "Petal_Width": "1",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "5.6",
+                "Sepal_Width": "2.7",
+                "Petal_Length": "4.2",
+                "Petal_Width": "1.3",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "5.7",
+                "Sepal_Width": "3",
+                "Petal_Length": "4.2",
+                "Petal_Width": "1.2",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "5.7",
+                "Sepal_Width": "2.9",
+                "Petal_Length": "4.2",
+                "Petal_Width": "1.3",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "6.2",
+                "Sepal_Width": "2.9",
+                "Petal_Length": "4.3",
+                "Petal_Width": "1.3",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "5.1",
+                "Sepal_Width": "2.5",
+                "Petal_Length": "3",
+                "Petal_Width": "1.1",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "5.7",
+                "Sepal_Width": "2.8",
+                "Petal_Length": "4.1",
+                "Petal_Width": "1.3",
+                "Species": "versicolor"
+            },
+            {
+                "Sepal_Length": "6.3",
+                "Sepal_Width": "3.3",
+                "Petal_Length": "6",
+                "Petal_Width": "2.5",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "5.8",
+                "Sepal_Width": "2.7",
+                "Petal_Length": "5.1",
+                "Petal_Width": "1.9",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "7.1",
+                "Sepal_Width": "3",
+                "Petal_Length": "5.9",
+                "Petal_Width": "2.1",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6.3",
+                "Sepal_Width": "2.9",
+                "Petal_Length": "5.6",
+                "Petal_Width": "1.8",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6.5",
+                "Sepal_Width": "3",
+                "Petal_Length": "5.8",
+                "Petal_Width": "2.2",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "7.6",
+                "Sepal_Width": "3",
+                "Petal_Length": "6.6",
+                "Petal_Width": "2.1",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "4.9",
+                "Sepal_Width": "2.5",
+                "Petal_Length": "4.5",
+                "Petal_Width": "1.7",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "7.3",
+                "Sepal_Width": "2.9",
+                "Petal_Length": "6.3",
+                "Petal_Width": "1.8",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6.7",
+                "Sepal_Width": "2.5",
+                "Petal_Length": "5.8",
+                "Petal_Width": "1.8",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "7.2",
+                "Sepal_Width": "3.6",
+                "Petal_Length": "6.1",
+                "Petal_Width": "2.5",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6.5",
+                "Sepal_Width": "3.2",
+                "Petal_Length": "5.1",
+                "Petal_Width": "2",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6.4",
+                "Sepal_Width": "2.7",
+                "Petal_Length": "5.3",
+                "Petal_Width": "1.9",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6.8",
+                "Sepal_Width": "3",
+                "Petal_Length": "5.5",
+                "Petal_Width": "2.1",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "5.7",
+                "Sepal_Width": "2.5",
+                "Petal_Length": "5",
+                "Petal_Width": "2",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "5.8",
+                "Sepal_Width": "2.8",
+                "Petal_Length": "5.1",
+                "Petal_Width": "2.4",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6.4",
+                "Sepal_Width": "3.2",
+                "Petal_Length": "5.3",
+                "Petal_Width": "2.3",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6.5",
+                "Sepal_Width": "3",
+                "Petal_Length": "5.5",
+                "Petal_Width": "1.8",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "7.7",
+                "Sepal_Width": "3.8",
+                "Petal_Length": "6.7",
+                "Petal_Width": "2.2",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "7.7",
+                "Sepal_Width": "2.6",
+                "Petal_Length": "6.9",
+                "Petal_Width": "2.3",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6",
+                "Sepal_Width": "2.2",
+                "Petal_Length": "5",
+                "Petal_Width": "1.5",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6.9",
+                "Sepal_Width": "3.2",
+                "Petal_Length": "5.7",
+                "Petal_Width": "2.3",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "5.6",
+                "Sepal_Width": "2.8",
+                "Petal_Length": "4.9",
+                "Petal_Width": "2",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "7.7",
+                "Sepal_Width": "2.8",
+                "Petal_Length": "6.7",
+                "Petal_Width": "2",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6.3",
+                "Sepal_Width": "2.7",
+                "Petal_Length": "4.9",
+                "Petal_Width": "1.8",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6.7",
+                "Sepal_Width": "3.3",
+                "Petal_Length": "5.7",
+                "Petal_Width": "2.1",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "7.2",
+                "Sepal_Width": "3.2",
+                "Petal_Length": "6",
+                "Petal_Width": "1.8",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6.2",
+                "Sepal_Width": "2.8",
+                "Petal_Length": "4.8",
+                "Petal_Width": "1.8",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6.1",
+                "Sepal_Width": "3",
+                "Petal_Length": "4.9",
+                "Petal_Width": "1.8",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6.4",
+                "Sepal_Width": "2.8",
+                "Petal_Length": "5.6",
+                "Petal_Width": "2.1",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "7.2",
+                "Sepal_Width": "3",
+                "Petal_Length": "5.8",
+                "Petal_Width": "1.6",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "7.4",
+                "Sepal_Width": "2.8",
+                "Petal_Length": "6.1",
+                "Petal_Width": "1.9",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "7.9",
+                "Sepal_Width": "3.8",
+                "Petal_Length": "6.4",
+                "Petal_Width": "2",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6.4",
+                "Sepal_Width": "2.8",
+                "Petal_Length": "5.6",
+                "Petal_Width": "2.2",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6.3",
+                "Sepal_Width": "2.8",
+                "Petal_Length": "5.1",
+                "Petal_Width": "1.5",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6.1",
+                "Sepal_Width": "2.6",
+                "Petal_Length": "5.6",
+                "Petal_Width": "1.4",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "7.7",
+                "Sepal_Width": "3",
+                "Petal_Length": "6.1",
+                "Petal_Width": "2.3",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6.3",
+                "Sepal_Width": "3.4",
+                "Petal_Length": "5.6",
+                "Petal_Width": "2.4",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6.4",
+                "Sepal_Width": "3.1",
+                "Petal_Length": "5.5",
+                "Petal_Width": "1.8",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6",
+                "Sepal_Width": "3",
+                "Petal_Length": "4.8",
+                "Petal_Width": "1.8",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6.9",
+                "Sepal_Width": "3.1",
+                "Petal_Length": "5.4",
+                "Petal_Width": "2.1",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6.7",
+                "Sepal_Width": "3.1",
+                "Petal_Length": "5.6",
+                "Petal_Width": "2.4",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6.9",
+                "Sepal_Width": "3.1",
+                "Petal_Length": "5.1",
+                "Petal_Width": "2.3",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "5.8",
+                "Sepal_Width": "2.7",
+                "Petal_Length": "5.1",
+                "Petal_Width": "1.9",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6.8",
+                "Sepal_Width": "3.2",
+                "Petal_Length": "5.9",
+                "Petal_Width": "2.3",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6.7",
+                "Sepal_Width": "3.3",
+                "Petal_Length": "5.7",
+                "Petal_Width": "2.5",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6.7",
+                "Sepal_Width": "3",
+                "Petal_Length": "5.2",
+                "Petal_Width": "2.3",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6.3",
+                "Sepal_Width": "2.5",
+                "Petal_Length": "5",
+                "Petal_Width": "1.9",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6.5",
+                "Sepal_Width": "3",
+                "Petal_Length": "5.2",
+                "Petal_Width": "2",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "6.2",
+                "Sepal_Width": "3.4",
+                "Petal_Length": "5.4",
+                "Petal_Width": "2.3",
+                "Species": "virginica"
+            },
+            {
+                "Sepal_Length": "5.9",
+                "Sepal_Width": "3",
+                "Petal_Length": "5.1",
+                "Petal_Width": "1.8",
+                "Species": "virginica"
+            }
+        ]
+
+    </script>
+    <!-- Create a div where the graph will take place -->
+    <div id="my_dataviz"></div>
+    <script>
+
+        // set the dimensions and margins of the graph
+        var margin = { top: 10, right: 30, bottom: 30, left: 40 },
+            width = 460 - margin.left - margin.right,
+            height = 400 - margin.top - margin.bottom;
+
+        // append the svg object to the body of the page
+        var svg = d3.select("#my_dataviz")
+            .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .attr("id", "chart")
+            .append("g")
+            .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
+
+        var sumstatBoxplot;
+        // Read the data and compute summary statistics for each specie
+
+            // Build and Show the Y scale
+            var y = d3.scaleLinear()
+                .domain([3.5, 8])          // Note that here the Y scale is set manually
+                .range([height, 0])
+            svg.append("g").call(d3.axisLeft(y))
+
+            // Build and Show the X scale. It is a band scale like for a boxplot: each group has an dedicated RANGE on the axis. This range has a length of x.bandwidth
+            var x = d3.scaleBand()
+                .range([0, width])
+                .domain(["setosa", "versicolor", "virginica"])
+                .padding(0.05)     // This is important: it is the space between 2 groups. 0 means no padding. 1 is the maximum.
+            svg.append("g")
+                .attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(x))
+
+            // Features of the histogram
+            var histogram = d3.histogram()
+                .domain(y.domain())
+                .thresholds(y.ticks(20))    // Important: how many bins approx are going to be made? It is the 'resolution' of the violin plot
+                .value(d => d)
+
+            // Compute the binning for each group of the dataset
+            // var sumstat = d3.nest()  // nest function allows to group the calculation per level of a factor
+            //     .key(function (d) { return d.Species; })
+            //     .rollup(function (d) {   // For each key..
+            //         input = d.map(function (g) { return g.Sepal_Length; })    // Keep the variable called Sepal_Length
+            //         bins = histogram(input)   // And compute the binning on it.
+            //         return (bins)
+            //     })
+            //     .entries(data)
+
+            // 使用d3.group按Species分组
+            // const groups = d3.groups(data, d => d.Species);
+
+            // https://observablehq.com/@d3/d3v6-migration-guide
+            var sumstat1 = d3.rollups(data,
+            
+            (d) => {
+
+                // 对每个分组数据计算
+                //   const values = group.map(d => d.Sepal_Length);
+                var input = d.map(function (g) { return g.Sepal_Length; })
+                // 使用histo计算直方图 
+                const bins = histogram(input)
+
+                return bins
+                //   return {
+                //     // 保存key和结果
+                    
+                //     "values": bins
+                //   }
+
+            }, (d) => { return d.Species; });
+
+            const result = sumstat1.map(item => {
+                return {
+                    key: item[0],
+                    value: item[1]  
+                };
+            });
+
+            // }
+            sumstat = result;
+            console.log("sumstat1 >>>", sumstat1);
+            // Compute quartiles, median, inter quantile range min and max --> these info are then used to draw the box.
+            var sumstatBoxplot = d3.groups(data, d => d.Species)
+                .map(group => {
+                    // console.log("group >>>", group);
+                    var values = group.map(d => d.Sepal_Length);
+                    var index, values;
+                    index = group[0];
+                    values = group[1];
+                    q1 = d3.quantile(values.map(function (g) { return g.Sepal_Length; }).sort(d3.ascending), .25)
+                    median = d3.quantile(values.map(function (g) { return g.Sepal_Length; }).sort(d3.ascending), .5)
+                    q3 = d3.quantile(values.map(function (g) { return g.Sepal_Length; }).sort(d3.ascending), .75)
+                    interQuantileRange = q3 - q1
+                    min = q1 - 1.5 * interQuantileRange
+                    max = q3 + 1.5 * interQuantileRange
+                    return ({
+                        key: index,
+                        value: {
+                            q1: q1, median: median, q3: q3, interQuantileRange: interQuantileRange, min: min, max: max
+                        }
+                    })
+                });
+            // What is the biggest number of value in a bin? We need it cause this value will have a width of 100% of the bandwidth.
+            var maxNum = 0
+            for (i in sumstat) {
+                allBins = sumstat[i].value
+                console.log("allBins >>>", allBins);
+                lengths = allBins.map(function (a) { return a.length; })
+                longuest = d3.max(lengths)
+                if (longuest > maxNum) { maxNum = longuest }
+            }
+
+            // The maximum width of a violin must be x.bandwidth = the width dedicated to a group
+            var xNum = d3.scaleLinear()
+                .range([0, x.bandwidth()])
+                .domain([-maxNum, maxNum])
+
+            // Color scale for dots
+            var myColor = d3.scaleSequential()
+                .interpolator(d3.interpolateInferno)
+                .domain([3, 9])
+
+            console.log("sumstat >>", sumstat);
+            console.log("data >>>", data);
+            // Add the shape to this svg!
+            svg
+                .selectAll("myViolin")
+                .data(sumstat)
+                .enter()        // So now we are working group per group
+                .append("g")
+                .attr("transform", function (d) { return ("translate(" + x(d.key) + " ,0)") }) // Translation on the right to be at the group position
+                .append("path")
+                .datum(function (d) { return (d.value) })     // So now we are working bin per bin
+                .style("stroke", "none")
+                .style("fill", "grey")
+                .attr("d", d3.area()
+                    .x0(xNum(0))
+                    .x1(function (d) { return (xNum(d.length)) })
+                    .y(function (d) { return (y(d.x0)) })
+                    .curve(d3.curveCatmullRom)    // This makes the line smoother to give the violin appearance. Try d3.curveStep to see the difference
+                )
+
+            // Add individual points with jitter
+            var jitterWidth = 40
+            svg
+                .selectAll("indPoints")
+                .data(data)
+                .enter()
+                .append("circle")
+                .attr("cx", function (d) { return (x(d.Species) + x.bandwidth() / 2 - Math.random() * jitterWidth) })
+                .attr("cy", function (d) { return (y(d.Sepal_Length)) })
+                .attr("r", 5)
+                .style("fill", function (d) { return (myColor(d.Sepal_Length)) })
+                .attr("stroke", "white")
+
+            // boxplot
+            // TODO:xiaojiao, find the boxplot
+            // rectangle for the main box
+            svg
+                .selectAll("boxes")
+                .data(sumstatBoxplot)
+                .enter()
+                .append("rect")
+                .attr("x", function (d) { return (x(d.key)) }) // console.log(x(d.value.q1)) ;
+                .attr("width", x.bandwidth() / 2) //console.log(x(d.value.q3)-x(d.value.q1))
+                .attr("y", function (d) { return y(d.value.q3); })
+                .attr("height", function (d) { return (y(d.value.q1) - y(d.value.q3)) })
+                .attr("stroke", "black")
+                .style("fill", "#69b3a2")
+                .style("opacity", 0.3)
+
+            // Show the main vertical line
+            // TODO:Xiaojiao, 添加竖线
+            svg
+                .selectAll("vertLines")
+                .data(sumstatBoxplot)
+                .enter()
+                .append("line")
+                .attr("y1", function (d) { return (y(d.value.min)) })
+                .attr("y2", function (d) { return (y(d.value.max)) })
+                .attr("x1", function (d) { return (x(d.key) + x.bandwidth() / 4) })
+                .attr("x2", function (d) { return (x(d.key) + x.bandwidth() / 4) })
+                .attr("stroke", "black")
+                .style("width", 40)
+
+            // Show the median
+            svg
+                .selectAll("medianLines")
+                .data(sumstatBoxplot)
+                .enter()
+                .append("line")
+                .attr("y1", function (d) { return (y(d.value.median)) })
+                .attr("y2", function (d) { return (y(d.value.median)) })
+                .attr("x1", function (d) { return (x(d.key)) })
+                .attr("x2", function (d) { return (x(d.key) + x.bandwidth() / 2) })
+                .attr("stroke", "black")
+                .style("width", 80)
+
+            console.log("sumstatBoxplot >>>", sumstatBoxplot);
+            // svg
+            //     .selectAll("medianLines")
+            //     .data(sumstatBoxplot)
+            //     .enter()
+            //     .append("line")
+            //       .attr("y1", function(d){return(y(d.key))})
+            //       .attr("y2", function(d){return(y(d.key) + y.bandwidth()/2)})
+            //       .attr("x1", function(d){return(x(d.value.median))})
+            //       .attr("x2", function(d){return(x(d.value.median))})
+            //       .attr("stroke", "black")
+            //       .style("width", 80)
+            // create a tooltip
+            var tooltip = d3.select("#my_dataviz")
+                .append("div")
+                .style("opacity", 0)
+                .attr("class", "tooltip")
+                .style("font-size", "16px");
+
+            // 创建一个缩放行为，并设置缩放事件处理程序
+            const zoom = d3.zoom().on('zoom', (e) => {
+                svg.attr('transform', e.transform);
+            });
+            d3.select("#my_dataviz").call(zoom)
+                .call(zoom.transform, d3.zoomIdentity.scale(0.8));
+
+        
+
+    </script>
+</body>

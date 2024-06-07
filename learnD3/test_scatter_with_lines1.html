@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>散点图</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <style>
+        /* 清除样式 */
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 坐标样式 */
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: black;
+            shape-rendering: crispEdges;
+        }
+
+        .axis text {
+            font-family: sans-serif;
+            font-size: 11px;
+        }
+
+        .tooltip {
+            position: absolute;
+        }
+
+        /* 功能按钮 */
+        .btnWrap {
+            margin-left: 140px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- source https://blog.csdn.net/ligang2585116/article/details/52767324 -->
+    <div id="content">
+    </div>
+    <div class="btnWrap">
+        <button type="button" onclick="update();">更新</button>
+        <button type="button" onclick="add();">增加</button>
+        <button type="button" onclick="sub();">减少</button>
+    </div>
+
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+
+    <script>
+
+        var width = 400;    // 可视区域宽度
+        var height = 400;   // 可视区域高度
+
+        var xAxisWidth = 300;   // x轴宽度
+        var yAxisWidth = 300;   // y轴宽度
+        var padding = { top: 20, right: 20, bottom: 20, left: 50 };
+
+        // 数据对象数组
+        var data = [
+            { 'samples': 'A1', 'X1': -0.185072508737918, 'X2': -0.185602895373858, 'PC1': -0.0532902574388567, 'PC2': -0.168263386572719, 'groups': 'A' },
+            { 'samples': 'A2', 'X1': -0.193679604232243, 'X2': -0.239357663008185, 'PC1': -0.240205345648937, 'PC2': -0.208924563770604, 'groups': 'A' },
+            { 'samples': 'A3', 'X1': -0.17266083616237, 'X2': -0.114423861956967, 'PC1': -0.243736242568912, 'PC2': -0.128044930905849, 'groups': 'A' },
+            { 'samples': 'A4', 'X1': -0.168040928256114, 'X2': -0.13842095953477, 'PC1': -0.260156778444483, 'PC2': -0.233908593786978, 'groups': 'A' },
+            { 'samples': 'B1', 'X1': 0.0077182700082069, 'X2': 0.117212369563924, 'PC1': -0.10089512741033, 'PC2': 0.251591044627424, 'groups': 'B' },
+            { 'samples': 'B2', 'X1': -0.0892878318322925, 'X2': 0.204369765794488, 'PC1': -0.0700477994558465, 'PC2': 0.289845358082951, 'groups': 'B' },
+            { 'samples': 'B3', 'X1': -0.0309717258845549, 'X2': 0.362268703872747, 'PC1': -0.0981270505818177, 'PC2': 0.265059059596336, 'groups': 'B' },
+            { 'samples': 'B4', 'X1': -0.122434239272363, 'X2': 0.244146320869529, 'PC1': -0.0037486337023295, 'PC2': 0.214475535161812, 'groups': 'B' },
+            { 'samples': 'C1', 'X1': 0.157261017210362, 'X2': -0.0065135823834598, 'PC1': 0.297844718187474, 'PC2': -0.100395748160121, 'groups': 'C' },
+            { 'samples': 'C2', 'X1': 0.277609639167239, 'X2': -0.0895712121341035, 'PC1': 0.264918540892461, 'PC2': -0.243014522470781, 'groups': 'C' },
+            { 'samples': 'C3', 'X1': 0.276044278331674, 'X2': -0.0569674158903921, 'PC1': 0.253986449899263, 'PC2': -0.0748820455843694, 'groups': 'C' },
+            { 'samples': 'C4', 'X1': 0.243514469660373, 'X2': -0.0971395698189527, 'PC1': 0.253457526272313, 'PC2': 0.136462793782897, 'groups': 'C' }];
+
+        // 设置svg画布  
+        const svg = d3.select("body").select("#content")
+            .append('svg')
+            .attr('width', 800)
+            .attr('height', 800);
+
+        var chart = svg.append("g").attr('id', "chart")
+        // 定义比例尺
+        const xScale = d3.scaleLinear()
+            .domain([-1, 1])
+            .range([0, width]);
+
+        const yScale = d3.scaleLinear()
+            .domain([-1, 1])
+            .range([height, 0]);
+
+        // 添加坐标轴
+        var xAxis = svg.append("g")
+            .attr("transform", "translate(" + padding.left + "," + (height - padding.bottom) + ")")
+            // .attr("id", "xAxis")
+            .call(d3.axisBottom(xScale).tickPadding(0))
+        // yScale.range([yAxisWidth, 0]);  // 重新设置y轴比例尺的值域,与原来的相反
+        // var yAxis = d3.svg.axis().scale(yScale).orient("left");
+        var yAxis = svg.append("g")
+            .attr("transform", "translate(" + padding.left + "," + (height - padding.bottom - yAxisWidth) + ")")
+            .call(d3.axisLeft(yScale))
+
+        // 添加tooltip div
+        // create a tooltip
+        const tooltip = d3.select("#content")
+            .append("div")
+            .style("opacity", 0)
+            .attr("class", "tooltip")
+            .style("background-color", "white")
+            .style("border", "solid")
+            .style("border-width", "2px")
+            .style("border-radius", "5px")
+            .style("padding", "5px");
+
+        // 用比例尺绘制连线
+        chart.selectAll('line')
+            .data(data)
+            .enter()
+            .append('line')
+            .attr('x1', d => xScale(d.X1))
+            .attr('y1', d => yScale(d.X2))
+            .attr('x2', d => xScale(d.PC1))
+            .attr('y2', d => yScale(d.PC2))
+            //   .attr("color", "red")
+            //   .attr("stroke-width", "2px")
+            .attr("stroke", "black")
+
+            ;
+
+        // 用比例尺绘制点  
+        // 绘制第一个点组
+        chart.selectAll('.circle-group-1')
+            .data(data)
+            .enter()
+            .append('circle')
+            .attr('class', 'circle-group-1')
+            .attr('cx', d => xScale(d.X1))
+            .attr('cy', d => yScale(d.X2))
+            .attr('r', 2)
+            .style('fill', 'red')
+            .attr("cursor", "pointer")
+            .style("width", 40).on("mouseover", function (event, d) {
+
+                tooltip.html(`
+样本: ${d.samples}<br>
+X1: ${d.X1}<br> 
+X2: ${d.X2}<br> 
+`)
+                    .style("opacity", 1);
+
+            })
+            .on("mousemove", function (event) {
+
+                tooltip.style("left", (event.pageX + 10) + "px")
+                    .style("top", (event.pageY - 28) + "px");
+
+            })
+            .on("mouseout", function () {
+
+                tooltip.style("opacity", 0);
+
+            });
+
+        // 绘制第二个点组  
+        chart.selectAll('.circle-group-2')
+            .data(data)
+            .enter()
+            .append('circle')
+            .attr('class', 'circle-group-2')
+            .attr('cx', d => xScale(d.PC1))
+            .attr('cy', d => yScale(d.PC2))
+            .attr('r', 2)
+            .attr("cursor", "pointer")
+            .style('fill', 'black').style("width", 40).on("mouseover", function (event, d) {
+
+                tooltip.html(`
+${d.samples}<br>
+PC1: ${d.PC1}<br> 
+PC2: ${d.PC2}<br> 
+`)
+                    .style("opacity", 1)
+
+
+            })
+            .on("mousemove", function (event) {
+
+                tooltip.style("left", (event.pageX + 10) + "px")
+                    .style("top", (event.pageY - 28) + "px");
+
+            })
+            .on("mouseout", function () {
+
+                tooltip.style("opacity", 0);
+
+            });
+
+
+
+
+        // 创建一个缩放行为，并设置缩放事件处理程序
+        const zoom = d3.zoom().on('zoom', (e) => {
+            svg.attr('transform', e.transform);
+        });
+
+        d3.select("#content").call(zoom)
+            .call(zoom.transform, d3.zoomIdentity);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>散点图</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <style>
+        /* 清除样式 */
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        /* 坐标样式 */
+        .axis path, .axis line{
+            fill: none;
+            stroke: black;
+            shape-rendering: crispEdges;
+        }
+        .axis text{
+            font-family: sans-serif;
+            font-size: 11px;
+        }
+        /* 功能按钮 */
+        .btnWrap{
+            margin-left: 140px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- source https://blog.csdn.net/ligang2585116/article/details/52767324 -->
+    <div id="content">
+    </div>
+    <div class="btnWrap">
+        <button type="button" onclick="update();">更新</button>
+        <button type="button" onclick="add();">增加</button>
+        <button type="button" onclick="sub();">减少</button>
+    </div>
+
+    <script>
+        var dataset = [[0.5, 0.5],[0.7, 0.8],[0.4, 0.9],
+                [0.11, 0.32],[0.88, 0.25],[0.75, 0.12],
+                [0.5, 0.1],[0.2, 0.3],[0.4, 0.1]];
+
+        var dataset2 = [
+            {'samples': 'A1', 'X1': -0.185072508737918, 'X2': -0.185602895373858, 'PC1': -0.0532902574388567, 'PC2': -0.168263386572719, 'groups': 'A'}, 
+            {'samples': 'A2', 'X1': -0.193679604232243, 'X2': -0.239357663008185, 'PC1': -0.240205345648937, 'PC2': -0.208924563770604, 'groups': 'A'}, 
+            {'samples': 'A3', 'X1': -0.17266083616237, 'X2': -0.114423861956967, 'PC1': -0.243736242568912, 'PC2': -0.128044930905849, 'groups': 'A'}, 
+            {'samples': 'A4', 'X1': -0.168040928256114, 'X2': -0.13842095953477, 'PC1': -0.260156778444483, 'PC2': -0.233908593786978, 'groups': 'A'}, 
+            {'samples': 'B1', 'X1': 0.0077182700082069, 'X2': 0.117212369563924, 'PC1': -0.10089512741033, 'PC2': 0.251591044627424, 'groups': 'B'}, 
+            {'samples': 'B2', 'X1': -0.0892878318322925, 'X2': 0.204369765794488, 'PC1': -0.0700477994558465, 'PC2': 0.289845358082951, 'groups': 'B'}, 
+            {'samples': 'B3', 'X1': -0.0309717258845549, 'X2': 0.362268703872747, 'PC1': -0.0981270505818177, 'PC2': 0.265059059596336, 'groups': 'B'}, 
+            {'samples': 'B4', 'X1': -0.122434239272363, 'X2': 0.244146320869529, 'PC1': -0.0037486337023295, 'PC2': 0.214475535161812, 'groups': 'B'},
+             {'samples': 'C1', 'X1': 0.157261017210362, 'X2': -0.0065135823834598, 'PC1': 0.297844718187474, 'PC2': -0.100395748160121, 'groups': 'C'}, 
+             {'samples': 'C2', 'X1': 0.277609639167239, 'X2': -0.0895712121341035, 'PC1': 0.264918540892461, 'PC2': -0.243014522470781, 'groups': 'C'}, 
+             {'samples': 'C3', 'X1': 0.276044278331674, 'X2': -0.0569674158903921, 'PC1': 0.253986449899263, 'PC2': -0.0748820455843694, 'groups': 'C'}, 
+             {'samples': 'C4', 'X1': 0.243514469660373, 'X2': -0.0971395698189527, 'PC1': 0.253457526272313, 'PC2': 0.136462793782897, 'groups': 'C'}];
+        
+        var width = 400;    // 可视区域宽度
+        var height = 400;   // 可视区域高度
+
+        var xAxisWidth = 300;   // x轴宽度
+        var yAxisWidth = 300;   // y轴宽度
+
+        var padding = {top: 20, right: 20, bottom:20, left:50};
+
+        var svg = d3.select("body").select("#content")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+        /*定义比例尺*/
+        var xScale = d3.scaleLinear()
+                .domain([0, 1])
+                .range([0, xAxisWidth]);
+
+        var yScale = d3.scaleLinear()
+                .domain([0, 1])
+                .range([0, yAxisWidth]);
+
+        /* 绘制圆点 */
+        function drawCircle(){
+            var circleUpdate = svg.selectAll("circle").data(dataset);
+
+            // update处理
+            circleUpdate.transition().duration(500)
+                    .attr("cx", function(d){
+                        return padding.left + xScale(d[0]);
+                    })
+                    .attr("cy", function(d, i){
+                        return height - padding.bottom - yScale(d[1]);
+                    })
+                    .attr("r", 5);
+
+            // enter处理
+            circleUpdate.enter().append("circle")
+                    .attr("cx", function(d){
+                        return padding.left;
+                    })
+                    .attr("cy", function(d, i){
+                        return height - padding.bottom;
+                    })
+                    .attr("r", 5)
+                    .transition().duration(500)
+                    .attr("cx", function(d, i){
+                        return padding.left + xScale(d[0]);
+                    })
+                    .attr("cy", function(d, i){
+                        return height - padding.bottom - yScale(d[1]);
+                    });
+
+            // exit处理
+            circleUpdate.exit()
+                    .transition().duration(500)
+                    .attr("fill", "white")
+                    .remove();
+
+        }
+
+        /* 添加坐标轴 */
+        function drawScale(){
+            // var xAxis = d3.svg.axis().scale(xScale).orient("bottom");
+            var xAxis =  svg.append("g")
+                    .attr("transform", "translate("+ padding.left +","+ (height - padding.bottom) +")")
+            // .attr("id", "xAxis")
+            .call(d3.axisBottom(xScale).tickPadding(0))
+            // yScale.range([yAxisWidth, 0]);  // 重新设置y轴比例尺的值域,与原来的相反
+            // var yAxis = d3.svg.axis().scale(yScale).orient("left");
+            var yAxis = svg.append("g")
+                        .attr("transform", "translate("+ padding.left +","+ (height - padding.bottom - yAxisWidth) +")")
+                         .call(d3.axisLeft(yScale))
+
+            // 绘制完比例尺,还原比例尺y轴值域
+            yScale.range([0, yAxisWidth]);
+        }
+
+        // 初始化
+        window.addEventListener("load", function(){
+            drawCircle();
+            drawScale();
+        });
+
+        var toFixed = Number.prototype.toFixed;
+        /* 更新 */
+        function update(){
+            for(var i = 0, len = dataset.length; i < len; i++){
+                dataset[i][0] = +toFixed.call(Math.random(), 2);
+                dataset[i][1] = +toFixed.call(Math.random(), 2);
+            }
+            drawCircle();
+        }
+
+        /* 增加 */
+        function add(){
+            dataset.push([+toFixed.call(Math.random(), 2), +toFixed.call(Math.random(), 2)]);
+            drawCircle();
+        }
+
+        /* 删除 */
+        function sub(){
+            dataset.pop();
+            drawCircle();
+        }
+    </script>
+</body>
+</html>
