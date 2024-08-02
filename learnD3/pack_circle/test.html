@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #container {
+      width: 500px;
+      margin: 50px auto 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+
+  </div>
+</body>
+
+</html>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+
+<script>
+  const svg = d3.select('#container')
+    .append('svg')
+    .attr('width', 500)
+    .attr('height', 500);
+
+  const data = [
+    { id: 1, fill: 'black', x: 10, y: 10 },
+    { id: 2, fill: 'black', x: 50, y: 50 },
+    { id: 3, fill: 'black', x: 100, y: 70 },
+    { id: 4, fill: 'black', x: 20, y: 100 }
+  ];
+
+  draw(); // 绘制
+  bindDrag(); //绑定drag
+  function draw() {
+    const update = svg.selectAll('rect')
+      .data(data, d => d.id);
+
+    //修改层
+    update.attr('x', (d, idx) => d.x)
+      .attr('y', (d, idx) => d.y)
+      .attr('fill', (d) => d.fill)
+
+    //渲染层
+    const enter = update.enter();
+
+    //删除层
+    const exit = update.exit();
+
+    enter.append('rect')
+      .attr('width', 20)
+      .attr('height', 20)
+      .attr('id', d => `rect-${d.id}`) //不能绑定数字咱们给拼接一个字符串 error: Uncaught DOMException: Failed to execute 'querySelector' on 'Document': '#4' is not a valid selector.
+      .attr('x', (d, idx) => d.x)
+      .attr('y', (d, idx) => d.y)
+      .attr('fill', (d) => d.fill)
+      .attr('stroke', 'blue')
+      .attr('strokeWidth', 1)
+
+    exit.remove()
+  }
+
+  function bindDrag() { // 绑定drag
+    svg.selectAll('rect').call(drag()); // 使用.call 给每个rect绑定drag事件
+  }
+
+  function drag() {
+    return d3.drag()
+      .on('start', dragStarted) // 开始
+      .on('drag', dragged)  // 执行中
+      .on('end', dragEnded); // 结束
+  };
+
+  let currentMoveElement = null;
+
+  function dragStarted(d) { // drag start
+    console.log(d, 'start log....'); // 获取到的是当前拖拽的item 就是之前绑定的值。如：{id: 1, fill: 'black', x: 10, y: 10}
+    currentMoveElement = d3.select(`#rect-${d.id}`); // 🎈优化点： 提前获取到元素 不用再drag的时候一直用d3.select获取的
+  };
+
+  function dragged(d) { // drag 
+    console.log(d, 'drag log....');
+
+    const currentX = d3.event.x; // 使用d3.event 能获取到当前拖拽的x、y
+    const currentY = d3.event.y;
+    if (currentMoveElement) {
+      currentMoveElement.attr('x', currentX) // 一直修改其位置
+        .attr('y', currentY);
+    }
+  };
+
+  function dragEnded(d) { // drag end
+    console.log(d, 'end log....')
+    const currentX = d3.event.x; // 使用d3.event 能获取到当前拖拽的x、y
+    const currentY = d3.event.y;
+
+    d.x = currentX; // 再最后更改下绑定的数据，不然就会再下次drag的时候还是获取到之前的坐标，会发现尼拖拽节点跑到初始位置了
+    d.y = currentY;  // 如果有疑问可以注释掉这个函数的代码尝试下
+
+
+    //对应的data原始数据也要更新，假如你有个保存的场景 那尼获取到的坐标就不是最新的了
+    data.forEach((item) => {
+      if (item.id === d.id) {
+        item.x = currentX;
+        item.y = currentY;
+      }
+    })
+    console.log(data, 'data')
+  };
+</script>

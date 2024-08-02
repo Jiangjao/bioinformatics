@@ -1,0 +1,2890 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Intersection Tooltip venn.js example</title>
+    <style>
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            /* font-size: 12px; */
+            letter-spacing: 0.03em;
+            text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.4);
+        }
+
+        #tooltell {
+            display: block;
+            width: 50%;
+            height: 100%;
+            font-size: 16px;
+            color: #111111;
+        }
+
+        .venntooltip {
+            position: absolute;
+            text-align: center;
+            width: 60px;
+            height: 60px;
+            background: #ddd;
+            color: #000;
+            padding: 2px;
+            border: 0px;
+            border-radius: 8px;
+            opacity: 0;
+            top: 0;
+            left: 0;
+
+        }
+
+        svg path {
+            /*     stroke: rgba(33,33,33,0.6); */
+            /*     stroke-width: 3px; */
+        }
+
+        svg text {
+            fill: white;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 14px;
+        }
+
+        [data-venn-sets="0_1"] text {
+            fill: black;
+        }
+
+        [data-venn-sets="0_1"]:hover {}
+
+        [data-venn-sets="3"] {
+            fill: #ffff0777;
+        }
+
+        [data-venn-sets="2"] {
+            fill: #c94402;
+        }
+
+        [data-venn-sets="1"] {
+            fill: #fd4db0;
+        }
+
+        [data-venn-sets="0"] {
+            fill: #125fe3;
+        }
+
+        [data-venn-sets="0_1"] {
+            fill: #fce917;
+        }
+
+        [data-venn-sets="0_2"] {
+            fill: #9244a6;
+        }
+
+        [data-venn-sets="0_3"] {
+            fill: #44a691;
+        }
+
+        [data-venn-sets="1_2"] {
+            fill: #2c4a68;
+        }
+
+        [data-venn-sets="1_3"] {
+            fill: #66cc66;
+        }
+
+        [data-venn-sets="2_3"] {
+            fill: #cc6666;
+        }
+
+        [data-venn-sets="0_1_2"] {
+            fill: #ff8c00;
+        }
+
+        [data-venn-sets="0_1_3"] {
+            fill: #8a2be2;
+        }
+
+        [data-venn-sets="0_2_3"] {
+            fill: #ff4500;
+        }
+
+        [data-venn-sets="1_2_3"] {
+            fill: #2e8b57;
+        }
+
+        [data-venn-sets="0_1_2_3"] {
+            fill: #4682b4;
+        }
+
+        /* [data-venn-sets="0_1_2_"] { fill: #44a691; } */
+        svg {
+            /* mix-blend-mode: difference; */
+        }
+
+        /* svg:hover g:not(:hover) path
+ { opacity: .5;
+    -webkit-filter: grayscale(0%); 
+    filter: grayscale(0%);
+    filter: blur(50);
+}
+svg:hover g:not(:hover) text
+ { opacity: .3; } */
+
+
+        g#venngroup:hover g:not(:hover) path {
+            opacity: .5;
+            z-index: 9999;
+        }
+
+        g#venngroup:hover g:not(:hover) text {
+            opacity: .5;
+        }
+
+        svg .container {
+            width: 100%;
+            height: 100%;
+           /* margin: auto;
+           */
+            min-width: 1318px;
+            min-height: 1318px;
+        }
+        html, body {
+   		    height:100%;
+   	    }
+        * , section {
+            margin: 0;
+            padding: 0;
+        }
+        .main-page {
+            height:100%;
+
+        }
+        .tooltip {
+            position: absolute;
+            background-color: #f9f9f9;
+            padding: 8px;
+            border: 1px solid #ccc;
+            pointer-events: none;
+            font-size: 14px;
+        }
+
+        .text_board {
+            position: absolute;
+            background-color: #f9f9f9;
+            padding: 8px;
+            border: 1px solid #ccc;
+            /* pointer-events: none; */
+            /* font-size: 14px; */
+        }
+
+        .center-wrap {
+            margin: 0 auto;
+        }
+
+        .basicSettings {
+            /* width: 80%; */
+            position: relative;
+            /* top: 38px; */
+            z-index: 1;
+            overflow-y: auto;
+        }
+
+        .downloadSettings {
+            width: 100%;
+            position: relative;
+            /* top: 18px; */
+            z-index: 2;
+        }
+
+        .sidebar {
+            width: 100%;
+            display: none;
+            /* 初始状态下隐藏下拉框 */
+        }
+
+        .sidebar p {
+            /* width: 120px; */
+        }
+
+        .sidebar h2 {
+            /* margin-bottom: 10px; */
+            /* border-bottom: 1px solid #ddd; */
+            padding-bottom: 5px;
+        }
+
+
+        .sidebar label {
+            width: 120px;
+            /* text-align: right; */
+            /* margin-right: 10px; */
+            /* display: inline-block; */
+        }
+
+        /* 字体宽度大小设置 */
+        .sidebar .form-select {
+            width: 80px;
+        }
+
+        /* .sidebar input, */
+        .sidebar select {
+            width: 120px;
+            /* text-align: right; */
+            margin-right: 10px;
+            border-radius: 4px;
+        }
+
+        .sidebar button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            background: #42b983;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .sidebar button:hover {
+            opacity: 0.8;
+        }
+
+        .sidebar input[type="number"] {
+            width: 50px;
+        }
+
+        .sidebar input[type="text"] {
+            width: 36%;
+        }
+
+        .sidebar input[type="range"] {
+            width: 100%;
+            /* transform: rotate(270deg); 添加垂直滚动条 */
+        }
+
+        /* .sidebar br {
+            display: none;
+        } */
+
+        .item {
+            display: flex;
+            align-items: center;
+            text-align: justify;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            width: 88%;
+        }
+
+        /* .item {} */
+
+        .sidebar hr {
+            overflow: hidden;
+            width: 88%;
+        }
+
+        /* 设置hr线 */
+        .item+hr {
+            margin: 10px 0;
+
+        }
+
+        .item+hr:first-child {
+            margin-top: 0;
+        }
+
+        .item+hr {
+            border: none;
+            border-top: 1px dotted #ccc;
+        }
+
+        /* hr {} */
+        /* .item label {
+            width: 120px;
+            } */
+        /* .sidebar {
+            display: flex;
+            flex-wrap: wrap;
+        } */
+
+        .sliderTooltip {
+            /* display: block; */
+            /* position: absolute; */
+            /* styles */
+            /* padding: 10px; */
+            position: absolute;
+            /* top: -30px; */
+            /* left: 134px; */
+            background-color: rgb(204 204 204 / 18%);
+            /* color: #f9f9f9; */
+            padding: 5px;
+            border-radius: 5px;
+            display: none;
+            margin-top: 14%;
+        }
+
+        .tooltip.show {
+            display: block;
+        }
+
+        .sidebar.show {
+            width: 100%;
+            height: auto;
+            position: relative;
+            /* padding: inherit; */
+            display: block;
+            padding: 10px 11px;
+            /* 点击后显示下拉框 */
+            transition: max-height 0.3s ease;
+            z-index: 1;
+            /* 添加过渡效果 */
+        }
+
+        /* 添加button的样式 */
+        .button-like {
+            display: inline-block;
+            padding: 10px 0 10px 10%;
+            background-color: #4CAF50;
+            color: white;
+            text-align: left;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 90%;
+        }
+
+        .button-like:hover {
+            background-color: #45a049;
+        }
+
+        .button-like:active {
+            background-color: #3e8e41;
+        }
+
+        /* TODO:xiaojiao, @media screen and (max-width: 700px) 如何使用2023/10/23 */
+        div.tooltip-donut {
+            position: absolute;
+            text-align: center;
+            padding: .5rem;
+            background: #FFFFFF;
+            color: #313639;
+            border: 1px solid #313639;
+            border-radius: 8px;
+            pointer-events: none;
+            font-size: 1.3rem;
+        }
+
+        icon-i {
+            text-align: center;
+        }
+
+        .dropdown {
+            /* padding: 10px 11px; */
+            position: relative;
+            /* display: inline-block; */
+        }
+
+        .dropdown-content {
+            display: none;
+            position: relative;
+            /* top: 100%; */
+            /* left: 0; */
+            width: 100%;
+            /* padding: 10px 11px; */
+            background-color: #4CAF50;
+        }
+
+
+        .settingContent {
+            display: block;
+            position: relative;
+            /* top: 100%; */
+            /* left: 0; */
+            width: 90%;
+            padding: 10px 11px;
+            /* overflow-y: scroll; */
+            height: 60vh;
+            overflow-y: scroll;
+            /* 设置垂直方向上溢出时显示滚动条 */
+            overflow-x: hidden;
+            scrollbar-width: thin;
+            /* 设置滚动条的宽度 */
+            scrollbar-color: gray lightgray;
+            /* 设置滚动条的颜色 */
+        }
+
+        /* div#settingContent {} */
+        /* .dropdown:hover .dropdown-content {
+        display: block;
+
+         } */
+
+        .filled {
+            fill: url("#mainGradient");
+        }
+
+        .ticks text {
+            font-family: sans-serif;
+            font-size: 17px;
+            text-anchor: middle;
+        }
+        .helpDown p {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="main-page">
+        <div>
+            <div style="width: 20%;z-index: 1; position: fixed; padding-right: 1%; right:0; top:40px; opacity: 0.9;">
+                <!-- add by xiaojiao 停靠右侧， x轴文本旋转 -->
+                <!-- add by xiaojiao 柱状图宽度调整 -->
+                <div class="dropdown">
+                    <div id="dropdownTest" class="downloadSettings" style="background:#F9F9F9;width: 100%;">
+                        <p class="button-like">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-cloud-arrow-down" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M7.646 10.854a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 9.293V5.5a.5.5 0 0 0-1 0v3.793L6.354 8.146a.5.5 0 1 0-.708.708l2 2z" />
+                                <path
+                                    d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z" />
+                            </svg>
+                            download
+                        </p>
+                    </div>
+                    <div id="dropdownContent" class="dropdown-content"
+                        style="background:#F9F9F9;width: 100%;display: none;">
+                        <div class="sidebar show">
+                            <!-- <h3>文本 Settings</h3> -->
+                            <button id="export">下载 SVG</button>
+                            <!-- <br> -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <br> -->
+                <div class="dropdown" style="background:#F9F9F9;width: 100%;">
+                    <div class="basicSettings">
+                        <!-- <button type="button" id="exitBtn" class="btn" onClick="exitFullscreen()">退出全屏</button> -->
+                        <p type="button" id="btn" class="btn button-like" title="fullscreen">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-gear" viewBox="0 0 16 16">
+                                <path title="修改参数"
+                                    d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+                                <path title="修改参数"
+                                    d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z" />
+                            </svg>
+                            <path title="fullscreen" fill-rule="evenodd"
+                                d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z" />
+                            </svg>
+                            setting
+                        </p>
+                    </div>
+                    <div class="settingContent" id="settingContent">
+                        <div class="sidebar show" id="mainsetting">
+                            <!-- <h2>文本 Settings</h2> -->
+                            <div class="item">
+                                <p>字体选择:</p>
+                                <!-- https://www.runoob.com/w3cnote/web-font-family.html -->
+                                <select class="form-select" id="fontSelect">
+                                    <option value="">Select</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">Serif Fonts
+                                    </option>
+                                    <option value="Georgia,serif" style="font-family: Georgia,serif">Georgia</option>
+                                    <option value="Palatino Linotype,Book Antiqua,Palatino,serif"
+                                        style="font-family: Palatino Linotype,Book Antiqua,Palatino,serif">Palatino
+                                        Linotype</option>
+                                    <option value="Times New Roman,Times,serif"
+                                        style="font-family: Times New Roman,Times,serif">Times New Roman</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">Sans-Serif
+                                        Fonts</option>
+                                    <option value="Arial,Helvetica,sans-serif"
+                                        style="font-family: Arial,Helvetica,sans-serif">Arial</option>
+                                    <option value="Arial Black,Gadget,sans-serif"
+                                        style="font-family: Arial Black,Gadget,sans-serif">Arial Black</option>
+                                    <option value="Comic Sans MS,cursive,sans-serif"
+                                        style="font-family: Comic Sans MS,cursive,sans-serif">Comic Sans MS</option>
+                                    <option value="Impact,Charcoal,sans-serif"
+                                        style="font-family: Impact,Charcoal,sans-serif">Impact</option>
+                                    <option value="Lucida Sans Unicode,Lucida Grande,sans-serif"
+                                        style="font-family: Lucida Sans Unicode,Lucida Grande,sans-serif">Lucida Sans
+                                        Unicode</option>
+                                    <option selected="selected" value="Tahoma,Geneva,sans-serif"
+                                        style="font-family: Tahoma,Geneva,sans-serif">Tahoma</option>
+                                    <option value="Trebuchet MS,Helvetica,sans-serif"
+                                        style="font-family: Trebuchet MS,Helvetica,sans-serif">Helvetica</option>
+                                    <option value="Verdana,Geneva,sans-serif"
+                                        style="font-family: Verdana,Geneva,sans-serif">Verdana</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">Monospace
+                                        Fonts</option>
+                                    <option value="Courier New,Courier,monospace"
+                                        style="font-family: Courier New,Courier,monospace">Courier New</option>
+                                    <option value="Lucida Console,Monaco,monospace"
+                                        style="font-family: Lucida Console,Monaco,monospace">Lucida Console</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">中文</option>
+                                    <option value="华文细黑,sans-serif" style="font-family: 华文细黑,sans-serif">华文细黑</option>
+                                    <option value="微软雅黑,sans-serif" style="font-family: 微软雅黑,sans-serif">微软雅黑</option>
+                                    <option value="中易宋体,sans-serif" style="font-family: 中易宋体,sans-serif">中易宋体</option>
+                                    <option value="WenQuanYi Micro Hei,sans-serif"
+                                        style="font-family: WenQuanYi Micro Hei,sans-serif">WenQuanYi Micro Hei</option>
+                                    <option value="楷体,serif" style="font-family: 楷体, serif">楷体</option>
+                                    <option value="隶书,sans-serif" style="font-family: 隶书, sans-serif">隶书</option>
+                                </select>
+                            </div>
+
+                            <div class="item">
+                                <label>字体大小: </label>
+                                <input type="range" id="fontSizeRange" min="6" max="56" step="1" value="16">
+                                <div class="sliderTooltip">
+                                    <span class="value"></span>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="item">
+                                <p>散点大小调整: </p>
+                                <input type="range" id="scatterSizeRange" min="0" max="50" step="0.1" value="5">
+                                <div class="scatterSizeRange" style="display: none;">
+                                    <span class="value"></span>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <label>辅助线颜色: </label>
+                                <input type="color" id="vertial_hortizal_lines" value="#d62728">
+                            </div>
+                            <div class="item">
+                                <label>辅助线条粗细: </label>
+                                <!-- <input type="range" id="vertial_hortizal_lines_range" value="#d62728"> -->
+                                <input type="range" id="vertial_hortizal_lines_range" min="0" max="50" step="0.1" value="3">
+                            </div>
+                            <div class="item">
+                                <label for="_connectorsColor">Connectors Color<br></label>
+
+                                <input type="color" id="_connectorsColor" value="#1f77b4">
+                            </div>
+                            <div class="item">
+                                <label for="modulesHubsColor"> Modules Hubs Color</label>
+                                <input type="color" id="modulesHubsColor" value="#ff7f0e">
+
+                            </div>
+                            <div class="item">
+                                <label for="networkHubsColor"> Network Hubs Color</label>
+                                <input type="color" id="networkHubsColor" value="#2ca02c">
+                            </div>
+                            <div class="item">
+                                <label for="_peripheralColor"> Peripheral Color</label>
+
+                                <input type="color" id="_peripheralColor" value="#d62728">
+
+                            </div>
+                            <hr>
+
+
+                            <div class="item">
+                                <button id="center-button">reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dropdown" style="background:#F9F9F9;width: 100%;">
+                    <div class="basicSettings">
+                        <!-- <button type="button" id="exitBtn" class="btn" onClick="exitFullscreen()">退出全屏</button> -->
+                        <p type="button" id="helpbtn" class="btn button-like" title="fullscreen">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-question-square" viewBox="0 0 16 16">
+                                <path
+                                    d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
+                                <path title="fullscreen" fill-rule="evenodd"
+                                    d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94" />
+                            </svg>
+                            help
+                        </p>
+                    </div>
+                    <div class="settingContent" id="helpContent">
+                        <div class="sidebar show helpDown" id="helpsetting">
+                            <!-- <h2>文本 Settings</h2> -->
+                            <!-- <div class="item"> -->
+                            <h3>基本的使用</h3>
+                            <ol>
+                                <li>可以拖拽移动图形</li>
+                                <li>鼠标放大缩小图像</li>
+                                <li>悬浮、点击、双击到特定图案上会有文字展示</li>
+                            </ol>
+
+
+                            <h3>原理</h3>
+                            <div class="section">
+                                <h3>1. Within-module degree z-score (Zi)</h3>
+                                <p>Zi 衡量节点在其所属模块中的连通度。计算方法如下：</p>
+                                <pre><svg xmlns="http://www.w3.org/2000/svg" width="14.935ex" height="6.205ex" viewBox="0 -1856.7 6601.3 2742.7" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style=""><defs><path id="MJX-6-TEX-I-1D44D" d="M58 8Q58 23 64 35Q64 36 329 334T596 635L586 637Q575 637 512 637H500H476Q442 637 420 635T365 624T311 598T266 548T228 469Q227 466 226 463T224 458T223 453T222 450L221 448Q218 443 202 443Q185 443 182 453L214 561Q228 606 241 651Q249 679 253 681Q256 683 487 683H718Q723 678 723 675Q723 673 717 649Q189 54 188 52L185 49H274Q369 50 377 51Q452 60 500 100T579 247Q587 272 590 277T603 282H607Q628 282 628 271Q547 5 541 2Q538 0 300 0H124Q58 0 58 8Z"></path><path id="MJX-6-TEX-I-1D456" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path><path id="MJX-6-TEX-N-3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path><path id="MJX-6-TEX-I-1D458" d="M121 647Q121 657 125 670T137 683Q138 683 209 688T282 694Q294 694 294 686Q294 679 244 477Q194 279 194 272Q213 282 223 291Q247 309 292 354T362 415Q402 442 438 442Q468 442 485 423T503 369Q503 344 496 327T477 302T456 291T438 288Q418 288 406 299T394 328Q394 353 410 369T442 390L458 393Q446 405 434 405H430Q398 402 367 380T294 316T228 255Q230 254 243 252T267 246T293 238T320 224T342 206T359 180T365 147Q365 130 360 106T354 66Q354 26 381 26Q429 26 459 145Q461 153 479 153H483Q499 153 499 144Q499 139 496 130Q455 -11 378 -11Q333 -11 305 15T277 90Q277 108 280 121T283 145Q283 167 269 183T234 206T200 217T182 220H180Q168 178 159 139T145 81T136 44T129 20T122 7T111 -2Q98 -11 83 -11Q66 -11 57 -1T48 16Q48 26 85 176T158 471L195 616Q196 629 188 632T149 637H144Q134 637 131 637T124 640T121 647Z"></path><path id="MJX-6-TEX-I-1D440" d="M289 629Q289 635 232 637Q208 637 201 638T194 648Q194 649 196 659Q197 662 198 666T199 671T201 676T203 679T207 681T212 683T220 683T232 684Q238 684 262 684T307 683Q386 683 398 683T414 678Q415 674 451 396L487 117L510 154Q534 190 574 254T662 394Q837 673 839 675Q840 676 842 678T846 681L852 683H948Q965 683 988 683T1017 684Q1051 684 1051 673Q1051 668 1048 656T1045 643Q1041 637 1008 637Q968 636 957 634T939 623Q936 618 867 340T797 59Q797 55 798 54T805 50T822 48T855 46H886Q892 37 892 35Q892 19 885 5Q880 0 869 0Q864 0 828 1T736 2Q675 2 644 2T609 1Q592 1 592 11Q592 13 594 25Q598 41 602 43T625 46Q652 46 685 49Q699 52 704 61Q706 65 742 207T813 490T848 631L654 322Q458 10 453 5Q451 4 449 3Q444 0 433 0Q418 0 415 7Q413 11 374 317L335 624L267 354Q200 88 200 79Q206 46 272 46H282Q288 41 289 37T286 19Q282 3 278 1Q274 0 267 0Q265 0 255 0T221 1T157 2Q127 2 95 1T58 0Q43 0 39 2T35 11Q35 13 38 25T43 40Q45 46 65 46Q135 46 154 86Q158 92 223 354T289 629Z"></path><path id="MJX-6-TEX-N-2212" d="M84 237T84 250T98 270H679Q694 262 694 250T679 230H98Q84 237 84 250Z"></path><path id="MJX-6-TEX-S4-AF" d="M69 544V590H430V544H69Z"></path><path id="MJX-6-TEX-I-1D70E" d="M184 -11Q116 -11 74 34T31 147Q31 247 104 333T274 430Q275 431 414 431H552Q553 430 555 429T559 427T562 425T565 422T567 420T569 416T570 412T571 407T572 401Q572 357 507 357Q500 357 490 357T476 358H416L421 348Q439 310 439 263Q439 153 359 71T184 -11ZM361 278Q361 358 276 358Q152 358 115 184Q114 180 114 178Q106 141 106 117Q106 67 131 47T188 26Q242 26 287 73Q316 103 334 153T356 233T361 278Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><use xlink:href="#MJX-6-TEX-I-1D44D"></use></g><g data-mml-node="mi" transform="translate(683, -150) scale(0.707)"><use xlink:href="#MJX-6-TEX-I-1D456"></use></g></g><g data-mml-node="mo" transform="translate(1254.7, 0)"><use xlink:href="#MJX-6-TEX-N-3D"></use></g><g data-mml-node="mfrac" transform="translate(2310.5, 0)"><g data-mml-node="mrow" transform="translate(220, 752.2)"><g data-mml-node="msubsup"><g data-mml-node="mi"><use xlink:href="#MJX-6-TEX-I-1D458"></use></g><g data-mml-node="mi" transform="translate(521, 363) scale(0.707)"><use xlink:href="#MJX-6-TEX-I-1D440"></use></g><g data-mml-node="mi" transform="translate(521, -284.4) scale(0.707)"><use xlink:href="#MJX-6-TEX-I-1D456"></use></g></g><g data-mml-node="mo" transform="translate(1536.4, 0)"><use xlink:href="#MJX-6-TEX-N-2212"></use></g><g data-mml-node="mover" transform="translate(2536.6, 0)"><g data-mml-node="msup"><g data-mml-node="mi"><use xlink:href="#MJX-6-TEX-I-1D458"></use></g><g data-mml-node="mi" transform="translate(521, 289) scale(0.707)"><use xlink:href="#MJX-6-TEX-I-1D440"></use></g></g><g data-mml-node="mo" transform="translate(0, 587.3) scale(0.707)"><svg width="1858.5" height="246" x="0" y="444" viewBox="464.6 444 1858.5 246"><use xlink:href="#MJX-6-TEX-S4-AF" transform="scale(5.576, 1)"></use></svg></g></g></g><g data-mml-node="msub" transform="translate(1370.3, -686)"><g data-mml-node="mi"><use xlink:href="#MJX-6-TEX-I-1D70E"></use></g><g data-mml-node="TeXAtom" transform="translate(571, -192.3) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="msup"><g data-mml-node="mi"><use xlink:href="#MJX-6-TEX-I-1D458"></use></g><g data-mml-node="mi" transform="translate(521, 289) scale(0.707)"><use xlink:href="#MJX-6-TEX-I-1D440"></use></g></g></g></g><rect width="4050.8" height="60" x="120" y="220"></rect></g></g></g></svg></pre>
+                                <p>其中：</p>
+                                
+                                <ol>
+                                    <li>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="2.973ex" height="2.603ex" viewBox="0 -896 1314.2 1150.7" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style=""><defs><path id="MJX-14-TEX-I-1D458" d="M121 647Q121 657 125 670T137 683Q138 683 209 688T282 694Q294 694 294 686Q294 679 244 477Q194 279 194 272Q213 282 223 291Q247 309 292 354T362 415Q402 442 438 442Q468 442 485 423T503 369Q503 344 496 327T477 302T456 291T438 288Q418 288 406 299T394 328Q394 353 410 369T442 390L458 393Q446 405 434 405H430Q398 402 367 380T294 316T228 255Q230 254 243 252T267 246T293 238T320 224T342 206T359 180T365 147Q365 130 360 106T354 66Q354 26 381 26Q429 26 459 145Q461 153 479 153H483Q499 153 499 144Q499 139 496 130Q455 -11 378 -11Q333 -11 305 15T277 90Q277 108 280 121T283 145Q283 167 269 183T234 206T200 217T182 220H180Q168 178 159 139T145 81T136 44T129 20T122 7T111 -2Q98 -11 83 -11Q66 -11 57 -1T48 16Q48 26 85 176T158 471L195 616Q196 629 188 632T149 637H144Q134 637 131 637T124 640T121 647Z"></path><path id="MJX-14-TEX-I-1D440" d="M289 629Q289 635 232 637Q208 637 201 638T194 648Q194 649 196 659Q197 662 198 666T199 671T201 676T203 679T207 681T212 683T220 683T232 684Q238 684 262 684T307 683Q386 683 398 683T414 678Q415 674 451 396L487 117L510 154Q534 190 574 254T662 394Q837 673 839 675Q840 676 842 678T846 681L852 683H948Q965 683 988 683T1017 684Q1051 684 1051 673Q1051 668 1048 656T1045 643Q1041 637 1008 637Q968 636 957 634T939 623Q936 618 867 340T797 59Q797 55 798 54T805 50T822 48T855 46H886Q892 37 892 35Q892 19 885 5Q880 0 869 0Q864 0 828 1T736 2Q675 2 644 2T609 1Q592 1 592 11Q592 13 594 25Q598 41 602 43T625 46Q652 46 685 49Q699 52 704 61Q706 65 742 207T813 490T848 631L654 322Q458 10 453 5Q451 4 449 3Q444 0 433 0Q418 0 415 7Q413 11 374 317L335 624L267 354Q200 88 200 79Q206 46 272 46H282Q288 41 289 37T286 19Q282 3 278 1Q274 0 267 0Q265 0 255 0T221 1T157 2Q127 2 95 1T58 0Q43 0 39 2T35 11Q35 13 38 25T43 40Q45 46 65 46Q135 46 154 86Q158 92 223 354T289 629Z"></path><path id="MJX-14-TEX-I-1D456" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><g data-mml-node="math"><g data-mml-node="msubsup"><g data-mml-node="mi"><use xlink:href="#MJX-14-TEX-I-1D458"></use></g><g data-mml-node="mi" transform="translate(521, 413) scale(0.707)"><use xlink:href="#MJX-14-TEX-I-1D440"></use></g><g data-mml-node="mi" transform="translate(521, -247) scale(0.707)"><use xlink:href="#MJX-14-TEX-I-1D456"></use></g></g></g></g></svg> 
+                                        是节点 i 在模块 M 中的度（即节点在模块内的连接数）。</li>
+                                    <li>̄<svg xmlns="http://www.w3.org/2000/svg" width="2.973ex" height="2.524ex" viewBox="0 -1104.5 1314.2 1115.5" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style=""><defs><path id="MJX-20-TEX-I-1D458" d="M121 647Q121 657 125 670T137 683Q138 683 209 688T282 694Q294 694 294 686Q294 679 244 477Q194 279 194 272Q213 282 223 291Q247 309 292 354T362 415Q402 442 438 442Q468 442 485 423T503 369Q503 344 496 327T477 302T456 291T438 288Q418 288 406 299T394 328Q394 353 410 369T442 390L458 393Q446 405 434 405H430Q398 402 367 380T294 316T228 255Q230 254 243 252T267 246T293 238T320 224T342 206T359 180T365 147Q365 130 360 106T354 66Q354 26 381 26Q429 26 459 145Q461 153 479 153H483Q499 153 499 144Q499 139 496 130Q455 -11 378 -11Q333 -11 305 15T277 90Q277 108 280 121T283 145Q283 167 269 183T234 206T200 217T182 220H180Q168 178 159 139T145 81T136 44T129 20T122 7T111 -2Q98 -11 83 -11Q66 -11 57 -1T48 16Q48 26 85 176T158 471L195 616Q196 629 188 632T149 637H144Q134 637 131 637T124 640T121 647Z"></path><path id="MJX-20-TEX-I-1D440" d="M289 629Q289 635 232 637Q208 637 201 638T194 648Q194 649 196 659Q197 662 198 666T199 671T201 676T203 679T207 681T212 683T220 683T232 684Q238 684 262 684T307 683Q386 683 398 683T414 678Q415 674 451 396L487 117L510 154Q534 190 574 254T662 394Q837 673 839 675Q840 676 842 678T846 681L852 683H948Q965 683 988 683T1017 684Q1051 684 1051 673Q1051 668 1048 656T1045 643Q1041 637 1008 637Q968 636 957 634T939 623Q936 618 867 340T797 59Q797 55 798 54T805 50T822 48T855 46H886Q892 37 892 35Q892 19 885 5Q880 0 869 0Q864 0 828 1T736 2Q675 2 644 2T609 1Q592 1 592 11Q592 13 594 25Q598 41 602 43T625 46Q652 46 685 49Q699 52 704 61Q706 65 742 207T813 490T848 631L654 322Q458 10 453 5Q451 4 449 3Q444 0 433 0Q418 0 415 7Q413 11 374 317L335 624L267 354Q200 88 200 79Q206 46 272 46H282Q288 41 289 37T286 19Q282 3 278 1Q274 0 267 0Q265 0 255 0T221 1T157 2Q127 2 95 1T58 0Q43 0 39 2T35 11Q35 13 38 25T43 40Q45 46 65 46Q135 46 154 86Q158 92 223 354T289 629Z"></path><path id="MJX-20-TEX-S4-AF" d="M69 544V590H430V544H69Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><g data-mml-node="math"><g data-mml-node="mover"><g data-mml-node="msup"><g data-mml-node="mi"><use xlink:href="#MJX-20-TEX-I-1D458"></use></g><g data-mml-node="mi" transform="translate(521, 289) scale(0.707)"><use xlink:href="#MJX-20-TEX-I-1D440"></use></g></g><g data-mml-node="mo" transform="translate(0, 587.3) scale(0.707)"><svg width="1858.5" height="246" x="0" y="444" viewBox="464.6 444 1858.5 246"><use xlink:href="#MJX-20-TEX-S4-AF" transform="scale(5.576, 1)"></use></svg></g></g></g></g></svg>是模块 M 中所有节点的平均度。</li>
+                                    <li><svg xmlns="http://www.w3.org/2000/svg" width="3.507ex" height="1.428ex" viewBox="0 -431 1550.3 631" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style=""><defs><path id="MJX-30-TEX-I-1D70E" d="M184 -11Q116 -11 74 34T31 147Q31 247 104 333T274 430Q275 431 414 431H552Q553 430 555 429T559 427T562 425T565 422T567 420T569 416T570 412T571 407T572 401Q572 357 507 357Q500 357 490 357T476 358H416L421 348Q439 310 439 263Q439 153 359 71T184 -11ZM361 278Q361 358 276 358Q152 358 115 184Q114 180 114 178Q106 141 106 117Q106 67 131 47T188 26Q242 26 287 73Q316 103 334 153T356 233T361 278Z"></path><path id="MJX-30-TEX-I-1D458" d="M121 647Q121 657 125 670T137 683Q138 683 209 688T282 694Q294 694 294 686Q294 679 244 477Q194 279 194 272Q213 282 223 291Q247 309 292 354T362 415Q402 442 438 442Q468 442 485 423T503 369Q503 344 496 327T477 302T456 291T438 288Q418 288 406 299T394 328Q394 353 410 369T442 390L458 393Q446 405 434 405H430Q398 402 367 380T294 316T228 255Q230 254 243 252T267 246T293 238T320 224T342 206T359 180T365 147Q365 130 360 106T354 66Q354 26 381 26Q429 26 459 145Q461 153 479 153H483Q499 153 499 144Q499 139 496 130Q455 -11 378 -11Q333 -11 305 15T277 90Q277 108 280 121T283 145Q283 167 269 183T234 206T200 217T182 220H180Q168 178 159 139T145 81T136 44T129 20T122 7T111 -2Q98 -11 83 -11Q66 -11 57 -1T48 16Q48 26 85 176T158 471L195 616Q196 629 188 632T149 637H144Q134 637 131 637T124 640T121 647Z"></path><path id="MJX-30-TEX-I-1D440" d="M289 629Q289 635 232 637Q208 637 201 638T194 648Q194 649 196 659Q197 662 198 666T199 671T201 676T203 679T207 681T212 683T220 683T232 684Q238 684 262 684T307 683Q386 683 398 683T414 678Q415 674 451 396L487 117L510 154Q534 190 574 254T662 394Q837 673 839 675Q840 676 842 678T846 681L852 683H948Q965 683 988 683T1017 684Q1051 684 1051 673Q1051 668 1048 656T1045 643Q1041 637 1008 637Q968 636 957 634T939 623Q936 618 867 340T797 59Q797 55 798 54T805 50T822 48T855 46H886Q892 37 892 35Q892 19 885 5Q880 0 869 0Q864 0 828 1T736 2Q675 2 644 2T609 1Q592 1 592 11Q592 13 594 25Q598 41 602 43T625 46Q652 46 685 49Q699 52 704 61Q706 65 742 207T813 490T848 631L654 322Q458 10 453 5Q451 4 449 3Q444 0 433 0Q418 0 415 7Q413 11 374 317L335 624L267 354Q200 88 200 79Q206 46 272 46H282Q288 41 289 37T286 19Q282 3 278 1Q274 0 267 0Q265 0 255 0T221 1T157 2Q127 2 95 1T58 0Q43 0 39 2T35 11Q35 13 38 25T43 40Q45 46 65 46Q135 46 154 86Q158 92 223 354T289 629Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><use xlink:href="#MJX-30-TEX-I-1D70E"></use></g><g data-mml-node="TeXAtom" transform="translate(571, -192.3) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="msup"><g data-mml-node="mi"><use xlink:href="#MJX-30-TEX-I-1D458"></use></g><g data-mml-node="mi" transform="translate(521, 289) scale(0.707)"><use xlink:href="#MJX-30-TEX-I-1D440"></use></g></g></g></g></g></g></svg> 是模块 M 中度的标准差。</li>
+                                    <li><svg xmlns="http://www.w3.org/2000/svg" width="2.21ex" height="1.902ex" viewBox="0 -683 977 840.8" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style=""><defs><path id="MJX-31-TEX-I-1D44D" d="M58 8Q58 23 64 35Q64 36 329 334T596 635L586 637Q575 637 512 637H500H476Q442 637 420 635T365 624T311 598T266 548T228 469Q227 466 226 463T224 458T223 453T222 450L221 448Q218 443 202 443Q185 443 182 453L214 561Q228 606 241 651Q249 679 253 681Q256 683 487 683H718Q723 678 723 675Q723 673 717 649Q189 54 188 52L185 49H274Q369 50 377 51Q452 60 500 100T579 247Q587 272 590 277T603 282H607Q628 282 628 271Q547 5 541 2Q538 0 300 0H124Q58 0 58 8Z"></path><path id="MJX-31-TEX-I-1D456" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><use xlink:href="#MJX-31-TEX-I-1D44D"></use></g><g data-mml-node="mi" transform="translate(683, -150) scale(0.707)"><use xlink:href="#MJX-31-TEX-I-1D456"></use></g></g></g></g></svg>为节点 i 模块内连通度的z-scores</li>
+                                </ol>
+                            </div>
+                        
+                            <div class="section">
+                                <h3>2. Participation coefficient (Pi)</h3>
+                                <p>Pi 衡量节点在不同模块之间的连通性。计算方法如下：</p>
+                                <pre><svg xmlns="http://www.w3.org/2000/svg" width="21.6ex" height="7.252ex" viewBox="0 -1947.5 9547.2 3205.4" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style=""><defs><path id="MJX-32-TEX-I-1D443" d="M287 628Q287 635 230 637Q206 637 199 638T192 648Q192 649 194 659Q200 679 203 681T397 683Q587 682 600 680Q664 669 707 631T751 530Q751 453 685 389Q616 321 507 303Q500 302 402 301H307L277 182Q247 66 247 59Q247 55 248 54T255 50T272 48T305 46H336Q342 37 342 35Q342 19 335 5Q330 0 319 0Q316 0 282 1T182 2Q120 2 87 2T51 1Q33 1 33 11Q33 13 36 25Q40 41 44 43T67 46Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628ZM645 554Q645 567 643 575T634 597T609 619T560 635Q553 636 480 637Q463 637 445 637T416 636T404 636Q391 635 386 627Q384 621 367 550T332 412T314 344Q314 342 395 342H407H430Q542 342 590 392Q617 419 631 471T645 554Z"></path><path id="MJX-32-TEX-I-1D456" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path><path id="MJX-32-TEX-N-3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path><path id="MJX-32-TEX-N-31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path><path id="MJX-32-TEX-N-2212" d="M84 237T84 250T98 270H679Q694 262 694 250T679 230H98Q84 237 84 250Z"></path><path id="MJX-32-TEX-LO-2211" d="M60 948Q63 950 665 950H1267L1325 815Q1384 677 1388 669H1348L1341 683Q1320 724 1285 761Q1235 809 1174 838T1033 881T882 898T699 902H574H543H251L259 891Q722 258 724 252Q725 250 724 246Q721 243 460 -56L196 -356Q196 -357 407 -357Q459 -357 548 -357T676 -358Q812 -358 896 -353T1063 -332T1204 -283T1307 -196Q1328 -170 1348 -124H1388Q1388 -125 1381 -145T1356 -210T1325 -294L1267 -449L666 -450Q64 -450 61 -448Q55 -446 55 -439Q55 -437 57 -433L590 177Q590 178 557 222T452 366T322 544L56 909L55 924Q55 945 60 948Z"></path><path id="MJX-32-TEX-I-1D440" d="M289 629Q289 635 232 637Q208 637 201 638T194 648Q194 649 196 659Q197 662 198 666T199 671T201 676T203 679T207 681T212 683T220 683T232 684Q238 684 262 684T307 683Q386 683 398 683T414 678Q415 674 451 396L487 117L510 154Q534 190 574 254T662 394Q837 673 839 675Q840 676 842 678T846 681L852 683H948Q965 683 988 683T1017 684Q1051 684 1051 673Q1051 668 1048 656T1045 643Q1041 637 1008 637Q968 636 957 634T939 623Q936 618 867 340T797 59Q797 55 798 54T805 50T822 48T855 46H886Q892 37 892 35Q892 19 885 5Q880 0 869 0Q864 0 828 1T736 2Q675 2 644 2T609 1Q592 1 592 11Q592 13 594 25Q598 41 602 43T625 46Q652 46 685 49Q699 52 704 61Q706 65 742 207T813 490T848 631L654 322Q458 10 453 5Q451 4 449 3Q444 0 433 0Q418 0 415 7Q413 11 374 317L335 624L267 354Q200 88 200 79Q206 46 272 46H282Q288 41 289 37T286 19Q282 3 278 1Q274 0 267 0Q265 0 255 0T221 1T157 2Q127 2 95 1T58 0Q43 0 39 2T35 11Q35 13 38 25T43 40Q45 46 65 46Q135 46 154 86Q158 92 223 354T289 629Z"></path><path id="MJX-32-TEX-I-1D441" d="M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z"></path><path id="MJX-32-TEX-S4-28" d="M758 -1237T758 -1240T752 -1249H736Q718 -1249 717 -1248Q711 -1245 672 -1199Q237 -706 237 251T672 1700Q697 1730 716 1749Q718 1750 735 1750H752Q758 1744 758 1741Q758 1737 740 1713T689 1644T619 1537T540 1380T463 1176Q348 802 348 251Q348 -242 441 -599T744 -1218Q758 -1237 758 -1240Z"></path><path id="MJX-32-TEX-I-1D458" d="M121 647Q121 657 125 670T137 683Q138 683 209 688T282 694Q294 694 294 686Q294 679 244 477Q194 279 194 272Q213 282 223 291Q247 309 292 354T362 415Q402 442 438 442Q468 442 485 423T503 369Q503 344 496 327T477 302T456 291T438 288Q418 288 406 299T394 328Q394 353 410 369T442 390L458 393Q446 405 434 405H430Q398 402 367 380T294 316T228 255Q230 254 243 252T267 246T293 238T320 224T342 206T359 180T365 147Q365 130 360 106T354 66Q354 26 381 26Q429 26 459 145Q461 153 479 153H483Q499 153 499 144Q499 139 496 130Q455 -11 378 -11Q333 -11 305 15T277 90Q277 108 280 121T283 145Q283 167 269 183T234 206T200 217T182 220H180Q168 178 159 139T145 81T136 44T129 20T122 7T111 -2Q98 -11 83 -11Q66 -11 57 -1T48 16Q48 26 85 176T158 471L195 616Q196 629 188 632T149 637H144Q134 637 131 637T124 640T121 647Z"></path><path id="MJX-32-TEX-S4-29" d="M33 1741Q33 1750 51 1750H60H65Q73 1750 81 1743T119 1700Q554 1207 554 251Q554 -707 119 -1199Q76 -1250 66 -1250Q65 -1250 62 -1250T56 -1249Q55 -1249 53 -1249T49 -1250Q33 -1250 33 -1239Q33 -1236 50 -1214T98 -1150T163 -1052T238 -910T311 -727Q443 -335 443 251Q443 402 436 532T405 831T339 1142T224 1438T50 1716Q33 1737 33 1741Z"></path><path id="MJX-32-TEX-N-32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><use xlink:href="#MJX-32-TEX-I-1D443"></use></g><g data-mml-node="mi" transform="translate(642, -150) scale(0.707)"><use xlink:href="#MJX-32-TEX-I-1D456"></use></g></g><g data-mml-node="mo" transform="translate(1213.7, 0)"><use xlink:href="#MJX-32-TEX-N-3D"></use></g><g data-mml-node="mn" transform="translate(2269.5, 0)"><use xlink:href="#MJX-32-TEX-N-31"></use></g><g data-mml-node="mo" transform="translate(2991.7, 0)"><use xlink:href="#MJX-32-TEX-N-2212"></use></g><g data-mml-node="munderover" transform="translate(3992, 0)"><g data-mml-node="mo" transform="translate(101.4, 0)"><use xlink:href="#MJX-32-TEX-LO-2211"></use></g><g data-mml-node="TeXAtom" transform="translate(0, -1100) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mi"><use xlink:href="#MJX-32-TEX-I-1D440"></use></g><g data-mml-node="mo" transform="translate(1051, 0)"><use xlink:href="#MJX-32-TEX-N-3D"></use></g><g data-mml-node="mn" transform="translate(1829, 0)"><use xlink:href="#MJX-32-TEX-N-31"></use></g></g><g data-mml-node="TeXAtom" transform="translate(509.5, 1150) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mi"><use xlink:href="#MJX-32-TEX-I-1D441"></use></g></g></g><g data-mml-node="msup" transform="translate(5805.5, 0)"><g data-mml-node="mrow"><g data-mml-node="mo"><use xlink:href="#MJX-32-TEX-S4-28"></use></g><g data-mml-node="mfrac" transform="translate(792, 0)"><g data-mml-node="msubsup" transform="translate(220, 752.2)"><g data-mml-node="mi"><use xlink:href="#MJX-32-TEX-I-1D458"></use></g><g data-mml-node="mi" transform="translate(521, 363) scale(0.707)"><use xlink:href="#MJX-32-TEX-I-1D440"></use></g><g data-mml-node="mi" transform="translate(521, -284.4) scale(0.707)"><use xlink:href="#MJX-32-TEX-I-1D456"></use></g></g><g data-mml-node="msub" transform="translate(469.6, -686)"><g data-mml-node="mi"><use xlink:href="#MJX-32-TEX-I-1D458"></use></g><g data-mml-node="mi" transform="translate(521, -150) scale(0.707)"><use xlink:href="#MJX-32-TEX-I-1D456"></use></g></g><rect width="1514.2" height="60" x="120" y="220"></rect></g><g data-mml-node="mo" transform="translate(2546.2, 0)"><use xlink:href="#MJX-32-TEX-S4-29"></use></g></g><g data-mml-node="mn" transform="translate(3338.2, 1476.6) scale(0.707)"><use xlink:href="#MJX-32-TEX-N-32"></use></g></g></g></g></svg></pre>
+                                <p>其中：</p>
+                                <ol>
+                                    <li>
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="2.973ex" height="2.603ex" viewBox="0 -896 1314.2 1150.7" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style=""><defs><path id="MJX-14-TEX-I-1D458" d="M121 647Q121 657 125 670T137 683Q138 683 209 688T282 694Q294 694 294 686Q294 679 244 477Q194 279 194 272Q213 282 223 291Q247 309 292 354T362 415Q402 442 438 442Q468 442 485 423T503 369Q503 344 496 327T477 302T456 291T438 288Q418 288 406 299T394 328Q394 353 410 369T442 390L458 393Q446 405 434 405H430Q398 402 367 380T294 316T228 255Q230 254 243 252T267 246T293 238T320 224T342 206T359 180T365 147Q365 130 360 106T354 66Q354 26 381 26Q429 26 459 145Q461 153 479 153H483Q499 153 499 144Q499 139 496 130Q455 -11 378 -11Q333 -11 305 15T277 90Q277 108 280 121T283 145Q283 167 269 183T234 206T200 217T182 220H180Q168 178 159 139T145 81T136 44T129 20T122 7T111 -2Q98 -11 83 -11Q66 -11 57 -1T48 16Q48 26 85 176T158 471L195 616Q196 629 188 632T149 637H144Q134 637 131 637T124 640T121 647Z"></path><path id="MJX-14-TEX-I-1D440" d="M289 629Q289 635 232 637Q208 637 201 638T194 648Q194 649 196 659Q197 662 198 666T199 671T201 676T203 679T207 681T212 683T220 683T232 684Q238 684 262 684T307 683Q386 683 398 683T414 678Q415 674 451 396L487 117L510 154Q534 190 574 254T662 394Q837 673 839 675Q840 676 842 678T846 681L852 683H948Q965 683 988 683T1017 684Q1051 684 1051 673Q1051 668 1048 656T1045 643Q1041 637 1008 637Q968 636 957 634T939 623Q936 618 867 340T797 59Q797 55 798 54T805 50T822 48T855 46H886Q892 37 892 35Q892 19 885 5Q880 0 869 0Q864 0 828 1T736 2Q675 2 644 2T609 1Q592 1 592 11Q592 13 594 25Q598 41 602 43T625 46Q652 46 685 49Q699 52 704 61Q706 65 742 207T813 490T848 631L654 322Q458 10 453 5Q451 4 449 3Q444 0 433 0Q418 0 415 7Q413 11 374 317L335 624L267 354Q200 88 200 79Q206 46 272 46H282Q288 41 289 37T286 19Q282 3 278 1Q274 0 267 0Q265 0 255 0T221 1T157 2Q127 2 95 1T58 0Q43 0 39 2T35 11Q35 13 38 25T43 40Q45 46 65 46Q135 46 154 86Q158 92 223 354T289 629Z"></path><path id="MJX-14-TEX-I-1D456" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><g data-mml-node="math"><g data-mml-node="msubsup"><g data-mml-node="mi"><use xlink:href="#MJX-14-TEX-I-1D458"></use></g><g data-mml-node="mi" transform="translate(521, 413) scale(0.707)"><use xlink:href="#MJX-14-TEX-I-1D440"></use></g><g data-mml-node="mi" transform="translate(521, -247) scale(0.707)"><use xlink:href="#MJX-14-TEX-I-1D456"></use></g></g></g></g></svg> 
+                                        是节点 i 在模块 M 中的度。</li>
+                                    <li>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="2.586ex" height="1.902ex" viewBox="0 -683 1143 840.8" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style=""><defs><path id="MJX-35-TEX-I-1D43E" d="M285 628Q285 635 228 637Q205 637 198 638T191 647Q191 649 193 661Q199 681 203 682Q205 683 214 683H219Q260 681 355 681Q389 681 418 681T463 682T483 682Q500 682 500 674Q500 669 497 660Q496 658 496 654T495 648T493 644T490 641T486 639T479 638T470 637T456 637Q416 636 405 634T387 623L306 305Q307 305 490 449T678 597Q692 611 692 620Q692 635 667 637Q651 637 651 648Q651 650 654 662T659 677Q662 682 676 682Q680 682 711 681T791 680Q814 680 839 681T869 682Q889 682 889 672Q889 650 881 642Q878 637 862 637Q787 632 726 586Q710 576 656 534T556 455L509 418L518 396Q527 374 546 329T581 244Q656 67 661 61Q663 59 666 57Q680 47 717 46H738Q744 38 744 37T741 19Q737 6 731 0H720Q680 3 625 3Q503 3 488 0H478Q472 6 472 9T474 27Q478 40 480 43T491 46H494Q544 46 544 71Q544 75 517 141T485 216L427 354L359 301L291 248L268 155Q245 63 245 58Q245 51 253 49T303 46H334Q340 37 340 35Q340 19 333 5Q328 0 317 0Q314 0 280 1T180 2Q118 2 85 2T49 1Q31 1 31 11Q31 13 34 25Q38 41 42 43T65 46Q92 46 125 49Q139 52 144 61Q147 65 216 339T285 628Z"></path><path id="MJX-35-TEX-I-1D456" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><use xlink:href="#MJX-35-TEX-I-1D43E"></use></g><g data-mml-node="mi" transform="translate(849, -150) scale(0.707)"><use xlink:href="#MJX-35-TEX-I-1D456"></use></g></g></g></g></svg>
+                                        整个网络内的连通度
+                                    </li>
+                                    <li>N 为对应的模块数量，number of modular；</li>
+                                    <li>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="2.118ex" height="1.902ex" viewBox="0 -683 936 840.8" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style=""><defs><path id="MJX-38-TEX-I-1D443" d="M287 628Q287 635 230 637Q206 637 199 638T192 648Q192 649 194 659Q200 679 203 681T397 683Q587 682 600 680Q664 669 707 631T751 530Q751 453 685 389Q616 321 507 303Q500 302 402 301H307L277 182Q247 66 247 59Q247 55 248 54T255 50T272 48T305 46H336Q342 37 342 35Q342 19 335 5Q330 0 319 0Q316 0 282 1T182 2Q120 2 87 2T51 1Q33 1 33 11Q33 13 36 25Q40 41 44 43T67 46Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628ZM645 554Q645 567 643 575T634 597T609 619T560 635Q553 636 480 637Q463 637 445 637T416 636T404 636Q391 635 386 627Q384 621 367 550T332 412T314 344Q314 342 395 342H407H430Q542 342 590 392Q617 419 631 471T645 554Z"></path><path id="MJX-38-TEX-I-1D456" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><use xlink:href="#MJX-38-TEX-I-1D443"></use></g><g data-mml-node="mi" transform="translate(642, -150) scale(0.707)"><use xlink:href="#MJX-38-TEX-I-1D456"></use></g></g></g></g></svg>
+                                        为节点 i 的参与系数；
+                                    </li>
+                                </ol>
+                            </div>
+
+                            <h2>节点属性类型</h2>
+                            <div>图中的节点代表物种/功能，依据节点的拓扑特征可将节点属性分为4种类型，包括：</div>
+                            <ol>
+                                <li><strong>Module hubs：</strong>模块中心点，在模块内部具有高连通度的节点，Zi &gt; 2.5 且 Pi &lt; 0.62</li>
+                                <li><strong>Connectors：</strong>连接节点，在两个模块之间具有高连通度的节点，Zi &lt; 2.5 且 Pi &gt; 0.62</li>
+                                <li><strong>Network hubs：</strong>网络中心点，在整个网络中具有高连通度的节点，Zi &gt; 2.5 且 Pi &gt; 0.62</li>
+                                <li><strong>Peripherals：</strong>外围节点，在模块内部和模块之间均不具有高连通度的节点，Zi &lt; 2.5 且 Pi &lt; 0.62</li>
+                            </ol>
+                            <p>通常将除Peripherals外的其余3种类型的节点归为关键节点。</p>
+                                <h2>应用</h2>
+
+                            <ol>
+                                <li>在生物信息学中，ZiPI 可以应用于蛋白质相互作用网络的模块检测，帮助识别功能相关的蛋白质群体，从而推断生物过程和通路。</li>
+                                <li>在基因组学和转录组学中，ZiPI 可以用于基因共表达网络的模块检测，帮助鉴定共同参与特定生物过程或疾病的基因群体</li>
+                            </ol>
+
+                            <!-- </div> -->
+                        </div>
+                    </div>
+                </div>
+                <!-- <br> -->
+                <!-- <br> -->
+                <div class="btns" id="btns" style="background:#F9F9F9;width: 100%;">
+
+                    <!-- <button type="button" id="exitBtn" class="btn" onClick="exitFullscreen()">退出全屏</button> -->
+                    <p type="button" id="btn" class="btn button-like fullScreen" title="fullscreen">
+                        <svg title="fullscreen" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            fill="currentColor" class="bi bi-arrows-fullscreen" viewBox="0 0 16 16">
+                            <path title="fullscreen" fill-rule="evenodd"
+                                d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z" />
+                        </svg>
+                        全屏
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="basicSettings" style="margin-left: auto; position: relative;">
+
+            </div>
+
+
+        </div>
+        <div id="venn"></div>
+        <div id="tooltell">&nbsp;</div>
+        <input type="color" id="colorPicker" style="display: none;">
+
+    </section>
+
+</body>
+
+
+
+<!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
+<!-- <script src="http://benfred.github.io/venn.js/venn.js"></script> -->
+<!-- <script src="http://benfred.github.io/venn.js/examples/lastfm.jsonp"></script> -->
+<script src="https://d3js.org/d3.v6.min.js"></script>
+
+
+<script>
+    (function (global, factory) {
+        typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-selection'), require('d3-transition')) :
+            typeof define === 'function' && define.amd ? define(['exports', 'd3-selection', 'd3-transition'], factory) :
+                (factory((global.venn = {}), global.d3, global.d3));
+    }(this, (function (exports, d3Selection, d3Transition) {
+        'use strict';
+
+        var SMALL = 1e-10;
+
+        /** Returns the intersection area of a bunch of circles (where each circle
+         is an object having an x,y and radius property) */
+        function intersectionArea(circles, stats) {
+            // get all the intersection points of the circles
+            var intersectionPoints = getIntersectionPoints(circles);
+
+            // filter out points that aren't included in all the circles
+            var innerPoints = intersectionPoints.filter(function (p) {
+                return containedInCircles(p, circles);
+            });
+
+            var arcArea = 0, polygonArea = 0, arcs = [], i;
+
+            // if we have intersection points that are within all the circles,
+            // then figure out the area contained by them
+            if (innerPoints.length > 1) {
+                // sort the points by angle from the center of the polygon, which lets
+                // us just iterate over points to get the edges
+                var center = getCenter(innerPoints);
+                for (i = 0; i < innerPoints.length; ++i) {
+                    var p = innerPoints[i];
+                    p.angle = Math.atan2(p.x - center.x, p.y - center.y);
+                }
+                innerPoints.sort(function (a, b) { return b.angle - a.angle; });
+
+                // iterate over all points, get arc between the points
+                // and update the areas
+                var p2 = innerPoints[innerPoints.length - 1];
+                for (i = 0; i < innerPoints.length; ++i) {
+                    var p1 = innerPoints[i];
+
+                    // polygon area updates easily ...
+                    polygonArea += (p2.x + p1.x) * (p1.y - p2.y);
+
+                    // updating the arc area is a little more involved
+                    var midPoint = {
+                        x: (p1.x + p2.x) / 2,
+                        y: (p1.y + p2.y) / 2
+                    },
+                        arc = null;
+
+                    for (var j = 0; j < p1.parentIndex.length; ++j) {
+                        if (p2.parentIndex.indexOf(p1.parentIndex[j]) > -1) {
+                            // figure out the angle halfway between the two points
+                            // on the current circle
+                            var circle = circles[p1.parentIndex[j]],
+                                a1 = Math.atan2(p1.x - circle.x, p1.y - circle.y),
+                                a2 = Math.atan2(p2.x - circle.x, p2.y - circle.y);
+
+                            var angleDiff = (a2 - a1);
+                            if (angleDiff < 0) {
+                                angleDiff += 2 * Math.PI;
+                            }
+
+                            // and use that angle to figure out the width of the
+                            // arc
+                            var a = a2 - angleDiff / 2,
+                                width = distance(midPoint, {
+                                    x: circle.x + circle.radius * Math.sin(a),
+                                    y: circle.y + circle.radius * Math.cos(a)
+                                });
+
+                            // clamp the width to the largest is can actually be
+                            // (sometimes slightly overflows because of FP errors)
+                            if (width > circle.radius * 2) {
+                                width = circle.radius * 2;
+                            }
+
+                            // pick the circle whose arc has the smallest width
+                            if ((arc === null) || (arc.width > width)) {
+                                arc = {
+                                    circle: circle,
+                                    width: width,
+                                    p1: p1,
+                                    p2: p2
+                                };
+                            }
+                        }
+                    }
+
+                    if (arc !== null) {
+                        arcs.push(arc);
+                        arcArea += circleArea(arc.circle.radius, arc.width);
+                        p2 = p1;
+                    }
+                }
+            } else {
+                // no intersection points, is either disjoint - or is completely
+                // overlapped. figure out which by examining the smallest circle
+                var smallest = circles[0];
+                for (i = 1; i < circles.length; ++i) {
+                    if (circles[i].radius < smallest.radius) {
+                        smallest = circles[i];
+                    }
+                }
+
+                // make sure the smallest circle is completely contained in all
+                // the other circles
+                var disjoint = false;
+                for (i = 0; i < circles.length; ++i) {
+                    if (distance(circles[i], smallest) > Math.abs(smallest.radius - circles[i].radius)) {
+                        disjoint = true;
+                        break;
+                    }
+                }
+
+                if (disjoint) {
+                    arcArea = polygonArea = 0;
+
+                } else {
+                    arcArea = smallest.radius * smallest.radius * Math.PI;
+                    arcs.push({
+                        circle: smallest,
+                        p1: { x: smallest.x, y: smallest.y + smallest.radius },
+                        p2: { x: smallest.x - SMALL, y: smallest.y + smallest.radius },
+                        width: smallest.radius * 2
+                    });
+                }
+            }
+
+            polygonArea /= 2;
+            if (stats) {
+                stats.area = arcArea + polygonArea;
+                stats.arcArea = arcArea;
+                stats.polygonArea = polygonArea;
+                stats.arcs = arcs;
+                stats.innerPoints = innerPoints;
+                stats.intersectionPoints = intersectionPoints;
+            }
+
+            return arcArea + polygonArea;
+        }
+
+        /** returns whether a point is contained by all of a list of circles */
+        function containedInCircles(point, circles) {
+            for (var i = 0; i < circles.length; ++i) {
+                if (distance(point, circles[i]) > circles[i].radius + SMALL) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /** Gets all intersection points between a bunch of circles */
+        function getIntersectionPoints(circles) {
+            var ret = [];
+            for (var i = 0; i < circles.length; ++i) {
+                for (var j = i + 1; j < circles.length; ++j) {
+                    var intersect = circleCircleIntersection(circles[i],
+                        circles[j]);
+                    for (var k = 0; k < intersect.length; ++k) {
+                        var p = intersect[k];
+                        p.parentIndex = [i, j];
+                        ret.push(p);
+                    }
+                }
+            }
+            return ret;
+        }
+
+        /** Circular segment area calculation. See http://mathworld.wolfram.com/CircularSegment.html */
+        function circleArea(r, width) {
+            return r * r * Math.acos(1 - width / r) - (r - width) * Math.sqrt(width * (2 * r - width));
+        }
+
+        /** euclidean distance between two points */
+        function distance(p1, p2) {
+            return Math.sqrt((p1.x - p2.x) * (p1.x - p2.x) +
+                (p1.y - p2.y) * (p1.y - p2.y));
+        }
+
+
+        /** Returns the overlap area of two circles of radius r1 and r2 - that
+        have their centers separated by distance d. Simpler faster
+        circle intersection for only two circles */
+        function circleOverlap(r1, r2, d) {
+            // no overlap
+            if (d >= r1 + r2) {
+                return 0;
+            }
+
+            // completely overlapped
+            if (d <= Math.abs(r1 - r2)) {
+                return Math.PI * Math.min(r1, r2) * Math.min(r1, r2);
+            }
+
+            var w1 = r1 - (d * d - r2 * r2 + r1 * r1) / (2 * d),
+                w2 = r2 - (d * d - r1 * r1 + r2 * r2) / (2 * d);
+            return circleArea(r1, w1) + circleArea(r2, w2);
+        }
+
+        /** Given two circles (containing a x/y/radius attributes),
+        returns the intersecting points if possible.
+        note: doesn't handle cases where there are infinitely many
+        intersection points (circles are equivalent):, or only one intersection point*/
+        function circleCircleIntersection(p1, p2) {
+            var d = distance(p1, p2),
+                r1 = p1.radius,
+                r2 = p2.radius;
+
+            // if to far away, or self contained - can't be done
+            if ((d >= (r1 + r2)) || (d <= Math.abs(r1 - r2))) {
+                return [];
+            }
+
+            var a = (r1 * r1 - r2 * r2 + d * d) / (2 * d),
+                h = Math.sqrt(r1 * r1 - a * a),
+                x0 = p1.x + a * (p2.x - p1.x) / d,
+                y0 = p1.y + a * (p2.y - p1.y) / d,
+                rx = -(p2.y - p1.y) * (h / d),
+                ry = -(p2.x - p1.x) * (h / d);
+
+            return [{ x: x0 + rx, y: y0 - ry },
+            { x: x0 - rx, y: y0 + ry }];
+        }
+
+        /** Returns the center of a bunch of points */
+        function getCenter(points) {
+            var center = { x: 0, y: 0 };
+            for (var i = 0; i < points.length; ++i) {
+                center.x += points[i].x;
+                center.y += points[i].y;
+            }
+            center.x /= points.length;
+            center.y /= points.length;
+            return center;
+        }
+
+        /** finds the zeros of a function, given two starting points (which must
+         * have opposite signs */
+        function bisect(f, a, b, parameters) {
+            parameters = parameters || {};
+            var maxIterations = parameters.maxIterations || 100,
+                tolerance = parameters.tolerance || 1e-10,
+                fA = f(a),
+                fB = f(b),
+                delta = b - a;
+
+            if (fA * fB > 0) {
+                throw "Initial bisect points must have opposite signs";
+            }
+
+            if (fA === 0) return a;
+            if (fB === 0) return b;
+
+            for (var i = 0; i < maxIterations; ++i) {
+                delta /= 2;
+                var mid = a + delta,
+                    fMid = f(mid);
+
+                if (fMid * fA >= 0) {
+                    a = mid;
+                }
+
+                if ((Math.abs(delta) < tolerance) || (fMid === 0)) {
+                    return mid;
+                }
+            }
+            return a + delta;
+        }
+
+        // need some basic operations on vectors, rather than adding a dependency,
+        // just define here
+        function zeros(x) { var r = new Array(x); for (var i = 0; i < x; ++i) { r[i] = 0; } return r; }
+        function zerosM(x, y) { return zeros(x).map(function () { return zeros(y); }); }
+
+        function dot(a, b) {
+            var ret = 0;
+            for (var i = 0; i < a.length; ++i) {
+                ret += a[i] * b[i];
+            }
+            return ret;
+        }
+
+        function norm2(a) {
+            return Math.sqrt(dot(a, a));
+        }
+
+        function scale(ret, value, c) {
+            for (var i = 0; i < value.length; ++i) {
+                ret[i] = value[i] * c;
+            }
+        }
+
+        function weightedSum(ret, w1, v1, w2, v2) {
+            for (var j = 0; j < ret.length; ++j) {
+                ret[j] = w1 * v1[j] + w2 * v2[j];
+            }
+        }
+
+        /** minimizes a function using the downhill simplex method */
+        function nelderMead(f, x0, parameters) {
+            parameters = parameters || {};
+
+            var maxIterations = parameters.maxIterations || x0.length * 200,
+                nonZeroDelta = parameters.nonZeroDelta || 1.05,
+                zeroDelta = parameters.zeroDelta || 0.001,
+                minErrorDelta = parameters.minErrorDelta || 1e-6,
+                minTolerance = parameters.minErrorDelta || 1e-5,
+                rho = (parameters.rho !== undefined) ? parameters.rho : 1,
+                chi = (parameters.chi !== undefined) ? parameters.chi : 2,
+                psi = (parameters.psi !== undefined) ? parameters.psi : -0.5,
+                sigma = (parameters.sigma !== undefined) ? parameters.sigma : 0.5,
+                maxDiff;
+
+            // initialize simplex.
+            var N = x0.length,
+                simplex = new Array(N + 1);
+            simplex[0] = x0;
+            simplex[0].fx = f(x0);
+            simplex[0].id = 0;
+            for (var i = 0; i < N; ++i) {
+                var point = x0.slice();
+                point[i] = point[i] ? point[i] * nonZeroDelta : zeroDelta;
+                simplex[i + 1] = point;
+                simplex[i + 1].fx = f(point);
+                simplex[i + 1].id = i + 1;
+            }
+
+            function updateSimplex(value) {
+                for (var i = 0; i < value.length; i++) {
+                    simplex[N][i] = value[i];
+                }
+                simplex[N].fx = value.fx;
+            }
+
+            var sortOrder = function (a, b) { return a.fx - b.fx; };
+
+            var centroid = x0.slice(),
+                reflected = x0.slice(),
+                contracted = x0.slice(),
+                expanded = x0.slice();
+
+            for (var iteration = 0; iteration < maxIterations; ++iteration) {
+                simplex.sort(sortOrder);
+
+                if (parameters.history) {
+                    // copy the simplex (since later iterations will mutate) and
+                    // sort it to have a consistent order between iterations
+                    var sortedSimplex = simplex.map(function (x) {
+                        var state = x.slice();
+                        state.fx = x.fx;
+                        state.id = x.id;
+                        return state;
+                    });
+                    sortedSimplex.sort(function (a, b) { return a.id - b.id; });
+
+                    parameters.history.push({
+                        x: simplex[0].slice(),
+                        fx: simplex[0].fx,
+                        simplex: sortedSimplex
+                    });
+                }
+
+                maxDiff = 0;
+                for (i = 0; i < N; ++i) {
+                    maxDiff = Math.max(maxDiff, Math.abs(simplex[0][i] - simplex[1][i]));
+                }
+
+                if ((Math.abs(simplex[0].fx - simplex[N].fx) < minErrorDelta) &&
+                    (maxDiff < minTolerance)) {
+                    break;
+                }
+
+                // compute the centroid of all but the worst point in the simplex
+                for (i = 0; i < N; ++i) {
+                    centroid[i] = 0;
+                    for (var j = 0; j < N; ++j) {
+                        centroid[i] += simplex[j][i];
+                    }
+                    centroid[i] /= N;
+                }
+
+                // reflect the worst point past the centroid  and compute loss at reflected
+                // point
+                var worst = simplex[N];
+                weightedSum(reflected, 1 + rho, centroid, -rho, worst);
+                reflected.fx = f(reflected);
+
+                // if the reflected point is the best seen, then possibly expand
+                if (reflected.fx < simplex[0].fx) {
+                    weightedSum(expanded, 1 + chi, centroid, -chi, worst);
+                    expanded.fx = f(expanded);
+                    if (expanded.fx < reflected.fx) {
+                        updateSimplex(expanded);
+                    } else {
+                        updateSimplex(reflected);
+                    }
+                }
+
+                // if the reflected point is worse than the second worst, we need to
+                // contract
+                else if (reflected.fx >= simplex[N - 1].fx) {
+                    var shouldReduce = false;
+
+                    if (reflected.fx > worst.fx) {
+                        // do an inside contraction
+                        weightedSum(contracted, 1 + psi, centroid, -psi, worst);
+                        contracted.fx = f(contracted);
+                        if (contracted.fx < worst.fx) {
+                            updateSimplex(contracted);
+                        } else {
+                            shouldReduce = true;
+                        }
+                    } else {
+                        // do an outside contraction
+                        weightedSum(contracted, 1 - psi * rho, centroid, psi * rho, worst);
+                        contracted.fx = f(contracted);
+                        if (contracted.fx < reflected.fx) {
+                            updateSimplex(contracted);
+                        } else {
+                            shouldReduce = true;
+                        }
+                    }
+
+                    if (shouldReduce) {
+                        // if we don't contract here, we're done
+                        if (sigma >= 1) break;
+
+                        // do a reduction
+                        for (i = 1; i < simplex.length; ++i) {
+                            weightedSum(simplex[i], 1 - sigma, simplex[0], sigma, simplex[i]);
+                            simplex[i].fx = f(simplex[i]);
+                        }
+                    }
+                } else {
+                    updateSimplex(reflected);
+                }
+            }
+
+            simplex.sort(sortOrder);
+            return {
+                fx: simplex[0].fx,
+                x: simplex[0]
+            };
+        }
+
+        /// searches along line 'pk' for a point that satifies the wolfe conditions
+        /// See 'Numerical Optimization' by Nocedal and Wright p59-60
+        /// f : objective function
+        /// pk : search direction
+        /// current: object containing current gradient/loss
+        /// next: output: contains next gradient/loss
+        /// returns a: step size taken
+        function wolfeLineSearch(f, pk, current, next, a, c1, c2) {
+            var phi0 = current.fx, phiPrime0 = dot(current.fxprime, pk),
+                phi = phi0, phi_old = phi0,
+                phiPrime = phiPrime0,
+                a0 = 0;
+
+            a = a || 1;
+            c1 = c1 || 1e-6;
+            c2 = c2 || 0.1;
+
+            function zoom(a_lo, a_high, phi_lo) {
+                for (var iteration = 0; iteration < 16; ++iteration) {
+                    a = (a_lo + a_high) / 2;
+                    weightedSum(next.x, 1.0, current.x, a, pk);
+                    phi = next.fx = f(next.x, next.fxprime);
+                    phiPrime = dot(next.fxprime, pk);
+
+                    if ((phi > (phi0 + c1 * a * phiPrime0)) ||
+                        (phi >= phi_lo)) {
+                        a_high = a;
+
+                    } else {
+                        if (Math.abs(phiPrime) <= -c2 * phiPrime0) {
+                            return a;
+                        }
+
+                        if (phiPrime * (a_high - a_lo) >= 0) {
+                            a_high = a_lo;
+                        }
+
+                        a_lo = a;
+                        phi_lo = phi;
+                    }
+                }
+
+                return 0;
+            }
+
+            for (var iteration = 0; iteration < 10; ++iteration) {
+                weightedSum(next.x, 1.0, current.x, a, pk);
+                phi = next.fx = f(next.x, next.fxprime);
+                phiPrime = dot(next.fxprime, pk);
+                if ((phi > (phi0 + c1 * a * phiPrime0)) ||
+                    (iteration && (phi >= phi_old))) {
+                    return zoom(a0, a, phi_old);
+                }
+
+                if (Math.abs(phiPrime) <= -c2 * phiPrime0) {
+                    return a;
+                }
+
+                if (phiPrime >= 0) {
+                    return zoom(a, a0, phi);
+                }
+
+                phi_old = phi;
+                a0 = a;
+                a *= 2;
+            }
+
+            return a;
+        }
+
+        function conjugateGradient(f, initial, params) {
+            // allocate all memory up front here, keep out of the loop for perfomance
+            // reasons
+            var current = { x: initial.slice(), fx: 0, fxprime: initial.slice() },
+                next = { x: initial.slice(), fx: 0, fxprime: initial.slice() },
+                yk = initial.slice(),
+                pk, temp,
+                a = 1,
+                maxIterations;
+
+            params = params || {};
+            maxIterations = params.maxIterations || initial.length * 20;
+
+            current.fx = f(current.x, current.fxprime);
+            pk = current.fxprime.slice();
+            scale(pk, current.fxprime, -1);
+
+            for (var i = 0; i < maxIterations; ++i) {
+                a = wolfeLineSearch(f, pk, current, next, a);
+
+                // todo: history in wrong spot?
+                if (params.history) {
+                    params.history.push({
+                        x: current.x.slice(),
+                        fx: current.fx,
+                        fxprime: current.fxprime.slice(),
+                        alpha: a
+                    });
+                }
+
+                if (!a) {
+                    // faiiled to find point that satifies wolfe conditions.
+                    // reset direction for next iteration
+                    scale(pk, current.fxprime, -1);
+
+                } else {
+                    // update direction using Polak–Ribiere CG method
+                    weightedSum(yk, 1, next.fxprime, -1, current.fxprime);
+
+                    var delta_k = dot(current.fxprime, current.fxprime),
+                        beta_k = Math.max(0, dot(yk, next.fxprime) / delta_k);
+
+                    weightedSum(pk, beta_k, pk, -1, next.fxprime);
+
+                    temp = current;
+                    current = next;
+                    next = temp;
+                }
+
+                if (norm2(current.fxprime) <= 1e-5) {
+                    break;
+                }
+            }
+
+            if (params.history) {
+                params.history.push({
+                    x: current.x.slice(),
+                    fx: current.fx,
+                    fxprime: current.fxprime.slice(),
+                    alpha: a
+                });
+            }
+
+            return current;
+        }
+
+        /** given a list of set objects, and their corresponding overlaps.
+        updates the (x, y, radius) attribute on each set such that their positions
+        roughly correspond to the desired overlaps */
+        function venn(areas, parameters) {
+            parameters = parameters || {};
+            parameters.maxIterations = parameters.maxIterations || 500;
+            var initialLayout = parameters.initialLayout || bestInitialLayout;
+            var loss = parameters.lossFunction || lossFunction;
+
+            // add in missing pairwise areas as having 0 size
+            areas = addMissingAreas(areas);
+
+            // initial layout is done greedily
+            var circles = initialLayout(areas, parameters);
+
+            // transform x/y coordinates to a vector to optimize
+            var initial = [], setids = [], setid;
+            for (setid in circles) {
+                if (circles.hasOwnProperty(setid)) {
+                    initial.push(circles[setid].x);
+                    initial.push(circles[setid].y);
+                    setids.push(setid);
+                }
+            }
+
+            // optimize initial layout from our loss function
+            var solution = nelderMead(
+                function (values) {
+                    var current = {};
+                    for (var i = 0; i < setids.length; ++i) {
+                        var setid = setids[i];
+                        current[setid] = {
+                            x: values[2 * i],
+                            y: values[2 * i + 1],
+                            radius: circles[setid].radius,
+                            // size : circles[setid].size
+                        };
+                    }
+                    return loss(current, areas);
+                },
+                initial,
+                parameters);
+
+            // transform solution vector back to x/y points
+            var positions = solution.x;
+            for (var i = 0; i < setids.length; ++i) {
+                setid = setids[i];
+                circles[setid].x = positions[2 * i];
+                circles[setid].y = positions[2 * i + 1];
+            }
+
+            return circles;
+        }
+
+        var SMALL$1 = 1e-10;
+
+        /** Returns the distance necessary for two circles of radius r1 + r2 to
+        have the overlap area 'overlap' */
+        function distanceFromIntersectArea(r1, r2, overlap) {
+            // handle complete overlapped circles
+            if (Math.min(r1, r2) * Math.min(r1, r2) * Math.PI <= overlap + SMALL$1) {
+                return Math.abs(r1 - r2);
+            }
+
+            return bisect(function (distance$$1) {
+                return circleOverlap(r1, r2, distance$$1) - overlap;
+            }, 0, r1 + r2);
+        }
+
+        /** Missing pair-wise intersection area data can cause problems:
+         treating as an unknown means that sets will be laid out overlapping,
+         which isn't what people expect. To reflect that we want disjoint sets
+         here, set the overlap to 0 for all missing pairwise set intersections */
+        function addMissingAreas(areas) {
+            areas = areas.slice();
+
+            // two circle intersections that aren't defined
+            var ids = [], pairs = {}, i, j, a, b;
+            for (i = 0; i < areas.length; ++i) {
+                var area = areas[i];
+                if (area.sets.length == 1) {
+                    ids.push(area.sets[0]);
+                } else if (area.sets.length == 2) {
+                    a = area.sets[0];
+                    b = area.sets[1];
+                    pairs[[a, b]] = true;
+                    pairs[[b, a]] = true;
+                }
+            }
+            ids.sort(function (a, b) { return a > b; });
+
+            for (i = 0; i < ids.length; ++i) {
+                a = ids[i];
+                for (j = i + 1; j < ids.length; ++j) {
+                    b = ids[j];
+                    if (!([a, b] in pairs)) {
+                        areas.push({
+                            'sets': [a, b],
+                            'size': 0
+                        });
+                    }
+                }
+            }
+            return areas;
+        }
+
+        /// Returns two matrices, one of the euclidean distances between the sets
+        /// and the other indicating if there are subset or disjoint set relationships
+        function getDistanceMatrices(areas, sets, setids) {
+            // initialize an empty distance matrix between all the points
+            var distances = zerosM(sets.length, sets.length),
+                constraints = zerosM(sets.length, sets.length);
+
+            // compute required distances between all the sets such that
+            // the areas match
+            areas.filter(function (x) { return x.sets.length == 2; })
+                .map(function (current) {
+                    var left = setids[current.sets[0]],
+                        right = setids[current.sets[1]],
+                        r1 = Math.sqrt(sets[left].size / Math.PI),
+                        r2 = Math.sqrt(sets[right].size / Math.PI),
+                        distance$$1 = distanceFromIntersectArea(r1, r2, current.size);
+
+                    distances[left][right] = distances[right][left] = distance$$1;
+
+                    // also update constraints to indicate if its a subset or disjoint
+                    // relationship
+                    var c = 0;
+                    if (current.size + 1e-10 >= Math.min(sets[left].size,
+                        sets[right].size)) {
+                        c = 1;
+                    } else if (current.size <= 1e-10) {
+                        c = -1;
+                    }
+                    constraints[left][right] = constraints[right][left] = c;
+                });
+
+            return { distances: distances, constraints: constraints };
+        }
+
+        /// computes the gradient and loss simulatenously for our constrained MDS optimizer
+        function constrainedMDSGradient(x, fxprime, distances, constraints) {
+            var loss = 0, i;
+            for (i = 0; i < fxprime.length; ++i) {
+                fxprime[i] = 0;
+            }
+
+            for (i = 0; i < distances.length; ++i) {
+                var xi = x[2 * i], yi = x[2 * i + 1];
+                for (var j = i + 1; j < distances.length; ++j) {
+                    var xj = x[2 * j], yj = x[2 * j + 1],
+                        dij = distances[i][j],
+                        constraint = constraints[i][j];
+
+                    var squaredDistance = (xj - xi) * (xj - xi) + (yj - yi) * (yj - yi),
+                        distance$$1 = Math.sqrt(squaredDistance),
+                        delta = squaredDistance - dij * dij;
+
+                    if (((constraint > 0) && (distance$$1 <= dij)) ||
+                        ((constraint < 0) && (distance$$1 >= dij))) {
+                        continue;
+                    }
+
+                    loss += 2 * delta * delta;
+
+                    fxprime[2 * i] += 4 * delta * (xi - xj);
+                    fxprime[2 * i + 1] += 4 * delta * (yi - yj);
+
+                    fxprime[2 * j] += 4 * delta * (xj - xi);
+                    fxprime[2 * j + 1] += 4 * delta * (yj - yi);
+                }
+            }
+            return loss;
+        }
+
+        /// takes the best working variant of either constrained MDS or greedy
+        function bestInitialLayout(areas, params) {
+            var initial = greedyLayout(areas, params);
+            var loss = params.lossFunction || lossFunction;
+
+            // greedylayout is sufficient for all 2/3 circle cases. try out
+            // constrained MDS for higher order problems, take its output
+            // if it outperforms. (greedy is aesthetically better on 2/3 circles
+            // since it axis aligns)
+            if (areas.length >= 8) {
+                var constrained = constrainedMDSLayout(areas, params),
+                    constrainedLoss = loss(constrained, areas),
+                    greedyLoss = loss(initial, areas);
+
+                if (constrainedLoss + 1e-8 < greedyLoss) {
+                    initial = constrained;
+                }
+            }
+            return initial;
+        }
+
+        /// use the constrained MDS variant to generate an initial layout
+        function constrainedMDSLayout(areas, params) {
+            params = params || {};
+            var restarts = params.restarts || 10;
+
+            // bidirectionally map sets to a rowid  (so we can create a matrix)
+            var sets = [], setids = {}, i;
+            for (i = 0; i < areas.length; ++i) {
+                var area = areas[i];
+                if (area.sets.length == 1) {
+                    setids[area.sets[0]] = sets.length;
+                    sets.push(area);
+                }
+            }
+
+            var matrices = getDistanceMatrices(areas, sets, setids),
+                distances = matrices.distances,
+                constraints = matrices.constraints;
+
+            // keep distances bounded, things get messed up otherwise.
+            // TODO: proper preconditioner?
+            var norm = norm2(distances.map(norm2)) / (distances.length);
+            distances = distances.map(function (row) {
+                return row.map(function (value) { return value / norm; });
+            });
+
+            var obj = function (x, fxprime) {
+                return constrainedMDSGradient(x, fxprime, distances, constraints);
+            };
+
+            var best, current;
+            for (i = 0; i < restarts; ++i) {
+                var initial = zeros(distances.length * 2).map(Math.random);
+
+                current = conjugateGradient(obj, initial, params);
+                if (!best || (current.fx < best.fx)) {
+                    best = current;
+                }
+            }
+            var positions = best.x;
+
+            // translate rows back to (x,y,radius) coordinates
+            var circles = {};
+            for (i = 0; i < sets.length; ++i) {
+                var set = sets[i];
+                circles[set.sets[0]] = {
+                    x: positions[2 * i] * norm,
+                    y: positions[2 * i + 1] * norm,
+                    radius: Math.sqrt(set.size / Math.PI)
+                };
+            }
+
+            if (params.history) {
+                for (i = 0; i < params.history.length; ++i) {
+                    scale(params.history[i].x, norm);
+                }
+            }
+            return circles;
+        }
+
+        /** Lays out a Venn diagram greedily, going from most overlapped sets to
+        least overlapped, attempting to position each new set such that the
+        overlapping areas to already positioned sets are basically right */
+        function greedyLayout(areas, params) {
+            var loss = params && params.lossFunction ? params.lossFunction : lossFunction;
+            // define a circle for each set
+            var circles = {}, setOverlaps = {}, set;
+            for (var i = 0; i < areas.length; ++i) {
+                var area = areas[i];
+                if (area.sets.length == 1) {
+                    set = area.sets[0];
+                    circles[set] = {
+                        x: 1e10, y: 1e10,
+                        rowid: circles.length,
+                        size: area.size,
+                        radius: Math.sqrt(area.size / Math.PI)
+                    };
+                    setOverlaps[set] = [];
+                }
+            }
+            areas = areas.filter(function (a) { return a.sets.length == 2; });
+
+            // map each set to a list of all the other sets that overlap it
+            for (i = 0; i < areas.length; ++i) {
+                var current = areas[i];
+                var weight = current.hasOwnProperty('weight') ? current.weight : 1.0;
+                var left = current.sets[0], right = current.sets[1];
+
+                // completely overlapped circles shouldn't be positioned early here
+                if (current.size + SMALL$1 >= Math.min(circles[left].size,
+                    circles[right].size)) {
+                    weight = 0;
+                }
+
+                setOverlaps[left].push({ set: right, size: current.size, weight: weight });
+                setOverlaps[right].push({ set: left, size: current.size, weight: weight });
+            }
+
+            // get list of most overlapped sets
+            var mostOverlapped = [];
+            for (set in setOverlaps) {
+                if (setOverlaps.hasOwnProperty(set)) {
+                    var size = 0;
+                    for (i = 0; i < setOverlaps[set].length; ++i) {
+                        size += setOverlaps[set][i].size * setOverlaps[set][i].weight;
+                    }
+
+                    mostOverlapped.push({ set: set, size: size });
+                }
+            }
+
+            // sort by size desc
+            function sortOrder(a, b) {
+                return b.size - a.size;
+            }
+            mostOverlapped.sort(sortOrder);
+
+            // keep track of what sets have been laid out
+            var positioned = {};
+            function isPositioned(element) {
+                return element.set in positioned;
+            }
+
+            // adds a point to the output
+            function positionSet(point, index) {
+                circles[index].x = point.x;
+                circles[index].y = point.y;
+                positioned[index] = true;
+            }
+
+            // add most overlapped set at (0,0)
+            positionSet({ x: 0, y: 0 }, mostOverlapped[0].set);
+
+            // get distances between all points. TODO, necessary?
+            // answer: probably not
+            // var distances = venn.getDistanceMatrices(circles, areas).distances;
+            for (i = 1; i < mostOverlapped.length; ++i) {
+                var setIndex = mostOverlapped[i].set,
+                    overlap = setOverlaps[setIndex].filter(isPositioned);
+                set = circles[setIndex];
+                overlap.sort(sortOrder);
+
+                if (overlap.length === 0) {
+                    // this shouldn't happen anymore with addMissingAreas
+                    throw "ERROR: missing pairwise overlap information";
+                }
+
+                var points = [];
+                for (var j = 0; j < overlap.length; ++j) {
+                    // get appropriate distance from most overlapped already added set
+                    var p1 = circles[overlap[j].set],
+                        d1 = distanceFromIntersectArea(set.radius, p1.radius,
+                            overlap[j].size);
+
+                    // sample positions at 90 degrees for maximum aesthetics
+                    points.push({ x: p1.x + d1, y: p1.y });
+                    points.push({ x: p1.x - d1, y: p1.y });
+                    points.push({ y: p1.y + d1, x: p1.x });
+                    points.push({ y: p1.y - d1, x: p1.x });
+
+                    // if we have at least 2 overlaps, then figure out where the
+                    // set should be positioned analytically and try those too
+                    for (var k = j + 1; k < overlap.length; ++k) {
+                        var p2 = circles[overlap[k].set],
+                            d2 = distanceFromIntersectArea(set.radius, p2.radius,
+                                overlap[k].size);
+
+                        var extraPoints = circleCircleIntersection(
+                            { x: p1.x, y: p1.y, radius: d1 },
+                            { x: p2.x, y: p2.y, radius: d2 });
+
+                        for (var l = 0; l < extraPoints.length; ++l) {
+                            points.push(extraPoints[l]);
+                        }
+                    }
+                }
+
+                // we have some candidate positions for the set, examine loss
+                // at each position to figure out where to put it at
+                var bestLoss = 1e50, bestPoint = points[0];
+                for (j = 0; j < points.length; ++j) {
+                    circles[setIndex].x = points[j].x;
+                    circles[setIndex].y = points[j].y;
+                    var localLoss = loss(circles, areas);
+                    if (localLoss < bestLoss) {
+                        bestLoss = localLoss;
+                        bestPoint = points[j];
+                    }
+                }
+
+                positionSet(bestPoint, setIndex);
+            }
+
+            return circles;
+        }
+
+        /** Given a bunch of sets, and the desired overlaps between these sets - computes
+        the distance from the actual overlaps to the desired overlaps. Note that
+        this method ignores overlaps of more than 2 circles */
+        function lossFunction(sets, overlaps) {
+            var output = 0;
+
+            function getCircles(indices) {
+                return indices.map(function (i) { return sets[i]; });
+            }
+
+            for (var i = 0; i < overlaps.length; ++i) {
+                var area = overlaps[i], overlap;
+                if (area.sets.length == 1) {
+                    continue;
+                } else if (area.sets.length == 2) {
+                    var left = sets[area.sets[0]],
+                        right = sets[area.sets[1]];
+                    overlap = circleOverlap(left.radius, right.radius,
+                        distance(left, right));
+                } else {
+                    overlap = intersectionArea(getCircles(area.sets));
+                }
+
+                var weight = area.hasOwnProperty('weight') ? area.weight : 1.0;
+                output += weight * (overlap - area.size) * (overlap - area.size);
+            }
+
+            return output;
+        }
+
+        // orientates a bunch of circles to point in orientation
+        function orientateCircles(circles, orientation, orientationOrder) {
+            if (orientationOrder === null) {
+                circles.sort(function (a, b) { return b.radius - a.radius; });
+            } else {
+                circles.sort(orientationOrder);
+            }
+
+            var i;
+            // shift circles so largest circle is at (0, 0)
+            if (circles.length > 0) {
+                var largestX = circles[0].x,
+                    largestY = circles[0].y;
+
+                for (i = 0; i < circles.length; ++i) {
+                    circles[i].x -= largestX;
+                    circles[i].y -= largestY;
+                }
+            }
+
+            if (circles.length == 2) {
+                // if the second circle is a subset of the first, arrange so that
+                // it is off to one side. hack for https://github.com/benfred/venn.js/issues/120
+                var dist = distance(circles[0], circles[1]);
+                if (dist < Math.abs(circles[1].radius - circles[0].radius)) {
+                    circles[1].x = circles[0].x + circles[0].radius - circles[1].radius - 1e-10;
+                    circles[1].y = circles[0].y;
+                }
+            }
+
+            // rotate circles so that second largest is at an angle of 'orientation'
+            // from largest
+            if (circles.length > 1) {
+                var rotation = Math.atan2(circles[1].x, circles[1].y) - orientation,
+                    c = Math.cos(rotation),
+                    s = Math.sin(rotation), x, y;
+
+                for (i = 0; i < circles.length; ++i) {
+                    x = circles[i].x;
+                    y = circles[i].y;
+                    circles[i].x = c * x - s * y;
+                    circles[i].y = s * x + c * y;
+                }
+            }
+
+            // mirror solution if third solution is above plane specified by
+            // first two circles
+            if (circles.length > 2) {
+                var angle = Math.atan2(circles[2].x, circles[2].y) - orientation;
+                while (angle < 0) { angle += 2 * Math.PI; }
+                while (angle > 2 * Math.PI) { angle -= 2 * Math.PI; }
+                if (angle > Math.PI) {
+                    var slope = circles[1].y / (1e-10 + circles[1].x);
+                    for (i = 0; i < circles.length; ++i) {
+                        var d = (circles[i].x + slope * circles[i].y) / (1 + slope * slope);
+                        circles[i].x = 2 * d - circles[i].x;
+                        circles[i].y = 2 * d * slope - circles[i].y;
+                    }
+                }
+            }
+        }
+
+        function disjointCluster(circles) {
+            // union-find clustering to get disjoint sets
+            circles.map(function (circle) { circle.parent = circle; });
+
+            // path compression step in union find
+            function find(circle) {
+                if (circle.parent !== circle) {
+                    circle.parent = find(circle.parent);
+                }
+                return circle.parent;
+            }
+
+            function union(x, y) {
+                var xRoot = find(x), yRoot = find(y);
+                xRoot.parent = yRoot;
+            }
+
+            // get the union of all overlapping sets
+            for (var i = 0; i < circles.length; ++i) {
+                for (var j = i + 1; j < circles.length; ++j) {
+                    var maxDistance = circles[i].radius + circles[j].radius;
+                    if (distance(circles[i], circles[j]) + 1e-10 < maxDistance) {
+                        union(circles[j], circles[i]);
+                    }
+                }
+            }
+
+            // find all the disjoint clusters and group them together
+            var disjointClusters = {}, setid;
+            for (i = 0; i < circles.length; ++i) {
+                setid = find(circles[i]).parent.setid;
+                if (!(setid in disjointClusters)) {
+                    disjointClusters[setid] = [];
+                }
+                disjointClusters[setid].push(circles[i]);
+            }
+
+            // cleanup bookkeeping
+            circles.map(function (circle) { delete circle.parent; });
+
+            // return in more usable form
+            var ret = [];
+            for (setid in disjointClusters) {
+                if (disjointClusters.hasOwnProperty(setid)) {
+                    ret.push(disjointClusters[setid]);
+                }
+            }
+            return ret;
+        }
+
+        function getBoundingBox(circles) {
+            var minMax = function (d) {
+                var hi = Math.max.apply(null, circles.map(
+                    function (c) { return c[d] + c.radius; })),
+                    lo = Math.min.apply(null, circles.map(
+                        function (c) { return c[d] - c.radius; }));
+                return { max: hi, min: lo };
+            };
+
+            return { xRange: minMax('x'), yRange: minMax('y') };
+        }
+
+        function normalizeSolution(solution, orientation, orientationOrder) {
+            if (orientation === null) {
+                orientation = Math.PI / 2;
+            }
+
+            // work with a list instead of a dictionary, and take a copy so we
+            // don't mutate input
+            var circles = [], i, setid;
+            for (setid in solution) {
+                if (solution.hasOwnProperty(setid)) {
+                    var previous = solution[setid];
+                    circles.push({
+                        x: previous.x,
+                        y: previous.y,
+                        radius: previous.radius,
+                        setid: setid
+                    });
+                }
+            }
+
+            // get all the disjoint clusters
+            var clusters = disjointCluster(circles);
+
+            // orientate all disjoint sets, get sizes
+            for (i = 0; i < clusters.length; ++i) {
+                orientateCircles(clusters[i], orientation, orientationOrder);
+                var bounds = getBoundingBox(clusters[i]);
+                clusters[i].size = (bounds.xRange.max - bounds.xRange.min) * (bounds.yRange.max - bounds.yRange.min);
+                clusters[i].bounds = bounds;
+            }
+            clusters.sort(function (a, b) { return b.size - a.size; });
+
+            // orientate the largest at 0,0, and get the bounds
+            circles = clusters[0];
+            var returnBounds = circles.bounds;
+
+            var spacing = (returnBounds.xRange.max - returnBounds.xRange.min) / 50;
+
+            function addCluster(cluster, right, bottom) {
+                if (!cluster) return;
+
+                var bounds = cluster.bounds, xOffset, yOffset, centreing;
+
+                if (right) {
+                    xOffset = returnBounds.xRange.max - bounds.xRange.min + spacing;
+                } else {
+                    xOffset = returnBounds.xRange.max - bounds.xRange.max;
+                    centreing = (bounds.xRange.max - bounds.xRange.min) / 2 -
+                        (returnBounds.xRange.max - returnBounds.xRange.min) / 2;
+                    if (centreing < 0) xOffset += centreing;
+                }
+
+                if (bottom) {
+                    yOffset = returnBounds.yRange.max - bounds.yRange.min + spacing;
+                } else {
+                    yOffset = returnBounds.yRange.max - bounds.yRange.max;
+                    centreing = (bounds.yRange.max - bounds.yRange.min) / 2 -
+                        (returnBounds.yRange.max - returnBounds.yRange.min) / 2;
+                    if (centreing < 0) yOffset += centreing;
+                }
+
+                for (var j = 0; j < cluster.length; ++j) {
+                    cluster[j].x += xOffset;
+                    cluster[j].y += yOffset;
+                    circles.push(cluster[j]);
+                }
+            }
+
+            var index = 1;
+            while (index < clusters.length) {
+                addCluster(clusters[index], true, false);
+                addCluster(clusters[index + 1], false, true);
+                addCluster(clusters[index + 2], true, true);
+                index += 3;
+
+                // have one cluster (in top left). lay out next three relative
+                // to it in a grid
+                returnBounds = getBoundingBox(circles);
+            }
+
+            // convert back to solution form
+            var ret = {};
+            for (i = 0; i < circles.length; ++i) {
+                ret[circles[i].setid] = circles[i];
+            }
+            return ret;
+        }
+
+        /** Scales a solution from venn.venn or venn.greedyLayout such that it fits in
+        a rectangle of width/height - with padding around the borders. also
+        centers the diagram in the available space at the same time */
+        function scaleSolution(solution, width, height, padding) {
+            var circles = [], setids = [];
+            for (var setid in solution) {
+                if (solution.hasOwnProperty(setid)) {
+                    setids.push(setid);
+                    circles.push(solution[setid]);
+                }
+            }
+
+            width -= 2 * padding;
+            height -= 2 * padding;
+
+            var bounds = getBoundingBox(circles),
+                xRange = bounds.xRange,
+                yRange = bounds.yRange;
+
+            if ((xRange.max == xRange.min) ||
+                (yRange.max == yRange.min)) {
+                console.log("not scaling solution: zero size detected");
+                return solution;
+            }
+
+            var xScaling = width / (xRange.max - xRange.min),
+                yScaling = height / (yRange.max - yRange.min),
+                scaling = Math.min(yScaling, xScaling),
+
+                // while we're at it, center the diagram too
+                xOffset = (width - (xRange.max - xRange.min) * scaling) / 2,
+                yOffset = (height - (yRange.max - yRange.min) * scaling) / 2;
+
+            var scaled = {};
+            for (var i = 0; i < circles.length; ++i) {
+                var circle = circles[i];
+                scaled[setids[i]] = {
+                    radius: scaling * circle.radius,
+                    x: padding + xOffset + (circle.x - xRange.min) * scaling,
+                    y: padding + yOffset + (circle.y - yRange.min) * scaling,
+                };
+            }
+
+            return scaled;
+        }
+
+        /*global console:true*/
+
+        function VennDiagram() {
+            var width = 600,
+                height = 350,
+                padding = 15,
+                duration = 1000,
+                orientation = Math.PI / 2,
+                normalize = true,
+                wrap = true,
+                styled = true,
+                fontSize = null,
+                orientationOrder = null,
+
+                // mimic the behaviour of d3.scale.category10 from the previous
+                // version of d3
+                colourMap = {},
+
+                // so this is the same as d3.schemeCategory10, which is only defined in d3 4.0
+                // since we can support older versions of d3 as long as we don't force this,
+                // I'm hackily redefining below. TODO: remove this and change to d3.schemeCategory10
+                colourScheme = ["#ffffff", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#000000", "#17becf"],
+                colourIndex = 0,
+                colours = function (key) {
+                    if (key in colourMap) {
+                        return colourMap[key];
+                    }
+                    var ret = colourMap[key] = colourScheme[colourIndex];
+                    colourIndex += 1;
+                    if (colourIndex >= colourScheme.length) {
+                        colourIndex = 0;
+                    }
+                    return ret;
+                },
+                layoutFunction = venn,
+                loss = lossFunction;
+
+
+            function chart(selection) {
+                var data = selection.datum();
+
+                // handle 0-sized sets by removing from input
+                var toremove = {};
+                data.forEach(function (datum) {
+                    if ((datum.size == 0) && datum.sets.length == 1) {
+                        toremove[datum.sets[0]] = 1;
+                    }
+                });
+                data = data.filter(function (datum) {
+                    return !datum.sets.some(function (set) { return set in toremove; });
+                });
+
+                var circles = {};
+                var textCentres = {};
+
+                if (data.length > 0) {
+                    var solution = layoutFunction(data, { lossFunction: loss });
+
+                    if (normalize) {
+                        solution = normalizeSolution(solution,
+                            orientation,
+                            orientationOrder);
+                    }
+
+                    circles = scaleSolution(solution, width, height, padding);
+                    textCentres = computeTextCentres(circles, data);
+                }
+
+                // Figure out the current label for each set. These can change
+                // and D3 won't necessarily update (fixes https://github.com/benfred/venn.js/issues/103)
+                var labels = {};
+                data.forEach(function (datum) {
+                    if (datum.label) {
+                        labels[datum.sets] = datum.label;
+                    }
+                });
+
+                function label(d) {
+                    if (d.sets in labels) {
+                        return labels[d.sets];
+                    }
+                    if (d.sets.length == 1) {
+                        return '' + d.sets[0];
+                    }
+                }
+
+                // create svg if not already existing
+                selection.selectAll("svg").data([circles]).enter().append("svg");
+
+                var svg = selection.select("svg")
+                    .attr("width", width)
+                    .attr("height", height);
+
+                // to properly transition intersection areas, we need the
+                // previous circles locations. load from elements
+                var previous = {}, hasPrevious = false;
+                svg.selectAll(".venn-area path").each(function (d) {
+                    var path = d3Selection.select(this).attr("d");
+                    if ((d.sets.length == 1) && path) {
+                        hasPrevious = true;
+                        previous[d.sets[0]] = circleFromPath(path);
+                    }
+                });
+
+                // interpolate intersection area paths between previous and
+                // current paths
+                var pathTween = function (d) {
+                    return function (t) {
+                        var c = d.sets.map(function (set) {
+                            var start = previous[set], end = circles[set];
+                            if (!start) {
+                                start = { x: width / 2, y: height / 2, radius: 1 };
+                            }
+                            if (!end) {
+                                end = { x: width / 2, y: height / 2, radius: 1 };
+                            }
+                            return {
+                                'x': start.x * (1 - t) + end.x * t,
+                                'y': start.y * (1 - t) + end.y * t,
+                                'radius': start.radius * (1 - t) + end.radius * t
+                            };
+                        });
+                        return intersectionAreaPath(c);
+                    };
+                };
+
+                // update data, joining on the set ids
+                var nodes = svg.selectAll(".venn-area")
+                    .data(data, function (d) { return d.sets; });
+
+                // create new nodes
+                var enter = nodes.enter()
+                    .append('g')
+                    .attr("class", function (d) {
+                        return "venn-area venn-" +
+                            (d.sets.length == 1 ? "circle" : "intersection");
+                    })
+                    .attr("data-venn-sets", function (d) {
+                        return d.sets.join("_");
+                    });
+
+                var enterPath = enter.append("path"),
+                    enterText = enter.append("text")
+                        .attr("class", "label")
+                        .text(function (d) { return label(d); })
+                        .attr("text-anchor", "middle")
+                        .attr("dy", ".35em")
+                        .attr("x", width / 2)
+                        .attr("y", height / 2);
+
+
+                // apply minimal style if wanted
+                if (styled) {
+                    enterPath.style("fill-opacity", "0")
+                        .filter(function (d) { return d.sets.length == 1; })
+                        .style("fill", function (d) { return colours(d.sets); })
+                        .style("fill-opacity", ".25");
+
+                    enterText
+                        .style("fill", function (d) { return d.sets.length == 1 ? colours(d.sets) : "#444"; });
+                }
+
+                // update existing, using pathTween if necessary
+                var update = selection;
+                if (hasPrevious) {
+                    update = selection.transition("venn").duration(duration);
+                    update.selectAll("path")
+                        .attrTween("d", pathTween);
+                } else {
+                    update.selectAll("path")
+                        .attr("d", function (d) {
+                            return intersectionAreaPath(d.sets.map(function (set) { return circles[set]; }));
+                        });
+                }
+
+                var updateText = update.selectAll("text")
+                    .filter(function (d) { return d.sets in textCentres; })
+                    .text(function (d) { return label(d); })
+                    .attr("x", function (d) { return Math.floor(textCentres[d.sets].x); })
+                    .attr("y", function (d) { return Math.floor(textCentres[d.sets].y); });
+
+                if (wrap) {
+                    if (hasPrevious) {
+                        // d3 4.0 uses 'on' for events on transitions,
+                        // but d3 3.0 used 'each' instead. switch appropiately
+                        if ('on' in updateText) {
+                            updateText.on("end", wrapText(circles, label));
+                        } else {
+                            updateText.each("end", wrapText(circles, label));
+                        }
+                    } else {
+                        updateText.each(wrapText(circles, label));
+                    }
+                }
+
+                // remove old
+                var exit = nodes.exit().transition('venn').duration(duration).remove();
+                exit.selectAll("path")
+                    .attrTween("d", pathTween);
+
+                var exitText = exit.selectAll("text")
+                    .attr("x", width / 2)
+                    .attr("y", height / 2);
+
+                // if we've been passed a fontSize explicitly, use it to
+                // transition
+                if (fontSize !== null) {
+                    enterText.style("font-size", "0px");
+                    updateText.style("font-size", fontSize);
+                    exitText.style("font-size", "0px");
+                }
+
+
+                return {
+                    'circles': circles,
+                    'textCentres': textCentres,
+                    'nodes': nodes,
+                    'enter': enter,
+                    'update': update,
+                    'exit': exit
+                };
+            }
+
+            chart.wrap = function (_) {
+                if (!arguments.length) return wrap;
+                wrap = _;
+                return chart;
+            };
+
+            chart.width = function (_) {
+                if (!arguments.length) return width;
+                width = _;
+                return chart;
+            };
+
+            chart.height = function (_) {
+                if (!arguments.length) return height;
+                height = _;
+                return chart;
+            };
+
+            chart.padding = function (_) {
+                if (!arguments.length) return padding;
+                padding = _;
+                return chart;
+            };
+
+            chart.colours = function (_) {
+                if (!arguments.length) return colours;
+                colours = _;
+                return chart;
+            };
+
+            chart.fontSize = function (_) {
+                if (!arguments.length) return fontSize;
+                fontSize = _;
+                return chart;
+            };
+
+            chart.duration = function (_) {
+                if (!arguments.length) return duration;
+                duration = _;
+                return chart;
+            };
+
+            chart.layoutFunction = function (_) {
+                if (!arguments.length) return layoutFunction;
+                layoutFunction = _;
+                return chart;
+            };
+
+            chart.normalize = function (_) {
+                if (!arguments.length) return normalize;
+                normalize = _;
+                return chart;
+            };
+
+            chart.styled = function (_) {
+                if (!arguments.length) return styled;
+                styled = _;
+                return chart;
+            };
+
+            chart.orientation = function (_) {
+                if (!arguments.length) return orientation;
+                orientation = _;
+                return chart;
+            };
+
+            chart.orientationOrder = function (_) {
+                if (!arguments.length) return orientationOrder;
+                orientationOrder = _;
+                return chart;
+            };
+
+            chart.lossFunction = function (_) {
+                if (!arguments.length) return loss;
+                loss = _;
+                return chart;
+            };
+
+            return chart;
+        }
+        // sometimes text doesn't fit inside the circle, if thats the case lets wrap
+        // the text here such that it fits
+        // todo: looks like this might be merged into d3 (
+        // https://github.com/mbostock/d3/issues/1642),
+        // also worth checking out is
+        // http://engineering.findthebest.com/wrapping-axis-labels-in-d3-js/
+        // this seems to be one of those things that should be easy but isn't
+        function wrapText(circles, labeller) {
+            return function () {
+                var text = d3Selection.select(this),
+                    data = text.datum(),
+                    width = circles[data.sets[0]].radius / 2 || 50,
+                    label = labeller(data) || '';
+
+                var words = label.split(/\s+/).reverse(),
+                    maxLines = 4,
+                    minChars = (label.length + words.length) / maxLines,
+                    word = words.pop(),
+                    line = [word],
+                    joined,
+                    lineNumber = 0,
+                    lineHeight = 1.3, // ems
+                    tspan = text.text(null).append("tspan").text(word);
+
+                while (true) {
+                    word = words.pop();
+                    if (!word) break;
+                    line.push(word);
+                    joined = line.join(" ");
+                    tspan.text(joined);
+                    if (joined.length > minChars && tspan.node().getComputedTextLength() > width) {
+                        line.pop();
+                        tspan.text(line.join(" "));
+                        line = [word];
+                        tspan = text.append("tspan").text(word);
+                        lineNumber++;
+                    }
+                }
+
+                var initial = 0.35 - lineNumber * lineHeight / 2,
+                    x = text.attr("x"),
+                    y = text.attr("y");
+
+                text.selectAll("tspan")
+                    .attr("x", x)
+                    .attr("y", y)
+                    .attr("dy", function (d, i) {
+                        return (initial + i * lineHeight) + "em";
+                    });
+            };
+        }
+
+        function circleMargin(current, interior, exterior) {
+            var margin = interior[0].radius - distance(interior[0], current), i, m;
+            for (i = 1; i < interior.length; ++i) {
+                m = interior[i].radius - distance(interior[i], current);
+                if (m <= margin) {
+                    margin = m;
+                }
+            }
+
+            for (i = 0; i < exterior.length; ++i) {
+                m = distance(exterior[i], current) - exterior[i].radius;
+                if (m <= margin) {
+                    margin = m;
+                }
+            }
+            return margin;
+        }
+
+        // compute the center of some circles by maximizing the margin of
+        // the center point relative to the circles (interior) after subtracting
+        // nearby circles (exterior)
+        function computeTextCentre(interior, exterior) {
+            // get an initial estimate by sampling around the interior circles
+            // and taking the point with the biggest margin
+            var points = [], i;
+            for (i = 0; i < interior.length; ++i) {
+                var c = interior[i];
+                points.push({ x: c.x, y: c.y });
+                points.push({ x: c.x + c.radius / 2, y: c.y });
+                points.push({ x: c.x - c.radius / 2, y: c.y });
+                points.push({ x: c.x, y: c.y + c.radius / 2 });
+                points.push({ x: c.x, y: c.y - c.radius / 2 });
+            }
+            var initial = points[0], margin = circleMargin(points[0], interior, exterior);
+            for (i = 1; i < points.length; ++i) {
+                var m = circleMargin(points[i], interior, exterior);
+                if (m >= margin) {
+                    initial = points[i];
+                    margin = m;
+                }
+            }
+
+            // maximize the margin numerically
+            var solution = nelderMead(
+                function (p) { return -1 * circleMargin({ x: p[0], y: p[1] }, interior, exterior); },
+                [initial.x, initial.y],
+                { maxIterations: 500, minErrorDelta: 1e-10 }).x;
+            var ret = { x: solution[0], y: solution[1] };
+
+            // check solution, fallback as needed (happens if fully overlapped
+            // etc)
+            var valid = true;
+            for (i = 0; i < interior.length; ++i) {
+                if (distance(ret, interior[i]) > interior[i].radius) {
+                    valid = false;
+                    break;
+                }
+            }
+
+            for (i = 0; i < exterior.length; ++i) {
+                if (distance(ret, exterior[i]) < exterior[i].radius) {
+                    valid = false;
+                    break;
+                }
+            }
+
+            if (!valid) {
+                if (interior.length == 1) {
+                    ret = { x: interior[0].x, y: interior[0].y };
+                } else {
+                    var areaStats = {};
+                    intersectionArea(interior, areaStats);
+
+                    if (areaStats.arcs.length === 0) {
+                        ret = { 'x': 0, 'y': -1000, disjoint: true };
+
+                    } else if (areaStats.arcs.length == 1) {
+                        ret = {
+                            'x': areaStats.arcs[0].circle.x,
+                            'y': areaStats.arcs[0].circle.y
+                        };
+
+                    } else if (exterior.length) {
+                        // try again without other circles
+                        ret = computeTextCentre(interior, []);
+
+                    } else {
+                        // take average of all the points in the intersection
+                        // polygon. this should basically never happen
+                        // and has some issues:
+                        // https://github.com/benfred/venn.js/issues/48#issuecomment-146069777
+                        ret = getCenter(areaStats.arcs.map(function (a) { return a.p1; }));
+                    }
+                }
+            }
+
+            return ret;
+        }
+
+        // given a dictionary of {setid : circle}, returns
+        // a dictionary of setid to list of circles that completely overlap it
+        function getOverlappingCircles(circles) {
+            var ret = {}, circleids = [];
+            for (var circleid in circles) {
+                circleids.push(circleid);
+                ret[circleid] = [];
+            }
+            for (var i = 0; i < circleids.length; i++) {
+                var a = circles[circleids[i]];
+                for (var j = i + 1; j < circleids.length; ++j) {
+                    var b = circles[circleids[j]],
+                        d = distance(a, b);
+
+                    if (d + b.radius <= a.radius + 1e-10) {
+                        ret[circleids[j]].push(circleids[i]);
+
+                    } else if (d + a.radius <= b.radius + 1e-10) {
+                        ret[circleids[i]].push(circleids[j]);
+                    }
+                }
+            }
+            return ret;
+        }
+
+        function computeTextCentres(circles, areas) {
+            var ret = {}, overlapped = getOverlappingCircles(circles);
+            for (var i = 0; i < areas.length; ++i) {
+                var area = areas[i].sets, areaids = {}, exclude = {};
+                for (var j = 0; j < area.length; ++j) {
+                    areaids[area[j]] = true;
+                    var overlaps = overlapped[area[j]];
+                    // keep track of any circles that overlap this area,
+                    // and don't consider for purposes of computing the text
+                    // centre
+                    for (var k = 0; k < overlaps.length; ++k) {
+                        exclude[overlaps[k]] = true;
+                    }
+                }
+
+                var interior = [], exterior = [];
+                for (var setid in circles) {
+                    if (setid in areaids) {
+                        interior.push(circles[setid]);
+                    } else if (!(setid in exclude)) {
+                        exterior.push(circles[setid]);
+                    }
+                }
+                var centre = computeTextCentre(interior, exterior);
+                ret[area] = centre;
+                if (centre.disjoint && (areas[i].size > 0)) {
+                    console.log("WARNING: area " + area + " not represented on screen");
+                }
+            }
+            return ret;
+        }
+
+        // sorts all areas in the venn diagram, so that
+        // a particular area is on top (relativeTo) - and
+        // all other areas are so that the smallest areas are on top
+        function sortAreas(div, relativeTo) {
+            console.log("relativeTo >>>", relativeTo, relativeTo.sets)
+            // figure out sets that are completly overlapped by relativeTo
+            var overlaps = getOverlappingCircles(div.selectAll("svg").datum());
+            var exclude = {};
+            for (var i = 0; i < relativeTo.sets.length; ++i) {
+                var check = relativeTo.sets[i];
+                for (var setid in overlaps) {
+                    var overlap = overlaps[setid];
+                    for (var j = 0; j < overlap.length; ++j) {
+                        if (overlap[j] == check) {
+                            exclude[setid] = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // checks that all sets are in exclude;
+            function shouldExclude(sets) {
+                for (var i = 0; i < sets.length; ++i) {
+                    if (!(sets[i] in exclude)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            // need to sort div's so that Z order is correct
+            div.selectAll("g").sort(function (a, b) {
+                // highest order set intersections first
+                if (a.sets.length != b.sets.length) {
+                    return a.sets.length - b.sets.length;
+                }
+
+                if (a == relativeTo) {
+                    return shouldExclude(b.sets) ? -1 : 1;
+                }
+                if (b == relativeTo) {
+                    return shouldExclude(a.sets) ? 1 : -1;
+                }
+
+                // finally by size
+                return b.size - a.size;
+            });
+        }
+
+        function circlePath(x, y, r) {
+            var ret = [];
+            ret.push("\nM", x, y);
+            ret.push("\nm", -r, 0);
+            ret.push("\na", r, r, 0, 1, 0, r * 2, 0);
+            ret.push("\na", r, r, 0, 1, 0, -r * 2, 0);
+            return ret.join(" ");
+        }
+
+        // inverse of the circlePath function, returns a circle object from an svg path
+        function circleFromPath(path) {
+            var tokens = path.split(' ');
+            return {
+                'x': parseFloat(tokens[1]),
+                'y': parseFloat(tokens[2]),
+                'radius': -parseFloat(tokens[4])
+            };
+        }
+
+        /** returns a svg path of the intersection area of a bunch of circles */
+        function intersectionAreaPath(circles) {
+            var stats = {};
+            intersectionArea(circles, stats);
+            var arcs = stats.arcs;
+
+            if (arcs.length === 0) {
+                return "M 0 0";
+
+            } else if (arcs.length == 1) {
+                var circle = arcs[0].circle;
+                return circlePath(circle.x, circle.y, circle.radius);
+
+            } else {
+                // draw path around arcs
+                var ret = ["\nM", arcs[0].p2.x, arcs[0].p2.y];
+                for (var i = 0; i < arcs.length; ++i) {
+                    var arc = arcs[i], r = arc.circle.radius, wide = arc.width > r;
+                    ret.push("\nA", r, r, 0, wide ? 1 : 0, 1,
+                        arc.p1.x, arc.p1.y);
+                }
+                return ret.join(" ");
+            }
+        }
+
+        exports.intersectionArea = intersectionArea;
+        exports.circleCircleIntersection = circleCircleIntersection;
+        exports.circleOverlap = circleOverlap;
+        exports.circleArea = circleArea;
+        exports.distance = distance;
+        exports.venn = venn;
+        exports.greedyLayout = greedyLayout;
+        exports.scaleSolution = scaleSolution;
+        exports.normalizeSolution = normalizeSolution;
+        exports.bestInitialLayout = bestInitialLayout;
+        exports.lossFunction = lossFunction;
+        exports.disjointCluster = disjointCluster;
+        exports.distanceFromIntersectArea = distanceFromIntersectArea;
+        exports.VennDiagram = VennDiagram;
+        exports.wrapText = wrapText;
+        exports.computeTextCentres = computeTextCentres;
+        exports.computeTextCentre = computeTextCentre;
+        exports.sortAreas = sortAreas;
+        exports.circlePath = circlePath;
+        exports.circleFromPath = circleFromPath;
+        exports.intersectionAreaPath = intersectionAreaPath;
+
+        Object.defineProperty(exports, '__esModule', { value: true });
+
+    })));
+</script>
+<script>
+    //drawing board
+    // const svg = d3.select("svg")
+    // TODO:xiaojiao, 监听窗口resize 时的变化
+    let flag = true
+
+    // 全屏设置
+    let isFullscreen = false;
+
+    window.onresize = function () {
+
+        // 全屏时放弃改变窗口大小
+        if (isFullscreen) {
+            return;
+        }
+        if (flag) {
+            // console.log(new Date(), '窗口改变了')
+            location.reload();
+            flag = false
+        }
+        let timeId = setTimeout(() => {
+            flag = true
+            timeId = null // 清除延时定时器
+        }, 1000)
+        // width = document.body.clientWidth;
+    }
+    // 网页窗口在某一大小打开时的宽高
+    // https://stackoverflow.com/questions/16265123/resize-svg-when-window-is-resized-in-d3-js
+    var width = window.innerWidth || document.clientWidth || document.body.clientWidth;
+    var height = window.innerHeight || document.clientHeight || document.body.clientHeight;
+    // 创建颜色比例尺
+    const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+
+    var margin = { top: 0.015 * height, right: 0.38 * width, bottom: 0.09 * height, left: 0.05 * width },
+        width = width - margin.left - margin.right,
+        height = height - margin.top - margin.bottom * 1.2;
+    // append the svg object to the body of the page
+    const svg = d3.select("#venn")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .attr("id", "chart")
+        .append("g")
+        .attr("transform",
+            `translate(${margin.left}, ${margin.top})`);
+    // var sets = [
+    //     { "sets": [0], "label": "X1", "size": 5, "data": "[a]" },
+    //     { "sets": [1], "label": "X2", "size": 5, "data": "[b]" },
+    //     { "sets": [2], "label": "X3", "size": 5, "data": "[c]" },
+    //     { "sets": [3], "label": "X4", "size": 5, "data": "[d]" },
+    //     { "sets": [0, 1], "label": "X1 and X2", "size": 2, "data": "[e]" },
+    //     { "sets": [0, 2], "label": "X1 and X3", "size": 2, "data": "[g]" },
+    //     { "sets": [1, 2], "label": "X2 and X3", "size": 2, "data": "[f]" },
+    //     { "sets": [0, 3], "label": "X1 and X4", "size": 2, "data": "[h]" },
+    //     { "sets": [1, 3], "label": "X2 and X4", "size": 2, "data": "[i]" },
+    //     { "sets": [2, 3], "label": "X3 and X4", "size": 2, "data": "[j]" },
+    //     { "sets": [0, 1, 2], "label": "X1, X2, and X3", "size": 3, "data": "[l]" },
+    //     { "sets": [0, 1, 3], "label": "X1, X2, and X4", "size": 2, "data": "[n]" },
+    //     { "sets": [0, 2, 3], "label": "X1, X3, and X4", "size": 2, "data": "[k]" },
+    //     { "sets": [1, 2, 3], "label": "X2, X3, and X4", "size": 2, "data": "[m]" },
+    //     { "sets": [0, 1, 2, 3], "label": "X1, X2, X3, and X4", "size": 1, "data": "[o]" }
+    // ];
+
+    // var sets = [
+    //     { "sets": [0], "label": "X1", "size": 5, "data": "[a]" },
+    //     { "sets": [1], "label": "X2", "size": 5, "data": "[b]" },
+    //     { "sets": [0, 1], "label": "X1 and X2", "size": 2, "data": "[c]" },
+    // ];
+    
+    var sets = [
+    { "sets": [0], "label": "X1", "size": 5, "data": "0.03910182" },
+    { "sets": [1], "label": "X2", "size": 5, "data": "0.03824107" },
+    { "sets": [2], "label": "X3", "size": 5, "data": "0.10123630" },
+    { "sets": [0, 1], "label": "X1, X2", "size": 2, "data": "0.01406508" },
+    { "sets": [1, 2], "label": "X2, X3", "size": 2, "data": "0.09179126" },
+    { "sets": [0, 2], "label": "X1, X3", "size": 2, "data": "0.08305766" },
+    { "sets": [0, 1, 2], "label": "X1, X2, X3", "size": 1, "data": "0.17044694" }
+    ]
+    var svgContainer = svg
+        // .attr("width", 500)
+        // .attr("height", 500);
+
+    var venngroup = svgContainer.append("g")
+        .attr("id", "venngroup");
+    ;
+
+    var chart = venn.VennDiagram()
+        .width(500)
+        .height(500)
+        .styled(false);
+
+    var div = d3.select("#venngroup")
+    div.datum(sets).call(chart);
+    var tooltip = d3.select("#tooltell").append("div")
+        .attr("class", "venntooltip");
+    div.selectAll("path")
+        .style("stroke-opacity", 0)
+        .style("stroke", "rgba(22,22,22,1)")
+        .style("stroke-width", 2)
+        .style("transform-origin", "50% 50%")
+        .attr("id", function (d, i) {
+            console.log("d i >>>", d, i);
+            return d.label
+        });
+
+
+    // 颜色选择器
+    var colorPicker = d3.select("#colorPicker");
+
+    var selectedPath = null;
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+        div.selectAll("g.venn-area")
+            .on("mouseover", function (i, d) {
+                // sort all the areas relative to the current item
+                console.log(d, i)
+                venn.sortAreas(div, d);
+                // Display a tooltip with the current size
+                tooltip.transition().duration(300).style("opacity", 1);
+                tooltip.text(d.data);
+
+                // d3.select("#venn").selectAll("path").transition("filter").duration(250).style("filter", "grayscale(20%)").style("filter", ("filter", "url(#desaturate)");
+
+                //   var circleUnderMouse = this;
+                //  d3.select("#venn").selectAll("path").transition("opacity").duration(250).style("opacity",  function () {return (this === circleUnderMouse) ? 1.0 : 0.5;});
+
+
+                // d3.select(this).selectAll("path").transition("opacity").duration(250).style("fill-opacity", 1);
+                // d3.select(this).raise();
+
+                // highlight the current path
+                var selection = d3.select(this).transition("tooltip").duration(300);
+                selection.select("path")
+                    .style("fill-opacity", 1)
+                    .style("stroke-opacity", 1)
+                    .style("transform", "scale(1.01,1.01)")
+                    .style("transform-origin", "50% 50%");
+            })
+            // .on("mousemove", function() {
+            //     tooltip.style("left", (d3.event.pageX) + "px")
+            //            .style("top", (d3.event.pageY - 28) + "px");
+            // })
+            .on("mouseout", function (i, d) {
+                tooltip.transition().duration(500).style("opacity", 0);
+                var selection = d3.select(this).transition("tooltip").duration(400);
+                selection.select("path")
+                    .style("fill-opacity", d.sets.length == 1 ? 1 : 1)
+                    .style("stroke-opacity", 0)
+                    .style("transform", "scale(1,1)")
+                    .style("transform-origin", "50% 50%");
+                // d3.select("#venn").selectAll("path").transition("opacity").duration(250).style("opacity", 1);
+                // d3.select(this).lower();
+
+            })
+            .on("click", function (event, d) {
+                selectedPath = d3.select(this).select("path");
+                // 触发颜色选择器
+                colorPicker.node().click();
+            });
+    });
+    colorPicker.on("input", function () {
+        var newColor = d3.select(this).property("value");
+        if (selectedPath) {
+            selectedPath.attr("stroke", newColor);
+            selectedPath.style("fill", newColor);
+
+            // 保存颜色，示例中保存到本地存储
+            localStorage.setItem(selectedPath.attr("id"), newColor);
+            // d3.select(this).style("fill", savedColor);
+
+        }
+    });
+
+    // 从本地存储中恢复颜色
+    div.selectAll("path").each(function (d) {
+        var savedColor = localStorage.getItem(d3.select(this).attr("id"));
+        if (savedColor) {
+            d3.select(this).attr("stroke", savedColor);
+            d3.select(this).style("fill", savedColor);
+
+        }
+    });
+    // 
+
+    var myLabel = svg.append('foreignObject')
+        .attr('height', 150)
+        .attr('width', 100) // dimensions determined based on need
+        .attr('transform', 'translate(0,0)') // put it where you want it...
+        .html('<div class="style-me"><p>My label or other text</p></div>');
+
+    // svg.append('filter')
+    //   .attr('id','desaturate')
+    //   .append('feColorMatrix')
+    //   .attr('type','matrix')
+    //   .attr('values',"0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0");
+
+    var stuffToBeWrapped = d3.selectAll(svg);
+
+    stuffToBeWrapped.each(function () {
+
+        d3.select(this.childNode).insert("g", function () { return this; })
+            //insert a new <g> element immediately before this element
+            .attr("class", "wrapper") //set anything you want to on the <g>
+            .append(function () { return this; });
+        //move the content element into the group
+
+    });
+
+    // 缩放行为
+    // 创建一个缩放行为，并设置缩放事件处理程序
+    const zoom = d3.zoom().on('zoom', (e) => {
+        svg.attr('transform', e.transform);
+    });
+
+    d3.select("#venn").call(zoom);
+
+    // d3.select("#my_dataviz").call(zoom)
+    // .call(zoom.transform, d3.zoomIdentity.scale(0.8))
+    // d3.select("#venn").attr("transform", "translate(" + (0) + "," + (height / 2) + "), rotate(270)");
+
+    // 添加lengend
+    
+</script>
+<script type="text/javascript">
+    const fontSelect = document.getElementById("fontSelect");
+    const textElement = d3.select("#my_dataviz");
+
+    fontSelect.addEventListener("change", function () {
+        const selectedFont = fontSelect.value;
+        d3.selectAll("text").style("font-family", selectedFont);
+        // svg.style("font-family", selectedFont);
+    });
+
+    const fontSizeRange = document.getElementById("fontSizeRange");
+    const sliderTooltip = document.querySelector(".sliderTooltip");
+
+    // 嵌套的子元素span中的value
+    var valueSpan = document.querySelector(".sliderTooltip .value");
+
+    fontSizeRange.addEventListener("input", function () {
+        const selectedFontSize = fontSizeRange.value;
+        d3.select("#venn").selectAll("text").style("font-size", selectedFontSize + "px");
+        // svg.style("font-size", selectedFontSize + "px");
+        const sliderRect = fontSizeRange.getBoundingClientRect();
+
+        const tooltipWidth = sliderTooltip.offsetWidth;
+        const tooltipHeight = sliderTooltip.offsetHeight;
+
+        console.log("sliderTooltip", sliderTooltip);
+        const sliderValue = parseInt(selectedFontSize);
+        const sliderMin = parseInt(fontSizeRange.min);
+        const sliderMax = parseInt(fontSizeRange.max);
+        const sliderWidth = fontSizeRange.offsetWidth;
+
+        console.log("sliderRect, tooltipWidth, tooltipHeight", sliderRect, tooltipWidth, tooltipHeight);
+
+        // TODO:xiaojiao, fix thar
+        // const tooltipX = 1;
+        const positionPercentage = (sliderValue - sliderMin) / (sliderMax - sliderMin);
+        const tooltipPosition = positionPercentage * (sliderWidth - tooltipWidth);
+
+        const tooltipX = tooltipWidth + tooltipPosition;
+        const tooltipY = sliderRect.top - tooltipHeight; // 自定义偏移量，避免与滑块重叠
+        console.log("tooltipX", tooltipPosition);
+
+        sliderTooltip.style.left = tooltipX + "px";
+        // sliderTooltip.style.top = -0.1 + "px";
+
+        valueSpan.textContent = selectedFontSize + 'px';
+    });
+
+    // 添加slider tooltip
+    fontSizeRange.addEventListener("mouseover", function () {
+        console.log("sliderTooltip", sliderTooltip);
+        // tooltip.classList.add()
+        sliderTooltip.style.display = "block";
+
+        sliderTooltip.classList.add("show");
+    });
+
+    fontSizeRange.addEventListener("mouseout", function () {
+
+        sliderTooltip.classList.remove("show");
+        sliderTooltip.style.display = "none";
+    });
+
+</script>
+</body>
+
+</html>

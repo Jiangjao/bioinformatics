@@ -1,0 +1,2338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            /* font-size: 12px; */
+            letter-spacing: 0.03em;
+            text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.4);
+        }
+
+        #tooltell {
+            display: block;
+            /* position: absolute; */
+            width: 50%;
+            height: 100%;
+            font-size: 16px;
+            color: #111111;
+        }
+
+        .venntooltip {
+            position: absolute;
+            text-align: center;
+            width: 60px;
+            height: 60px;
+            background: #ddd;
+            color: #000;
+            padding: 2px;
+            border: 0px;
+            border-radius: 8px;
+            opacity: 0;
+            top: 0;
+            left: 0;
+
+        }
+
+        svg path {
+            /*     stroke: rgba(33,33,33,0.6); */
+            /*     stroke-width: 3px; */
+        }
+
+        svg text {
+            /* fill: white; */
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 14px;
+        }
+
+        svg [data-venn-sets="0_1"] text {
+            fill: black;
+        }
+
+        svg [data-venn-sets="0_1"]:hover {}
+
+        svg [data-venn-sets="3"] {
+            fill: #ffff0777;
+        }
+
+        svg [data-venn-sets="2"] {
+            fill: #c94402;
+        }
+
+        svg [data-venn-sets="1"] {
+            fill: #fd4db0;
+        }
+
+        svg [data-venn-sets="0"] {
+            fill: #125fe3;
+        }
+
+        [data-venn-sets="0_1"] {
+            fill: #fce917;
+        }
+
+        [data-venn-sets="0_2"] {
+            fill: #9244a6;
+        }
+
+        [data-venn-sets="0_3"] {
+            fill: #44a691;
+        }
+
+        [data-venn-sets="1_2"] {
+            fill: #2c4a68;
+        }
+
+        [data-venn-sets="1_3"] {
+            fill: #66cc66;
+        }
+
+        [data-venn-sets="2_3"] {
+            fill: #cc6666;
+        }
+
+        [data-venn-sets="0_1_2"] {
+            fill: #ff8c00;
+        }
+
+        [data-venn-sets="0_1_3"] {
+            fill: #8a2be2;
+        }
+
+        [data-venn-sets="0_2_3"] {
+            fill: #ff4500;
+        }
+
+        [data-venn-sets="1_2_3"] {
+            fill: #2e8b57;
+        }
+
+        [data-venn-sets="0_1_2_3"] {
+            fill: #4682b4;
+        }
+
+        /* [data-venn-sets="0_1_2_"] { fill: #44a691; } */
+        svg {
+            /* mix-blend-mode: difference; */
+        }
+
+        /* svg:hover g:not(:hover) path
+ { opacity: .5;
+    -webkit-filter: grayscale(0%); 
+    filter: grayscale(0%);
+    filter: blur(50);
+}
+svg:hover g:not(:hover) text
+ { opacity: .3; } */
+
+
+        g#venngroup:hover g:not(:hover) path {
+            opacity: .5;
+            z-index: 9999;
+        }
+
+        g#venngroup:hover g:not(:hover) text {
+            opacity: .5;
+        }
+
+        svg .container {
+            width: 100%;
+            height: 100%;
+            /* margin: auto;
+           */
+            min-width: 1318px;
+            min-height: 1318px;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        *,
+        section {
+            margin: 0;
+            padding: 0;
+        }
+
+        .main-page {
+            height: 100%;
+
+        }
+
+        .tooltip {
+            position: absolute;
+            background-color: #f9f9f9;
+            padding: 8px;
+            border: 1px solid #ccc;
+            pointer-events: none;
+            font-size: 14px;
+        }
+
+        .text_board {
+            position: absolute;
+            background-color: #f9f9f9;
+            padding: 8px;
+            border: 1px solid #ccc;
+            /* pointer-events: none; */
+            /* font-size: 14px; */
+        }
+
+        .center-wrap {
+            margin: 0 auto;
+        }
+
+        .basicSettings {
+            /* width: 80%; */
+            position: relative;
+            /* top: 38px; */
+            z-index: 1;
+            overflow-y: auto;
+        }
+
+        .downloadSettings {
+            width: 100%;
+            position: relative;
+            /* top: 18px; */
+            z-index: 2;
+        }
+
+        .sidebar {
+            width: 100%;
+            display: none;
+            /* 初始状态下隐藏下拉框 */
+        }
+
+        .sidebar p {
+            /* width: 120px; */
+        }
+
+        .sidebar h2 {
+            /* margin-bottom: 10px; */
+            /* border-bottom: 1px solid #ddd; */
+            padding-bottom: 5px;
+        }
+
+
+        .sidebar label {
+            width: 120px;
+            /* text-align: right; */
+            /* margin-right: 10px; */
+            /* display: inline-block; */
+        }
+
+        /* 字体宽度大小设置 */
+        .sidebar .form-select {
+            width: 80px;
+        }
+
+        /* .sidebar input, */
+        .sidebar select {
+            width: 120px;
+            /* text-align: right; */
+            margin-right: 10px;
+            border-radius: 4px;
+        }
+
+        .sidebar button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            background: #42b983;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .sidebar button:hover {
+            opacity: 0.8;
+        }
+
+        .sidebar input[type="number"] {
+            width: 50px;
+        }
+
+        .sidebar input[type="text"] {
+            width: 36%;
+        }
+
+        .sidebar input[type="range"] {
+            width: 100%;
+            /* transform: rotate(270deg); 添加垂直滚动条 */
+        }
+
+        /* .sidebar br {
+            display: none;
+        } */
+
+        .item {
+            display: flex;
+            align-items: center;
+            text-align: justify;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            width: 88%;
+        }
+
+        /* .item {} */
+
+        .sidebar hr {
+            overflow: hidden;
+            width: 88%;
+        }
+
+        /* 设置hr线 */
+        .item+hr {
+            margin: 10px 0;
+
+        }
+
+        .item+hr:first-child {
+            margin-top: 0;
+        }
+
+        .item+hr {
+            border: none;
+            border-top: 1px dotted #ccc;
+        }
+
+        /* hr {} */
+        /* .item label {
+            width: 120px;
+            } */
+        /* .sidebar {
+            display: flex;
+            flex-wrap: wrap;
+        } */
+
+        .sliderTooltip {
+            /* display: block; */
+            /* position: absolute; */
+            /* styles */
+            /* padding: 10px; */
+            position: absolute;
+            /* top: -30px; */
+            /* left: 134px; */
+            background-color: rgb(204 204 204 / 18%);
+            /* color: #f9f9f9; */
+            padding: 5px;
+            border-radius: 5px;
+            display: none;
+            margin-top: 14%;
+        }
+
+        .tooltip.show {
+            display: block;
+        }
+
+        .sidebar.show {
+            width: 100%;
+            height: auto;
+            position: relative;
+            /* padding: inherit; */
+            display: block;
+            padding: 10px 11px;
+            /* 点击后显示下拉框 */
+            transition: max-height 0.3s ease;
+            z-index: 1;
+            /* 添加过渡效果 */
+        }
+
+        /* 添加button的样式 */
+        .button-like {
+            display: inline-block;
+            padding: 10px 0 10px 10%;
+            background-color: #4CAF50;
+            color: white;
+            text-align: left;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 90%;
+        }
+
+        .button-like:hover {
+            background-color: #45a049;
+        }
+
+        .button-like:active {
+            background-color: #3e8e41;
+        }
+
+        /* TODO:xiaojiao, @media screen and (max-width: 700px) 如何使用2023/10/23 */
+        div.tooltip-donut {
+            position: absolute;
+            text-align: center;
+            padding: .5rem;
+            background: #FFFFFF;
+            color: #313639;
+            border: 1px solid #313639;
+            border-radius: 8px;
+            pointer-events: none;
+            font-size: 1.3rem;
+        }
+
+        icon-i {
+            text-align: center;
+        }
+
+        .dropdown {
+            /* padding: 10px 11px; */
+            position: relative;
+            /* display: inline-block; */
+        }
+
+        .dropdown-content {
+            display: none;
+            position: relative;
+            /* top: 100%; */
+            /* left: 0; */
+            width: 100%;
+            /* padding: 10px 11px; */
+            background-color: #4CAF50;
+        }
+
+
+        .settingContent {
+            display: block;
+            position: relative;
+            /* top: 100%; */
+            /* left: 0; */
+            width: 90%;
+            padding: 10px 11px;
+            /* overflow-y: scroll; */
+            height: 60vh;
+            overflow-y: scroll;
+            /* 设置垂直方向上溢出时显示滚动条 */
+            overflow-x: hidden;
+            scrollbar-width: thin;
+            /* 设置滚动条的宽度 */
+            scrollbar-color: gray lightgray;
+            /* 设置滚动条的颜色 */
+        }
+
+        /* div#settingContent {} */
+        /* .dropdown:hover .dropdown-content {
+        display: block;
+
+         } */
+
+        .filled {
+            fill: url("#mainGradient");
+        }
+
+        .ticks text {
+            font-family: sans-serif;
+            font-size: 17px;
+            text-anchor: middle;
+        }
+
+        .helpDown p {
+            width: 100%;
+        }
+
+        /* 07/02 模态框添加 */
+        #colorDialog {
+            border-radius: 10px;
+            /* border-color: #ccc; */
+            margin: auto;
+            padding: 30px;
+        }
+
+        /* #colorDialog::backdrop {
+            backdrop-filter: blur(3px);
+        } */
+    </style>
+</head>
+
+<body>
+    <section class="main-page">
+        <div>
+            <div style="width: 20%;z-index: 1; position: fixed; padding-right: 1%; right:0; top:40px; opacity: 0.9;">
+                <!-- add by xiaojiao 停靠右侧， x轴文本旋转 -->
+                <!-- add by xiaojiao 柱状图宽度调整 -->
+                <div class="dropdown">
+                    <div id="dropdownTest" class="downloadSettings" style="background:#F9F9F9;width: 100%;">
+                        <p class="button-like">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-cloud-arrow-down" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M7.646 10.854a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 9.293V5.5a.5.5 0 0 0-1 0v3.793L6.354 8.146a.5.5 0 1 0-.708.708l2 2z" />
+                                <path
+                                    d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z" />
+                            </svg>
+                            download
+                        </p>
+                    </div>
+                    <div id="dropdownContent" class="dropdown-content"
+                        style="background:#F9F9F9;width: 100%;display: none;">
+                        <div class="sidebar show">
+                            <!-- <h3>文本 Settings</h3> -->
+                            <button id="export">下载 SVG</button>
+                            <!-- <br> -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <br> -->
+                <div class="dropdown" style="background:#F9F9F9;width: 100%;">
+                    <div class="basicSettings">
+                        <!-- <button type="button" id="exitBtn" class="btn" onClick="exitFullscreen()">退出全屏</button> -->
+                        <p type="button" id="btn" class="btn button-like" title="fullscreen">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-gear" viewBox="0 0 16 16">
+                                <path title="修改参数"
+                                    d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+                                <path title="修改参数"
+                                    d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z" />
+                            </svg>
+                            <path title="fullscreen" fill-rule="evenodd"
+                                d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z" />
+                            </svg>
+                            setting
+                        </p>
+                    </div>
+                    <div class="settingContent" id="settingContent">
+                        <div class="sidebar show" id="mainsetting">
+                            <!-- <h2>文本 Settings</h2> -->
+                            <div class="item">
+                                <p>字体选择:</p>
+                                <!-- https://www.runoob.com/w3cnote/web-font-family.html -->
+                                <select class="form-select" id="fontSelect">
+                                    <option value="">Select</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">Serif Fonts
+                                    </option>
+                                    <option value="Georgia,serif" style="font-family: Georgia,serif">Georgia</option>
+                                    <option value="Palatino Linotype,Book Antiqua,Palatino,serif"
+                                        style="font-family: Palatino Linotype,Book Antiqua,Palatino,serif">Palatino
+                                        Linotype</option>
+                                    <option value="Times New Roman,Times,serif"
+                                        style="font-family: Times New Roman,Times,serif">Times New Roman</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">Sans-Serif
+                                        Fonts</option>
+                                    <option value="Arial,Helvetica,sans-serif"
+                                        style="font-family: Arial,Helvetica,sans-serif">Arial</option>
+                                    <option value="Arial Black,Gadget,sans-serif"
+                                        style="font-family: Arial Black,Gadget,sans-serif">Arial Black</option>
+                                    <option value="Comic Sans MS,cursive,sans-serif"
+                                        style="font-family: Comic Sans MS,cursive,sans-serif">Comic Sans MS</option>
+                                    <option value="Impact,Charcoal,sans-serif"
+                                        style="font-family: Impact,Charcoal,sans-serif">Impact</option>
+                                    <option value="Lucida Sans Unicode,Lucida Grande,sans-serif"
+                                        style="font-family: Lucida Sans Unicode,Lucida Grande,sans-serif">Lucida Sans
+                                        Unicode</option>
+                                    <option selected="selected" value="Tahoma,Geneva,sans-serif"
+                                        style="font-family: Tahoma,Geneva,sans-serif">Tahoma</option>
+                                    <option value="Trebuchet MS,Helvetica,sans-serif"
+                                        style="font-family: Trebuchet MS,Helvetica,sans-serif">Helvetica</option>
+                                    <option value="Verdana,Geneva,sans-serif"
+                                        style="font-family: Verdana,Geneva,sans-serif">Verdana</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">Monospace
+                                        Fonts</option>
+                                    <option value="Courier New,Courier,monospace"
+                                        style="font-family: Courier New,Courier,monospace">Courier New</option>
+                                    <option value="Lucida Console,Monaco,monospace"
+                                        style="font-family: Lucida Console,Monaco,monospace">Lucida Console</option>
+                                    <option disabled style="font-weight: bold; background-color: #EEEEEE">中文</option>
+                                    <option value="华文细黑,sans-serif" style="font-family: 华文细黑,sans-serif">华文细黑</option>
+                                    <option value="微软雅黑,sans-serif" style="font-family: 微软雅黑,sans-serif">微软雅黑</option>
+                                    <option value="中易宋体,sans-serif" style="font-family: 中易宋体,sans-serif">中易宋体</option>
+                                    <option value="WenQuanYi Micro Hei,sans-serif"
+                                        style="font-family: WenQuanYi Micro Hei,sans-serif">WenQuanYi Micro Hei</option>
+                                    <option value="楷体,serif" style="font-family: 楷体, serif">楷体</option>
+                                    <option value="隶书,sans-serif" style="font-family: 隶书, sans-serif">隶书</option>
+                                </select>
+                            </div>
+
+                            <div class="item">
+                                <label>字体大小: </label>
+                                <input type="range" id="fontSizeRange" min="6" max="56" step="1" value="16">
+                                <div class="sliderTooltip">
+                                    <span class="value"></span>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <label>文字颜色: </label>
+                                <input type="color" id="textColorSelect" value="#FFFFFF">
+                            </div>
+                            <div class="item">
+                                <label for="boxplotOpacityRange">箱线图透明度: </label>
+                                <input type="range" id="boxplotOpacityRange" min="0" max="1" step="0.05" value="1">
+                            </div>
+                            <div class="item">
+                                <label for="boxplotdots">箱线图内部散点: </label>
+                                <input type="checkbox" id="boxplotdots" value="1">
+                            </div>
+
+                            <div class="item">
+                                <label for="dotsRange">图内部散点大小: </label>
+                                <input type="range" id="dotsRange" min="0" max="100" step="0.05" value="1">
+
+                            </div>
+                            <div class="item">
+                                <label for="drawPolygonHull">画外接多边形: </label>
+                                <input type="checkbox" id="drawPolygonHull" value="1">
+                            </div>
+                            <div class="item">
+                                <label for="categorySelect">箱线图内部散点: </label>
+                                <select id="categorySelect">
+                                    <option value="tick">boxplotSymbolTick</option>
+                                    <option value="dot">boxplotSymbolDot</option>
+                                    <!-- 可以根据你的需求添加更多选项 -->
+                                </select>
+                            </div>
+                            <hr>
+                            <div class="item">
+                                <label for="editText">双击编辑文字</label>
+                                <input type="checkbox" id="editText" name="scales" />
+                            </div>
+
+                            <hr>
+
+
+                            <div class="item">
+                                <button id="center-button">reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dropdown" style="background:#F9F9F9;width: 100%;">
+                    <div class="basicSettings">
+                        <!-- <button type="button" id="exitBtn" class="btn" onClick="exitFullscreen()">退出全屏</button> -->
+                        <p type="button" id="helpbtn" class="btn button-like" title="fullscreen">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-question-square" viewBox="0 0 16 16">
+                                <path
+                                    d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
+                                <path title="fullscreen" fill-rule="evenodd"
+                                    d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94" />
+                            </svg>
+                            help
+                        </p>
+                    </div>
+                    <div class="settingContent" id="helpContent">
+                        <div class="sidebar show helpDown" id="helpsetting">
+                            <!-- <h2>文本 Settings</h2> -->
+                            <!-- <div class="item"> -->
+                            <h3>基本的使用</h3>
+                            <ol>
+                                <li>可以拖拽移动图形</li>
+                                <li>鼠标放大缩小图像</li>
+                                <li>悬浮、点击、双击到特定图案上会有文字展示</li>
+                            </ol>
+
+
+                            <h3>说明</h3>
+                            <div class="section">
+                                <ol>
+                                    <li>不同颜色的椭圆代表不同的环境因子分组。</li>
+                                    <li>椭圆相交部分的数值代表环境因子分组对群落差异的共同解释度。</li>
+                                    <li>椭圆非相交部分的数值代表各环境因子分组对群落组成差异的单独解释度。</li>
+                                    <li>
+                                        <p><strong>Residuals</strong> 代表剩余解释度，即不能被上述环境因子解释的群落差异的占比。</p>
+                                    </li>
+                                </ol>
+                                <h2>VPA方差分解分析结果表</h2>
+
+
+                                <p><strong>注：</strong>Env为环境因子；Group为环境因子分组；adjR2为矫正的R2值，表示每个环境因子对群落组成单独的解释度。</p>
+
+                            </div>
+
+
+                            <!-- </div> -->
+                        </div>
+                    </div>
+                </div>
+                <!-- <br> -->
+                <!-- <br> -->
+                <div class="btns" id="btns" style="background:#F9F9F9;width: 100%;">
+
+                    <!-- <button type="button" id="exitBtn" class="btn" onClick="exitFullscreen()">退出全屏</button> -->
+                    <p type="button" id="btn" class="btn button-like fullScreen" title="fullscreen">
+                        <svg title="fullscreen" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            fill="currentColor" class="bi bi-arrows-fullscreen" viewBox="0 0 16 16">
+                            <path title="fullscreen" fill-rule="evenodd"
+                                d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z" />
+                        </svg>
+                        全屏
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="basicSettings" style="margin-left: auto; position: relative;">
+
+            </div>
+
+
+        </div>
+        <div id="content">
+            <svg id="chart"></svg>
+        </div>
+        <div id="tooltell">&nbsp;</div>
+
+        <!-- 弹窗触发的元素 -->
+        <!-- 对话框元素 -->
+        <dialog id="colorDialog">
+            <form method="dialog">
+                <p>请选择颜色</p>
+                <input type="color" id="colorPicker">
+                <menu>
+                    <button id="cancelBtn">取消</button>
+                    <button id="confirmBtn" value="default">确认</button>
+                </menu>
+            </form>
+        </dialog>
+
+    </section>
+
+    <script>
+        if (window.d3) {
+            console.log('D3.js is loaded');
+        } else {
+            console.log('D3.js is not loaded');
+        }
+    </script>
+    <script>
+        // import { max, min, quantile } from 'd3-array'
+        // import { scaleLinear } from 'd3-scale'
+        max = d3.max
+        min = d3.min
+        quantile = d3.quantile
+        scaleLinear = d3.scaleLinear
+        function boxplot() {
+            let vertical = false
+            let scale = scaleLinear()
+            let bandwidth = 20
+            let boxwidth = 20
+            let showInnerDots = true
+            let symbol = boxplotSymbolDot
+            let opacity = 0.8
+            let jitter = 0.2
+            let key = undefined
+
+            function boxplot(ctx) {
+                const x = vertical ? 'y' : 'x'
+                const y = vertical ? 'x' : 'y'
+                const h = vertical ? 'width' : 'height'
+                const coor = vertical ? (x, y) => [y, x] : (x, y) => [x, y]
+                const inversed = scale.range()[0] > scale.range()[1]
+
+                const renderers = {}
+                renderers[boxplotSymbolDot] = {
+                    nodeName: 'circle',
+                    enter: function (ctx) {
+                        ctx
+                            .attr('fill', 'currentColor')
+                            .attr('stroke', 'none')
+                            .attr('opacity', 0)
+                            .attr('r', 0)
+                            .attr(`c${x}`, (d) => scale(d.value))
+                            .attr(`c${y}`, jitterer)
+                    },
+                    update: function (ctx) {
+                        ctx
+                            .attr('opacity', opacity)
+                            .attr('r', (d) => (d.farout ? r * 1.5 : r))
+                            .attr(`c${x}`, (d) => scale(d.value))
+                            .attr(`c${y}`, jitterer)
+                    },
+                    exit: function (context) {
+                        context.attr('opacity', 0).attr('r', 0)
+                    },
+                }
+                renderers[boxplotSymbolTick] = {
+                    nodeName: 'line',
+                    enter: function (ctx) {
+                        ctx
+                            .attr('stroke', 'currentColor')
+                            .attr('opacity', 0)
+                            .attr(`${x}1`, (d) => scale(d.value))
+                            .attr(`${x}2`, (d) => scale(d.value))
+                            .attr(`${y}1`, 0)
+                            .attr(`${y}2`, 0)
+                    },
+                    update: function (ctx) {
+                        ctx
+                            .attr('opacity', opacity)
+                            .attr(`${x}1`, (d) => scale(d.value))
+                            .attr(`${x}2`, (d) => scale(d.value))
+                            .attr(`${y}1`, Math.min(-2, boxwidth * -0.25))
+                            .attr(`${y}2`, Math.max(2, boxwidth * 0.25))
+                    },
+                    exit: function (ctx) {
+                        ctx.attr('opacity', 0).attr(`${y}1`, 0).attr(`${y}2`, 0)
+                    },
+                }
+                const renderer = renderers[symbol]
+
+                const selection = ctx.selection ? ctx.selection() : ctx
+                const whiskerPath = (d) =>
+                    `M${coor(scale(d.start), -0.5 * boxwidth)} l${coor(0, boxwidth)} ` +
+                    `m${coor(0, -0.5 * boxwidth)} L${coor(scale(d.end), 0)}`
+                const jitterer =
+                    jitter === 0
+                        ? 0
+                        : (d, i) =>
+                            // 1. determinisic pseudo random noise
+                            Math.sin(1e5 * (i + d.value)) *
+                            0.5 *
+                            // 2. scale
+                            (d.farout ? 0 : d.outlier ? 0.5 : 1) *
+                            jitter *
+                            bandwidth
+                const r = Math.max(1.5, Math.sqrt(bandwidth) * 0.5)
+
+                let gWhisker = selection.select('g.whisker')
+                if (gWhisker.empty())
+                    gWhisker = selection
+                        .append('g')
+                        .attr('class', 'whisker')
+                        .attr('transform', `translate(${coor(0, bandwidth * 0.5)})`)
+
+                let gBox = selection.select('g.box')
+                if (gBox.empty())
+                    gBox = selection
+                        .append('g')
+                        .attr('class', 'box')
+                        .attr('transform', `translate(${coor(0, bandwidth * 0.5)})`)
+
+                let gPoint = selection.select('g.point')
+                if (gPoint.empty())
+                    gPoint = selection
+                        .append('g')
+                        .attr('class', 'point')
+                        .attr('transform', `translate(${coor(0, bandwidth * 0.5)})`)
+
+                let whisker = gWhisker.selectAll('path').data((d) => d.whiskers)
+                whisker = whisker
+                    .enter()
+                    .append('path')
+                    .attr('fill', 'none')
+                    .attr('stroke', 'currentColor')
+                    .attr('opacity', 0)
+                    .attr('d', whiskerPath)
+                    .merge(whisker)
+
+                let box = gBox.selectAll('line').data((d) => d.boxes)
+                box = box
+                    .enter()
+                    .append('line')
+                    .attr('stroke', 'currentColor')
+                    .attr('stroke-width', boxwidth)
+                    .attr('opacity', 0)
+                    .attr(`${x}1`, (d, i) => scale(d.start) + (i === 0 ? 0 : 0.5) * (inversed ? -1 : +1))
+                    .attr(`${x}2`, (d, i) => scale(d.end) - (i === 0 ? 0.5 : 0) * (inversed ? -1 : +1))
+                    .attr(`${y}1`, 0)
+                    .attr(`${y}2`, 0)
+                    .attr(h, boxwidth)
+                    .merge(box)
+
+                // Remove old symbols
+                gPoint
+                    .selectAll('.point')
+                    .filter(function () {
+                        return this.nodeName !== renderer.nodeName
+                    })
+                    .remove()
+
+                let point = gPoint
+                    .selectAll('.point')
+                    .data(
+                        (d) => (showInnerDots ? d.points : d.points.filter((d2) => d2.outlier)),
+                        key ? (d) => key(d.datum) : undefined
+                    )
+                let pointExit = point.exit()
+                point = point
+                    .enter()
+                    .append(renderer.nodeName)
+                    .attr('class', 'point')
+                    .call(renderer.enter)
+                    .merge(point)
+                    .classed('outlier', (d) => d.outlier)
+                    .classed('farout', (d) => d.farout)
+
+                if (ctx !== selection) {
+                    gWhisker = gWhisker.transition(ctx)
+                    gBox = gBox.transition(ctx)
+                    gPoint = gPoint.transition(ctx)
+                    whisker = whisker.transition(ctx)
+                    box = box.transition(ctx)
+                    point = point.transition(ctx)
+                    pointExit = pointExit.transition(ctx)
+                }
+
+                gWhisker.attr('transform', `translate(${coor(0, bandwidth * 0.5)})`)
+                gBox.attr('transform', `translate(${coor(0, bandwidth * 0.5)})`)
+                gPoint.attr('transform', `translate(${coor(0, bandwidth * 0.5)})`)
+                whisker.attr('opacity', opacity).attr('d', whiskerPath)
+                box
+                    .attr('opacity', opacity)
+                    .attr('stroke-width', boxwidth)
+                    .attr(`${x}1`, (d, i) => scale(d.start) + (i === 0 ? 0 : 0.5) * (inversed ? -1 : +1))
+                    .attr(`${x}2`, (d, i) => scale(d.end) - (i === 0 ? 0.5 : 0) * (inversed ? -1 : +1))
+                    .attr(`${y}1`, 0)
+                    .attr(`${y}2`, 0)
+                point.call(renderer.update)
+                pointExit.call(renderer.exit).remove()
+
+                return this
+            }
+
+            boxplot.vertical = (..._) => (_.length ? ((vertical = _[0]), boxplot) : vertical)
+            boxplot.scale = (..._) => (_.length ? ((scale = _[0]), boxplot) : scale)
+            boxplot.showInnerDots = (..._) => (_.length ? ((showInnerDots = _[0]), boxplot) : showInnerDots)
+            boxplot.bandwidth = (..._) => (_.length ? ((bandwidth = _[0]), boxplot) : bandwidth)
+            boxplot.boxwidth = (..._) => (_.length ? ((boxwidth = _[0]), boxplot) : boxwidth)
+            boxplot.symbol = (..._) => (_.length ? ((symbol = _[0]), boxplot) : symbol)
+            boxplot.opacity = (..._) => (_.length ? ((opacity = _[0]), boxplot) : opacity)
+            boxplot.jitter = (..._) => (_.length ? ((jitter = _[0]), boxplot) : jitter)
+            boxplot.key = (..._) => (_.length ? ((key = _[0]), boxplot) : key)
+
+            return boxplot
+        }
+
+        function boxplotStats(data, valueof) {
+            const values = valueof ? data.map(valueof) : data
+            const fiveNums = [0.0, 0.25, 0.5, 0.75, 1.0].map((d) => quantile(values, d))
+            const iqr = fiveNums[3] - fiveNums[1]
+            const step = iqr * 1.5
+            const fences = [
+                { start: fiveNums[1] - step - step, end: fiveNums[1] - step },
+                { start: fiveNums[1] - step, end: fiveNums[1] },
+                { start: fiveNums[1], end: fiveNums[3] },
+                { start: fiveNums[3], end: fiveNums[3] + step },
+                { start: fiveNums[3] + step, end: fiveNums[3] + step + step },
+            ]
+            const boxes = [
+                { start: fiveNums[1], end: fiveNums[2] },
+                { start: fiveNums[2], end: fiveNums[3] },
+            ]
+            const whiskers = [
+                { start: min(values.filter((d) => fences[1].start <= d)), end: fiveNums[1] },
+                { start: max(values.filter((d) => fences[3].end >= d)), end: fiveNums[3] },
+            ]
+            const points = values.map((d, i) => ({
+                value: d,
+                datum: data[i],
+                outlier: d < fences[1].start || fences[3].end < d,
+                farout: d < fences[0].start || fences[4].end < d,
+            }))
+            return { fiveNums, iqr, step, fences, boxes, whiskers, points }
+        }
+
+        const boxplotSymbolDot = 'dot'
+        const boxplotSymbolTick = 'tick'
+    </script>
+
+    <script>
+        var globalState = {
+            "dotRadius": 3
+        };
+        var width = window.innerWidth || document.clientWidth || document.body.clientWidth;
+        var height = window.innerHeight || document.clientHeight || document.body.clientHeight;
+        var margin = { top: 0.25 * height, right: 0.38 * width, bottom: 0.09 * height, left: 0.16 * width },
+
+            width = width - margin.left - margin.right;
+        height = height - margin.top - margin.bottom;
+
+        // 创建一个SVG元素
+        var svg = d3.select("#chart")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("overflow", "visible");
+
+        
+        // create a tooltip
+        var tooltip = d3.select("#content")
+            .append("div")
+            .style("opacity", 0)
+            .attr("class", "tooltip")
+            .style("font-size", "16px");
+
+        // var tooltip2 = d3.select("#content")
+        //     .append("div")
+        //     .style("display", "none")
+        //     .attr("class", "text_board")
+        //     .style("font-size", "16px")
+        //     .attr("id", "text_board");
+
+        var mockData = [
+            {
+                "COPD": [
+                    [
+                        "20.85074665",
+                        "-0.007258903",
+                        "J095V4"
+                    ],
+                    [
+                        "20.39990582",
+                        "7.173540275",
+                        "K144V0"
+                    ],
+                    [
+                        "17.70088512",
+                        "0.629364404",
+                        "K119V0"
+                    ],
+                    [
+                        "16.78193401",
+                        "-22.03248713",
+                        "K174V0"
+                    ],
+                    [
+                        "16.55134842",
+                        "-1.716519525",
+                        "K107V0"
+                    ],
+                    [
+                        "16.50219528",
+                        "-11.14879662",
+                        "1107V4"
+                    ],
+                    [
+                        "16.47553148",
+                        "12.22040467",
+                        "K058V2"
+                    ],
+                    [
+                        "16.43394291",
+                        "-9.29646063",
+                        "K068V2"
+                    ],
+                    [
+                        "15.33314178",
+                        "7.680854895",
+                        "Z042"
+                    ],
+                    [
+                        "14.78662276",
+                        "1.326864717",
+                        "1004V4"
+                    ],
+                    [
+                        "14.76082731",
+                        "3.564244957",
+                        "Z004"
+                    ],
+                    [
+                        "14.68605816",
+                        "6.4968159",
+                        "Z014"
+                    ],
+                    [
+                        "14.48500461",
+                        "6.568186865",
+                        "J043V6"
+                    ],
+                    [
+                        "13.26676447",
+                        "10.37815035",
+                        "K122V0"
+                    ],
+                    [
+                        "13.11752598",
+                        "5.275463134",
+                        "K040V4"
+                    ],
+                    [
+                        "11.78758562",
+                        "14.11098998",
+                        "C161V8"
+                    ],
+                    [
+                        "11.69661307",
+                        "3.174176915",
+                        "1075V6"
+                    ],
+                    [
+                        "11.44483457",
+                        "5.461383516",
+                        "Z011"
+                    ],
+                    [
+                        "11.31488991",
+                        "1.311736676",
+                        "Z048"
+                    ],
+                    [
+                        "10.97771934",
+                        "-8.248780309",
+                        "K096V0"
+                    ],
+                    [
+                        "10.96657109",
+                        "-26.95776305",
+                        "K184V0"
+                    ],
+                    [
+                        "10.78460256",
+                        "-26.52059006",
+                        "K080V2"
+                    ],
+                    [
+                        "10.6720069",
+                        "9.733559529",
+                        "K011V4"
+                    ],
+                    [
+                        "10.56340665",
+                        "3.120931566",
+                        "Z030"
+                    ],
+                    [
+                        "10.32540889",
+                        "2.715728475",
+                        "K182V0"
+                    ],
+                    [
+                        "9.668036909",
+                        "10.46488105",
+                        "C402V8"
+                    ],
+                    [
+                        "9.446517647",
+                        "-0.092392058",
+                        "Z035"
+                    ],
+                    [
+                        "9.423832554",
+                        "-9.798250914",
+                        "J035V8"
+                    ],
+                    [
+                        "9.175359411",
+                        "-1.466910051",
+                        "X003V4"
+                    ],
+                    [
+                        "8.491799726",
+                        "9.164141282",
+                        "K013V4"
+                    ],
+                    [
+                        "8.293248721",
+                        "2.06387806",
+                        "Z013"
+                    ],
+                    [
+                        "7.915320061",
+                        "9.414700638",
+                        "1055V4"
+                    ],
+                    [
+                        "7.662205756",
+                        "-13.07450152",
+                        "K085V0"
+                    ],
+                    [
+                        "7.642430274",
+                        "9.021003067",
+                        "S099V8"
+                    ],
+                    [
+                        "7.371701129",
+                        "-1.108328499",
+                        "Z046"
+                    ],
+                    [
+                        "7.327098674",
+                        "-20.67911325",
+                        "K180V0"
+                    ],
+                    [
+                        "7.029453705",
+                        "-15.80223202",
+                        "S106V8"
+                    ],
+                    [
+                        "6.711834414",
+                        "-3.544002533",
+                        "K154V0"
+                    ],
+                    [
+                        "6.328684506",
+                        "6.437741873",
+                        "Z025"
+                    ],
+                    [
+                        "5.657092284",
+                        "1.887954891",
+                        "Z064"
+                    ],
+                    [
+                        "5.511316931",
+                        "-17.52422917",
+                        "C422V8"
+                    ],
+                    [
+                        "5.4022005",
+                        "-19.76432015",
+                        "K065V2"
+                    ],
+                    [
+                        "5.396826423",
+                        "-4.150169701",
+                        "K169V0"
+                    ],
+                    [
+                        "4.625956202",
+                        "-1.820826629",
+                        "Z010"
+                    ],
+                    [
+                        "3.918325376",
+                        "-15.4825873",
+                        "K084V0"
+                    ],
+                    [
+                        "3.90906241",
+                        "0.447842678",
+                        "Z033"
+                    ],
+                    [
+                        "3.371799193",
+                        "-0.681045781",
+                        "K155V0"
+                    ],
+                    [
+                        "2.257613717",
+                        "-0.965139543",
+                        "K157V0"
+                    ],
+                    [
+                        "2.080140739",
+                        "-3.035906925",
+                        "Z031"
+                    ],
+                    [
+                        "1.512202145",
+                        "-3.579262895",
+                        "Z047"
+                    ],
+                    [
+                        "1.323364711",
+                        "-3.454568259",
+                        "J073V6"
+                    ],
+                    [
+                        "0.117497771",
+                        "-3.564003724",
+                        "Z041"
+                    ],
+                    [
+                        "-0.141668887",
+                        "-7.51753193",
+                        "K101V0"
+                    ],
+                    [
+                        "-0.81339387",
+                        "-3.662301155",
+                        "Z050"
+                    ],
+                    [
+                        "-0.984866038",
+                        "-2.631183781",
+                        "J050V6"
+                    ],
+                    [
+                        "-2.024283985",
+                        "-2.915493069",
+                        "Z008"
+                    ],
+                    [
+                        "-3.580404713",
+                        "13.42357947",
+                        "S044V8"
+                    ],
+                    [
+                        "-4.447289851",
+                        "-4.649030007",
+                        "K079V0"
+                    ],
+                    [
+                        "-4.570572241",
+                        "2.638125701",
+                        "K147V0"
+                    ],
+                    [
+                        "-4.996633744",
+                        "-29.0863298",
+                        "K121V0"
+                    ],
+                    [
+                        "-5.218051336",
+                        "9.897500037",
+                        "K112V0"
+                    ],
+                    [
+                        "-5.298906391",
+                        "-1.875684485",
+                        "J009V6"
+                    ],
+                    [
+                        "-6.237584596",
+                        "3.956228259",
+                        "Z065"
+                    ],
+                    [
+                        "-8.643261169",
+                        "0.42384956",
+                        "J048V6"
+                    ],
+                    [
+                        "-8.775495307",
+                        "-3.48757145",
+                        "K072V0"
+                    ],
+                    [
+                        "-10.68136918",
+                        "3.250359774",
+                        "Z043"
+                    ],
+                    [
+                        "-10.80904344",
+                        "-5.065690367",
+                        "Z040"
+                    ],
+                    [
+                        "-11.75855068",
+                        "-6.596837634",
+                        "Z002"
+                    ],
+                    [
+                        "-12.46642254",
+                        "-2.554159022",
+                        "Z003"
+                    ],
+                    [
+                        "-13.56123464",
+                        "-1.962508761",
+                        "K099V2"
+                    ],
+                    [
+                        "-14.42915459",
+                        "1.047937967",
+                        "K083V0"
+                    ],
+                    [
+                        "-14.58240541",
+                        "1.780492962",
+                        "K136V0"
+                    ],
+                    [
+                        "-15.01119879",
+                        "9.282080411",
+                        "K177V0"
+                    ],
+                    [
+                        "-15.9355106",
+                        "-10.53796667",
+                        "Z023"
+                    ],
+                    [
+                        "-16.65665078",
+                        "1.802195458",
+                        "K179V0"
+                    ],
+                    [
+                        "-18.01251935",
+                        "5.12578198",
+                        "K098V0"
+                    ],
+                    [
+                        "-18.41340962",
+                        "16.11123261",
+                        "J059V6"
+                    ],
+                    [
+                        "-18.45987622",
+                        "-5.461264064",
+                        "K138V0"
+                    ],
+                    [
+                        "-19.33939429",
+                        "-4.067471414",
+                        "K111V0"
+                    ],
+                    [
+                        "-19.78907",
+                        "2.033100712",
+                        "K110V0"
+                    ],
+                    [
+                        "-21.01945072",
+                        "-9.696275002",
+                        "Z049"
+                    ],
+                    [
+                        "-21.74819564",
+                        "-0.596650423",
+                        "K086V0"
+                    ],
+                    [
+                        "-22.49211545",
+                        "4.382261428",
+                        "K105V0"
+                    ],
+                    [
+                        "-23.09697822",
+                        "-8.051548392",
+                        "C220V8"
+                    ],
+                    [
+                        "-23.90494236",
+                        "-3.846410145",
+                        "J076V8"
+                    ],
+                    [
+                        "-23.98193853",
+                        "-12.92136095",
+                        "Z044"
+                    ],
+                    [
+                        "-25.9020498",
+                        "-15.13665667",
+                        "Z007"
+                    ],
+                    [
+                        "-26.70144766",
+                        "1.740583993",
+                        "K173V0"
+                    ],
+                    [
+                        "-27.76395069",
+                        "-2.595439787",
+                        "K100V0"
+                    ],
+                    [
+                        "-28.30070036",
+                        "11.72452455",
+                        "X004V4"
+                    ],
+                    [
+                        "-30.66885459",
+                        "4.808023259",
+                        "K059V2"
+                    ],
+                    [
+                        "-37.82362385",
+                        "1.89782737",
+                        "K188V0"
+                    ],
+                    [
+                        "-38.08071343",
+                        "1.042891053",
+                        "K097V0"
+                    ],
+                    [
+                        "-38.28501088",
+                        "11.73917039",
+                        "K171V0"
+                    ],
+                    [
+                        "-40.38116769",
+                        "13.13000472",
+                        "J063V8"
+                    ],
+                    [
+                        "-45.70773094",
+                        "8.455838306",
+                        "K131V0"
+                    ]
+                ]
+            },
+            {
+                "Healthy": [
+                    [
+                        "22.84360536",
+                        "6.866213635",
+                        "K016V2"
+                    ],
+                    [
+                        "21.05015563",
+                        "20.59830988",
+                        "K028V4"
+                    ],
+                    [
+                        "19.07809671",
+                        "10.99353403",
+                        "C532V8"
+                    ],
+                    [
+                        "15.72402792",
+                        "3.06114563",
+                        "K095V0"
+                    ],
+                    [
+                        "14.38983028",
+                        "-12.10954757",
+                        "K055V0"
+                    ],
+                    [
+                        "13.76862029",
+                        "1.171061137",
+                        "C132V8"
+                    ],
+                    [
+                        "13.33151127",
+                        "20.72022461",
+                        "K022V2"
+                    ],
+                    [
+                        "13.22846342",
+                        "4.5113563",
+                        "Z026"
+                    ],
+                    [
+                        "13.00839886",
+                        "1.003669091",
+                        "K047V2"
+                    ],
+                    [
+                        "12.17743036",
+                        "2.662942765",
+                        "Z038"
+                    ],
+                    [
+                        "12.01068903",
+                        "6.419885846",
+                        "Z017"
+                    ],
+                    [
+                        "11.05707374",
+                        "11.99720423",
+                        "K041V4"
+                    ],
+                    [
+                        "10.59705804",
+                        "5.580892536",
+                        "Z029"
+                    ],
+                    [
+                        "8.678099427",
+                        "-13.63303749",
+                        "K003V4"
+                    ],
+                    [
+                        "8.563733843",
+                        "-1.895182751",
+                        "K057V0"
+                    ],
+                    [
+                        "7.360868115",
+                        "4.689959904",
+                        "Z054"
+                    ],
+                    [
+                        "7.23200907",
+                        "-3.312458088",
+                        "K014V2"
+                    ],
+                    [
+                        "7.030498244",
+                        "0.575192052",
+                        "Z061"
+                    ],
+                    [
+                        "6.528728489",
+                        "0.782104286",
+                        "Z028"
+                    ],
+                    [
+                        "6.407534445",
+                        "-0.515050859",
+                        "Z039"
+                    ],
+                    [
+                        "6.307225343",
+                        "-1.099666945",
+                        "Z062"
+                    ],
+                    [
+                        "5.983629485",
+                        "11.25839271",
+                        "K019V4"
+                    ],
+                    [
+                        "3.422534242",
+                        "2.472487329",
+                        "Z020"
+                    ],
+                    [
+                        "2.736819185",
+                        "2.824821685",
+                        "Z055"
+                    ],
+                    [
+                        "1.689440051",
+                        "4.027463028",
+                        "Z060"
+                    ],
+                    [
+                        "0.707947148",
+                        "2.284004885",
+                        "Z027"
+                    ],
+                    [
+                        "0.656369184",
+                        "8.112404464",
+                        "K060V0"
+                    ],
+                    [
+                        "0.184285992",
+                        "1.643731383",
+                        "Z015"
+                    ],
+                    [
+                        "-0.870775348",
+                        "16.73814491",
+                        "K194V0"
+                    ],
+                    [
+                        "-0.952610503",
+                        "-4.028300919",
+                        "Z034"
+                    ],
+                    [
+                        "-2.221153637",
+                        "2.187796003",
+                        "Z024"
+                    ],
+                    [
+                        "-2.905060383",
+                        "-2.146466487",
+                        "Z018"
+                    ],
+                    [
+                        "-7.544985522",
+                        "-3.549549433",
+                        "Z056"
+                    ]
+                ]
+            }
+        ]
+
+        //  置信椭圆需要在服务端计算
+        // javascript 语言不适合计算
+        // TODO:Xiaojiao, add 置信椭圆这里
+        // https://stackoverflow.com/questions/50734168/d3-confidence-ellipse-how-to-orient
+        // https://stackoverflow.com/questions/75820847/calculate-and-plot-ellipses-on-scatter-plot-working-but-right
+        var svg = d3.select("#chart"),
+            margin = { top: 20, right: 20, bottom: 30, left: 40 },
+            width = +svg.attr("width") - margin.left - margin.right,
+            height = +svg.attr("height") - margin.top - margin.bottom;
+
+        var x = d3.scaleLinear().range([0, width]),
+            y = d3.scaleLinear().range([height, 0]);
+
+
+        var xAxis = d3.axisBottom(x),
+            yAxis = d3.axisLeft(y);
+
+        var g = svg.append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        // Process and scale data
+        var allData = mockData.flatMap(d => Object.values(d).flat());
+        var xExtent = d3.extent(allData, d => +d[0]);
+        var yExtent = d3.extent(allData, d => +d[1]);
+
+        x.domain(xExtent);
+        y.domain(yExtent);
+
+        // Draw x-axis
+        g.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis)
+            .append("text")
+            .attr("x", width / 2)
+            .attr("y", margin.bottom - 10)
+            .attr("class", "axis-label")
+            .text("X Axis Label");
+
+        // Draw y-axis
+        g.append("g")
+            .attr("class", "y axis")
+            .call(yAxis)
+            .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", -margin.left + 10)
+            .attr("x", -height / 2)
+            .attr("dy", ".71em")
+            .attr("class", "axis-label")
+            .style("text-anchor", "end")
+            .text("Y Axis Label");
+
+        // Draw scatter plot points
+        var color = d3.scaleOrdinal(d3.schemeCategory10);
+        const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+
+        // allData.forEach(function (d) {
+        //     g.append("circle")
+        //         .attr("class", "dot")
+        //         .attr("cx", x(+d[0]))
+        //         .attr("cy", y(+d[1]))
+        //         .attr("r", 3)
+        //         .style("fill", function () {
+        //             return d[2].startsWith('K') ? color('COPD') : color('Healthy');
+        //         });
+        // });
+
+        var mouseover = function (event, d) {
+            // if (globalState.canEdit == true) return;
+            tooltip
+                .transition()
+                .duration(200)
+                .style("opacity", 1);
+
+            tooltip
+                .html("<span style='color:grey'> x " + d[0] + ":<br> </span> y " + d[1])
+                .style("left", (event.pageX + 130) + "px")
+                .style("top", (event.pageY + 130) + "px");
+        }
+
+        var mousemove = function (event, d) {
+            if (globalState.canEdit == true) return;
+
+            tooltip
+                .style("left", (event.pageX + 30) + "px")
+                .style("top", (event.pageY + 30) + "px");
+        }
+
+        var mouseleave = function (d) {
+            tooltip
+                .transition()
+                .duration(200)
+                .style("opacity", 0);
+        }
+
+        // 使用 d3.stratify 创建分层数据结构
+
+        var xyPositionValues = [];
+        // 遍历 data 数组
+        for (var i = 0; i < mockData.length; i++) {
+            var category = mockData[i];
+
+            // 获取对象的所有键名
+            var keys = Object.keys(category);
+
+            // 遍历每个键名（例如 "COPD" 和 "Healthy"）
+            for (var k = 0; k < keys.length; k++) {
+                var key = keys[k];
+                var points = category[key];
+                // console.log("key", key);
+                // console.log(">>>>>", points);
+                // 遍历每个数据点
+                for (var j = 0; j < points.length; j++) {
+                    var point = points[j];
+                    xyPositionValues.push([parseFloat(point[0]), parseFloat(point[1])]);
+                    // yValues.push(parseFloat(point[1]));
+                }
+
+                console.log("xyPositionValues >>>", xyPositionValues);
+                g.append("g")
+                    .attr("id", keys)
+                    .attr("class", "dots")
+                    .selectAll("circle")
+                    .data(xyPositionValues)
+                    .enter()
+                    .append("circle")
+                    // .attr("class", "dot")
+                    .attr("cx", function (d) { return x(d[0]); }) // 修正为 d[0]
+                    .attr("cy", function (d) { return y(d[1]); }) // 修正为 d[1]
+                    .attr("r", 3)
+                    .on("mouseover", mouseover)
+                    .on("mousemove", mousemove)
+                    .on("mouseleave", mouseleave);
+                // .attr("color", function (d) {
+                //     return d[2].startsWith('COPD') ? color('COPD') : color('Healthy');
+                // })
+
+                xyPositionValues = [];
+                yValues = [];
+            }
+        }
+
+        // 初始化colorSet, 为柱状图添加颜色
+        const colorSet = []
+        for (var colorindex = 0; colorindex < mockData.length; colorindex++) {
+            colorSet.push(colorScale(colorindex));
+        }
+    </script>
+
+    <script>
+        var xValues = [];
+        var yValues = [];
+
+        // 遍历 data 数组
+        function processData(boxplotSymbolTick) {
+
+            // removeBoxplot
+            removeBoxplot();
+            // 遍历 data 数组
+            for (var i = 0; i < mockData.length; i++) {
+                var category = mockData[i];
+                var xValues = [];
+                var yValues = [];
+
+                // 获取对象的所有键名
+                var keys = Object.keys(category);
+
+                // 遍历每个键名（例如 "COPD" 和 "Healthy"）
+                for (var k = 0; k < keys.length; k++) {
+                    var key = keys[k];
+                    var points = category[key];
+
+                    // 遍历每个数据点
+                    for (var j = 0; j < points.length; j++) {
+                        var point = points[j];
+                        xValues.push(parseFloat(point[0]));
+                        yValues.push(parseFloat(point[1]));
+                    }
+
+                    drawHorizontalBoxPlot(xValues, boxplotSymbolTick);
+                    drawVerticalBoxPlot(yValues, boxplotSymbolTick);
+
+                    xValues = [];
+                    yValues = [];
+                }
+            }
+
+
+            d3.selectAll("g.dots")
+            .each(function (d, index) {
+                var colorvalue = colorSet[index];
+                console.log("this", d, index, this)
+                d3.select(this)
+                    .selectAll("circle")
+                    .style("fill", function (d, index) {
+                        return colorvalue;
+                    })
+            })
+        // 例如使用类名 'boxplot' 而非 ID，以便可以选择多个元素
+        d3.selectAll('#boxV')
+            .each(function (d, i) {
+                // 'this' 是当前 DOM 元素
+                var xTranslate = i * 22 + width + margin.left;  // 例如，每个元素水平平移 400 像素
+                // console.log(">>>", xTranslate, i, d);
+
+                d3.select(this)
+                    .attr("transform", "translate(" + xTranslate + "," + margin.top + ")")
+                    .attr("fill", "red");
+                // console.log("this")
+            });
+
+        d3.selectAll('#boxH')
+            .each(function (d, i) {
+                // 'this' 是当前 DOM 元素
+                var yTranslate = i * 22 * -1 - margin.top;  // 例如，每个元素水平平移 400 像素
+                // console.log(">>>", yTranslate, i, d);
+
+                d3.select(this)
+                    .attr("transform", "translate(" + margin.left + "," + yTranslate + ")");
+                // console.log("this")
+            });
+            addColor2Boxplot();
+        }
+
+        // remove boxH, boxV
+        function removeBoxplot () {
+            // .attr("id", "boxV")
+            d3.selectAll("#boxV").selectAll("*").remove();
+            d3.selectAll("#boxH").selectAll("*").remove();
+            d3.selectAll("#boxV").remove();
+            d3.selectAll("#boxH").remove();
+        }
+
+        // Function to draw a vertical box plot (y-axis direction)
+        function drawVerticalBoxPlot(xValues, boxplotSymbol) {
+            var data = xValues;
+            let stats = boxplotStats(data); // Assuming boxplotStats is a function that computes statistics
+
+            // let y = d3.scaleLinear()
+            //     .domain(d3.extent(data))
+            //     .range([0, 300]);
+
+            let plot = boxplot().scale(y);
+            plot.vertical(true);
+            plot.symbol(boxplotSymbol);
+            // .symbol(options.includes('useSymbolTick') ? d3.boxplotSymbolTick : d3.boxplotSymbolDot)
+
+            d3.select('#chart')
+                .append("g")
+                .attr("id", "boxV")
+                .datum(stats)
+                .call(plot);
+        }
+
+        // Function to draw a horizontal box plot (x-axis direction)
+        function drawHorizontalBoxPlot(xValues, boxplotSymbol) {
+            var data = xValues;
+            let stats = boxplotStats(data); // Assuming boxplotStats is a function that computes statistics
+
+            // let x = d3.scaleLinear()
+            //     .domain(d3.extent(data))
+            //     .range([0, 300]);
+
+            let plot1 = boxplot().scale(x);
+            plot1.vertical(false);
+            plot1.symbol(boxplotSymbol);
+
+            d3.select('#chart')
+                .append("g")
+                .attr("id", "boxH")
+                .datum(stats)
+                .call(plot1);
+        }
+
+        processData(boxplotSymbolTick);
+        // drawVerticalBoxPlot(yValues);
+        // drawHorizontalBoxPlot(xValues);
+
+        
+        // Function to calculate covariance matrix
+        function calculateCovarianceMatrix(data) {
+            var meanX = d3.mean(data, d => d.x);
+            var meanY = d3.mean(data, d => d.y);
+            var covXX = d3.mean(data, d => (d.x - meanX) * (d.x - meanX));
+            var covYY = d3.mean(data, d => (d.y - meanY) * (d.y - meanY));
+            var covXY = d3.mean(data, d => (d.x - meanX) * (d.y - meanY));
+            return [[covXX, covXY], [covXY, covYY]];
+        }
+        
+        // Function to calculate eigenvalues and eigenvectors
+        function calculateEigen(covMatrix) {
+            var a = covMatrix[0][0];
+            var b = covMatrix[0][1];
+            var c = covMatrix[1][1];
+            
+            var eigenvalues = [
+                (a + c) / 2 + Math.sqrt(((a - c) / 2) ** 2 + b ** 2),
+                (a + c) / 2 - Math.sqrt(((a - c) / 2) ** 2 + b ** 2)
+            ];
+            
+            var eigenvectors = [
+                [eigenvalues[0] - c, b],
+                [eigenvalues[1] - c, b]
+            ];
+            
+            return {values: eigenvalues, vectors: eigenvectors};
+        }
+        
+        // Function to create ellipse path points
+        function createEllipsePoints(cx, cy, rx, ry, angle) {
+            var points = [];
+            var numPoints = 100;
+            for (var i = 0; i < numPoints; i++) {
+                var theta = (i / (numPoints - 1)) * 2 * Math.PI;
+                var x = rx * Math.cos(theta);
+                var y = ry * Math.sin(theta);
+                var xRot = cx + x * Math.cos(angle) - y * Math.sin(angle);
+                var yRot = cy + x * Math.sin(angle) + y * Math.cos(angle);
+                points.push([xRot, yRot]);
+            }
+            return points;
+        }
+        
+        // Calculate covariance matrix, eigenvalues, and eigenvectors
+        // var covMatrix = calculateCovarianceMatrix(data);
+        // var eigen = calculateEigen(covMatrix);
+
+
+
+        //  置信椭圆
+        // Function to create ellipse path points
+        function createEllipsePoints(cx, cy, rx, ry, angle) {
+            var points = [];
+            var numPoints = 100;
+            for (var i = 0; i < numPoints; i++) {
+                var theta = (i / (numPoints - 1)) * 2 * Math.PI;
+                var x = rx * Math.cos(theta);
+                var y = ry * Math.sin(theta);
+                var xRot = cx + x * Math.cos(angle) - y * Math.sin(angle);
+                var yRot = cy + x * Math.sin(angle) + y * Math.cos(angle);
+                points.push([xRot, yRot]);
+            }
+            return points;
+        }
+        
+        // var ellipsePoints = createEllipsePoints(x(meanX), y(meanY), x(eigen.values[0]) - x(0), y(0) - y(eigen.values[1]), -angle);
+        // var ellipsePoints =  createEllipsePoints(x(-2.6624143376521623), y(0.5225243777543155), x(4.7019213592571045)- x(0), y(8.704516002516845) - y(0), -169.40245446728616)
+
+        // var lineGenerator = d3.line();
+        
+        // svg.append("g")
+        //   .append("path")
+        //     .attr("class", "ellipse")
+        //     .attr("d", lineGenerator(ellipsePoints))
+        //     .style("fill", "pink");
+        const colors = d3.schemeCategory10;
+
+        function addColor2Boxplot () {
+            d3.selectAll('#boxH')
+            // .selectAll("*")
+            .attr("color", function (d, index) {
+                // console.log("index", index)
+                return colorSet[index];
+            })
+        // .attr("stroke", "red")
+        // .attr("opacity", 0.4)
+
+        d3.selectAll('#boxV')
+            // .selectAll("*")
+            .attr("color", function (d, index) {
+                // console.log("index", index)
+                return colorSet[index];
+            })
+        // .attr("stroke", "red")
+        // .attr("opacity", 0.4)
+        }
+
+
+        var boxplotOpacityRange = document.getElementById("boxplotOpacityRange");
+        boxplotOpacityRange.addEventListener("input", function () {
+            var boxplotOpacityValue = parseFloat(boxplotOpacityRange.value);
+            d3.selectAll('#boxH')
+                .selectAll("*")
+                .attr("opacity", boxplotOpacityValue);
+            d3.selectAll('#boxV')
+                .selectAll("*")
+                .attr("opacity", boxplotOpacityValue);
+        });
+        var boxplotdots = document.getElementById("boxplotdots");
+        boxplotdots.addEventListener("change", function () {
+            let checked = boxplotdots.checked
+            console.log("boxplotdots >>>", boxplotdots)
+            if (checked) {
+                r = 0
+            } else {
+                r = globalState.dotRadius;
+            }
+
+            d3.selectAll('#boxH')
+                .selectAll("circle")
+                .attr("r", r);
+            d3.selectAll('#boxV')
+                .selectAll("circle")
+                .attr("r", r);
+        });
+
+        // 监听下拉框选择变化
+        var categorySelect = document.getElementById('categorySelect');
+
+        categorySelect.addEventListener('change', function() {
+            var selectedCategory = this.value;
+            processData(selectedCategory); // 调用处理数据的函数，并传入选择的类别
+        });
+    </script>
+    <script>
+        // 画椭圆
+
+        // Function to calculate covariance matrix
+        function calculateCovarianceMatrix(data) {
+            var meanX = d3.mean(data, d => d[0]);
+            var meanY = d3.mean(data, d => d[1]);
+            var covXX = d3.mean(data, d => (d[0] - meanX) * (d[0] - meanX));
+            var covYY = d3.mean(data, d => (d[1] - meanY) * (d[1] - meanY));
+            var covXY = d3.mean(data, d => (d[0] - meanX) * (d[1] - meanY));
+            return [[covXX, covXY], [covXY, covYY]];
+        }
+
+        function calculateCovarianceMatrix(data) {
+            var meanX = d3.mean(data, d => parseFloat(d[0]));
+            var meanY = d3.mean(data, d => parseFloat(d[1]));
+            var covXX = d3.mean(data, d => (parseFloat(d[0]) - meanX) * (parseFloat(d[0]) - meanX));
+            var covYY = d3.mean(data, d => (parseFloat(d[1]) - meanY) * (parseFloat(d[1]) - meanY));
+            var covXY = d3.mean(data, d => (parseFloat(d[0]) - meanX) * (parseFloat(d[1]) - meanY));
+            return [[covXX, covXY], [covXY, covYY]];
+        }
+        // Function to calculate eigenvalues and eigenvectors
+        function calculateEigen(covMatrix) {
+            var a = covMatrix[0][0];
+            var b = covMatrix[0][1];
+            var c = covMatrix[1][1];
+            
+            var eigenvalues = [
+                (a + c) / 2 + Math.sqrt(((a - c) / 2) ** 2 + b ** 2),
+                (a + c) / 2 - Math.sqrt(((a - c) / 2) ** 2 + b ** 2)
+            ];
+            
+            var eigenvectors = [
+                [eigenvalues[0] - c, b],
+                [eigenvalues[1] - c, b]
+            ];
+            
+            return {values: eigenvalues, vectors: eigenvectors};
+        }
+
+        // Function to create ellipse path points
+        function createEllipsePoints(cx, cy, rx, ry, angle) {
+            var points = [];
+            var numPoints = 100;
+            for (var i = 0; i < numPoints; i++) {
+                var theta = (i / (numPoints - 1)) * 2 * Math.PI;
+                var x = rx * Math.cos(theta);
+                var y = ry * Math.sin(theta);
+                var xRot = cx + x * Math.cos(angle) - y * Math.sin(angle);
+                var yRot = cy + x * Math.sin(angle) + y * Math.cos(angle);
+                points.push([xRot, yRot]);
+            }
+            return points;
+        }
+
+        data = mockData[1]['Healthy'];
+
+        // Calculate covariance matrix, eigenvalues, and eigenvectors
+        var covMatrix = calculateCovarianceMatrix(data);
+        var eigen = calculateEigen(covMatrix);
+
+        // // Add ellipses around dots
+        var meanX = d3.mean(data, d => d[0]);
+        var meanY = d3.mean(data, d => d[1]);
+        var angle = Math.atan2(eigen.vectors[0][1], eigen.vectors[0][0]);
+        
+        var ellipsePoints = createEllipsePoints(x(meanX), y(meanY), x(eigen.values[0]) - x(0), y(0) - y(eigen.values[1]), angle);
+        // var ellipsePoints =  createEllipsePoints(x(-2.6624143376521623), y(0.5225243777543155), x(4.7019213592571045)- x(0), y(8.704516002516845) - y(0), -169.40245446728616)
+
+        var lineGenerator = d3.line();
+        
+        svg.append("g")
+          .append("path")
+            .attr("class", "ellipse")
+            .attr("d", lineGenerator(ellipsePoints));
+
+        // 计算均值
+    // const meanX = d3.mean(data, d => d[0]);
+    // const meanY = d3.mean(data, d => d[1]);
+
+    // // 计算协方差矩阵
+    // const covMatrix = [
+    //     [d3.sum(data, d => (d[0] - meanX) * (d[0] - meanX)) / (data.length - 1), d3.sum(data, d => (d[0] - meanX) * (d[1] - meanY)) / (data.length - 1)],
+    //     [d3.sum(data, d => (d[1] - meanY) * (d[0] - meanX)) / (data.length - 1), d3.sum(data, d => (d[1] - meanY) * (d[1] - meanY)) / (data.length - 1)]
+    // ];
+
+    // // 计算特征值和特征向量
+    // const eig = numeric.eig(covMatrix);
+    // const eigvals = eig.lambda.x;
+    // const eigvecs = eig.E;
+
+    // // 按降序排列特征值和特征向量
+    // const order = eigvals.map((val, idx) => [val, idx]).sort((a, b) => b[0] - a[0]);
+    // const sortedEigvals = order.map(([val]) => val);
+    // const sortedEigvecs = order.map(([, idx]) => eigvecs.map(row => row[idx]));
+
+    // // 计算椭圆的轴长
+    // const chiSquareVal = 5.991;  // 对应于95%置信区间和2个自由度
+    // const axisLength = sortedEigvals.map(val => Math.sqrt(val * chiSquareVal));
+
+    // // 计算椭圆的旋转角度
+    // const angle = Math.atan2(sortedEigvecs[0][1], sortedEigvecs[0][0]);
+
+    // // 绘制椭圆
+    // svg.append("ellipse")
+    // .attr("cx", x(meanX))
+    // .attr("cy", y(meanY))
+    // .attr("rx", x(meanX + axisLength[0]) - x(meanX))
+    // .attr("ry", y(meanY) - y(meanY + axisLength[1]))
+    // .attr("transform", `rotate(${angle * 180 / Math.PI}, ${x(meanX)}, ${y(meanY)})`)
+    // .attr("fill", "none")
+    // .attr("stroke", "green")
+    // .attr("stroke-width", 2);
+    </script>
+
+    <script>
+        // 画最小多边形
+        COPDdata = mockData[0]['COPD'];
+        Healthydata = mockData[1]['Healthy'];
+        // 计算凸包
+        // var hull = d3.polygonHull(COPDdata.map(d => [d[0], d[1]]));
+
+        // 绘制凸包多边形
+        // var lineGenerator = d3.line()
+        //     .x(d => x(d[0]))
+        //     .y(d => y(d[1]))
+        //     .curve(d3.curveLinearClosed);
+
+        // svg.append("path")
+        //     .datum(hull)
+        //     .attr("d", lineGenerator)
+        //     .attr("stroke", "steelblue")
+        //     .attr("fill", "none")
+        //     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        function drawConvexPolygon(data, margin, lineStroke) {
+            // 计算凸包
+            // var hull = d3.polygonHull(data.map(d => [xScale(d[0]), yScale(d[1])]));
+            var hull = d3.polygonHull(data.map(d => [d[0], d[1]]));
+
+            // 绘制凸包多边形
+            var lineGenerator = d3.line()
+                .x(d => x(d[0]))
+                .y(d => y(d[1]))
+                .curve(d3.curveLinearClosed);
+
+            svg.append("g")
+                .attr("id", "polygon")
+                .append("path")
+                .datum(hull)
+                .attr("d", lineGenerator)
+                .attr("stroke", lineStroke)
+                .attr("fill", "none")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        }
+
+        // 调用函数绘制凸包多边形
+        // drawConvexPolygon(COPDdata, margin, colorSet[0]);
+        // drawConvexPolygon(Healthydata, margin, colorSet[1]);
+
+        // 遍历 data 数组
+        function drawEachPolygon () {
+            for (var i = 0; i < mockData.length; i++) {
+            var category = mockData[i];
+
+            // 获取对象的所有键名
+            var keys = Object.keys(category);
+            var values = Object.values(category)[0];
+            // console.log("category >>>", category, values);
+            // 遍历每个键名（例如 "COPD" 和 "Healthy"）
+            drawConvexPolygon(values, margin, colorSet[i]);
+            }
+        }
+
+        // 画外接最小多边形
+        drawEachPolygon();
+        var drawPolygonHull = document.getElementById("drawPolygonHull");
+        drawPolygonHull.addEventListener("change", function () {
+            let checked = drawPolygonHull.checked
+            console.log("boxplotdots >>>", checked)
+            if (checked) {
+                drawEachPolygon();
+               
+            } else {
+                d3.selectAll('#polygon').remove();
+            }
+
+        });
+        // 遍历 mockData 并绘制凸包多边形
+        // for (var i = 0; i < mockData.length; i++) {
+        //     var category = mockData[i];
+        //     var data = category.hasOwnProperty('COPD') ? category.COPD : category.Healthy;
+        //     drawConvexPolygon(data, xScale, yScale, margin, colorSet[i]);
+        // }
+
+
+    </script>
+    <script>
+        const fontSelect = document.getElementById("fontSelect");
+
+        fontSelect.addEventListener("change", function () {
+            const selectedFont = fontSelect.value;
+            d3.select("#chart").selectAll("text").style("font-family", selectedFont);
+            // svg.style("font-family", selectedFont);
+        });
+
+
+           // 构建下拉展开
+           var dropdownTest = document.getElementById("dropdownTest")
+        var dropdownContent = document.getElementById("dropdownContent");
+
+        dropdownTest.addEventListener("click", function () {
+            dropdownContent.style.display = (dropdownContent.style.display === "none") ? "block" : "none";
+
+        });
+
+
+        const fontSizeRange = document.getElementById("fontSizeRange");
+        const sliderTooltip = document.querySelector(".sliderTooltip");
+
+        // 嵌套的子元素span中的value
+        var valueSpan = document.querySelector(".sliderTooltip .value");
+
+        fontSizeRange.addEventListener("input", function () {
+            const selectedFontSize = fontSizeRange.value;
+            d3.select("#chart").selectAll("text").style("font-size", selectedFontSize + "px");
+            // svg.style("font-size", selectedFontSize + "px");
+            const sliderRect = fontSizeRange.getBoundingClientRect();
+
+            const tooltipWidth = sliderTooltip.offsetWidth;
+            const tooltipHeight = sliderTooltip.offsetHeight;
+
+            console.log("sliderTooltip", sliderTooltip);
+            const sliderValue = parseInt(selectedFontSize);
+            const sliderMin = parseInt(fontSizeRange.min);
+            const sliderMax = parseInt(fontSizeRange.max);
+            const sliderWidth = fontSizeRange.offsetWidth;
+
+            console.log("sliderRect, tooltipWidth, tooltipHeight", sliderRect, tooltipWidth, tooltipHeight);
+
+            // TODO:xiaojiao, fix thar
+            // const tooltipX = 1;
+            const positionPercentage = (sliderValue - sliderMin) / (sliderMax - sliderMin);
+            const tooltipPosition = positionPercentage * (sliderWidth - tooltipWidth);
+
+            const tooltipX = tooltipWidth + tooltipPosition;
+            const tooltipY = sliderRect.top - tooltipHeight; // 自定义偏移量，避免与滑块重叠
+            console.log("tooltipX", tooltipPosition);
+
+            sliderTooltip.style.left = tooltipX + "px";
+            // sliderTooltip.style.top = -0.1 + "px";
+
+            valueSpan.textContent = selectedFontSize + 'px';
+        });
+
+        // 添加slider tooltip
+        fontSizeRange.addEventListener("mouseover", function () {
+            console.log("sliderTooltip", sliderTooltip);
+            // tooltip.classList.add()
+            sliderTooltip.style.display = "block";
+
+            sliderTooltip.classList.add("show");
+        });
+
+        fontSizeRange.addEventListener("mouseout", function () {
+
+            sliderTooltip.classList.remove("show");
+            sliderTooltip.style.display = "none";
+        });
+
+
+        function addEvent(el, type, handler) {
+            if (el.addEventListener) {
+                el.addEventListener(type, handler);
+            } else {
+                el.attachEvent('on' + type, handler);
+            }
+        }
+
+        // 散点大小
+        var dotsRange = document.getElementById("dotsRange");
+        dotsRange.addEventListener("input", function () {
+            const dotsRangeSize = dotsRange.value;
+            d3.select("#chart")
+                .selectAll("circle")
+                .attr("r", dotsRangeSize);
+
+                globalState.dotRadius = dotsRangeSize;
+        })
+
+        // 缩放行为
+        // 创建一个缩放行为，并设置缩放事件处理程序
+        const zoom = d3.zoom().on('zoom', (e) => {
+            svg.attr('transform', e.transform);
+        });
+
+        d3.select("#content").call(zoom)
+            .call(zoom.transform, d3.zoomIdentity);
+
+    </script>
+</body>
+
+</html>

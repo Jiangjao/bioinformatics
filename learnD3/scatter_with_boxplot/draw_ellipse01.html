@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+</head>
+
+<body>
+
+    <script>
+        // Sample PCA data
+
+        var mockData = [
+            {
+                "COPD": [
+                    [
+                        "20.85074665",
+                        "-0.007258903",
+                        "J095V4"
+                    ],
+                    [
+                        "20.39990582",
+                        "7.173540275",
+                        "K144V0"
+                    ],
+                    [
+                        "17.70088512",
+                        "0.629364404",
+                        "K119V0"
+                    ],
+                    [
+                        "16.78193401",
+                        "-22.03248713",
+                        "K174V0"
+                    ],
+                    [
+                        "16.55134842",
+                        "-1.716519525",
+                        "K107V0"
+                    ],
+                    [
+                        "16.50219528",
+                        "-11.14879662",
+                        "1107V4"
+                    ],
+                    [
+                        "16.47553148",
+                        "12.22040467",
+                        "K058V2"
+                    ],
+                    [
+                        "16.43394291",
+                        "-9.29646063",
+                        "K068V2"
+                    ],
+                    [
+                        "15.33314178",
+                        "7.680854895",
+                        "Z042"
+                    ],
+                    [
+                        "14.78662276",
+                        "1.326864717",
+                        "1004V4"
+                    ],
+                    [
+                        "14.76082731",
+                        "3.564244957",
+                        "Z004"
+                    ],
+                    [
+                        "14.68605816",
+                        "6.4968159",
+                        "Z014"
+                    ],
+                    [
+                        "14.48500461",
+                        "6.568186865",
+                        "J043V6"
+                    ],
+                    [
+                        "13.26676447",
+                        "10.37815035",
+                        "K122V0"
+                    ],
+                    [
+                        "13.11752598",
+                        "5.275463134",
+                        "K040V4"
+                    ],
+                    [
+                        "11.78758562",
+                        "14.11098998",
+                        "C161V8"
+                    ],
+                    [
+                        "11.69661307",
+                        "3.174176915",
+                        "1075V6"
+                    ],
+                    [
+                        "11.44483457",
+                        "5.461383516",
+                        "Z011"
+                    ],
+                    [
+                        "11.31488991",
+                        "1.311736676",
+                        "Z048"
+                    ],
+                    [
+                        "10.97771934",
+                        "-8.248780309",
+                        "K096V0"
+                    ],
+                    [
+                        "10.96657109",
+                        "-26.95776305",
+                        "K184V0"
+                    ],
+                    [
+                        "10.78460256",
+                        "-26.52059006",
+                        "K080V2"
+                    ],
+                    [
+                        "10.6720069",
+                        "9.733559529",
+                        "K011V4"
+                    ],
+                    [
+                        "10.56340665",
+                        "3.120931566",
+                        "Z030"
+                    ],
+                    [
+                        "10.32540889",
+                        "2.715728475",
+                        "K182V0"
+                    ],
+                    [
+                        "9.668036909",
+                        "10.46488105",
+                        "C402V8"
+                    ],
+                    [
+                        "9.446517647",
+                        "-0.092392058",
+                        "Z035"
+                    ],
+                    [
+                        "9.423832554",
+                        "-9.798250914",
+                        "J035V8"
+                    ],
+                    [
+                        "9.175359411",
+                        "-1.466910051",
+                        "X003V4"
+                    ],
+                    [
+                        "8.491799726",
+                        "9.164141282",
+                        "K013V4"
+                    ],
+                    [
+                        "8.293248721",
+                        "2.06387806",
+                        "Z013"
+                    ],
+                    [
+                        "7.915320061",
+                        "9.414700638",
+                        "1055V4"
+                    ],
+                    [
+                        "7.662205756",
+                        "-13.07450152",
+                        "K085V0"
+                    ],
+                    [
+                        "7.642430274",
+                        "9.021003067",
+                        "S099V8"
+                    ],
+                    [
+                        "7.371701129",
+                        "-1.108328499",
+                        "Z046"
+                    ],
+                    [
+                        "7.327098674",
+                        "-20.67911325",
+                        "K180V0"
+                    ],
+                    [
+                        "7.029453705",
+                        "-15.80223202",
+                        "S106V8"
+                    ],
+                    [
+                        "6.711834414",
+                        "-3.544002533",
+                        "K154V0"
+                    ],
+                    [
+                        "6.328684506",
+                        "6.437741873",
+                        "Z025"
+                    ],
+                    [
+                        "5.657092284",
+                        "1.887954891",
+                        "Z064"
+                    ],
+                    [
+                        "5.511316931",
+                        "-17.52422917",
+                        "C422V8"
+                    ],
+                    [
+                        "5.4022005",
+                        "-19.76432015",
+                        "K065V2"
+                    ],
+                    [
+                        "5.396826423",
+                        "-4.150169701",
+                        "K169V0"
+                    ],
+                    [
+                        "4.625956202",
+                        "-1.820826629",
+                        "Z010"
+                    ],
+                    [
+                        "3.918325376",
+                        "-15.4825873",
+                        "K084V0"
+                    ],
+                    [
+                        "3.90906241",
+                        "0.447842678",
+                        "Z033"
+                    ],
+                    [
+                        "3.371799193",
+                        "-0.681045781",
+                        "K155V0"
+                    ],
+                    [
+                        "2.257613717",
+                        "-0.965139543",
+                        "K157V0"
+                    ],
+                    [
+                        "2.080140739",
+                        "-3.035906925",
+                        "Z031"
+                    ],
+                    [
+                        "1.512202145",
+                        "-3.579262895",
+                        "Z047"
+                    ],
+                    [
+                        "1.323364711",
+                        "-3.454568259",
+                        "J073V6"
+                    ],
+                    [
+                        "0.117497771",
+                        "-3.564003724",
+                        "Z041"
+                    ],
+                    [
+                        "-0.141668887",
+                        "-7.51753193",
+                        "K101V0"
+                    ],
+                    [
+                        "-0.81339387",
+                        "-3.662301155",
+                        "Z050"
+                    ],
+                    [
+                        "-0.984866038",
+                        "-2.631183781",
+                        "J050V6"
+                    ],
+                    [
+                        "-2.024283985",
+                        "-2.915493069",
+                        "Z008"
+                    ],
+                    [
+                        "-3.580404713",
+                        "13.42357947",
+                        "S044V8"
+                    ],
+                    [
+                        "-4.447289851",
+                        "-4.649030007",
+                        "K079V0"
+                    ],
+                    [
+                        "-4.570572241",
+                        "2.638125701",
+                        "K147V0"
+                    ],
+                    [
+                        "-4.996633744",
+                        "-29.0863298",
+                        "K121V0"
+                    ],
+                    [
+                        "-5.218051336",
+                        "9.897500037",
+                        "K112V0"
+                    ],
+                    [
+                        "-5.298906391",
+                        "-1.875684485",
+                        "J009V6"
+                    ],
+                    [
+                        "-6.237584596",
+                        "3.956228259",
+                        "Z065"
+                    ],
+                    [
+                        "-8.643261169",
+                        "0.42384956",
+                        "J048V6"
+                    ],
+                    [
+                        "-8.775495307",
+                        "-3.48757145",
+                        "K072V0"
+                    ],
+                    [
+                        "-10.68136918",
+                        "3.250359774",
+                        "Z043"
+                    ],
+                    [
+                        "-10.80904344",
+                        "-5.065690367",
+                        "Z040"
+                    ],
+                    [
+                        "-11.75855068",
+                        "-6.596837634",
+                        "Z002"
+                    ],
+                    [
+                        "-12.46642254",
+                        "-2.554159022",
+                        "Z003"
+                    ],
+                    [
+                        "-13.56123464",
+                        "-1.962508761",
+                        "K099V2"
+                    ],
+                    [
+                        "-14.42915459",
+                        "1.047937967",
+                        "K083V0"
+                    ],
+                    [
+                        "-14.58240541",
+                        "1.780492962",
+                        "K136V0"
+                    ],
+                    [
+                        "-15.01119879",
+                        "9.282080411",
+                        "K177V0"
+                    ],
+                    [
+                        "-15.9355106",
+                        "-10.53796667",
+                        "Z023"
+                    ],
+                    [
+                        "-16.65665078",
+                        "1.802195458",
+                        "K179V0"
+                    ],
+                    [
+                        "-18.01251935",
+                        "5.12578198",
+                        "K098V0"
+                    ],
+                    [
+                        "-18.41340962",
+                        "16.11123261",
+                        "J059V6"
+                    ],
+                    [
+                        "-18.45987622",
+                        "-5.461264064",
+                        "K138V0"
+                    ],
+                    [
+                        "-19.33939429",
+                        "-4.067471414",
+                        "K111V0"
+                    ],
+                    [
+                        "-19.78907",
+                        "2.033100712",
+                        "K110V0"
+                    ],
+                    [
+                        "-21.01945072",
+                        "-9.696275002",
+                        "Z049"
+                    ],
+                    [
+                        "-21.74819564",
+                        "-0.596650423",
+                        "K086V0"
+                    ],
+                    [
+                        "-22.49211545",
+                        "4.382261428",
+                        "K105V0"
+                    ],
+                    [
+                        "-23.09697822",
+                        "-8.051548392",
+                        "C220V8"
+                    ],
+                    [
+                        "-23.90494236",
+                        "-3.846410145",
+                        "J076V8"
+                    ],
+                    [
+                        "-23.98193853",
+                        "-12.92136095",
+                        "Z044"
+                    ],
+                    [
+                        "-25.9020498",
+                        "-15.13665667",
+                        "Z007"
+                    ],
+                    [
+                        "-26.70144766",
+                        "1.740583993",
+                        "K173V0"
+                    ],
+                    [
+                        "-27.76395069",
+                        "-2.595439787",
+                        "K100V0"
+                    ],
+                    [
+                        "-28.30070036",
+                        "11.72452455",
+                        "X004V4"
+                    ],
+                    [
+                        "-30.66885459",
+                        "4.808023259",
+                        "K059V2"
+                    ],
+                    [
+                        "-37.82362385",
+                        "1.89782737",
+                        "K188V0"
+                    ],
+                    [
+                        "-38.08071343",
+                        "1.042891053",
+                        "K097V0"
+                    ],
+                    [
+                        "-38.28501088",
+                        "11.73917039",
+                        "K171V0"
+                    ],
+                    [
+                        "-40.38116769",
+                        "13.13000472",
+                        "J063V8"
+                    ],
+                    [
+                        "-45.70773094",
+                        "8.455838306",
+                        "K131V0"
+                    ]
+                ]
+            },
+            {
+                "Healthy": [
+                    [
+                        "22.84360536",
+                        "6.866213635",
+                        "K016V2"
+                    ],
+                    [
+                        "21.05015563",
+                        "20.59830988",
+                        "K028V4"
+                    ],
+                    [
+                        "19.07809671",
+                        "10.99353403",
+                        "C532V8"
+                    ],
+                    [
+                        "15.72402792",
+                        "3.06114563",
+                        "K095V0"
+                    ],
+                    [
+                        "14.38983028",
+                        "-12.10954757",
+                        "K055V0"
+                    ],
+                    [
+                        "13.76862029",
+                        "1.171061137",
+                        "C132V8"
+                    ],
+                    [
+                        "13.33151127",
+                        "20.72022461",
+                        "K022V2"
+                    ],
+                    [
+                        "13.22846342",
+                        "4.5113563",
+                        "Z026"
+                    ],
+                    [
+                        "13.00839886",
+                        "1.003669091",
+                        "K047V2"
+                    ],
+                    [
+                        "12.17743036",
+                        "2.662942765",
+                        "Z038"
+                    ],
+                    [
+                        "12.01068903",
+                        "6.419885846",
+                        "Z017"
+                    ],
+                    [
+                        "11.05707374",
+                        "11.99720423",
+                        "K041V4"
+                    ],
+                    [
+                        "10.59705804",
+                        "5.580892536",
+                        "Z029"
+                    ],
+                    [
+                        "8.678099427",
+                        "-13.63303749",
+                        "K003V4"
+                    ],
+                    [
+                        "8.563733843",
+                        "-1.895182751",
+                        "K057V0"
+                    ],
+                    [
+                        "7.360868115",
+                        "4.689959904",
+                        "Z054"
+                    ],
+                    [
+                        "7.23200907",
+                        "-3.312458088",
+                        "K014V2"
+                    ],
+                    [
+                        "7.030498244",
+                        "0.575192052",
+                        "Z061"
+                    ],
+                    [
+                        "6.528728489",
+                        "0.782104286",
+                        "Z028"
+                    ],
+                    [
+                        "6.407534445",
+                        "-0.515050859",
+                        "Z039"
+                    ],
+                    [
+                        "6.307225343",
+                        "-1.099666945",
+                        "Z062"
+                    ],
+                    [
+                        "5.983629485",
+                        "11.25839271",
+                        "K019V4"
+                    ],
+                    [
+                        "3.422534242",
+                        "2.472487329",
+                        "Z020"
+                    ],
+                    [
+                        "2.736819185",
+                        "2.824821685",
+                        "Z055"
+                    ],
+                    [
+                        "1.689440051",
+                        "4.027463028",
+                        "Z060"
+                    ],
+                    [
+                        "0.707947148",
+                        "2.284004885",
+                        "Z027"
+                    ],
+                    [
+                        "0.656369184",
+                        "8.112404464",
+                        "K060V0"
+                    ],
+                    [
+                        "0.184285992",
+                        "1.643731383",
+                        "Z015"
+                    ],
+                    [
+                        "-0.870775348",
+                        "16.73814491",
+                        "K194V0"
+                    ],
+                    [
+                        "-0.952610503",
+                        "-4.028300919",
+                        "Z034"
+                    ],
+                    [
+                        "-2.221153637",
+                        "2.187796003",
+                        "Z024"
+                    ],
+                    [
+                        "-2.905060383",
+                        "-2.146466487",
+                        "Z018"
+                    ],
+                    [
+                        "-7.544985522",
+                        "-3.549549433",
+                        "Z056"
+                    ]
+                ]
+            }
+        ]
+        // Function to calculate covariance matrix
+        function calculateCovarianceMatrix(data) {
+            var meanX = d3.mean(data, d => parseFloat(d[0]));
+            var meanY = d3.mean(data, d => parseFloat(d[1]));
+            var covXX = d3.mean(data, d => (parseFloat(d[0]) - meanX) * (parseFloat(d[0]) - meanX));
+            var covYY = d3.mean(data, d => (parseFloat(d[1]) - meanY) * (parseFloat(d[1]) - meanY));
+            var covXY = d3.mean(data, d => (parseFloat(d[0]) - meanX) * (parseFloat(d[1]) - meanY));
+            return [[covXX, covXY], [covXY, covYY]];
+        }
+
+        // Function to calculate eigenvalues and eigenvectors
+        function calculateEigen(covMatrix) {
+            var a = covMatrix[0][0];
+            var b = covMatrix[0][1];
+            var c = covMatrix[1][1];
+
+            var eigenvalues = [
+                (a + c) / 2 + Math.sqrt(((a - c) / 2) ** 2 + b ** 2),
+                (a + c) / 2 - Math.sqrt(((a - c) / 2) ** 2 + b ** 2)
+            ];
+
+            var eigenvectors = [
+                [eigenvalues[0] - c, b],
+                [eigenvalues[1] - c, b]
+            ];
+
+            return { values: eigenvalues, vectors: eigenvectors };
+        }
+
+        // Function to create ellipse path points
+        function createEllipsePoints(cx, cy, rx, ry, angle) {
+            var points = [];
+            var numPoints = 100;
+            for (var i = 0; i < numPoints; i++) {
+                var theta = (i / (numPoints - 1)) * 2 * Math.PI;
+                var x = rx * Math.cos(theta);
+                var y = ry * Math.sin(theta);
+                var xRot = cx + x * Math.cos(angle) - y * Math.sin(angle);
+                var yRot = cy + x * Math.sin(angle) + y * Math.cos(angle);
+                points.push([xRot, yRot]);
+            }
+            return points;
+        }
+
+        // Setting dimensions and margins
+        var margin = { top: 20, right: 30, bottom: 30, left: 40 },
+            width = 800 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom;
+
+        // Append the svg object to the body of the page
+        var svg = d3.select("body")
+            .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        // X scale and Axis
+        var x = d3.scaleLinear()
+            .domain([0, 30]) // Adjust domain as needed based on your data
+            .range([0, width]);
+        svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x));
+
+        // Y scale and Axis
+        var y = d3.scaleLinear()
+            .domain([-30, 30]) // Adjust domain as needed based on your data
+            .range([height, 0]);
+        svg.append("g")
+            .call(d3.axisLeft(y));
+
+        // Add dots
+        mockData.forEach(function (category) {
+            var categoryName = Object.keys(category)[0];
+            var dataPoints = category[categoryName];
+
+            svg.append("g")
+                .selectAll("dot")
+                .data(dataPoints)
+                .enter()
+                .append("circle")
+                .attr("class", "dot")
+                .attr("cx", function (d) { return x(parseFloat(d[0])); })
+                .attr("cy", function (d) { return y(parseFloat(d[1])); })
+                .attr("r", 5);
+
+            // Calculate covariance matrix, eigenvalues, and eigenvectors
+            var covMatrix = calculateCovarianceMatrix(dataPoints);
+            var eigen = calculateEigen(covMatrix);
+
+            // Calculate mean of data
+            var meanX = d3.mean(dataPoints, d => parseFloat(d[0]));
+            var meanY = d3.mean(dataPoints, d => parseFloat(d[1]));
+
+            // Calculate angle of ellipse
+            var angle = Math.atan2(eigen.vectors[0][1], eigen.vectors[0][0]);
+
+            // Calculate ellipse points
+            var ellipsePoints = createEllipsePoints(x(meanX), y(meanY), x(eigen.values[0]) - x(0), y(0) - y(eigen.values[1]), angle);
+
+            // Append ellipse path to SVG
+            var lineGenerator = d3.line();
+
+            svg.append("g")
+                .append("path")
+                .attr("class", "ellipse")
+                .attr("d", lineGenerator(ellipsePoints));
+        });
+
+        // CSS styling for dots and ellipse (optional)
+        // svg.selectAll(".dot")
+        //     .style("fill", function (d) {
+        //         var category = d3.select(this.parentNode).datum();
+        //         var categoryName = Object.keys(category)[0];
+        //         if (categoryName === "COPD") {
+        //             return "red"; // Customize color for COPD points
+        //         } else if (categoryName === "Healthy") {
+        //             return "blue"; // Customize color for Healthy points
+        //         } else {
+        //             return "black"; // Default color
+        //         }
+        //     });
+
+        svg.selectAll(".ellipse")
+            .style("fill", "none")
+            .style("stroke", "green") // Adjust color and other styles as needed
+            .style("stroke-width", 2);
+
+    </script>
+</body>
+
+</html>

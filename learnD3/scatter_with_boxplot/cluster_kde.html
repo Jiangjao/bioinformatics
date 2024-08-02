@@ -1,0 +1,494 @@
+<!Doctype HTML>
+<head>
+    <title>Cluster and KDE</title>
+    </head>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script>
+        // These are the only things to change, load data from DJANGO here
+        var phi = [60, 70, 80, -20, -50, -30, 150, 130, 130, 10, 20, 30]
+        var psi = [60, 50, 80, -20, -40, -40, 160, 130, 120, 155, 160, 140]
+        var cluster = [0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3]
+        var colors = ["skyblue", "lightgreen", "orange", "pink", "red"]
+        var title = "Residue SOMETHING"
+
+        // To change the coarseness and sensitivity of the step KDE
+        var increment = 5 // Coarseness (Resolution of KDE, less is smoother)
+        var bandwidth = 5 // Sensitivity (How much signal each data point gives)
+        var tight = true // Restrict (Does plot restrict shades? (YES or NO?))
+        var shades = 8 // Shade Count (How many shades can be used to show density)
+
+        // Nothing below needs to changed including other script tags
+        // But feel free to play around to learn d3
+
+        var data = []
+        for (a = 0; a < phi.length; a++)
+        {
+            data.push([phi[a], -1*psi[a], cluster[a], colors[cluster[a]]])
+        }
+        // Putting our input into one object called data
+        // Psi has to be reversed since to draw on a svg with d3, the x axis is swapped.
+
+        function render()
+        {
+            render_1()
+            render_2()
+        }
+        
+        // Only here to test if the svg's functions can exists within the scope of the function without being deleted
+        // Be super glad I did, because the function part, something we will have to do, introduced a lot of complexities
+
+    </script>
+    <style>
+        circle:hover { stroke:black }
+        #plt1
+        {
+            background-color:white
+        }
+    </style>
+</head>
+<body>
+    <!--<input type="submit" onclick="render()" value="Render">-->
+    <table>
+        <tr>
+            <td>
+                <div id="cluster-graph">
+                    <script type="text/javascript">
+                        var selected_cluster = [] // This is an array used to collect right clicked points
+                        var collection = [] // Same as above but ctrl + click
+
+                        var margin = 50
+                        var height = 400
+                        var width = 400
+                        var radius = 5
+
+                        function render_1()
+                        {
+                            // svg element
+                            var svg = d3.select("#cluster-graph").append("svg")
+                                .attr("height", height + 2*margin)
+                                .attr("width", width + 2*margin)
+                                .attr("id", "plt1")
+                            
+                            // X scale
+                            var x = d3.scaleLinear()
+                                .domain([-180, 180])
+                                .range([0, width])
+
+                            // Y scale
+                            var y = d3.scaleLinear()
+                                .domain([180, -180])
+                                .range([0, height])
+
+                            // Grid
+                            for (a = -150; a < 200; a+=50)
+                            {
+                                svg.append("line")
+                                    .style("stroke", "#d3d3d3")
+                                    .style("stroke-width", 1)
+                                    .attr("x1", x(-180)+margin)
+                                    .attr("y1", y(a)+margin)
+                                    .attr("x2", x(180)+margin)
+                                    .attr("y2", y(a)+margin)
+                                svg.append("line")
+                                    .style("stroke", "#d3d3d3")
+                                    .style("stroke-width", 1)
+                                    .attr("y1", y(-180)+margin)
+                                    .attr("x1", x(a)+margin)
+                                    .attr("y2", y(180)+margin)
+                                    .attr("x2", x(a)+margin)
+                            }
+
+                            // Borders (Top and Right)
+                            svg.append("line")
+                                .style("stroke", "black")
+                                .style("stroke-width", 1)
+                                .attr("x1", margin+.5)
+                                .attr("y1", margin+.5)
+                                .attr("x2", width+margin+.5)
+                                .attr("y2", margin+.5)
+                            svg.append("line")
+                                .style("stroke", "black")
+                                .style("stroke-width", 1)
+                                .attr("x1", width+margin+.5)
+                                .attr("y1", height+margin+.5)
+                                .attr("x2", height+margin+.5)
+                                .attr("y2", margin+.5)
+
+                            // X Axis
+                            var gx = svg.append("g")
+                                .call(d3.axisBottom(x).ticks(6))
+                                .attr("transform", "translate(" + (margin) + ", " + (height+margin) + ")")
+
+                            // Y Axis
+                            var gy = svg.append("g")
+                                .call(d3.axisLeft(y).ticks())
+                                .attr("transform", "translate(" + (margin) + "," + (margin) + ")")
+                            
+                            // Axes Labels and Title
+                            svg.append("text")
+                                .attr("x", 1*width/2+margin)
+                                .attr("y", height+margin+15)
+                                .attr("dy", "1em")
+                                .style("text-anchor", "middle")
+                                .style("font-size", 15)
+                                .text("Phi")
+                            svg.append("text")
+                                .attr("transform", "rotate(-90)")
+                                .attr("x", -1*height/2-margin)
+                                .attr("y", 15)
+                                .attr("dy", "1em")
+                                .style("text-anchor", "middle")
+                                .style("font-size", 15)
+                                .text("Psi")
+                            svg.append("text")
+                                .attr("x", 1*width/2+margin)
+                                .attr("y", 15)
+                                .attr("dy", "1em")
+                                .style("text-anchor", "middle")
+                                .style("font-size", 20)
+                                .text(title);
+                            
+                            // Plotting data
+                            svg.selectAll(".circles")
+                                .data(data)
+                                .enter()
+                                .append("circle")
+                                    .attr("class", "circles")
+                                    .attr("r", radius)
+                                    .attr("cx", function(d){
+                                        return x(d[0]+margin-5)
+                                    })
+                                    .attr("cy", function(d){
+                                        return y(-1*(d[1]+margin-5))
+                                    })
+                                    .attr("fill", function(d){
+                                        return d[3]
+                                    })
+                                    // if instead .attr("onclick", function(d) { ... }) were used, rememeber d can be passed, but reference gets messed up somewhere
+                                    .on("click", function(){
+                                        var tmp = d3.select(this).data()[0] // Not sure why the index of 0 is needed, but it worked
+                                        if (event.ctrlKey)
+                                        {
+                                            collect(this, tmp[0], (-1*tmp[1]), tmp[2])
+                                        }
+                                        else
+                                        {
+                                            save(this, tmp[0], (-1*tmp[1]), tmp[2])
+                                        }
+                                    })
+                        }
+
+                        // Functions must be outside of other function scope for svg elements to call
+                        var mode = null
+                        function save(obj, var1, var2, var3) 
+                        {
+                            mode = 0
+                            var to_show = "Phi: " + var1 + ", Psi: " + var2 + ", Cluster: " + var3
+                            d3.select("body").select("#list1").select("span").text(to_show)
+                            d3.select("body").select("#list2").selectAll("p").remove()
+                            d3.selectAll(".circles").attr("stroke", "none")
+                            d3.select(obj).attr("stroke", "black")
+                            selected_cluster = []
+                            collection = []
+                            for (a = 0; a < phi.length; a++)
+                            {
+                                if (cluster[a] == var3)
+                                {
+                                    selected_cluster.push([phi[a], psi[a]])
+                                }
+                            }
+                        }
+
+                        function collect(obj, var1, var2, var3)
+                        {
+                            if (mode != 1)
+                            {
+                                d3.selectAll(".circles").attr("stroke", "none")
+                            }
+                            mode = 1
+                            var to_show = "Phi: " + var1 + ", Psi: " + var2 + ", Cluster: " + var3
+                            d3.select("body").select("#list2").append("p").text(to_show)
+                            d3.select(obj).attr("stroke", "black")
+                            collection.push([var1, var2])
+                        }
+                    </script>
+                </div>
+            </td>
+            <td>
+                <div id="KDE-graph">
+                    <script type="text/javascript">
+                        // var increment = 5
+                        var dist_xy = []
+                        // var bandwidth = 10
+
+                        function render_2()
+                        {
+                            // Kernels Calculating distance (akin to density)
+                            for (a = -180; a < 180; a+=increment)
+                            {
+                                var to_row = []
+                                for (b = -180; b < 180; b+=increment)
+                                {
+                                    to_row.push(0)
+                                }
+                                dist_xy.push(to_row)
+                            }
+                            
+                            // Calculate KDE 
+                            indexed_data = []
+                            for (a = 0; a < data.length; a++)
+                            {
+                                index_phi = Math.floor(((data[a][0] + 180)/increment))
+                                index_psi = Math.round(((data[a][1] + 180)/increment))
+                                for (b = 1; b <= bandwidth; b++)
+                                {
+                                    for (c = (-b*1); c <= b; c++)
+                                    {
+                                        for (d = (-b*1); d <= b; d++)
+                                        {
+                                            try
+                                            {
+                                                dist_xy[index_phi-c-1][index_psi-d] += 1
+                                            }
+                                            catch {}
+                                        }
+                                    }
+                                }   
+                            } // kkk
+
+                            // Normalizing the data
+                            min = 360*Math.pow(2, .5)
+                            max = 0
+                            for (a = 0; a < dist_xy.length; a++)
+                            {
+                                for (b = 0; b < dist_xy[0].length; b++)
+                                {
+                                    if (dist_xy[a][b] > max) {max = dist_xy[a][b]}
+                                    if (dist_xy[a][b] < min) {min = dist_xy[a][b]}
+                                }   
+                            }
+
+                            // Finding the rgb values of each square
+                            for (a = 0; a < dist_xy.length; a++)
+                            {
+                                for (b = 0; b < dist_xy[0].length; b++)
+                                {
+                                    dist_xy[a][b] = (255*(Math.pow(10, ((dist_xy[a][b]-min)/(max-min))-1)))
+                                    //dist_xy[a][b] = Math.floor(255*Math.pow(1-((dist_xy[a][b]-min)/(max-min)), 2))
+                                }   
+                            }
+
+                            // Restricting shade values
+                            var tmp = 255/shades
+                            for (a = 0; a < dist_xy.length; a++)
+                            {
+                                for (b = 0; b < dist_xy[0].length; b++)
+                                {
+                                    dist_xy[a][b] = Math.floor((dist_xy[a][b]/tmp))*tmp
+                                    console.log(dist_xy[a][b])
+                                }
+                            }
+
+                            
+                            var margin = 50
+                            var height = 400
+                            var width = 400
+                            var radius = 5
+
+                            // svg element
+                            var svg = d3.select("#KDE-graph").append("svg")
+                                .attr("height", height + 2*margin)
+                                .attr("width", width + 2*margin)
+                                .attr("id", "plt1")
+                            
+                            // X scale
+                            var x = d3.scaleLinear()
+                                .domain([-180, 180])
+                                .range([0, width])
+
+                            // Y scale
+                            var y = d3.scaleLinear()
+                                .domain([180, -180])
+                                .range([0, height])
+                            
+                            // Plotting data
+                            var d1 = -1
+                            for (a = -180; a < 180; a+=increment)
+                            {
+                                d1 += 1
+                                var d2 = -1
+                                for (b = -180; b < 180; b+=increment)
+                                {
+                                    d2 += 1
+                                    svg.append("rect")
+                                        .attr("x", x(a)+margin)
+                                        .attr("y", y(-1*b)+margin)
+                                        .attr("width", increment+2)
+                                        .attr("height", increment+2)
+                                        .attr("fill", "rgb("+(dist_xy[d1][d2])+",0,"+(dist_xy[d1][d2]) +")")
+                                }
+                            }
+
+                            // Borders (Top and Right)
+                            svg.append("line")
+                                .style("stroke", "black")
+                                .style("stroke-width", 1)
+                                .attr("x1", margin+.5)
+                                .attr("y1", margin+.5)
+                                .attr("x2", width+margin+.5)
+                                .attr("y2", margin+.5)
+                            svg.append("line")
+                                .style("stroke", "black")
+                                .style("stroke-width", 1)
+                                .attr("x1", width+margin+.5)
+                                .attr("y1", height+margin+.5)
+                                .attr("x2", height+margin+.5)
+                                .attr("y2", margin+.5)
+
+                            // X Axis
+                            var gx = svg.append("g")
+                                .call(d3.axisBottom(x).ticks(6))
+                                .attr("transform", "translate(" + (margin) + ", " + (height+margin) + ")")
+
+                            // Y Axis
+                            var gy = svg.append("g")
+                                .call(d3.axisLeft(y).ticks())
+                                .attr("transform", "translate(" + (margin) + "," + (margin) + ")")
+                            
+                            // Axes Labels and Title
+                            svg.append("text")
+                                .attr("x", 1*width/2+margin)
+                                .attr("y", height+margin+15)
+                                .attr("dy", "1em")
+                                .style("text-anchor", "middle")
+                                .style("font-size", 15)
+                                .text("Phi")
+                            svg.append("text")
+                                .attr("transform", "rotate(-90)")
+                                .attr("x", -1*height/2-margin)
+                                .attr("y", 15)
+                                .attr("dy", "1em")
+                                .style("text-anchor", "middle")
+                                .style("font-size", 15)
+                                .text("Psi")
+                            svg.append("text")
+                                .attr("x", 1*width/2+margin)
+                                .attr("y", 15)
+                                .attr("dy", "1em")
+                                .style("text-anchor", "middle")
+                                .style("font-size", 20)
+                                .text(title + " | Step KDE")
+                        }
+                    </script>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="submit" value="Download Associated Cluster" onclick="download_cluster()">
+                <input type="submit" value="Download All Clusters" onclick="download_all()">
+                <input type="submit" value="Download Collection" onclick="download_collection()">
+                <script>
+                    function download_cluster()
+                    {
+                        if (selected_cluster.length != 0)
+                        {
+                            var content = ""
+                            for (a = 0; a < selected_cluster.length; a++)
+                            {
+                                content += String(selected_cluster[a][0]) + " " + String(selected_cluster[a][1])
+                                if (a != selected_cluster.length - 1)
+                                {
+                                    content += "\n"
+                                }
+                            }
+                            var mime_type = "text/plain"
+                            var blob = new Blob([content], {type: mime_type})
+                            var dlink = document.createElement("a")
+                            dlink.download = "some_cluster.csv"
+                            dlink.href = window.URL.createObjectURL(blob)
+                            dlink.onclick = function(d) {
+                                // revokeObjectURL needs a delay to work properly
+                                var that = this;
+                                setTimeout(function() {
+                                    window.URL.revokeObjectURL(that.href)
+                                }, 1500)
+                            }
+                            dlink.click()
+                            dlink.remove()
+                        }
+                    }
+
+                    function download_all()
+                    {
+                        var content = ""
+                        for (a = 0; a < data.length; a++)
+                        {
+                            content += String(data[a][0]) + " " + String(data[a][1])
+                            if (a != data.length - 1)
+                            {
+                                content += "\n"
+                            }
+                        }
+                        var mime_type = "text/plain"
+                        var blob = new Blob([content], {type: mime_type})
+                        var dlink = document.createElement("a")
+                        dlink.download = "all_clusters.csv"
+                        dlink.href = window.URL.createObjectURL(blob)
+                        dlink.onclick = function(d) {
+                            // revokeObjectURL needs a delay to work properly
+                            var that = this;
+                            setTimeout(function() {
+                                window.URL.revokeObjectURL(that.href)
+                            }, 1500)
+                        }
+                        dlink.click()
+                        dlink.remove()
+                    }
+
+                    function download_collection()
+                    {
+                        var content = ""
+                        for (a = 0; a < collection.length; a++)
+                        {
+                            content += String(collection[a][0]) + " " + String(collection[a][1])
+                            if (a != data.length - 1)
+                            {
+                                content += "\n"
+                            }
+                        }
+                        var mime_type = "text/plain"
+                        var blob = new Blob([content], {type: mime_type})
+                        var dlink = document.createElement("a")
+                        dlink.download = "some_collection.csv"
+                        dlink.href = window.URL.createObjectURL(blob)
+                        dlink.onclick = function(d) {
+                            // revokeObjectURL needs a delay to work properly
+                            var that = this;
+                            setTimeout(function() {
+                                window.URL.revokeObjectURL(that.href)
+                            }, 1500)
+                        }
+                        dlink.click()
+                        dlink.remove()
+                    }
+                </script>
+            </td>
+            <td>
+                <div id="list1">
+                    <b>Selected Point:</b>
+                    <span>None</span>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <script>
+        render()
+    </script>
+    <div id="list2">
+        <h3>Collection:</h3>
+        <p></p>
+    </div>
+</body>
+</html>

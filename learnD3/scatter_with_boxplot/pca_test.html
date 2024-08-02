@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCA Scatter Plot with Confidence Ellipses using D3.js</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <style>
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: #000;
+            shape-rendering: crispEdges;
+        }
+
+        .dot {
+            fill: steelblue;
+            stroke: #fff;
+        }
+
+        .ellipse {
+            fill: none;
+            stroke: red;
+            stroke-width: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <svg width="800" height="500"></svg>
+    <script>
+        // Sample PCA data
+        var data = [
+            {x: 1.2, y: 2.3},
+            {x: 2.1, y: 3.4},
+            {x: 3.3, y: 1.8},
+            {x: 4.0, y: 3.0},
+            {x: 5.1, y: 4.2},
+        ];
+        
+        // Function to calculate covariance matrix
+        function calculateCovarianceMatrix(data) {
+            var meanX = d3.mean(data, d => d.x);
+            var meanY = d3.mean(data, d => d.y);
+            var covXX = d3.mean(data, d => (d.x - meanX) * (d.x - meanX));
+            var covYY = d3.mean(data, d => (d.y - meanY) * (d.y - meanY));
+            var covXY = d3.mean(data, d => (d.x - meanX) * (d.y - meanY));
+            return [[covXX, covXY], [covXY, covYY]];
+        }
+        
+        // Function to calculate eigenvalues and eigenvectors
+        function calculateEigen(covMatrix) {
+            var a = covMatrix[0][0];
+            var b = covMatrix[0][1];
+            var c = covMatrix[1][1];
+            
+            var eigenvalues = [
+                (a + c) / 2 + Math.sqrt(((a - c) / 2) ** 2 + b ** 2),
+                (a + c) / 2 - Math.sqrt(((a - c) / 2) ** 2 + b ** 2)
+            ];
+            
+            var eigenvectors = [
+                [eigenvalues[0] - c, b],
+                [eigenvalues[1] - c, b]
+            ];
+            
+            return {values: eigenvalues, vectors: eigenvectors};
+        }
+        
+        // Function to create ellipse path points
+        function createEllipsePoints(cx, cy, rx, ry, angle) {
+            var points = [];
+            var numPoints = 100;
+            for (var i = 0; i < numPoints; i++) {
+                var theta = (i / (numPoints - 1)) * 2 * Math.PI;
+                var x = rx * Math.cos(theta);
+                var y = ry * Math.sin(theta);
+                var xRot = cx + x * Math.cos(angle) - y * Math.sin(angle);
+                var yRot = cy + x * Math.sin(angle) + y * Math.cos(angle);
+                points.push([xRot, yRot]);
+            }
+            return points;
+        }
+        
+        // Calculate covariance matrix, eigenvalues, and eigenvectors
+        var covMatrix = calculateCovarianceMatrix(data);
+        var eigen = calculateEigen(covMatrix);
+        
+        // Setting dimensions and margins
+        var margin = {top: 20, right: 30, bottom: 30, left: 40},
+            width = 800 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom;
+        
+        // Append the svg object to the body of the page
+        var svg = d3.select("svg")
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        
+        // X scale and Axis
+        var x = d3.scaleLinear()
+          .domain([0, d3.max(data, function(d) { return d.x; }) + 1])
+          .range([0, width]);
+        svg.append("g")
+          .attr("transform", "translate(0," + height + ")")
+          .call(d3.axisBottom(x));
+        
+        // Y scale and Axis
+        var y = d3.scaleLinear()
+          .domain([0, d3.max(data, function(d) { return d.y; }) + 1])
+          .range([height, 0]);
+        svg.append("g")
+          .call(d3.axisLeft(y));
+        
+        // Add dots
+        svg.append("g")
+          .selectAll("dot")
+          .data(data)
+          .enter()
+          .append("circle")
+            .attr("class", "dot")
+            .attr("cx", function(d) { return x(d.x); })
+            .attr("cy", function(d) { return y(d.y); })
+            .attr("r", 5);
+        
+        // Add ellipses around dots
+        var meanX = d3.mean(data, d => d.x);
+        var meanY = d3.mean(data, d => d.y);
+        var angle = Math.atan2(eigen.vectors[0][1], eigen.vectors[0][0]);
+        
+        var ellipsePoints = createEllipsePoints(x(meanX), y(meanY), x(eigen.values[0]) - x(0), y(0) - y(eigen.values[1]), -angle);
+        
+        var lineGenerator = d3.line();
+        
+        svg.append("g")
+          .append("path")
+            .attr("class", "ellipse")
+            .attr("d", lineGenerator(ellipsePoints));
+    </script>
+</body>
+</html>

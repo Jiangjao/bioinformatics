@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+
+    <script>
+
+        // Ajax 的使用步骤
+        const xhr = new XMLHttpRequest();
+    
+        // 2.2 准备发送请求
+        // xhr.open("https:www.badi.com", true)
+        // 2.3 发送请求
+        // xhr.send()
+    
+        // 2.4 监听事件，处理相应
+        // 当处理响应后，会除法xhr对象的readystatechange事件
+        // 可以在该事件中对响应进行处理
+        // xhr.onload
+    
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState !== 4) return;
+    
+            // HTTP CODE
+            // 获取响应后，响应的内容会自动填充xhr对象的属性
+            // xhr.status: HTTP 200 404
+            // xhr.statusText: HTTP状态说明 OK Not Found
+            if ((xhr.status >= 200) & (xhr.status < 300) ||
+                xhr.status === 304) {
+                // console.log("正常使用响应数据");
+            }
+        }
+    
+        // readystatechange 事件监听readyState这个状态的变化
+        // 它的值从 0 ~ 4, 一共 5 个状态
+        // 0：未初始化。尚未调用open()
+        // 1: 启动。已经调用open(), 但尚未调用send()
+        // 2: 发送。已经调用send(), 但尚未接受到响应
+        // 3: 接受。已经接受到部分响应数据
+        // 4：完成。已经接收到全部响应数据，而且已经可以在浏览器中使用了
+    
+        const url = "https://www.imooc/api/http/search/suggest?words=js";
+    
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState !== 4) return;
+    
+            // HTTP CODE
+            // 获取响应后，响应的内容会自动填充xhr对象的属性
+            // xhr.status: HTTP 200 404
+            // xhr.statusText: HTTP状态说明 OK Not Found
+            if ((xhr.status >= 200) & (xhr.status < 300) ||
+                xhr.status === 304) {
+                // console.log("正常使用响应数据");
+                console.log(xhr.responseText);
+                console.log(typeof xhr.responseText);
+            }
+        }
+    
+        xhr.open('GET', url, true);
+        xhr.send(null);
+    
+    </script>
+</body>
+</html>

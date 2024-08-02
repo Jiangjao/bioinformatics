@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+
+</head>
+<body>
+    <div id="app">
+        <ul>
+            <li v-for="item in bookList" :key="item.id">
+                <span>
+                    {{ item.name}}
+                </span>
+                <span>
+                    {{ item.author}}
+                </span>
+
+                <!-- 注册点击事件 → 通过id 进行删除数组中的对应项 -->
+                 <button @click="del(item.id)">删除</button>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        const app = new Vue({
+            el: "#app",
+            data: {
+                bookList: [
+                    {id: 1, name: '《红楼梦》', author: '曹雪芹'},
+                    {id: 2, name: '《西游记》', author: '吴承恩'},
+                    {id: 3, name: '《水浒传》', author: '施耐庵'},
+                    {id: 4, name: '《三国演义》', author: '罗贯中'}
+                ]
+            },
+            methods: {
+                del (id) {
+                    this.bookList = this.bookList.filter((item) => item.id != id)
+                    console.log("删除")
+                    
+                }
+            }
+
+        })
+    </script>
+
+</body>
+</html>

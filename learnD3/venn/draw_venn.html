@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <script src="https://cdn.bootcdn.net/ajax/libs/venn.js/0.2.20/venn.js"></script>  -->
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+
+</head>
+<body>
+    <div id="my_dataviz"></div>
+    <script>
+        //drawing board
+// const svg = d3.select("svg")
+     // TODO:xiaojiao, 监听窗口resize 时的变化
+        let flag = true
+
+        // 全屏设置
+        let isFullscreen = false;
+
+        window.onresize = function () {
+
+            // 全屏时放弃改变窗口大小
+            if (isFullscreen) {
+                return;
+            }
+            if (flag) {
+                // console.log(new Date(), '窗口改变了')
+                location.reload();
+                flag = false
+            }
+            let timeId = setTimeout(() => {
+                flag = true
+                timeId = null // 清除延时定时器
+            }, 1000)
+            // width = document.body.clientWidth;
+        }
+        // 网页窗口在某一大小打开时的宽高
+        // https://stackoverflow.com/questions/16265123/resize-svg-when-window-is-resized-in-d3-js
+        var width = window.innerWidth || document.clientWidth || document.body.clientWidth;
+        var height = window.innerHeight || document.clientHeight || document.body.clientHeight;
+        // 创建颜色比例尺
+        const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+
+        var margin = { top: 0.015 * height, right: 0.38 * width , bottom: 0.09 * height, left: 0.05 * width },
+            width = width - margin.left - margin.right,
+            height = height - margin.top - margin.bottom * 1.2;
+        // append the svg object to the body of the page
+        const svg = d3.select("#my_dataviz")
+            .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .attr("id", "chart")
+            .append("g")
+            .attr("transform",
+                `translate(${margin.left}, ${margin.top})`);
+
+// piece of paper
+const g = svg.append("g")
+    .attr("transform",
+        "translate(" +
+        margin.left + "," +
+        margin.top + ")");
+const circleRad = 100
+const xCenter = 150
+const yCenter = 150
+yCenter1 = 300
+xCenter1 = 300
+g.append("circle")
+    .attr("r", circleRad)
+    .attr('transform',
+        "translate(" +
+        xCenter + "," +
+        yCenter + ")")
+    .style("fill", "red");
+    const offsetFactor = 1.2
+    const offset = offsetFactor*circleRad
+
+    const xCenter2 = xCenter + 1.2 * circleRad
+g.append("circle")
+    .attr("r", circleRad)
+    .attr('transform',
+        "translate(" +
+        xCenter2 + "," +
+        yCenter + ")");
+
+        const xCenter3 = xCenter + offset / 2
+const yCenter3 = yCenter + Math.sqrt(3)*offset / 2
+g.append("circle")
+    .attr("r", circleRad)
+    .attr('transform',
+        "translate(" +
+        xCenter3 + "," +
+        yCenter3 + ")");
+
+
+        //compute first points of intersection
+const triHeight = Math.sqrt(circleRad**2 - (offset / 2)**2)
+//outer intersection of Circles 1 and 2
+const xIsect1 = xCenter3
+const yIsect1 = yCenter1 - triHeight
+//inner intersection of Circles 1 and 2
+const xIsect4 = xCenter3
+const yIsect4 = yCenter1 + triHeight
+//treat "triHeight" as the hypoteneuse of a 30.60.90 triangle.
+//this tells us the shift from the midpoint of a leg of the triangle
+//to the point of intersection
+const xDelta = triHeight * Math.sqrt(3) / 2
+const yDelta = triHeight / 2
+const xMidpointC1C3 = (xCenter1 + xCenter3) / 2
+const xMidpointC2C3 = (xCenter2 + xCenter3) / 2
+const yMidpointBoth = (yCenter1 + yCenter3) / 2
+//find the rest of the points of intersection
+const xIsect2 = xMidpointC1C3 - xDelta
+const yIsect2 = yMidpointBoth + yDelta
+const xIsect3 = xMidpointC2C3 + xDelta
+const yIsect3 = yMidpointBoth + yDelta
+const xIsect5 = xMidpointC1C3 + xDelta
+const yIsect5 = yMidpointBoth - yDelta
+const xIsect6 = xMidpointC2C3 - xDelta
+const yIsect6 = yMidpointBoth - yDelta
+
+        const makeIronShapes = (x1, y1, x2, y2, x3, y3) => {
+  path =   `M ${x1} ${y1}
+             A ${circleRad} ${circleRad} 0 0 1 ${x2} ${y2}
+             A ${circleRad} ${circleRad} 0 0 0 ${x3} ${y3}
+             A ${circleRad} ${circleRad} 0 0 1 ${x1} ${y1}`
+  return path
+}
+const makeSunShapes = (x1, y1, x2, y2, x3, y3) => {
+  path =   `M ${x1} ${y1}
+             A ${circleRad} ${circleRad} 0 0 0 ${x2} ${y2}
+             A ${circleRad} ${circleRad} 0 0 0 ${x3} ${y3}
+             A ${circleRad} ${circleRad} 0 1 1 ${x1} ${y1}`
+  return path
+}
+const makeRoundedTri = (x1, y1, x2, y2, x3, y3) => {
+  path =   `M ${x1} ${y1}
+             A ${circleRad} ${circleRad} 0 0 1 ${x2} ${y2}
+             A ${circleRad} ${circleRad} 0 0 1 ${x3} ${y3}
+             A ${circleRad} ${circleRad} 0 0 1 ${x1} ${y1}`
+  return path
+}
+
+makeSunShapes(xIsect3, yIsect3, xIsect4, yIsect4, xIsect2, yIsect2)
+
+    </script>
+</body>
+</html>

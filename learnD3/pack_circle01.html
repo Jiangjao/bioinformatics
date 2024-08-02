@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Circular Packing with D3.js</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        .node {
+            stroke: #fff;
+            stroke-width: 1.5px;
+        }
+        .label {
+            font: 10px sans-serif;
+            text-anchor: middle;
+        }
+    </style>
+</head>
+<body>
+    <svg width="600" height="600"></svg>
+    <!-- <script src="circular_packing.js"></script> -->
+    <script>
+        const width = 600;
+const height = 600;
+
+// 创建一个SVG元素
+const svg = d3.select("svg")
+    .attr("width", width)
+    .attr("height", height)
+    // .attr("viewBox", `-${width / 2} -${height / 2} ${width} ${height}`)
+    .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
+
+// 生成模拟数据
+var data = {
+    "name": "root",
+    "children": [
+        { "name": "child1", "value": 100 },
+        { "name": "child2", "value": 300 },
+        {
+            "name": "child3", "children": [
+                { "name": "grandchild1", "value": 50 },
+                { "name": "grandchild2", "value": 150 }
+            ]
+        }
+    ]
+};
+
+// var data = {
+//   "name": "root",
+//   "children": [
+//     {
+//       "name": "a",
+//       "children": [
+//         {
+//           "name": "Breast",
+//           "children": [
+//             {
+//               "name": "Epithelial cell",
+//               "children": [
+//                 {
+//                   "name": "CD117",
+//                   "value": 4614
+//                 },
+//                 {
+//                   "name": "SOX2",
+//                   "value": 20859
+//                 },
+//                 {
+//                   "name": "SSEA-4",
+//                   "value": 10530
+//                 }
+//               ]
+//             }
+//           ]
+//         },
+//         {
+//           "name": "Eye",
+//           "children": [
+//             {
+//               "name": "Stem cell",
+//               "children": [
+//                 {
+//                   "name": "ABCG2",
+//                   "value": 14593
+//                 },
+//                 {
+//                   "name": "CD133",
+//                   "value": 6703
+//                 },
+//                 {
+//                   "name": "CK14",
+//                   "value": 700
+//                 },
+//                 {
+//                   "name": "P63",
+//                   "value": 700
+//                 }
+//               ]
+//             }
+//           ]
+//         },
+//         {
+//           "name": "Intestine",
+//           "children": [
+//             {
+//               "name": "Endocrine cell",
+//               "children": [
+//                 {
+//                   "name": "CD144",
+//                   "value": 1200
+//                 },
+//                 {
+//                   "name": "CD146",
+//                   "value": 1880
+//                 },
+//                 {
+//                   "name": "CD44",
+//                   "value": 2313
+//                 }
+//               ]
+//             }
+//           ]
+//         },
+//         {
+//           "name": "Kidney",
+//           "children": [
+//             {
+//               "name": "T cell",
+//               "children": [
+//                 {
+//                   "name": "c-Kit",
+//                   "value": 2832
+//                 },
+//                 {
+//                   "name": "CXCR3",
+//                   "value": 8435
+//                 },
+//                 {
+//                   "name": "Dectin-1",
+//                   "value": 7862
+//                 },
+//                 {
+//                   "name": "deltaNp63",
+//                   "value": 2138
+//                 },
+//                 {
+//                   "name": "epsilon",
+//                   "value": 5222
+//                 },
+//                 {
+//                   "name": "FLT3",
+//                   "value": 3842
+//                 },
+//                 {
+//                   "name": "MARCO",
+//                   "value": 2649
+//                 },
+//                 {
+//                   "name": "MHC",
+//                   "value": 1353
+//                 },
+//                 {
+//                   "name": "SIGLEC8",
+//                   "value": 876
+//                 },
+//                 {
+//                   "name": "TGF",
+//                   "value": 4665
+//                 },
+//                 {
+//                   "name": "Vimentin",
+//                   "value": 4896
+//                 }
+//               ]
+//             }
+//           ]
+//         },
+//         {
+//           "name": "Liver",
+//           "children": [
+//             {
+//               "name": "Myeloid cell",
+//               "children": [
+//                 {
+//                   "name": "ST2",
+//                   "value": 16540
+//                 }
+//               ]
+//             }
+//           ]
+//         },
+//         {
+//           "name": "Lung",
+//           "children": [
+//             {
+//               "name": "Macrophage",
+//               "children": [
+//                 {
+//                   "name": "CD192",
+//                   "value": 2023
+//                 }
+//               ]
+//             },
+//             {
+//               "name": "Fibroblast",
+//               "children": [
+//                 {
+//                   "name": "CD25",
+//                   "value": 12870
+//                 },
+//                 {
+//                   "name": "CD282",
+//                   "value": 12348
+//                 },
+//                 {
+//                   "name": "CD284",
+//                   "value": 4864
+//                 },
+//                 {
+//                   "name": "CD289",
+//                   "value": 4853
+//                 },
+//                 {
+//                   "name": "CD294",
+//                   "value": 8411
+//                 },
+//                 {
+//                   "name": "CD3",
+//                   "value": 12003
+//                 },
+//                 {
+//                   "name": "iNOS",
+//                   "value": 3165
+//                 },
+//                 {
+//                   "name": "VEGF",
+//                   "value": 5219
+//                 },
+//                 {
+//                   "name": "ZAP70",
+//                   "value": 3509
+//                 }
+//               ]
+//             },
+//             {
+//               "name": "Basal cell",
+//               "children": [
+//                 {
+//                   "name": "TCR",
+//                   "value": 4190
+//                 }
+//               ]
+//             }
+//           ]
+//         },
+//         {
+//           "name": "Pancreas",
+//           "children": [
+//             {
+//               "name": "Beta cell",
+//               "children": [
+//                 {
+//                   "name": "CD90",
+//                   "value": 3301
+//                 },
+//                 {
+//                   "name": "CK15",
+//                   "value": 10349
+//                 },
+//                 {
+//                   "name": "CK3",
+//                   "value": 11275
+//                 },
+//                 {
+//                   "name": "CXCR4",
+//                   "value": 9930
+//                 },
+//                 {
+//                   "name": "Integrin",
+//                   "value": 10544
+//                 },
+//                 {
+//                   "name": "LGR5",
+//                   "value": 19788
+//                 },
+//                 {
+//                   "name": "NANOG",
+//                   "value": 7147
+//                 },
+//                 {
+//                   "name": "NOTCH1",
+//                   "value": 19382
+//                 },
+//                 {
+//                   "name": "OCT3-4",
+//                   "value": 2247
+//                 },
+//                 {
+//                   "name": "P75",
+//                   "value": 5569
+//                 },
+//                 {
+//                   "name": "SOD2",
+//                   "value": 376
+//                 },
+//                 {
+//                   "name": "STRO-1",
+//                   "value": 654
+//                 }
+//               ]
+//             }
+//           ]
+//         }
+//       ]
+//     }
+//   ]
+// }
+
+var table = [
+  {"name": "Eve",   "parent": ""},
+  {"name": "Cain",  "parent": "Eve"},
+  {"name": "Seth",  "parent": "Eve"},
+  {"name": "Enos",  "parent": "Seth"},
+  {"name": "Noam",  "parent": "Seth"},
+  {"name": "Abel",  "parent": "Eve"},
+  {"name": "Awan",  "parent": "Eve"},
+  {"name": "Enoch", "parent": "Awan"},
+  {"name": "Azura", "parent": "Eve"}
+]
+var root = d3.stratify()
+    .id((d) => d.name)
+    .parentId((d) => d.parent)
+    // .sum(d => d.value)
+  (table);
+  
+// var root = d3.stratify()
+//     .id(function(d) { return d.name; })
+//     .parentId(function(d) { return d.parent; })
+//     (table);
+// 在 stratify 后使用 .sum() 和 .sort()
+root = root.sum(d => d.value)
+    .sort((a, b) => b.value - a.value);
+// 创建分层数据结构
+// var root = d3.hierarchy(data)
+//     .sum(d => d.value)
+//     .sort((a, b) => b.value - a.value);
+
+// 检查和处理 NaN 的情况
+root.each(d => {
+    if (isNaN(d.value)) {
+        d.value = 0;
+    }
+});
+// 创建打包布局
+const pack = d3.pack()
+    .size([width - 2, height - 2])
+    .padding(3);
+
+// 应用打包布局到数据
+pack(root);
+
+// 创建节点
+const node = svg.selectAll("g")
+    .data(root.descendants())
+    .join("g")
+    // .attr("transform", d => `translate(${d.x},${d.y})`);
+
+// 绘制圆形
+node.append("circle")
+    .attr("class", "node")
+    .attr("r", d => d.r)
+    .attr("fill", d => d.children ? "#69b3a2" : "#cce5df");
+
+// 添加标签
+node.filter(d => !d.children).append("text")
+    .attr("class", "label")
+    .attr("dy", "0.3em")
+    .text(d => d.data.name);
+
+    </script>
+</body>
+</html>

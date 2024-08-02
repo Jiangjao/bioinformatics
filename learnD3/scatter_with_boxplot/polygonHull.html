@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+</head>
+
+<body>
+    <script>
+        // 示例数据（假设已经是PCA后的数据）
+        var pcaData = [
+            { x: 1.2, y: 2.3 },
+            { x: 2.1, y: 3.4 },
+            { x: 3.3, y: 1.8 },
+            { x: 4.0, y: 3.0 },
+            { x: 5.1, y: 4.2 }
+        ];
+
+
+        // 设置SVG尺寸和边距
+        var margin = { top: 20, right: 30, bottom: 30, left: 40 },
+            width = 800 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom;
+
+        // 创建SVG对象
+        var svg = d3.select("body")
+            .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        // X轴比例尺
+        var x = d3.scaleLinear()
+            .domain([0, d3.max(pcaData, d => d.x) + 1])
+            .range([0, width]);
+
+        // Y轴比例尺
+        var y = d3.scaleLinear()
+            .domain([0, d3.max(pcaData, d => d.y) + 1])
+            .range([height, 0]);
+
+        // 添加数据点
+        svg.selectAll(".dot")
+            .data(pcaData)
+            .enter().append("circle")
+            .attr("class", "dot")
+            .attr("cx", d => x(d.x))
+            .attr("cy", d => y(d.y))
+            .attr("r", 5);
+
+        // 计算凸包
+        var hull = d3.polygonHull(pcaData.map(d => [d.x, d.y]));
+
+        // 绘制凸包多边形
+        var lineGenerator = d3.line()
+            .x(d => x(d[0]))
+            .y(d => y(d[1]))
+            .curve(d3.curveLinearClosed);
+
+        svg.append("path")
+            .datum(hull)
+            .attr("d", lineGenerator)
+            .attr("stroke", "steelblue")
+            .attr("fill", "none");
+
+    </script>
+</body>
+
+</html>

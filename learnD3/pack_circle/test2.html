@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG and Canvas Example</title>
+    <style>
+        body {
+            margin: 0;
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: all; /* Allow interactions on SVG */
+        }
+        .node {
+            stroke: #bf0808;
+            stroke-width: 1.5px;
+        }
+        .label {
+            font-size: 12px;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="backgroundCanvas"></canvas>
+    <svg width="960" height="600"></svg>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script>
+
+const data = [
+    { id: 1, fill: 'black', x: 10, y: 10 },
+    { id: 2, fill: 'black', x: 50, y: 50 },
+    { id: 3, fill: 'black', x: 100, y: 70 },
+    { id: 4, fill: 'black', x: 20, y: 100 }
+  ];
+        // Canvas setup
+        const canvas = document.getElementById('backgroundCanvas');
+        const context = canvas.getContext('2d');
+
+        // Set canvas dimensions to match SVG
+        const svgWidth = 960;
+        const svgHeight = 600;
+        canvas.width = svgWidth;
+        canvas.height = svgHeight;
+
+        // Draw background grid on canvas
+        function drawGrid() {
+            context.strokeStyle = '#eee';
+            context.lineWidth = 0.5;
+
+            // Draw vertical lines
+            for (let x = 0; x < svgWidth; x += 20) {
+                context.beginPath();
+                context.moveTo(x, 0);
+                context.lineTo(x, svgHeight);
+                context.stroke();
+            }
+
+            // Draw horizontal lines
+            for (let y = 0; y < svgHeight; y += 20) {
+                context.beginPath();
+                context.moveTo(0, y);
+                context.lineTo(svgWidth, y);
+                context.stroke();
+            }
+        }
+
+        drawGrid(); // Call the function to draw grid
+
+        // SVG setup
+        const svg = d3.select("svg"),
+              width = +svg.attr("width"),
+              height = +svg.attr("height");
+
+        const x = d3.scaleLinear().range([0, width]),
+              y = d3.scaleLinear().range([height, 0]),
+              r = d3.scaleSqrt().range([0, 40]);
+
+        const color = d3.scaleOrdinal(d3.schemeCategory10);
+
+        function updateScatterPlot(data) {
+            // Set the domains for scales
+            x.domain(d3.extent(data, d => d.x)).nice();
+            y.domain(d3.extent(data, d => d.y)).nice();
+            r.domain(d3.extent(data, d => d.size)).nice();
+
+            const nodes = svg.selectAll(".node")
+                .data(data, d => d.id);
+
+            // Enter: Create new nodes
+            nodes.enter().append("circle")
+                .attr("class", "node")
+                .attr("r", 10) // Start with radius 0 for transition
+                .attr("fill", d => color(d.category))
+                .attr("cx", d => x(d.x))
+                .attr("cy", d => y(d.y))
+                .attr("stroke", "#fff")
+                .attr("stroke-width", 1.5)
+                .on("mouseover", (event, d) => {
+                    d3.select(event.target)
+                      .transition().duration(200)
+                      .attr("stroke", "black")
+                      .attr("stroke-width", 3);
+                })
+                .on("mouseout", (event, d) => {
+                    d3.select(event.target)
+                      .transition().duration(200)
+                      .attr("stroke", "#fff")
+                      .attr("stroke-width", 1.5);
+                })
+                .append("title")
+                .text(d => `${d.name}: ${d.size}`);
+
+            // Update: Update existing nodes
+            nodes.transition()
+                .duration(750)
+                .attr("cx", d => x(d.x))
+                .attr("cy", d => y(d.y))
+                .attr("r", d => r(d.size));
+
+            // Exit: Remove old nodes
+            nodes.exit().transition()
+                .duration(750)
+                .attr("r", 0)
+                .remove();
+        }
+
+        // Initial data load and update
+        // d3.json("data.json").then(updateScatterPlot);
+        updateScatterPlot(data);
+
+        // Example of dynamically updating data every 5 seconds
+        setInterval(() => {
+            // d3.json("data-updated.json").then(updateScatterPlot);
+            updateScatterPlot(data);
+        }, 5000);
+    </script>
+</body>
+</html>

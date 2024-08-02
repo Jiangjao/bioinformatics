@@ -1,0 +1,5 @@
+# 方差分析
+https://blog.sciencenet.cn/home.php?mod=space&uid=3442043&do=blog&id=1253775
+
+
+https://xishansnow.github.io/ElementsOfStatisticalLearning/07-Model-Assessment-and-Selection/7.3-The-Bias-Variance-Decomposition.html

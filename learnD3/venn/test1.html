@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form
+    id="login"
+    action="https:www/imooc.com/api/http/search/suggest?words=js"
+    method="post"
+    enctype="application/x-www-form-urlencoded"
+    >
+    <input type="text" name="username" placeholder="用户名" />
+    <input type="password" name="password" placeholder="密码" />
+    <input type="submit" id="submit" value="登录" />
+    </form>
+
+    <script>
+        // 1. 使用Ajax提交表单
+        const login = document.getElementById('login');
+        // console.log(login.username);
+        // console.log(login.username);
+        const url = "http://127.0.0.1:3000/"
+        const {username, password} = login;
+        const btn = document.getElementById('submit');
+        
+        btn.addEventListener(
+            "click",
+            e => {
+                // 阻止表单自动提交
+                e.preventDefault();
+
+                // 表单数据验证
+
+                // 发送Ajax请求
+                const xhr = new XMLHttpRequest();
+
+                xhr.addEventListener(
+                    'load',
+                    () => {
+                        if ((xhr.status >= 200 && xhr.status < 300 ) ||
+                        xhr.status === 304) {
+                            console.log(xhr.response)
+                        }
+                    },
+                    false
+                );
+
+                xhr.open("POST", url, true);
+
+                // 组装数据
+                // const data = `username=${username.value}&password=${password.value}`;
+                const data = new FormData(login)
+                console.log(data);
+                // xhr.setRequestHeader("Content-Type",
+                //     "application/x-www-form-urlencoded");
+                xhr.send(data);
+                // xhr.send("username=alex&password=12345");
+            },
+            false
+        );
+
+    </script>
+</body>
+</html>

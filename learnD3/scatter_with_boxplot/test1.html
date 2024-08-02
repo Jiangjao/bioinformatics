@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动态散点盒型图</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .axis {
+            font-size: 12px;
+        }
+        .box {
+            fill: none;
+            stroke: black;
+            stroke-width: 1.5px;
+        }
+        .median {
+            stroke: red;
+            stroke-width: 1.5px;
+        }
+        .scatter-point {
+            fill: steelblue;
+            stroke: none;
+        }
+        .whisker {
+            stroke: black;
+            stroke-width: 1.5px;
+        }
+        .controls {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <label for="dataCount">数据数量：</label>
+        <input type="number" id="dataCount" value="50" min="10" max="1000">
+        <button onclick="updateChart()">更新图表</button>
+    </div>
+    <svg width="960" height="500"></svg>
+    <script>
+        var margin = {top: 20, right: 30, bottom: 40, left: 40},
+            width = 960 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom;
+
+        var svg = d3.select("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        var x = d3.scaleLinear().range([0, width]);
+        var y = d3.scaleLinear().range([height, 0]);
+
+        var xAxis = d3.axisBottom(x);
+        var yAxis = d3.axisLeft(y);
+
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")");
+
+        svg.append("g")
+            .attr("class", "y axis");
+
+        function updateChart() {
+            var dataCount = +document.getElementById("dataCount").value;
+            var data = d3.range(dataCount).map(d3.randomNormal(50, 15));
+
+            x.domain(d3.extent(data)).nice();
+            y.domain([0, d3.max(data)]).nice();
+
+            svg.selectAll(".x.axis").call(xAxis);
+            svg.selectAll(".y.axis").call(yAxis);
+
+            var quartiles = [
+                d3.quantile(data, 0.25),
+                d3.quantile(data, 0.5),
+                d3.quantile(data, 0.75)
+            ];
+
+            var whiskers = [
+                d3.min(data),
+                d3.max(data)
+            ];
+
+            var boxWidth = 50;
+
+            svg.selectAll(".box").remove();
+            svg.selectAll(".whisker").remove();
+            svg.selectAll(".scatter-point").remove();
+
+            svg.append("rect")
+                .attr("class", "box")
+                .attr("x", width / 2 - boxWidth / 2)
+                .attr("y", y(quartiles[2]))
+                .attr("width", boxWidth)
+                .attr("height", y(quartiles[0]) - y(quartiles[2]));
+
+            svg.append("line")
+                .attr("class", "median")
+                .attr("x1", width / 2 - boxWidth / 2)
+                .attr("x2", width / 2 + boxWidth / 2)
+                .attr("y1", y(quartiles[1]))
+                .attr("y2", y(quartiles[1]));
+
+            svg.append("line")
+                .attr("class", "whisker")
+                .attr("x1", width / 2)
+                .attr("x2", width / 2)
+                .attr("y1", y(whiskers[0]))
+                .attr("y2", y(quartiles[0]));
+
+            svg.append("line")
+                .attr("class", "whisker")
+                .attr("x1", width / 2)
+                .attr("x2", width / 2)
+                .attr("y1", y(whiskers[1]))
+                .attr("y2", y(quartiles[2]));
+
+            svg.append("line")
+                .attr("class", "whisker")
+                .attr("x1", width / 2 - boxWidth / 4)
+                .attr("x2", width / 2 + boxWidth / 4)
+                .attr("y1", y(whiskers[0]))
+                .attr("y2", y(whiskers[0]));
+
+            svg.append("line")
+                .attr("class", "whisker")
+                .attr("x1", width / 2 - boxWidth / 4)
+                .attr("x2", width / 2 + boxWidth / 4)
+                .attr("y1", y(whiskers[1]))
+                .attr("y2", y(whiskers[1]));
+
+            var scatter = svg.selectAll(".scatter-point")
+                .data(data);
+
+            scatter.enter().append("circle")
+                .attr("class", "scatter-point")
+                .attr("r", 3)
+                .merge(scatter)
+                .attr("cx", d => x(d))
+                .attr("cy", d => y(d));
+
+            scatter.exit().remove();
+        }
+
+        updateChart(); // 初始绘制
+    </script>
+</body>
+</html>

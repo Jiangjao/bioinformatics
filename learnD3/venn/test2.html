@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Color Picker Dialog Example</title>
+</head>
+<body>
+    <!-- 触发弹窗的按钮 -->
+    <button id="showDialogBtn">选择颜色</button>
+
+    <!-- 对话框元素 -->
+    <dialog id="colorDialog">
+        <form method="dialog">
+            <p>请选择颜色</p>
+            <input type="color" id="colorPicker">
+            <menu>
+                <button id="cancelBtn">取消</button>
+                <button id="confirmBtn" value="default">确认</button>
+            </menu>
+        </form>
+    </dialog>
+
+    <!-- 显示选定颜色的div -->
+    <div id="selectedColor" style="width: 100px; height: 100px; margin-top: 20px; border: 1px solid #000;"></div>
+
+    <script>
+        // 获取元素
+        var dialog = document.getElementById('colorDialog');
+        var showDialogBtn = document.getElementById('showDialogBtn');
+        var cancelBtn = document.getElementById('cancelBtn');
+        var confirmBtn = document.getElementById('confirmBtn');
+        var colorPicker = document.getElementById('colorPicker');
+        var selectedColorDiv = document.getElementById('selectedColor');
+
+        // 显示对话框
+        showDialogBtn.addEventListener('click', function() {
+            dialog.showModal();
+        });
+
+        // 取消按钮关闭对话框
+        cancelBtn.addEventListener('click', function() {
+            dialog.close();
+        });
+
+        // 确认按钮获取颜色并关闭对话框
+        confirmBtn.addEventListener('click', function() {
+            var selectedColor = colorPicker.value;
+            selectedColorDiv.style.backgroundColor = selectedColor;
+            dialog.close();
+        });
+    </script>
+</body>
+</html>
