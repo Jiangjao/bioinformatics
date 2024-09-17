@@ -87,6 +87,9 @@
         <mxCell id="N-s2DV5ZsmPViQI8oDyz-35" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" edge="1" parent="1" source="N-s2DV5ZsmPViQI8oDyz-27" target="N-s2DV5ZsmPViQI8oDyz-34">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
+        <mxCell id="N-s2DV5ZsmPViQI8oDyz-43" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="N-s2DV5ZsmPViQI8oDyz-27" target="N-s2DV5ZsmPViQI8oDyz-42">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="N-s2DV5ZsmPViQI8oDyz-27" value="&lt;span style=&quot;font-size:10.5pt;mso-bidi-font-size:&lt;br/&gt;11.0pt;font-family:&amp;quot;Times New Roman&amp;quot;,serif;mso-fareast-font-family:宋体;&lt;br/&gt;mso-font-kerning:1.0pt;mso-ansi-language:EN-US;mso-fareast-language:ZH-CN;&lt;br/&gt;mso-bidi-language:AR-SA&quot; lang=&quot;EN-US&quot;&gt;Hub Genes&lt;/span&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
           <mxGeometry x="210" y="990" width="120" height="60" as="geometry" />
         </mxCell>
@@ -113,6 +116,9 @@
         </mxCell>
         <mxCell id="N-s2DV5ZsmPViQI8oDyz-37" value="mRNA-TF" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="590" y="1030" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="N-s2DV5ZsmPViQI8oDyz-42" value="ImmuneInfiltration&lt;div&gt;ssGSEA&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="210" y="1140" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
